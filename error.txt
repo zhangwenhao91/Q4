@@ -1,29 +1,12 @@
-conda activate zwh
-cd /home/z30086261/Q4/third_party/ops-transformer
-
-source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
-export ASCEND_RT_VISIBLE_DEVICES=4
-set -o pipefail
-
-# 1. 安装刚构建的自定义算子包
-bash build_out/cann-ops-transformer-custom_linux-x86_64.run \
-  2>&1 | tee ../../mhc-ascendc-install.log
-
-# 2. 检查 vendor 注册情况
-grep load_priority "${ASCEND_HOME_PATH}/opp/vendors/config.ini"
-
-# 3. 构建并安装 Python 封装
-bash build.sh --torch_extension \
-  2>&1 | tee ../../mhc-python-build.log
-
-python -m pip install --no-deps \
-  build_out/cann_ops_transformer-*.whl
-
-
-
-cd /home/z30086261/Q4
-
-# 显式加载本次安装的 custom vendor
-source "${ASCEND_HOME_PATH}/opp/vendors/custom/bin/set_env.bash"
-
-bash operators/mhc/run.sh smoke
+[2026-10-26 15:06:45] [2026-10-26 15:06:45] [INFO] torch_extension whl package built successfully
+[2026-10-26 15:06:45] [2026-10-26 15:06:45] [INFO] torch_extension whl package copied to /home/z30086261/Q4/third_party/ops-transformer/build_out
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# 
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# python -m pip install --no-deps \
+>   build_out/cann_ops_transformer-*.whl
+Processing ./build_out/cann_ops_transformer-1.0.0-py3-none-any.whl
+cann-ops-transformer is already installed with the same version as the provided wheel. Use --force-reinstall to force an installation of the wheel.
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# source "${ASCEND_HOME_PATH}/opp/vendors/custom/bin/set_env.bash"
+bash: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom/bin/set_env.bash: No such file or directory
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
