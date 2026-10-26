@@ -31,3 +31,7 @@ bash operators/mhc/run.sh full
 Post 前向已在服务器完成精度冒烟检查、API 复测和设备 profiler 采集；Pre / Sinkhorn 扩展脚本尚待服务器验证。Event 与 wall time 用于 API 性能比较，设备 kernel Duration 单独统计。
 
 Pre、Sinkhorn 和 Pre+Sinkhorn 的安装、精度检查、计时及 profiler 指令见 [扩展测试说明](operators/mhc/extended/README.md)。
+
+## mHC 反向覆盖
+
+Post、Sinkhorn、Pre 与 Pre+Sinkhorn 的反向校验、独立反向及前向+反向计时，见 [反向运行说明](operators/mhc/backward/README.md)。Pre 梯度暂为 TileKernels + PyTorch 投影梯度的混合路径；NPU 验证结果待补充。
