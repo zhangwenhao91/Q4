@@ -1,10 +1,42 @@
-cd /home/z30086261/Q4
-git pull --ff-only
-
-for impl in tilelang ascendc; do
-  python operators/mhc/profile_mhc_post.py \
-    --impl "$impl" --tokens 512 --hidden 7168 \
-    --output "results/mhc/profile-512-7168/$impl" || break
-done
-
-find results/mhc/profile-512-7168 -type f -name '*kernel*csv'
+(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --ff-only
+remote: Enumerating objects: 17, done.
+remote: Counting objects: 100% (17/17), done.
+remote: Compressing objects: 100% (9/9), done.
+remote: Total 12 (delta 5), reused 6 (delta 2), pack-reused 0 (from 0)
+Unpacking objects: 100% (12/12), 4.27 KiB | 4.27 MiB/s, done.
+From https://github.com/zhangwenhao91/Q4
+   b2aa9a3..65fd089  main       -> origin/main
+Updating b2aa9a3..65fd089
+Fast-forward
+ error.txt                         |  8 +++-----
+ operators/mhc/README.md           | 18 ++++++++++++++++++
+ operators/mhc/profile_mhc_post.py | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 74 insertions(+), 5 deletions(-)
+ create mode 100644 operators/mhc/profile_mhc_post.py
+(zwh) root@ubuntu162:/home/z30086261/Q4# for impl in tilelang ascendc; do
+>   python operators/mhc/profile_mhc_post.py \
+>     --impl "$impl" --tokens 512 --hidden 7168 \
+>     --output "results/mhc/profile-512-7168/$impl" || break
+> done
+[2026-10-26 15:50:57] [WARNING] [1290048] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-26 15:50:57] [WARNING] [1290048] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-26 15:50:58] [INFO] [1290405] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc/profile-512-7168/tilelang/ubuntu162_1290048_20261026155057992_ascend_pt
+[2026-10-26 15:50:59] [ERROR] [1290405] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mhc/profile-512-7168/tilelang/ubuntu162_1290048_20261026155057992_ascend_pt/logs
+[2026-10-26 15:51:00] [INFO] [1290420] profiler.py: CANN profiling data parsed in a total time of 0:00:02.031296
+[2026-10-26 15:51:01] [INFO] [1290405] profiler.py: All profiling data parsed in a total time of 0:00:02.897010
+Profile collection finished: results/mhc/profile-512-7168/tilelang
+Expected active region: 3 steps x 10 API calls; inspect all kernels per call.
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+[2026-10-26 15:51:07] [WARNING] [1290719] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-26 15:51:07] [WARNING] [1290719] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-26 15:51:08] [INFO] [1291037] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc/profile-512-7168/ascendc/ubuntu162_1290719_20261026155107761_ascend_pt
+[2026-10-26 15:51:10] [INFO] [1291052] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011080
+[2026-10-26 15:51:11] [INFO] [1291037] profiler.py: All profiling data parsed in a total time of 0:00:02.852092
+Profile collection finished: results/mhc/profile-512-7168/ascendc
+Expected active region: 3 steps x 10 API calls; inspect all kernels per call.
+(zwh) root@ubuntu162:/home/z30086261/Q4# find results/mhc/profile-512-7168 -type f -name '*kernel*csv'
+results/mhc/profile-512-7168/ascendc/ubuntu162_1290719_20261026155107761_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+results/mhc/profile-512-7168/tilelang/ubuntu162_1290048_20261026155057992_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+(zwh) root@ubuntu162:/home/z30086261/Q4#
