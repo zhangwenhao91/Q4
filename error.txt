@@ -1,9 +1,28 @@
-cd /home/z30086261/Q4
-
-for suite in pre pre_sinkhorn; do
-  python operators/mhc/extended/bench_forward.py \
-    --suite "$suite" --tokens 512 --hidden 4096 \
-    --check-only \
-    --output "results/mhc/check-$suite-$(date +%Y%m%d-%H%M%S)" \
-    2>&1 | tee "mhc-$suite-check.log" || break
-done
+(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# for suite in pre pre_sinkhorn; do
+>   python operators/mhc/extended/bench_forward.py \
+>     --suite "$suite" --tokens 512 --hidden 4096 \
+>     --check-only \
+>     --output "results/mhc/check-$suite-$(date +%Y%m%d-%H%M%S)" \
+>     2>&1 | tee "mhc-$suite-check.log" || break
+> done
+{"args": {"suite": "pre", "tokens": [512], "hidden": [4096], "repeat": 20, "eps": 1e-06, "seed": 42, "warmup": 200, "iters": 100, "rounds": 7, "check_only": true, "profile": null, "output": "results/mhc/check-pre-20261026-163339"}, "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "tilelang_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py", "device": "Ascend950PR_9579", "allow_hf32": false}
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+2026-10-26 16:33:45  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_pre_split_mixes_fwd_simd_mhc4_asc` with `out_idx=None`
+2026-10-26 16:33:48  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_pre_split_mixes_fwd_simd_mhc4_asc`
+2026-10-26 16:33:48  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_pre_apply_mix_fwd_asc` with `out_idx=None`
+2026-10-26 16:33:50  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_pre_apply_mix_fwd_asc`
+Correctness passed: pre 512 4096
+{"args": {"suite": "pre_sinkhorn", "tokens": [512], "hidden": [4096], "repeat": 20, "eps": 1e-06, "seed": 42, "warmup": 200, "iters": 100, "rounds": 7, "check_only": true, "profile": null, "output": "results/mhc/check-pre_sinkhorn-20261026-163353"}, "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "tilelang_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py", "device": "Ascend950PR_9579", "allow_hf32": true}
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+2026-10-26 16:33:59  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_pre_big_fuse_fwd_asc` with `out_idx=None`
+2026-10-26 16:34:02  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_pre_big_fuse_fwd_asc`
+[1/2] /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ -MMD -MF mhc_pre_sinkhorn.o.d -DTORCH_EXTENSION_NAME=mhc_pre_sinkhorn -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/q4mhc-opp/vendors/q4mhc_transformer/op_api/include -I/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/include -I/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/include -I/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/csrc/mhc/mhc_pre_sinkhorn.cpp -o mhc_pre_sinkhorn.o 
+[2/2] /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ mhc_pre_sinkhorn.o -shared -L/home/z30086261/Q4/third_party/q4mhc-opp/vendors/q4mhc_transformer/op_api/lib -L/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/lib -L/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/lib -L/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/lib -L/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/lib -L/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64 -lascendcl -L/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/lib -ltorch_npu -L/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/lib -lc10 -ltorch_cpu -ltorch -ltorch_python -o mhc_pre_sinkhorn.so
+Correctness passed: pre_sinkhorn 512 4096
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
