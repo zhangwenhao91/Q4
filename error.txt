@@ -1,73 +1,12 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# for impl in tilelang ascendc; do
->   echo "===== $impl ====="
->   find "results/mhc/profile-512-7168/$impl" \
->     -type f -name kernel_details.csv \
->     -print -exec cat {} \;
-> done
-===== tilelang =====
-results/mhc/profile-512-7168/tilelang/ubuntu162_1290048_20261026155057992_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-Device_id,Name,Type,Accelerator Core,Start Time(us),Duration(us),Wait Time(us),Block Num,Mix Block Num,Input Shapes,Input Data Types,Input Formats,Output Shapes,Output Data Types,Output Formats
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858037908.712  ,18.670,0,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858037950.483  ,18.245,23.080000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858037975.601  ,18.931,6.755000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858037998.059  ,18.349,3.569000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038020.327  ,19.465,3.901000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038042.258  ,18.828,2.535000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038063.664  ,18.475,2.672000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038084.783  ,18.185,2.525000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038105.735  ,18.605,2.815000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038126.333  ,18.837,1.895000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038231.874  ,18.359,86.663000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038256.089  ,18.213,5.891000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038277.257  ,18.301,3.037000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038298.820  ,18.468,3.199000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038320.166  ,18.240,3.032000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038341.265  ,18.778,2.760000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038362.041  ,18.224,1.972000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038382.907  ,18.759,2.776000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038404.173  ,18.368,2.491000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038425.054  ,18.468,2.382000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038500.279  ,17.609,56.782000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038524.200  ,18.617,6.391000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038546.614  ,18.667,3.633000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038568.324  ,18.928,3.083000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038589.750  ,17.965,2.572000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038611.307  ,18.525,3.535000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038633.481  ,18.760,3.725000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038655.257  ,18.157,2.990000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038676.498  ,18.644,3.093000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_post_fwd_asc_kernel,N/A,N/A,1793029858038698.143  ,18.808,3.106000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-===== ascendc =====
-results/mhc/profile-512-7168/ascendc/ubuntu162_1290719_20261026155107761_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-Step Id,Device_id,Name,Type,Accelerator Core,Start Time(us),Duration(us),Wait Time(us),Block Num,Mix Block Num,Input Shapes,Input Data Types,Input Formats,Output Shapes,Output Data Types,Output Formats
-2,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804344.113     ,26.127,0,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804370.262     ,25.818,0.123000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804396.102     ,25.991,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804422.115     ,25.759,0.009000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804447.896     ,26.084,0.241000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804474.002     ,25.793,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804499.817     ,26.030,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804525.869     ,25.786,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804551.677     ,26.123,0.214000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804577.822     ,25.754,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804657.047     ,25.966,53.496000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804683.035     ,25.817,0.034000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804708.874     ,26.252,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804735.148     ,25.712,0.248000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804760.882     ,26.246,0.038000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804787.150     ,25.752,0.004000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804812.924     ,26.252,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804839.198     ,25.730,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804864.950     ,25.989,0.020000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804890.961     ,25.754,0.011000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804969.895     ,26.103,53.246000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867804996.020     ,25.818,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867805021.860     ,26.120,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867805048.002     ,25.773,0.130000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867805073.797     ,26.101,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867805099.920     ,25.844,0.149000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867805125.786     ,26.117,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867805151.925     ,25.753,0.133000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867805177.700     ,26.041,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPost_MhcPostAICore_MhcPost,N/A,N/A,1793029867805203.763     ,25.733,0.000000,52,0,N/A,N/A,N/A,N/A,N/A,N/A
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
+cd /home/z30086261/Q4
+
+for shape in "512 4096" "512 5120" \
+             "8192 4096" "8192 5120" "8192 7168"; do
+  read -r tokens hidden <<< "$shape"
+  for impl in tilelang ascendc; do
+    python operators/mhc/profile_mhc_post.py \
+      --impl "$impl" --tokens "$tokens" --hidden "$hidden" \
+      --output "results/mhc/profile-$tokens-$hidden/$impl" \
+      || break 2
+  done
+done
