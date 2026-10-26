@@ -1,51 +1,6 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# conda activate zwh
-(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
-(zwh) root@ubuntu162:/home/z30086261/Q4# source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
-(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4mhc-opp/vendors/q4mhc_transformer"
-(zwh) root@ubuntu162:/home/z30086261/Q4# export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
-(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_RT_VISIBLE_DEVICES=4
-(zwh) root@ubuntu162:/home/z30086261/Q4# export CC="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-gcc"
-(zwh) root@ubuntu162:/home/z30086261/Q4# export CXX="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-g++"
-(zwh) root@ubuntu162:/home/z30086261/Q4# export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
-(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/extended/run_fused.sh check \
->   2>&1 | tee mhc-fused-check.log
-Results: /home/z30086261/Q4/results/mhc/fused-projection-20261026-185425-check-1488518
-{"args": {"suite": "pre", "projection": "deepgemm", "pre_mode": "hf32", "dg_deterministic": false, "tokens": [512], "hidden": [4096], "repeat": 20, "eps": 1e-06, "seed": 42, "warmup": 200, "iters": 100, "rounds": 7, "check_only": true, "profile": null, "output": "results/mhc/fused-projection-20261026-185425-check-1488518/pre-seed-42"}, "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "tilelang_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py", "device": "Ascend950PR_9579", "allow_hf32": true, "deepgemm_version": "0.1.1", "deepgemm_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/__init__.py", "deepgemm_expected_revision": "3a35326271b069b8b5bf1a754435acd6cc91575b", "deepgemm_kernel_hf32_rounding": "nearest_even"}
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-[1/2] /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ -MMD -MF aclnn_bridge.o.d -DTORCH_EXTENSION_NAME=q4_mhc_aux -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/q4mhc-opp/vendors/q4mhc_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /home/z30086261/Q4/operators/mhc/extended/aclnn_bridge.cpp -o aclnn_bridge.o 
-[2/2] /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ aclnn_bridge.o -shared -L/home/z30086261/Q4/third_party/q4mhc-opp/vendors/q4mhc_transformer/op_api/lib -L/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/lib -L/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64 -lascendcl -L/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/lib -ltorch_npu -L/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/lib -lc10 -ltorch_cpu -ltorch -ltorch_python -o q4_mhc_aux.so
-Traceback (most recent call last):
-  File "/home/z30086261/Q4/operators/mhc/extended/bench_forward.py", line 244, in <module>
-    main()
-  File "/home/z30086261/Q4/operators/mhc/extended/bench_forward.py", line 173, in main
-    tl, ac, refs, names, label, projection_checks = make_case(a, t, d)
-                                                    ^^^^^^^^^^^^^^^^^^
-  File "/home/z30086261/Q4/operators/mhc/extended/bench_forward.py", line 68, in make_case
-    projection_checks = check_projection(projector, cpu_x, cpu_phi, tokens, hidden)
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/z30086261/Q4/operators/mhc/extended/fused_projection.py", line 34, in check_projection
-    values = projector()
-             ^^^^^^^^^^^
-  File "/home/z30086261/Q4/operators/mhc/extended/fused_projection.py", line 25, in __call__
-    self.fn(self.x, self.phi, mul, sq, num_splits=1)
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/tilelang_ops/hc_prenorm.py", line 393, in tf32_hc_prenorm_gemm
-    config = get_config(k, n, m, deterministic=deterministic)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/tilelang_ops/hc_prenorm.py", line 26, in get_config
-    num_aic_cores = _C.get_num_sms()
-                    ^^^^^^^^^^^^^^^^
-RuntimeError: Assertion error (/home/z30086261/Q4/third_party/DeepGEMM-Ascend/third-party/deep-jit/include/deep_jit/backend/ascend/backend.hpp:175): std::filesystem::is_directory(asc_devkit_include): Ascend adv_api include directory was not found: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/aarch64-linux/asc/include/adv_api
-C++ trace (most recent call first):
-  #0 /root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/_C.cpython-312-x86_64-linux-gnu.so+0x9bdb3 deep_jit::Ascend::find_ascend_toolkit() at /home/z30086261/Q4/third_party/DeepGEMM-Ascend/third-party/deep-jit/include/deep_jit/backend/ascend/backend.hpp:175
-  #1 /root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/_C.cpython-312-x86_64-linux-gnu.so+0xa7fa7 deep_jit::Runtime<deep_jit::Ascend>::Runtime(deep_jit::Config) at /home/z30086261/Q4/third_party/DeepGEMM-Ascend/third-party/deep-jit/include/deep_jit/backend/ascend/backend.hpp:61
-  #2 /root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/_C.cpython-312-x86_64-linux-gnu.so+0xa964a std::_Function_handler<std::shared_ptr<deep_jit::Runtime<deep_jit::Ascend> > (), deep_gemm::init_jit(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)::{lambda()#1}>::_M_invoke(std::_Any_data const&) at /root/miniconda3/envs/zwh/lib/gcc/x86_64-conda-linux-gnu/13.4.0/include/c++/bits/stl_construct.h:119
-  #3 /root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/_C.cpython-312-x86_64-linux-gnu.so+0x96011 deep_jit::LazyInit<deep_jit::Runtime<deep_jit::Ascend> >::operator->() at /root/miniconda3/envs/zwh/lib/gcc/x86_64-conda-linux-gnu/13.4.0/include/c++/bits/std_function.h:591
-  #4 /root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/_C.cpython-312-x86_64-linux-gnu.so+0xaa28c pybind11::cpp_function::initialize<deep_gemm::config::register_apis(pybind11::module_&)::{lambda()#1}, int, , pybind11::name, pybind11::scope, pybind11::sibling>(deep_gemm::config::register_apis(pybind11::module_&)::{lambda()#1}&&, int (*)(), pybind11::name const&, pybind11::scope const&, pybind11::sibling const&)::{lambda(pybind11::detail::function_call&)#1}::_FUN(pybind11::detail::function_call&) at /home/z30086261/Q4/third_party/DeepGEMM-Ascend/csrc/apis/../jit/jit.hpp:35
-  #5 /root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/_C.cpython-312-x86_64-linux-gnu.so+0x6e86e pybind11::cpp_function::dispatcher(_object*, _object* const*, unsigned long, _object*) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/pybind11/pybind11.h:1209
+cd /home/z30086261/Q4
+git pull --ff-only
+set -o pipefail
 
-[ERROR] 2026-10-26-18:54:44 (PID:1488560, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+bash operators/mhc/extended/repair_deepjit_host.sh \
+  2>&1 | tee mhc-deepjit-repair.log
