@@ -1,12 +1,4 @@
 cd /home/z30086261/Q4
 
-for shape in "512 4096" "512 5120" \
-             "8192 4096" "8192 5120" "8192 7168"; do
-  read -r tokens hidden <<< "$shape"
-  for impl in tilelang ascendc; do
-    python operators/mhc/profile_mhc_post.py \
-      --impl "$impl" --tokens "$tokens" --hidden "$hidden" \
-      --output "results/mhc/profile-$tokens-$hidden/$impl" \
-      || break 2
-  done
-done
+find results/mhc/profile-* -type f -name kernel_details.csv \
+  -print -exec cat {} \; > mhc-kernel-details.txt
