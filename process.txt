@@ -18,7 +18,7 @@ git config --global user.email "zhangwenhao91@h-partners.com"
 git config --global user.name "zhangwenhao91"
 git pull
 
-# 5.推送修改
+# 6.推送修改
 git add .
 git commit -m "Q4"
 git push
