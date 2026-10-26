@@ -1,10 +1,10 @@
-cd /home/z30086261/Q4
-git pull --ff-only
-
-# 保持 zwh、CANN 和 GCC13 环境
-cd third_party/ops-transformer
-set -o pipefail
-
-bash build.sh --pkg --soc=ascend950 --vendor_name=q4mhc \
-  --ops=mhc_post,mhc_pre,mhc_sinkhorn,mhc_pre_sinkhorn \
-  2>&1 | tee ../../mhc-extended-build.log
+[2026-10-26 16:20:01] CRC: 4100051272
+[2026-10-26 16:20:01] SHA256: 7015a2ac43c87b1dee0754cb1f8b87ceb0dfba347087bee11b3200e900c01fa9
+[2026-10-26 16:20:01] Skipping md5sum at user request
+[2026-10-26 16:20:01] 
+[2026-10-26 16:20:01] Self-extractable archive "cann-ops-transformer-q4mhc_linux-x86_64.run" successfully created.
+[2026-10-26 16:20:01] Copy /home/z30086261/Q4/third_party/ops-transformer/build/_CPack_Packages/Linux/External/cann-ops-transformer-q4mhc_linux-x86_64.run/cann-ops-transformer-q4mhc_linux-x86_64.run to /home/z30086261/Q4/third_party/ops-transformer/build/
+[2026-10-26 16:20:01] Copy /home/z30086261/Q4/third_party/ops-transformer/build/_CPack_Packages/Linux/External/cann-ops-transformer-q4mhc_linux-x86_64.run/cann-ops-transformer-q4mhc_linux-x86_64.run to /home/z30086261/Q4/third_party/ops-transformer/build_out/
+[2026-10-26 16:20:01] CPack: - package: /home/z30086261/Q4/third_party/ops-transformer/build/cann-ops-transformer-q4mhc_linux-x86_64.run.json generated.
+[2026-10-26 16:20:01] CPack: - package: /home/z30086261/Q4/third_party/ops-transformer/build/cann-ops-transformer-q4mhc_linux-x86_64.run generated.
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer#
