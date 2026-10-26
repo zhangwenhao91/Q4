@@ -148,3 +148,7 @@ find results/mhc/profile-512-7168 -type f -name '*kernel*csv'
 ```
 
 预热在采集之前完成；每个实现单独启动进程，活跃采集区间为 3 个 step，每个 step 调用 10 次 API。分析时核对实际采集数量，并统计一次 API 涉及的所有 kernel，不能只选择其中一个。
+
+## Pre / Sinkhorn 扩展
+
+新增 [extended/README.md](extended/README.md)，覆盖独立 Sinkhorn、Pre 和 Pre+Sinkhorn 前向。Pre 的完整计时路径含 PyTorch 投影/归约和 TileKernels 后处理，结果明确标注为混合实现，不能当作纯 TileLang 内核性能。

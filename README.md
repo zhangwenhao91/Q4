@@ -4,7 +4,7 @@
 
 | 算子 | 说明 | 状态 |
 |---|---|---|
-| [mHC](operators/mhc/README.md) | 实现核查、服务器安装指令、Post 前向对比 | 脚本已准备，等待 NPU 验证 |
+| [mHC](operators/mhc/README.md) | Post 前向已实测；Pre / Sinkhorn 扩展验证脚本 | Post 已验证，Pre / Sinkhorn 待服务器验证 |
 
 每个算子放在 `operators/<算子名>/`，包含独立说明和脚本。后续算子添加同级目录。
 
@@ -28,4 +28,6 @@ bash operators/mhc/run.sh full
 
 `prepare_sources.sh` 不安装依赖或算子包；构建安装步骤见 mHC 文档。结果写入 `results/mhc/<时间>/`，源码下载到 `third_party/`，均默认不提交。
 
-当前只做了本机源码核查、Python 语法与 CLI 检查；没有 NPU 实测结果。Event 与 wall time 用于 API 性能比较，纯 kernel 结论需另用 profiler 验证。
+Post 前向已在服务器完成精度冒烟检查、API 复测和设备 profiler 采集；Pre / Sinkhorn 扩展脚本尚待服务器验证。Event 与 wall time 用于 API 性能比较，设备 kernel Duration 单独统计。
+
+Pre、Sinkhorn 和 Pre+Sinkhorn 的安装、精度检查、计时及 profiler 指令见 [扩展测试说明](operators/mhc/extended/README.md)。
