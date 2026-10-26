@@ -1,51 +1,9 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
-(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
-(zwh) root@ubuntu162:/home/z30086261/Q4# OUT="results/mhc/extended-$(date +%Y%m%d-%H%M%S)"
-(zwh) root@ubuntu162:/home/z30086261/Q4# mkdir -p "$OUT"
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
-(zwh) root@ubuntu162:/home/z30086261/Q4# for suite in sinkhorn pre pre_sinkhorn; do
->   python operators/mhc/extended/bench_forward.py \
->     --suite "$suite" \
->     --tokens 512 8192 --hidden 4096 7168 \
->     --warmup 200 --iters 1000 --rounds 9 \
->     --output "$OUT/$suite" \
->     2>&1 | tee "$OUT/$suite.log" || break
-> done
-{"args": {"suite": "sinkhorn", "tokens": [512, 8192], "hidden": [4096, 7168], "repeat": 20, "eps": 1e-06, "seed": 42, "warmup": 200, "iters": 1000, "rounds": 9, "check_only": false, "profile": null, "output": "results/mhc/extended-20261026-163714/sinkhorn"}, "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "tilelang_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py", "device": "Ascend950PR_9579", "allow_hf32": false}
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-ninja: no work to do.
-Correctness passed: sinkhorn 512 0
-sinkhorn 512 0 {'tilelang': 9.910663604736328, 'ascendc': 12.53791618347168} AscendC/other= 1.2650935077122163
-Correctness passed: sinkhorn 8192 0
-sinkhorn 8192 0 {'tilelang': 83.32905578613281, 'ascendc': 45.677024841308594} AscendC/other= 0.5481524350706722
-{"args": {"suite": "pre", "tokens": [512, 8192], "hidden": [4096, 7168], "repeat": 20, "eps": 1e-06, "seed": 42, "warmup": 200, "iters": 1000, "rounds": 9, "check_only": false, "profile": null, "output": "results/mhc/extended-20261026-163714/pre"}, "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "tilelang_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py", "device": "Ascend950PR_9579", "allow_hf32": false}
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-ninja: no work to do.
-Correctness passed: pre 512 4096
-pre 512 4096 {'torch_projection_plus_tilekernels': 182.5872344970703, 'ascendc': 87.08858489990234} AscendC/other= 0.47696973525988595
-2026-10-26 16:37:31  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_pre_apply_mix_fwd_asc` with `out_idx=None`
-2026-10-26 16:37:34  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_pre_apply_mix_fwd_asc`
-Correctness passed: pre 512 7168
-pre 512 7168 {'torch_projection_plus_tilekernels': 287.712890625, 'ascendc': 107.51470947265625} AscendC/other= 0.3736874953329396
-Correctness passed: pre 8192 4096
-pre 8192 4096 {'torch_projection_plus_tilekernels': 2523.038818359375, 'ascendc': 847.4912719726562} AscendC/other= 0.33590100390280314
-Correctness passed: pre 8192 7168
-pre 8192 7168 {'torch_projection_plus_tilekernels': 4316.2998046875, 'ascendc': 1504.1253662109375} AscendC/other= 0.34847564679762466
-{"args": {"suite": "pre_sinkhorn", "tokens": [512, 8192], "hidden": [4096, 7168], "repeat": 20, "eps": 1e-06, "seed": 42, "warmup": 200, "iters": 1000, "rounds": 9, "check_only": false, "profile": null, "output": "results/mhc/extended-20261026-163714/pre_sinkhorn"}, "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "tilelang_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py", "device": "Ascend950PR_9579", "allow_hf32": true}
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-ninja: no work to do.
-Correctness passed: pre_sinkhorn 512 4096
-pre_sinkhorn 512 4096 {'torch_projection_plus_tilekernels': 144.63363647460938, 'ascendc': 71.30858612060547} AscendC/other= 0.493029061971513
-2026-10-26 16:39:15  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_pre_big_fuse_fwd_asc` with `out_idx=None`
-2026-10-26 16:39:18  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_pre_big_fuse_fwd_asc`
-Correctness passed: pre_sinkhorn 512 7168
-pre_sinkhorn 512 7168 {'torch_projection_plus_tilekernels': 248.03555297851562, 'ascendc': 84.83695983886719} AscendC/other= 0.3420354816884481
-Correctness passed: pre_sinkhorn 8192 4096
-pre_sinkhorn 8192 4096 {'torch_projection_plus_tilekernels': 2486.3623046875, 'ascendc': 747.4471435546875} AscendC/other= 0.3006187562229113
-Correctness passed: pre_sinkhorn 8192 7168
-pre_sinkhorn 8192 7168 {'torch_projection_plus_tilekernels': 4260.77490234375, 'ascendc': 1255.829345703125} AscendC/other= 0.2947420069087253
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
+cd /home/z30086261/Q4
+
+for suite in sinkhorn pre pre_sinkhorn; do
+  echo "===== $suite correctness ====="
+  cat "results/mhc/extended-20261026-163714/$suite/correctness.json"
+  echo
+  echo "===== $suite timings ====="
+  cat "results/mhc/extended-20261026-163714/$suite/timings.csv"
+done > mhc-extended-details.txt
