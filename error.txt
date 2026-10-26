@@ -1,11 +1,108 @@
-conda activate zwh
-cd /home/z30086261/Q4
+FAILED: [code=1] /home/z30086261/Q4/third_party/DeepGEMM-Ascend/build/temp.linux-x86_64-cpython-312/csrc/python_api.o
+      /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ -MMD -MF /home/z30086261/Q4/third_party/DeepGEMM-Ascend/build/temp.linux-x86_64-cpython-312/csrc/python_api.o.d -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /root/miniconda3/envs/zwh/include -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /root/miniconda3/envs/zwh/include -fPIC -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/home/z30086261/Q4/third_party/DeepGEMM-Ascend/deep_gemm/include -I/home/z30086261/Q4/third_party/DeepGEMM-Ascend/third-party/deep-jit/include -I/home/z30086261/Q4/third_party/DeepGEMM-Ascend/third-party/magic_enum/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -I/root/miniconda3/envs/zwh/include/python3.12 -c -c /home/z30086261/Q4/third_party/DeepGEMM-Ascend/csrc/python_api.cpp -o /home/z30086261/Q4/third_party/DeepGEMM-Ascend/build/temp.linux-x86_64-cpython-312/csrc/python_api.o -std=c++20 -O3 -g1 -fPIC -Wno-psabi -Wno-deprecated-declarations -D_GLIBCXX_USE_CXX11_ABI=1 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+      In file included from /home/z30086261/Q4/third_party/DeepGEMM-Ascend/third-party/deep-jit/include/deep_jit/cache/disk.hpp:12,
+                       from /home/z30086261/Q4/third_party/DeepGEMM-Ascend/third-party/deep-jit/include/deep_jit/runtime/runtime.hpp:8,
+                       from /home/z30086261/Q4/third_party/DeepGEMM-Ascend/third-party/deep-jit/include/deep_jit/python_api.hpp:7,
+                       from /home/z30086261/Q4/third_party/DeepGEMM-Ascend/csrc/python_api.cpp:5:
+      /home/z30086261/Q4/third_party/DeepGEMM-Ascend/third-party/deep-jit/include/deep_jit/utils/exception.hpp:3:10: fatal error: elfutils/libdwfl.h: No such file or directory
+          3 | #include <elfutils/libdwfl.h>
+            |          ^~~~~~~~~~~~~~~~~~~~
+      compilation terminated.
+      ninja: build stopped: subcommand failed.
+      Traceback (most recent call last):
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 2893, in _run_ninja_build
+          subprocess.run(
+        File "/root/miniconda3/envs/zwh/lib/python3.12/subprocess.py", line 571, in run
+          raise CalledProcessError(retcode, process.args,
+      subprocess.CalledProcessError: Command '['ninja', '-v']' returned non-zero exit status 1.
+      
+      The above exception was the direct cause of the following exception:
+      
+      Traceback (most recent call last):
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 389, in <module>
+          main()
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 373, in main
+          json_out["return_val"] = hook(**hook_input["kwargs"])
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 280, in build_wheel
+          return _build_backend().build_wheel(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/build_meta.py", line 441, in build_wheel
+          return _build(['bdist_wheel', '--dist-info-dir', str(metadata_directory)])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/build_meta.py", line 429, in _build
+          return self._build_with_temp_dir(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/build_meta.py", line 410, in _build_with_temp_dir
+          self.run_setup()
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/build_meta.py", line 520, in run_setup
+          super().run_setup(setup_script=setup_script)
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/build_meta.py", line 317, in run_setup
+          exec(code, locals())  # noqa: S102 # exec is intentional here
+          ^^^^^^^^^^^^^^^^^^^^
+        File "<string>", line 145, in <module>
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/__init__.py", line 117, in setup
+          return distutils.core.setup(**attrs)  # type: ignore[return-value]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/_distutils/core.py", line 168, in setup
+          return run_commands(dist)
+                 ^^^^^^^^^^^^^^^^^^
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/_distutils/core.py", line 184, in run_commands
+          dist.run_commands()
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/_distutils/dist.py", line 1028, in run_commands
+          self.run_command(cmd)
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/dist.py", line 1106, in run_command
+          super().run_command(command)
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+          cmd_obj.run()
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/command/bdist_wheel.py", line 454, in run
+          self.run_command("build")
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/_distutils/cmd.py", line 342, in run_command
+          self.distribution.run_command(command)
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/dist.py", line 1106, in run_command
+          super().run_command(command)
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+          cmd_obj.run()
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/_distutils/command/build.py", line 137, in run
+          self.run_command(cmd_name)
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/_distutils/cmd.py", line 342, in run_command
+          self.distribution.run_command(command)
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/dist.py", line 1106, in run_command
+          super().run_command(command)
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+          cmd_obj.run()
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/command/build_ext.py", line 108, in run
+          _build_ext.run(self)
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/_distutils/command/build_ext.py", line 382, in run
+          self.build_extensions()
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 1289, in build_extensions
+          super().build_extensions()
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/_distutils/command/build_ext.py", line 498, in build_extensions
+          self._build_extensions_serial()
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/_distutils/command/build_ext.py", line 524, in _build_extensions_serial
+          self.build_extension(ext)
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/command/build_ext.py", line 273, in build_extension
+          _build_ext.build_extension(self, ext)
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/Cython/Distutils/build_ext.py", line 140, in build_extension
+          super().build_extension(ext)
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/setuptools/_distutils/command/build_ext.py", line 585, in build_extension
+          objects = self.compiler.compile(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 1027, in unix_wrap_ninja_compile
+          _write_ninja_file_and_compile_objects(
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 2475, in _write_ninja_file_and_compile_objects
+          _run_ninja_build(
+        File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 2910, in _run_ninja_build
+          raise RuntimeError(message) from e
+      RuntimeError: Error compiling objects for extension
+      [ERROR] 2026-10-26-18:33:31 (PID:1478017, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for deep_gemm
+Failed to build deep_gemm
+error: failed-wheel-build-for-install
 
-source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
-export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4mhc-opp/vendors/q4mhc_transformer"
-export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
-export ASCEND_RT_VISIBLE_DEVICES=4
-set -o pipefail
-
-bash operators/mhc/extended/install_deepgemm.sh \
-  2>&1 | tee mhc-deepgemm-install.log
+× Failed to build installable wheels for some pyproject.toml based projects
+╰─> deep_gemm
+(zwh) root@ubuntu162:/home/z30086261/Q4#
