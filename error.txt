@@ -1,11 +1,15 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# conda activate zwh
-(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
-(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --ff-only
-remote: Enumerating objects: 25, done.
-remote: Counting objects: 100% (25/25), done.
-remote: Compressing objects: 100% (19/19), done.
-remote: Total 25 (delta 8), reused 13 (delta 5), pack-reused 0 (from 0)
-Unpacking objects: 100% (25/25), 28.66 KiB | 863.00 KiB/s, done.
-From https://github.com/zhangwenhao91/Q4
-   75d0edc..928d68c  main       -> origin/main
-fatal: Not possible to fast-forward, aborting.
+cd /home/z30086261/Q4
+
+# 保存当前已提交的历史
+git branch "backup/npu-before-merge-$(date +%Y%m%d-%H%M%S)"
+
+# 检查未提交修改及双方独有提交
+git status --short
+git log --oneline --left-right HEAD...origin/main
+
+# 合并远端，保留双方提交
+git merge --no-edit origin/main
+
+
+
+ls operators/mhc/extended/install_deepgemm.sh
