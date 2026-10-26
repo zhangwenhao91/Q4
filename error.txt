@@ -1,12 +1,23 @@
-[2026-10-26 15:06:45] [2026-10-26 15:06:45] [INFO] torch_extension whl package built successfully
-[2026-10-26 15:06:45] [2026-10-26 15:06:45] [INFO] torch_extension whl package copied to /home/z30086261/Q4/third_party/ops-transformer/build_out
-(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# 
-(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# python -m pip install --no-deps \
->   build_out/cann_ops_transformer-*.whl
-Processing ./build_out/cann_ops_transformer-1.0.0-py3-none-any.whl
-cann-ops-transformer is already installed with the same version as the provided wheel. Use --force-reinstall to force an installation of the wheel.
-WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
-(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# cd /home/z30086261/Q4
-(zwh) root@ubuntu162:/home/z30086261/Q4# source "${ASCEND_HOME_PATH}/opp/vendors/custom/bin/set_env.bash"
-bash: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom/bin/set_env.bash: No such file or directory
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
+conda activate zwh
+source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+export ASCEND_RT_VISIBLE_DEVICES=4
+set -o pipefail
+
+cd /home/z30086261/Q4/third_party/ops-transformer
+
+# 指定独立安装位置
+mkdir -p /home/z30086261/Q4/third_party/mhc-opp
+bash build_out/cann-ops-transformer-custom_linux-x86_64.run \
+  --install-path=/home/z30086261/Q4/third_party/mhc-opp \
+  2>&1 | tee ../../mhc-ascendc-install.log
+
+# 安装本次构建的 Python 封装
+python -m pip install --force-reinstall --no-deps \
+  build_out/cann_ops_transformer-*.whl
+
+
+
+source /home/z30086261/Q4/third_party/mhc-opp/vendors/custom/bin/set_env.bash
+
+cd /home/z30086261/Q4
+bash operators/mhc/run.sh smoke
