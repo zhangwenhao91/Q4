@@ -130,3 +130,21 @@ Sinkhorn 不能只看名字：TL 参考从 logits 做 softmax+eps 后定次行�
 从 Q4 根目录执行 `bash operators/mhc/prepare_sources.sh` 会将锁定源码放到 `third_party/TileKernels` 和 `third_party/ops-transformer`，第 3 节使用的就是这两个目录。
 
 完成安装并 source CANN/vendor 环境后，从 Q4 根目录执行 `bash operators/mhc/run.sh smoke` 或 `bash operators/mhc/run.sh full`。脚本记录 npu-smi、pip freeze、源码提交和测试日志，结果位于 `results/mhc/`。CANN、驱动、固件详细版本和 profiler 结果仍需另行保留。
+
+## 8. Post 设备 profiler 采集
+
+先完成前述安装与环境配置，并使用 zwh 环境、GCC 13、custom_transformer vendor。此脚本单独采集设备执行信息，不替代普通延迟测试。
+
+从 Q4 根目录执行：
+
+```bash
+for impl in tilelang ascendc; do
+  python operators/mhc/profile_mhc_post.py \
+    --impl "$impl" --tokens 512 --hidden 7168 \
+    --output "results/mhc/profile-512-7168/$impl" || break
+done
+
+find results/mhc/profile-512-7168 -type f -name '*kernel*csv'
+```
+
+预热在采集之前完成；每个实现单独启动进程，活跃采集区间为 3 个 step，每个 step 调用 10 次 API。分析时核对实际采集数量，并统计一次 API 涉及的所有 kernel，不能只选择其中一个。
