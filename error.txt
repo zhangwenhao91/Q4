@@ -1,112 +1,12 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
-(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/extended/run_fused.sh check \
->   2>&1 | tee mhc-fused-check.log
-Results: /home/z30086261/Q4/results/mhc/fused-projection-20261026-191039-check-1506505
-{"args": {"suite": "pre", "projection": "deepgemm", "pre_mode": "hf32", "dg_deterministic": false, "tokens": [512], "hidden": [4096], "repeat": 20, "eps": 1e-06, "seed": 42, "warmup": 200, "iters": 100, "rounds": 7, "check_only": true, "profile": null, "output": "results/mhc/fused-projection-20261026-191039-check-1506505/pre-seed-42"}, "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "tilelang_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py", "device": "Ascend950PR_9579", "allow_hf32": true, "deepgemm_version": "0.1.1", "deepgemm_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/__init__.py", "deepgemm_expected_revision": "3a35326271b069b8b5bf1a754435acd6cc91575b", "deepgemm_kernel_hf32_rounding": "nearest_even"}
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-ninja: no work to do.
-[19:10:48] /home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/insert_sync.cc:846: Fatal: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV0.MTE3 -> AIV1.MTE3 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
-2026-10-26 19:10:45  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `tf32_hc_prenorm_gemm_kernel` with `out_idx=None`
-Traceback (most recent call last):
-  File "/home/z30086261/Q4/operators/mhc/extended/bench_forward.py", line 244, in <module>
-    main()
-  File "/home/z30086261/Q4/operators/mhc/extended/bench_forward.py", line 173, in main
-    tl, ac, refs, names, label, projection_checks = make_case(a, t, d)
-                                                    ^^^^^^^^^^^^^^^^^^
-  File "/home/z30086261/Q4/operators/mhc/extended/bench_forward.py", line 68, in make_case
-    projection_checks = check_projection(projector, cpu_x, cpu_phi, tokens, hidden)
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/z30086261/Q4/operators/mhc/extended/fused_projection.py", line 34, in check_projection
-    values = projector()
-             ^^^^^^^^^^^
-  File "/home/z30086261/Q4/operators/mhc/extended/fused_projection.py", line 25, in __call__
-    self.fn(self.x, self.phi, mul, sq, num_splits=1)
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/tilelang_ops/hc_prenorm.py", line 398, in tf32_hc_prenorm_gemm
-    tf32_hc_prenorm_gemm_kernel(a, b, out_mul, out_sqr_sum, deterministic=deterministic, **config)
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 555, in __call__
-    kernel = self.compile(*args, **kwargs)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 470, in compile
-    kernel_result = compile(
-                    ^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 166, in compile
-    return cached(
-           ^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/__init__.py", line 91, in cached
-    return cache.cached(
-           ^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/kernel_cache.py", line 427, in cached
-    kernel = JITKernel(
-             ^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 140, in __init__
-    adapter = self._compile_and_create_adapter(func, out_idx)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 280, in _compile_and_create_adapter
-    self.artifact = self._compile_artifact(tilelang_func, pass_configs, compile_metadata)
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 321, in _compile_artifact
-    artifact = lower_with_context(
-               ^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/engine/lower.py", line 165, in lower_with_context
-    return _lower_with_context_impl(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/engine/lower.py", line 184, in _lower_with_context_impl
-    host_mod, device_mod, params, target, target_host = lower_to_host_device_ir(
-                                                        ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/engine/lower.py", line 136, in lower_to_host_device_ir
-    mod = context.lower(mod)
-          ^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/backend/module.py", line 214, in lower
-    return self.module.lower(mod, self.target)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/backend/module.py", line 115, in lower
-    return self.get_pipeline(target).lower(mod, target)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/backend/pass_pipeline/pipeline.py", line 31, in lower
-    return self._lower(mod, target)
-           ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/ascend/pipeline.py", line 113, in AscendPassPipelineBody
-    mod = ascend_transform.InsertSync()(mod)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm/ir/transform.py", line 171, in __call__
-    return _ffi_transform_api.RunPass(self, mod)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
-  File "<unknown>", line 0, in tvm::transform::Pass::operator()(tvm::IRModule) const
-  File "<unknown>", line 0, in tvm::transform::Pass::operator()(tvm::IRModule, tvm::transform::PassContext const&) const
-  File "<unknown>", line 0, in tvm::tirx::transform::PrimFuncPassNode::operator()(tvm::IRModule, tvm::transform::PassContext const&) const
-  File "<unknown>", line 0, in tvm::tl::ascend::RewriteTilelangKernels(tvm::tirx::PrimFunc, char const*, std::function<tvm::tirx::SBlock (tvm::tl::ascend::TilelangKernelContext const&)> const&, bool)
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
-  File "<unknown>", line 0, in tvm::runtime::detail::LogFatal::~LogFatal()
-tvm.error.InternalError: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV0.MTE3 -> AIV1.MTE3 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
-[ERROR] 2026-10-26-19:10:50 (PID:1506553, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+cd /home/z30086261/Q4
+git pull --no-rebase
+set -o pipefail
+
+bash operators/mhc/extended/repair_hc_aiv_layout.sh \
+  2>&1 | tee mhc-hc-layout-repair.log
+
+
+
+
+bash operators/mhc/extended/run_fused.sh check \
+  2>&1 | tee mhc-fused-check.log
