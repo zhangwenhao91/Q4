@@ -1,37 +1,73 @@
-conda activate zwh
-cd /home/z30086261/Q4/third_party/ops-transformer
-set -o pipefail
-
-mkdir -p /home/z30086261/Q4/third_party/q4mhc-opp
-
-bash build_out/cann-ops-transformer-q4mhc_linux-x86_64.run \
-  --install-path=/home/z30086261/Q4/third_party/q4mhc-opp \
-  2>&1 | tee ../../mhc-extended-install.log
-
-find /home/z30086261/Q4/third_party/q4mhc-opp \
-  -name set_env.bash -printconda activate zwh
-cd /home/z30086261/Q4/third_party/ops-transformer
-set -o pipefail
-
-mkdir -p /home/z30086261/Q4/third_party/q4mhc-opp
-
-bash build_out/cann-ops-transformer-q4mhc_linux-x86_64.run \
-  --install-path=/home/z30086261/Q4/third_party/q4mhc-opp \
-  2>&1 | tee ../../mhc-extended-install.log
-
-find /home/z30086261/Q4/third_party/q4mhc-opp \
-  -name set_env.bash -print
-
-
-
-cd /home/z30086261/Q4
-
-export CC="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-gcc"
-export CXX="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-g++"
-export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
-export ASCEND_RT_VISIBLE_DEVICES=4
-
-# 先验证独立 Sinkhorn；首次会编译 C++ 桥接层
-python operators/mhc/extended/bench_forward.py \
-  --suite sinkhorn --tokens 512 --check-only \
-  --output results/mhc/ext-check-sinkhorn
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# conda activate zwh
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# cd /home/z30086261/Q4/third_party/ops-transformer
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# 
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# mkdir -p /home/z30086261/Q4/third_party/q4mhc-opp
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# 
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# bash build_out/cann-ops-transformer-q4mhc_linux-x86_64.run \
+>   --install-path=/home/z30086261/Q4/third_party/q4mhc-opp \
+>   2>&1 | tee ../../mhc-extended-install.log
+Verifying archive integrity...  100%   SHA256 checksums are OK. All good.
+Uncompressing version:1.0  100%  
+[ops_custom] [2026-10-26 16:26:42] [INFO] create /home/z30086261/Q4/third_party/q4mhc-opp/vendors.
+[ops_custom] [2026-10-26 16:26:42] [INFO] create /home/z30086261/Q4/third_party/q4mhc-opp/vendors/q4mhc_transformer.
+[ops_custom] [2026-10-26 16:26:42] [INFO] validate shared libraries before installation
+[ops_custom] [2026-10-26 16:26:42] [INFO] upgrade framework
+[ops_custom] [2026-10-26 16:26:42] [INFO] no need to upgrade ops framework files
+[ops_custom] [2026-10-26 16:26:42] [INFO] upgrade op proto
+[ops_custom] [2026-10-26 16:26:42] [INFO] create /home/z30086261/Q4/third_party/q4mhc-opp/vendors/q4mhc_transformer/op_proto.
+[ops_custom] [2026-10-26 16:26:42] [INFO] copy new ops op_proto files ......
+[ops_custom] [2026-10-26 16:26:42] [INFO] upgrade op impl
+[ops_custom] [2026-10-26 16:26:42] [INFO] create /home/z30086261/Q4/third_party/q4mhc-opp/vendors/q4mhc_transformer/op_impl.
+[ops_custom] [2026-10-26 16:26:42] [INFO] copy new ops op_impl files ......
+[ops_custom] [2026-10-26 16:26:42] [INFO] upgrade op api
+[ops_custom] [2026-10-26 16:26:42] [INFO] create /home/z30086261/Q4/third_party/q4mhc-opp/vendors/q4mhc_transformer/op_api.
+[ops_custom] [2026-10-26 16:26:42] [INFO] copy new ops op_api files ......
+[ops_custom] [2026-10-26 16:26:42] [INFO] upgrade uninstall
+[ops_custom] [2026-10-26 16:26:42] [INFO] copy new uninstall.sh files ......
+[ops_custom] [2026-10-26 16:26:42] [INFO] upgrade version.info
+[ops_custom] [2026-10-26 16:26:42] [INFO] copy new version.info files ......
+[ops_custom] [2026-10-26 16:26:42] [INFO] no need to upgrade custom.proto files
+[ops_custom] [2026-10-26 16:26:42] [INFO] using requirements: when custom module install finished or before you run the custom module, execute the command [ source /home/z30086261/Q4/third_party/q4mhc-opp/vendors/q4mhc_transformer/bin/set_env.bash ] to set the environment path
+SUCCESS
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# 
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# find /home/z30086261/Q4/third_party/q4mhc-opp \
+>   -name set_env.bash -printconda activate zwh
+find: unknown predicate `-printconda'
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# cd /home/z30086261/Q4/third_party/ops-transformer
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# 
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# mkdir -p /home/z30086261/Q4/third_party/q4mhc-opp
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# 
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# bash build_out/cann-ops-transformer-q4mhc_linux-x86_64.run \
+>   --install-path=/home/z30086261/Q4/third_party/q4mhc-opp \
+>   2>&1 | tee ../../mhc-extended-install.log
+Verifying archive integrity...  100%   SHA256 checksums are OK. All good.
+Uncompressing version:1.0  100%  
+[ops_custom] [2026-10-26 16:26:42] [INFO] validate shared libraries before installation
+[ops_custom] [2026-10-26 16:26:43] [INFO] upgrade framework
+[ops_custom] [2026-10-26 16:26:43] [INFO] no need to upgrade ops framework files
+[ops_custom] [2026-10-26 16:26:43] [INFO] upgrade op proto
+es inc lib 
+[ops_custom] [2026-10-26 16:26:43] [INFO] replace or merge old ops op_proto files ......
+[ops_custom] [2026-10-26 16:26:43] [INFO] copy new ops op_proto files ......
+[ops_custom] [2026-10-26 16:26:43] [INFO] upgrade op impl
+ai_core 
+[ops_custom] [2026-10-26 16:26:43] [INFO] replace or merge old ops op_impl files ......
+[ops_custom] [2026-10-26 16:26:43] [INFO] copy new ops op_impl files ......
+[ops_custom] [2026-10-26 16:26:43] [INFO] upgrade op api
+include lib 
+[ops_custom] [2026-10-26 16:26:43] [INFO] replace or merge old ops op_api files ......
+[ops_custom] [2026-10-26 16:26:43] [INFO] copy new ops op_api files ......
+[ops_custom] [2026-10-26 16:26:43] [INFO] upgrade uninstall
+[ops_custom] [2026-10-26 16:26:43] [INFO] copy new uninstall.sh files ......
+[ops_custom] [2026-10-26 16:26:43] [INFO] upgrade version.info
+[ops_custom] [2026-10-26 16:26:43] [INFO] copy new version.info files ......
+[ops_custom] [2026-10-26 16:26:43] [INFO] no need to upgrade custom.proto files
+[ops_custom] [2026-10-26 16:26:43] [INFO] using requirements: when custom module install finished or before you run the custom module, execute the command [ source /home/z30086261/Q4/third_party/q4mhc-opp/vendors/q4mhc_transformer/bin/set_env.bash ] to set the environment path
+SUCCESS
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# 
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# find /home/z30086261/Q4/third_party/q4mhc-opp \
+>   -name set_env.bash -print
+/home/z30086261/Q4/third_party/q4mhc-opp/vendors/q4mhc_transformer/bin/set_env.bash
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# 
