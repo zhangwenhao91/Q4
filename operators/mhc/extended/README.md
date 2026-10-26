@@ -109,3 +109,7 @@ Pre/PreSinkhorn 同理改变 suite。每个活跃区间 30 次 API 调用，但�
 - mhc/mhc_pre/op_host/op_api/aclnn_mhc_pre.cpp：aclnnMhcPre 选择 FP32 模式；gamma/缓存为可选。
 - mhc/mhc_pre_sinkhorn/torch_extension/mhc_pre_sinkhorn.py：无 requires_grad 时 out_flag=False，返回 3 个主输出；h_res 为平铺 16，脚本统一 reshape。
 - TileKernels tests/mhc/test_pre_big_fuse.py：GEMM 不在原有 fused-tail benchmark 中。
+
+## 融合投影路径（后续阶段）
+
+已接入 DeepGEMM-Ascend 的原生 TileLang HC 融合投影/平方和 kernel。安装、精度模式、独立投影校验及重测步骤见 [FUSED_PROJECTION.md](FUSED_PROJECTION.md)。旧 PyTorch 路径保留，新路径使用 `--projection deepgemm`，Pre 对手改为 HF32 MhcPreV2，不能直接与旧 FP32 实验混为同一条件。

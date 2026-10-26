@@ -1,6 +1,6 @@
 """Q4: Sinkhorn, Pre, and Pre+Sinkhorn forward validation/API comparison.
 
-Pre labels explicitly include PyTorch projection/reduction, not pure TileLang.
+Projection backend is explicit: PyTorch baseline or fused DeepGEMM-Ascend TileLang HC kernel.
 """
 import argparse
 import csv
@@ -35,7 +35,8 @@ def sinkhorn_ref(x, repeat, eps):
 def make_case(a, tokens, hidden):
     import torch
     from tile_kernels.mhc import (mhc_sinkhorn_fwd, mhc_pre_split_mixes_fwd,
-                                  mhc_pre_apply_mix_fwd, mhc_pre_big_fuse_fwd)
+                                  mhc_pre_apply_mix_fwd, mhc_pre_big_fuse_fwd,
+                                  mhc_reduce_partials_and_rmsnorm_fwd)
     bridge = load_bridge()
     if a.suite == 'sinkhorn':
         cpu_x = torch.randn(tokens, 4, 4)
@@ -46,7 +47,7 @@ def make_case(a, tokens, hidden):
             return (y,)
         def ac():
             return (bridge.sinkhorn(x, a.eps, a.repeat),)
-        return tl, ac, (sinkhorn_ref(cpu_x, a.repeat, a.eps),), ['h_res'], 'tilelang'
+        return tl, ac, (sinkhorn_ref(cpu_x, a.repeat, a.eps),), ['h_res'], 'tilelang', []
     cpu_x = torch.randn(tokens, 4, hidden, dtype=torch.bfloat16)
     cpu_phi = torch.empty(24, 4 * hidden).uniform_(-1, 1) / (4 * hidden) ** 0.5
     cpu_alpha = torch.tensor([0.1, 0.1, 0.1])
@@ -59,13 +60,22 @@ def make_case(a, tokens, hidden):
     hin = (cpu_x.float() * pre.unsqueeze(-1)).sum(1).bfloat16()
     hres = sinkhorn_ref(logits, a.repeat, a.eps) if a.suite == 'pre_sinkhorn' else logits
     x, phi, alpha, bias = [v.npu() for v in (cpu_x, cpu_phi, cpu_alpha, cpu_bias)]
+    projector = None
+    projection_checks = []
+    if a.projection == 'deepgemm':
+        from fused_projection import HCProjection, check_projection
+        projector = HCProjection(x, phi, deterministic=a.dg_deterministic)
+        projection_checks = check_projection(projector, cpu_x, cpu_phi, tokens, hidden)
     if a.suite == 'pre_sinkhorn':
         from cann_ops_transformer.ops import mhc_pre_sinkhorn
         def tl():
-            # ALL of cast, projection, sqrsum, allocation and fused tail are timed.
-            xf = x.float().flatten(1)
-            mul = (xf @ phi.T).unsqueeze(0)
-            sq = xf.square().sum(-1).unsqueeze(0)
+            # All projection work, allocation and fused tail are timed for either backend.
+            if projector is not None:
+                mul, sq = projector()
+            else:
+                xf = x.float().flatten(1)
+                mul = (xf @ phi.T).unsqueeze(0)
+                sq = xf.square().sum(-1).unsqueeze(0)
             post_out = torch.empty(tokens, 4, device=x.device)
             res_out = torch.empty(tokens, 16, device=x.device)
             hin_out = torch.empty(tokens, hidden, device=x.device, dtype=x.dtype)
@@ -78,8 +88,17 @@ def make_case(a, tokens, hidden):
             return hi, hp, hr.reshape(tokens, 4, 4)
     else:
         def tl():
-            xf = x.float().flatten(1)
-            mixes = (xf @ phi.T) * (xf.square().mean(-1, keepdim=True) + a.eps).rsqrt()
+            if projector is not None:
+                mul, sq = projector()
+                out_mul = torch.empty(tokens, 1, 24, device=x.device)
+                out_sq = torch.empty(tokens, 1, device=x.device)
+                mixes = torch.empty(tokens, 24, device=x.device)
+                mhc_reduce_partials_and_rmsnorm_fwd(
+                    mul.view(1, tokens, 1, 24), sq.view(1, tokens, 1),
+                    out_mul, out_sq, mixes, rms_group_size=4*hidden, rms_eps=a.eps, n_splits=1)
+            else:
+                xf = x.float().flatten(1)
+                mixes = (xf @ phi.T) * (xf.square().mean(-1, keepdim=True) + a.eps).rsqrt()
             pre_out = torch.empty(tokens, 4, device=x.device)
             post_out = torch.empty_like(pre_out)
             res_out = torch.empty(tokens, 16, device=x.device)
@@ -88,13 +107,18 @@ def make_case(a, tokens, hidden):
             mhc_pre_apply_mix_fwd(x, pre_out, hin_out)
             return hin_out, post_out, res_out.reshape(tokens, 4, 4)
         def ac():
-            return bridge.pre(x, phi, alpha, bias, a.eps)
-    return tl, ac, (hin, post, hres), ['h_in', 'h_post', 'h_res'], 'torch_projection_plus_tilekernels'
+            fn = bridge.pre_hf32 if a.pre_mode == 'hf32' else bridge.pre
+            return fn(x, phi, alpha, bias, a.eps)
+    label = 'deepgemm_tilekernels' if projector is not None else 'torch_projection_plus_tilekernels'
+    return tl, ac, (hin, post, hres), ['h_in', 'h_post', 'h_res'], label, projection_checks
 
 
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--suite', choices=['sinkhorn', 'pre', 'pre_sinkhorn'], required=True)
+    p.add_argument('--projection', choices=['torch', 'deepgemm'], default='torch')
+    p.add_argument('--pre-mode', choices=['fp32', 'hf32'], default=None)
+    p.add_argument('--dg-deterministic', action='store_true')
     p.add_argument('--tokens', nargs='+', type=int, default=[512])
     p.add_argument('--hidden', nargs='+', type=int, default=[4096])
     p.add_argument('--repeat', type=int, default=20)
@@ -115,17 +139,29 @@ def main():
         p.error('AscendC pre_sinkhorn requires repeat=20, hidden=4096/7168')
     if a.suite != 'sinkhorn' and any(t % 16 for t in a.tokens):
         p.error('Use tokens divisible by 16 for the fused path')
+    if a.projection == 'deepgemm' and a.suite == 'sinkhorn':
+        p.error('Sinkhorn has no projection; use default --projection torch')
+    if a.pre_mode is None:
+        a.pre_mode = 'hf32' if a.projection == 'deepgemm' or a.suite == 'pre_sinkhorn' else 'fp32'
+    if (a.projection == 'deepgemm' or a.suite == 'pre_sinkhorn') and a.pre_mode != 'hf32':
+        p.error('DeepGEMM HC projection and PreSinkhorn require the HF32 comparison mode')
     import torch
     import torch_npu
     import tilelang
     torch.npu.set_device(0)
     # Match aclnnMhcPre FP32 and MhcPreSinkhorn HF32 paths respectively.
-    torch.npu.matmul.allow_hf32 = a.suite == 'pre_sinkhorn'
+    torch.npu.matmul.allow_hf32 = a.pre_mode == 'hf32'
     out = Path(a.output)
     out.mkdir(parents=True, exist_ok=False)
     meta = dict(args=vars(a), torch=torch.__version__, torch_npu=torch_npu.__version__,
                 tilelang=tilelang.__version__, tilelang_path=tilelang.__file__,
                 device=torch.npu.get_device_name(0), allow_hf32=torch.npu.matmul.allow_hf32)
+    if a.projection == 'deepgemm':
+        import deep_gemm
+        from fused_projection import DEEPGEMM_REVISION
+        meta.update(deepgemm_version=deep_gemm.__version__, deepgemm_path=deep_gemm.__file__,
+                    deepgemm_expected_revision=DEEPGEMM_REVISION,
+                    deepgemm_kernel_hf32_rounding='nearest_even')
     (out/'metadata.json').write_text(json.dumps(meta, indent=2), encoding='utf-8')
     print(json.dumps(meta), flush=True)
     rows = []
@@ -134,7 +170,11 @@ def main():
         for t in a.tokens:
             for d in ([0] if a.suite == 'sinkhorn' else a.hidden):
                 torch.manual_seed(a.seed)
-                tl, ac, refs, names, label = make_case(a, t, d)
+                tl, ac, refs, names, label, projection_checks = make_case(a, t, d)
+                checks.extend(projection_checks)
+                (out/'correctness.json').write_text(json.dumps(checks, indent=2), encoding='utf-8')
+                if not all(r['passed'] for r in projection_checks):
+                    raise AssertionError('Raw fused projection/sqrsum validation failed; see correctness.json')
                 actual = {}
                 for impl, fn in [(label, tl), ('ascendc', ac)]:
                     actual[impl] = tuple(y.cpu() for y in fn())
@@ -192,6 +232,7 @@ def main():
                         us = start.elapsed_time(end)*1000/a.iters
                         times[impl].append(us)
                         rows.append(dict(suite=a.suite, tokens=t, hidden=d, repeat=a.repeat,
+                                         projection=a.projection, pre_mode=a.pre_mode,
                                          implementation=impl, round=k, event_us=us, wall_us=wall_us))
                 with (out/'timings.csv').open('w', newline='') as f:
                     w = csv.DictWriter(f, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)

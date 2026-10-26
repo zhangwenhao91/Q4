@@ -27,7 +27,24 @@ std::tuple<at::Tensor, at::Tensor, at::Tensor> pre(
     return {hin, post, res};
 }
 
+// HF32 comparison for the DeepGEMM HC projection path.
+std::tuple<at::Tensor, at::Tensor, at::Tensor> pre_hf32(
+    const at::Tensor& x, const at::Tensor& phi, const at::Tensor& alpha,
+    const at::Tensor& bias, double eps) {
+    TORCH_CHECK(x.dim() == 3 && x.size(1) == 4);
+    auto t = x.size(0), d = x.size(2);
+    auto hin = at::empty({t, d}, x.options());
+    auto post = at::empty({t, 4}, phi.options());
+    auto res = at::empty({t, 4, 4}, phi.options());
+    at::Tensor absent;
+    int64_t mode = 1;
+    ACLNN_CMD(aclnnMhcPreV2, x, phi, alpha, bias, absent, eps, eps, mode,
+              hin, post, res, absent, absent, absent);
+    return {hin, post, res};
+}
+
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
     m.def("sinkhorn", &sinkhorn);
     m.def("pre", &pre);
+    m.def("pre_hf32", &pre_hf32);
 }
