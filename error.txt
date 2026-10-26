@@ -1,12 +1,134 @@
-cd /home/z30086261/Q4
-git pull --no-rebase
-set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
+remote: Enumerating objects: 23, done.
+remote: Counting objects: 100% (23/23), done.
+remote: Compressing objects: 100% (16/16), done.
+remote: Total 23 (delta 10), reused 11 (delta 6), pack-reused 0 (from 0)
+Unpacking objects: 100% (23/23), 12.31 KiB | 12.31 MiB/s, done.
+From https://github.com/zhangwenhao91/Q4
+   f7555b4..b6bd0b0  main       -> origin/main
 
-bash operators/mhc/extended/repair_hc_aiv_layout.sh \
-  2>&1 | tee mhc-hc-layout-repair.log
+*** Please tell me who you are.
 
+Run
 
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
 
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
 
-bash operators/mhc/extended/run_fused.sh check \
-  2>&1 | tee mhc-fused-check.log
+fatal: unable to auto-detect email address (got 'root@ubuntu162.(none)')
+(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/extended/repair_hc_aiv_layout.sh \
+> set -o pipefail^C
+(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.email "zhangwenhao91@h-partners.com"
+(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.name "zhangwenhao91"
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
+Merge made by the 'recursive' strategy.
+ error.txt                                      | 12 +++++++++---
+ operators/mhc/extended/FUSED_PROJECTION.md     | 20 ++++++++++++++++++++
+ operators/mhc/extended/bench_forward.py        |  6 +++++-
+ operators/mhc/extended/fused_projection.py     |  1 +
+ operators/mhc/extended/patch_hc_aiv_layout.py  | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ operators/mhc/extended/repair_hc_aiv_layout.sh | 25 ++++++++++++++++++++++++
+ operators/mhc/extended/test_hc_aiv_layout.py   | 26 +++++++++++++++++++++++++
+ 7 files changed, 157 insertions(+), 4 deletions(-)
+ create mode 100644 operators/mhc/extended/patch_hc_aiv_layout.py
+ create mode 100644 operators/mhc/extended/repair_hc_aiv_layout.sh
+ create mode 100644 operators/mhc/extended/test_hc_aiv_layout.py
+(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.email "zhangwenhao91@h-partners.com"
+(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.name "zhangwenhao91"
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (3/3), 1.45 KiB | 1.45 MiB/s, done.
+From https://github.com/zhangwenhao91/Q4
+   b6bd0b0..e8a4b7b  main       -> origin/main
+Merge made by the 'recursive' strategy.
+ process.txt | 5 +++++
+ 1 file changed, 5 insertions(+)
+(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.email "zhangwenhao91@h-partners.com"
+(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.name "zhangwenhao91"
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (3/3), 1.44 KiB | 1.44 MiB/s, done.
+From https://github.com/zhangwenhao91/Q4
+   e8a4b7b..c6b29c5  main       -> origin/main
+Merge made by the 'recursive' strategy.
+ process.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/extended/repair_hc_aiv_layout.sh \
+>   2>&1 | tee mhc-hc-layout-repair.log
+Explicit AIV squared-sum layout patched; synchronization checks remain enabled.
+candidate: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/asc/include/adv_api exists: True
+candidate: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/asc/include/adv_api exists: True
+Header patched. Rebuild the deep_gemm native extension; restarting Python alone is insufficient.
+Processing ./.
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: deep_gemm
+  Building wheel for deep_gemm (pyproject.toml): started
+  Building wheel for deep_gemm (pyproject.toml): finished with status 'done'
+  Created wheel for deep_gemm: filename=deep_gemm-0.1.1+local-cp312-cp312-linux_x86_64.whl size=2251147 sha256=ff94d91b5e99bcffb6c9026a0e91b087e200636b8196f606db60c0e30800c80d
+  Stored in directory: /tmp/pip-ephem-wheel-cache-mhz_0bcg/wheels/91/13/95/138b2b5b82a873d405ee8535cd03f29b338b07e0722427d774
+Successfully built deep_gemm
+Installing collected packages: deep_gemm
+  Attempting uninstall: deep_gemm
+    Found existing installation: deep_gemm 0.1.1+local
+    Can't uninstall 'deep_gemm'. No files were found to uninstall.
+Successfully installed deep_gemm-0.1.1+3a35326
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+Installed HC SHA256: 984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830
+Explicit AIV patch installed; NPU compilation and correctness still require run_fused.sh check.
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/extended/run_fused.sh check \
+>   2>&1 | tee mhc-fused-check.log
+Results: /home/z30086261/Q4/results/mhc/fused-projection-20261026-192230-check-1514141
+{"args": {"suite": "pre", "projection": "deepgemm", "pre_mode": "hf32", "dg_deterministic": false, "tokens": [512], "hidden": [4096], "repeat": 20, "eps": 1e-06, "seed": 42, "warmup": 200, "iters": 100, "rounds": 7, "check_only": true, "profile": null, "output": "results/mhc/fused-projection-20261026-192230-check-1514141/pre-seed-42"}, "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "tilelang_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py", "device": "Ascend950PR_9579", "allow_hf32": true, "deepgemm_version": "0.1.1", "deepgemm_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/__init__.py", "deepgemm_expected_revision": "3a35326271b069b8b5bf1a754435acd6cc91575b", "deepgemm_kernel_hf32_rounding": "nearest_even", "deepgemm_distribution": "0.1.1+3a35326", "hc_source_sha256": "984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830"}
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+2026-10-26 19:22:36  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `tf32_hc_prenorm_gemm_kernel` with `out_idx=None`
+2026-10-26 19:22:42  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `tf32_hc_prenorm_gemm_kernel`
+2026-10-26 19:22:42  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_reduce_partials_and_rmsnorm_fwd_asc` with `out_idx=None`
+2026-10-26 19:22:46  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_reduce_partials_and_rmsnorm_fwd_asc`
+2026-10-26 19:22:47  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_pre_split_mixes_fwd_simd_mhc4_asc` with `out_idx=None`
+2026-10-26 19:22:50  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_pre_split_mixes_fwd_simd_mhc4_asc`
+2026-10-26 19:22:50  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_pre_apply_mix_fwd_asc` with `out_idx=None`
+2026-10-26 19:22:52  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_pre_apply_mix_fwd_asc`
+Correctness passed: pre 512 4096
+{"args": {"suite": "pre_sinkhorn", "projection": "deepgemm", "pre_mode": "hf32", "dg_deterministic": false, "tokens": [512], "hidden": [4096], "repeat": 20, "eps": 1e-06, "seed": 42, "warmup": 200, "iters": 100, "rounds": 7, "check_only": true, "profile": null, "output": "results/mhc/fused-projection-20261026-192230-check-1514141/pre_sinkhorn-seed-42"}, "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "tilelang_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py", "device": "Ascend950PR_9579", "allow_hf32": true, "deepgemm_version": "0.1.1", "deepgemm_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/__init__.py", "deepgemm_expected_revision": "3a35326271b069b8b5bf1a754435acd6cc91575b", "deepgemm_kernel_hf32_rounding": "nearest_even", "deepgemm_distribution": "0.1.1+3a35326", "hc_source_sha256": "984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830"}
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+2026-10-26 19:23:01  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_pre_big_fuse_fwd_asc` with `out_idx=None`
+2026-10-26 19:23:05  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_pre_big_fuse_fwd_asc`
+Correctness passed: pre_sinkhorn 512 4096
+{"args": {"suite": "pre", "projection": "deepgemm", "pre_mode": "hf32", "dg_deterministic": false, "tokens": [512], "hidden": [4096], "repeat": 20, "eps": 1e-06, "seed": 43, "warmup": 200, "iters": 100, "rounds": 7, "check_only": true, "profile": null, "output": "results/mhc/fused-projection-20261026-192230-check-1514141/pre-seed-43"}, "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "tilelang_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py", "device": "Ascend950PR_9579", "allow_hf32": true, "deepgemm_version": "0.1.1", "deepgemm_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/__init__.py", "deepgemm_expected_revision": "3a35326271b069b8b5bf1a754435acd6cc91575b", "deepgemm_kernel_hf32_rounding": "nearest_even", "deepgemm_distribution": "0.1.1+3a35326", "hc_source_sha256": "984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830"}
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+Correctness passed: pre 512 4096
+{"args": {"suite": "pre_sinkhorn", "projection": "deepgemm", "pre_mode": "hf32", "dg_deterministic": false, "tokens": [512], "hidden": [4096], "repeat": 20, "eps": 1e-06, "seed": 43, "warmup": 200, "iters": 100, "rounds": 7, "check_only": true, "profile": null, "output": "results/mhc/fused-projection-20261026-192230-check-1514141/pre_sinkhorn-seed-43"}, "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "tilelang_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py", "device": "Ascend950PR_9579", "allow_hf32": true, "deepgemm_version": "0.1.1", "deepgemm_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/__init__.py", "deepgemm_expected_revision": "3a35326271b069b8b5bf1a754435acd6cc91575b", "deepgemm_kernel_hf32_rounding": "nearest_even", "deepgemm_distribution": "0.1.1+3a35326", "hc_source_sha256": "984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830"}
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+Correctness passed: pre_sinkhorn 512 4096
+{"args": {"suite": "pre", "projection": "deepgemm", "pre_mode": "hf32", "dg_deterministic": false, "tokens": [512], "hidden": [4096], "repeat": 20, "eps": 1e-06, "seed": 44, "warmup": 200, "iters": 100, "rounds": 7, "check_only": true, "profile": null, "output": "results/mhc/fused-projection-20261026-192230-check-1514141/pre-seed-44"}, "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "tilelang_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py", "device": "Ascend950PR_9579", "allow_hf32": true, "deepgemm_version": "0.1.1", "deepgemm_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/__init__.py", "deepgemm_expected_revision": "3a35326271b069b8b5bf1a754435acd6cc91575b", "deepgemm_kernel_hf32_rounding": "nearest_even", "deepgemm_distribution": "0.1.1+3a35326", "hc_source_sha256": "984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830"}
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+Correctness passed: pre 512 4096
+{"args": {"suite": "pre_sinkhorn", "projection": "deepgemm", "pre_mode": "hf32", "dg_deterministic": false, "tokens": [512], "hidden": [4096], "repeat": 20, "eps": 1e-06, "seed": 44, "warmup": 200, "iters": 100, "rounds": 7, "check_only": true, "profile": null, "output": "results/mhc/fused-projection-20261026-192230-check-1514141/pre_sinkhorn-seed-44"}, "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "tilelang_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py", "device": "Ascend950PR_9579", "allow_hf32": true, "deepgemm_version": "0.1.1", "deepgemm_path": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/__init__.py", "deepgemm_expected_revision": "3a35326271b069b8b5bf1a754435acd6cc91575b", "deepgemm_kernel_hf32_rounding": "nearest_even", "deepgemm_distribution": "0.1.1+3a35326", "hc_source_sha256": "984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830"}
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+Correctness passed: pre_sinkhorn 512 4096
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
