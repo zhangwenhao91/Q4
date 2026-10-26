@@ -13,6 +13,11 @@ export ASCEND_RT_VISIBLE_DEVICES=4
 # 4.设置CANN路径
 source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
 
+# 5.拉取更新
+git config --global user.email "zhangwenhao91@h-partners.com"
+git config --global user.name "zhangwenhao91"
+git pull
+
 # 5.推送修改
 git add .
 git commit -m "Q4"
