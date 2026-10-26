@@ -1,42 +1,28 @@
-(mhc) root@ubuntu162:/home/z30086261/Q4# python -c 'import sys,torch,torch_npu,tilelang; print(sys.version); print(torch.__version__,torch_npu.__version__,tilelang.__version__); print(torch.npu.is_available()); print(torch.npu.get_device_name(0))' | tee framework.txt
+conda activate mhc
 
-Traceback (most recent call last):
-  File "/home/h00932613/tilelang-te/tilelang-mlir-ascend/tilelang/jit/adapter/cython/adapter.py", line 155, in <module>
-    raise Exception(
-Exception: Cython is not installed, please install it first.
+python -m pip install Cython
+python -c "import sys, Cython; print(sys.executable); print(Cython.__version__)"
 
-The above exception was the direct cause of the following exception:
 
-Traceback (most recent call last):
-  File "<string>", line 1, in <module>
-  File "/home/h00932613/tilelang-te/tilelang-mlir-ascend/tilelang/__init__.py", line 86, in <module>
-    from .jit import jit, compile  # noqa: F401
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/h00932613/tilelang-te/tilelang-mlir-ascend/tilelang/jit/__init__.py", line 23, in <module>
-    from tilelang.cache import cached_npu
-  File "/home/h00932613/tilelang-te/tilelang-mlir-ascend/tilelang/cache/__init__.py", line 10, in <module>
-    from .kernel_cache import KernelCache
-  File "/home/h00932613/tilelang-te/tilelang-mlir-ascend/tilelang/cache/kernel_cache.py", line 10, in <module>
-    from tilelang.jit.jit_npu import JitKernel_NPU
-  File "/home/h00932613/tilelang-te/tilelang-mlir-ascend/tilelang/jit/jit_npu.py", line 26, in <module>
-    from tilelang.profiler import Profiler, TensorSupplyType
-  File "/home/h00932613/tilelang-te/tilelang-mlir-ascend/tilelang/profiler/__init__.py", line 14, in <module>
-    from tilelang.jit.adapter import BaseKernelAdapter
-  File "/home/h00932613/tilelang-te/tilelang-mlir-ascend/tilelang/jit/adapter/__init__.py", line 7, in <module>
-    from .cython import CythonKernelAdapter  # noqa: F401
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/h00932613/tilelang-te/tilelang-mlir-ascend/tilelang/jit/adapter/cython/__init__.py", line 4, in <module>
-    from .adapter import CythonKernelAdapter  # noqa: F401
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/h00932613/tilelang-te/tilelang-mlir-ascend/tilelang/jit/adapter/cython/adapter.py", line 171, in <module>
-    raise Exception(f"Failed to compile cython jit adapter: {e}") from e
-Exception: Failed to compile cython jit adapter: Cython is not installed, please install it first.
-2026-10-26 11:52:25  [TileLang:tilelang.env:WARNING]: Loading tilelang libs from dev root: /home/h00932613/tilelang-te/tilelang-mlir-ascend/build
-2026-10-26 11:52:25  [TileLang:tilelang.env:WARNING]: CUTLASS is not installed or found in the expected path
-2026-10-26 11:52:25  [TileLang:tilelang.env:WARNING]: Composable Kernel is not installed or found in the expected path
-2026-10-26 11:52:25  [TileLang:tilelang.jit.adapter.cython.adapter:INFO]: No cached version found for cython jit adapter, need to compile...
-2026-10-26 11:52:25  [TileLang:tilelang.jit.adapter.cython.adapter:INFO]: Waiting for lock to compile cython jit adapter...
-2026-10-26 11:52:25  [TileLang:tilelang.jit.adapter.cython.adapter:INFO]: Compiling cython jit adapter...
-[ERROR] 2026-10-26-11:52:25 (PID:1079141, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception
-(mhc) root@ubuntu162:/home/z30086261/Q4# 
-(mhc) root@ubuntu162:/home/z30086261/Q4# 
+
+set -o pipefail
+
+python -c 'import sys,torch,torch_npu; print(sys.version); print(torch.__version__,torch_npu.__version__); print(torch.npu.is_available()); print(torch.npu.get_device_name(0))' \
+  2>&1 | tee framework.txt
+
+python -c 'import tilelang; print(tilelang.__version__); print(tilelang.__file__)' \
+  2>&1 | tee tilelang-import.txt
+
+
+
+
+
+
+python - <<'PY' 2>&1 | tee tilelang-api.txt
+from tilelang.ascend import language as T
+from tilelang.ascend.language import simd as S
+
+for name in ("SimdVF", "Persistent", "dynamic", "const"):
+    print(name, hasattr(T, name))
+print("simd.vld", hasattr(S, "vld"))
+PY
