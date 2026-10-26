@@ -10,7 +10,10 @@ export GIT_SSL_NO_VERIFY=true
 # 3.设置NPU卡号
 export ASCEND_RT_VISIBLE_DEVICES=4
 
-# 4.推送修改
+# 4.设置CANN路径
+source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+
+# 5.推送修改
 git add .
 git commit -m "Q4"
 git push
