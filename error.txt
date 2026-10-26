@@ -1,96 +1,12 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# for shape in "512 4096" "512 5120" \
->              "8192 4096" "8192 5120" "8192 7168"; do
->   read -r tokens hidden <<< "$shape"
->   for impl in tilelang ascendc; do
->     python operators/mhc/profile_mhc_post.py \
->       --impl "$impl" --tokens "$tokens" --hidden "$hidden" \
->       --output "results/mhc/profile-$tokens-$hidden/$impl" \
->       || break 2
->   done
-> done
-[2026-10-26 15:56:37] [WARNING] [1294665] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:56:37] [WARNING] [1294665] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:56:37] [INFO] [1295021] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc/profile-512-4096/tilelang/ubuntu162_1294665_20261026155637009_ascend_pt
-[2026-10-26 15:56:38] [ERROR] [1295021] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mhc/profile-512-4096/tilelang/ubuntu162_1294665_20261026155637009_ascend_pt/logs
-[2026-10-26 15:56:39] [INFO] [1295036] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011925
-[2026-10-26 15:56:40] [INFO] [1295021] profiler.py: All profiling data parsed in a total time of 0:00:02.905570
-Profile collection finished: results/mhc/profile-512-4096/tilelang
-Expected active region: 3 steps x 10 API calls; inspect all kernels per call.
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-[2026-10-26 15:56:46] [WARNING] [1295319] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:56:46] [WARNING] [1295319] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:56:47] [INFO] [1295644] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc/profile-512-4096/ascendc/ubuntu162_1295319_20261026155646860_ascend_pt
-[2026-10-26 15:56:49] [INFO] [1295659] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011408
-[2026-10-26 15:56:50] [INFO] [1295644] profiler.py: All profiling data parsed in a total time of 0:00:02.868785
-Profile collection finished: results/mhc/profile-512-4096/ascendc
-Expected active region: 3 steps x 10 API calls; inspect all kernels per call.
-[2026-10-26 15:56:58] [WARNING] [1295941] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:56:58] [WARNING] [1295941] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:56:58] [INFO] [1296288] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc/profile-512-5120/tilelang/ubuntu162_1295941_20261026155658101_ascend_pt
-[2026-10-26 15:56:59] [ERROR] [1296288] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mhc/profile-512-5120/tilelang/ubuntu162_1295941_20261026155658101_ascend_pt/logs
-[2026-10-26 15:57:00] [INFO] [1296302] profiler.py: CANN profiling data parsed in a total time of 0:00:02.032086
-[2026-10-26 15:57:01] [INFO] [1296288] profiler.py: All profiling data parsed in a total time of 0:00:02.848678
-Profile collection finished: results/mhc/profile-512-5120/tilelang
-Expected active region: 3 steps x 10 API calls; inspect all kernels per call.
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-[2026-10-26 15:57:07] [WARNING] [1296605] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:57:07] [WARNING] [1296605] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:57:08] [INFO] [1296964] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc/profile-512-5120/ascendc/ubuntu162_1296605_20261026155707986_ascend_pt
-[2026-10-26 15:57:10] [INFO] [1296979] profiler.py: CANN profiling data parsed in a total time of 0:00:02.032103
-[2026-10-26 15:57:11] [INFO] [1296964] profiler.py: All profiling data parsed in a total time of 0:00:02.889846
-Profile collection finished: results/mhc/profile-512-5120/ascendc
-Expected active region: 3 steps x 10 API calls; inspect all kernels per call.
-[2026-10-26 15:57:19] [WARNING] [1297260] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:57:19] [WARNING] [1297260] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:57:20] [INFO] [1297628] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc/profile-8192-4096/tilelang/ubuntu162_1297260_20261026155719809_ascend_pt
-[2026-10-26 15:57:21] [ERROR] [1297628] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mhc/profile-8192-4096/tilelang/ubuntu162_1297260_20261026155719809_ascend_pt/logs
-[2026-10-26 15:57:22] [INFO] [1297643] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011791
-[2026-10-26 15:57:23] [INFO] [1297628] profiler.py: All profiling data parsed in a total time of 0:00:02.924290
-Profile collection finished: results/mhc/profile-8192-4096/tilelang
-Expected active region: 3 steps x 10 API calls; inspect all kernels per call.
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-[2026-10-26 15:57:30] [WARNING] [1297919] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:57:30] [WARNING] [1297919] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:57:31] [INFO] [1298247] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc/profile-8192-4096/ascendc/ubuntu162_1297919_20261026155730649_ascend_pt
-[2026-10-26 15:57:33] [INFO] [1298261] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011450
-[2026-10-26 15:57:34] [INFO] [1298247] profiler.py: All profiling data parsed in a total time of 0:00:02.882321
-Profile collection finished: results/mhc/profile-8192-4096/ascendc
-Expected active region: 3 steps x 10 API calls; inspect all kernels per call.
-[2026-10-26 15:57:42] [WARNING] [1298513] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:57:42] [WARNING] [1298513] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:57:42] [INFO] [1298851] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc/profile-8192-5120/tilelang/ubuntu162_1298513_20261026155742038_ascend_pt
-[2026-10-26 15:57:43] [ERROR] [1298851] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mhc/profile-8192-5120/tilelang/ubuntu162_1298513_20261026155742038_ascend_pt/logs
-[2026-10-26 15:57:44] [INFO] [1298867] profiler.py: CANN profiling data parsed in a total time of 0:00:02.012231
-[2026-10-26 15:57:45] [INFO] [1298851] profiler.py: All profiling data parsed in a total time of 0:00:02.883487
-Profile collection finished: results/mhc/profile-8192-5120/tilelang
-Expected active region: 3 steps x 10 API calls; inspect all kernels per call.
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-[2026-10-26 15:57:52] [WARNING] [1299129] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:57:52] [WARNING] [1299129] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:57:53] [INFO] [1299451] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc/profile-8192-5120/ascendc/ubuntu162_1299129_20261026155752950_ascend_pt
-[2026-10-26 15:57:55] [INFO] [1299466] profiler.py: CANN profiling data parsed in a total time of 0:00:02.031907
-[2026-10-26 15:57:56] [INFO] [1299451] profiler.py: All profiling data parsed in a total time of 0:00:02.856793
-Profile collection finished: results/mhc/profile-8192-5120/ascendc
-Expected active region: 3 steps x 10 API calls; inspect all kernels per call.
-[2026-10-26 15:58:05] [WARNING] [1299741] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:58:05] [WARNING] [1299741] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:58:06] [INFO] [1300073] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc/profile-8192-7168/tilelang/ubuntu162_1299741_20261026155805822_ascend_pt
-[2026-10-26 15:58:07] [ERROR] [1300073] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mhc/profile-8192-7168/tilelang/ubuntu162_1299741_20261026155805822_ascend_pt/logs
-[2026-10-26 15:58:08] [INFO] [1300089] profiler.py: CANN profiling data parsed in a total time of 0:00:02.012442
-[2026-10-26 15:58:09] [INFO] [1300073] profiler.py: All profiling data parsed in a total time of 0:00:02.855039
-Profile collection finished: results/mhc/profile-8192-7168/tilelang
-Expected active region: 3 steps x 10 API calls; inspect all kernels per call.
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-[2026-10-26 15:58:17] [WARNING] [1300353] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:58:17] [WARNING] [1300353] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-26 15:58:18] [INFO] [1300676] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc/profile-8192-7168/ascendc/ubuntu162_1300353_20261026155817812_ascend_pt
-[2026-10-26 15:58:20] [INFO] [1300690] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011638
-[2026-10-26 15:58:21] [INFO] [1300676] profiler.py: All profiling data parsed in a total time of 0:00:02.916040
-Profile collection finished: results/mhc/profile-8192-7168/ascendc
-Expected active region: 3 steps x 10 API calls; inspect all kernels per call.
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+cd /home/z30086261/Q4
+
+for shape in "512 4096" "512 5120" \
+             "8192 4096" "8192 5120" "8192 7168"; do
+  read -r tokens hidden <<< "$shape"
+  for impl in tilelang ascendc; do
+    python operators/mhc/profile_mhc_post.py \
+      --impl "$impl" --tokens "$tokens" --hidden "$hidden" \
+      --output "results/mhc/profile-$tokens-$hidden/$impl" \
+      || break 2
+  done
+done
