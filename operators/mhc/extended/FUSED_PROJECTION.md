@@ -96,3 +96,23 @@ bash operators/mhc/extended/repair_deepjit_host.sh 2>&1 | tee mhc-deepjit-repair
 修复脚本先验证锁定子模块 SHA 和现有头文件目录，再按精确上下文应用补丁并重编 deep_gemm `_C`。目录不存在时停止，不猜测安装路径；源码上下文不匹配时停止。补丁可重复应用，记录原始头文件、diff 和前后 SHA256 到 third_party/deepjit-host-fix/。源树会有可解释的修改，安装版本可能标为 +local；此时不要再执行要求干净源码树的 install_deepgemm.sh。
 
 重装后验证真实调用 deep_gemm.get_num_sms()，覆盖此前仅验证导入没有触发的延迟 JIT 初始化。出现 `DeepGEMM JIT initialization passed` 后，再执行 run_fused.sh check；数值和性能仍需设备验证。
+
+## HC kernel 编译兼容补丁：显式平方和子核维度
+
+在当前 TileLang a7cb753d 上，上游 HC prenorm 编译报 `uncovered AIV0.MTE3 -> AIV1.MTE3 dependency`。为使平方和 GM 输出的两片子核区域显式可证明不重叠，提供局部布局改写，**保留同步检查、原有跨核 flags、原子归约顺序和所有算术**：
+
+- 原平方和 GM shape=[M]，索引 block*128 + aiv_id*64 + j。
+- kernel 内改为 [M/128,2,64]，索引 [block,aiv_id,j]。
+- 线性地址完全相同；public API 仍为 sqrsum[1,M]，通过 view 接入，无数据搬运。
+- 本补丁只支持 M 为128的正整数倍，覆盖当前512/8192测试。不声称兼容上游所有非整块/tail shape。
+
+此改写旨在消除平方和地址的跨子核分析歧义；仍须在服务器验证编译是否通过，不能将静态地址等价测试当作设备正确性或性能证据。若仍报错，保留日志进一步定位，不关闭编译器同步检查。
+
+保持 zwh/CANN/vendor/CC/CXX/卡号环境，执行：
+
+```bash
+bash operators/mhc/extended/repair_hc_aiv_layout.sh 2>&1 | tee mhc-hc-layout-repair.log
+bash operators/mhc/extended/run_fused.sh check 2>&1 | tee mhc-fused-check.log
+```
+
+先确认第一条成功，再运行第二条。修复脚本验证锁定主仓提交和精确源码上下文，保留此前 DeepJIT 主机路径补丁，重装后核对已安装 Python kernel 文件与补丁源码逐字节相同。备份、diff 和 SHA256 在 third_party/hc-aiv-layout-fix/。将两份补丁一并记录到最终报告，后续仍不要执行原始 clean-source 安装脚本。

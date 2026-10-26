@@ -158,10 +158,14 @@ def main():
                 device=torch.npu.get_device_name(0), allow_hf32=torch.npu.matmul.allow_hf32)
     if a.projection == 'deepgemm':
         import deep_gemm
+        import hashlib
+        import importlib.metadata
         from fused_projection import DEEPGEMM_REVISION
         meta.update(deepgemm_version=deep_gemm.__version__, deepgemm_path=deep_gemm.__file__,
                     deepgemm_expected_revision=DEEPGEMM_REVISION,
-                    deepgemm_kernel_hf32_rounding='nearest_even')
+                    deepgemm_kernel_hf32_rounding='nearest_even',
+                    deepgemm_distribution=importlib.metadata.version('deep_gemm'),
+                    hc_source_sha256=hashlib.sha256((Path(deep_gemm.__file__).parent/'tilelang_ops/hc_prenorm.py').read_bytes()).hexdigest())
     (out/'metadata.json').write_text(json.dumps(meta, indent=2), encoding='utf-8')
     print(json.dumps(meta), flush=True)
     rows = []

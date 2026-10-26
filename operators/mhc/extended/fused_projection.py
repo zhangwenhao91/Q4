@@ -11,6 +11,7 @@ class HCProjection:
         assert x.ndim == 3 and x.shape[1] == 4 and x.is_contiguous()
         assert phi.shape == (24, x.shape[1] * x.shape[2]) and phi.is_contiguous()
         assert phi.shape[1] % 256 == 0
+        assert x.shape[0] % 128 == 0, 'Q4 fused projection currently requires tokens divisible by 128'
         self.x = x.flatten(1)  # View only; no cast/copy or projection precomputation.
         self.phi = phi
         self.torch = torch
