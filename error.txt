@@ -1,12 +1,11 @@
-conda activate zwh
-cd /home/z30086261/Q4
-git pull --ff-only
-
-source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
-export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4mhc-opp/vendors/q4mhc_transformer"
-export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
-export ASCEND_RT_VISIBLE_DEVICES=4
-set -o pipefail
-
-bash operators/mhc/extended/install_deepgemm.sh \
-  2>&1 | tee mhc-deepgemm-install.log
+(zwh) root@ubuntu162:/home/z30086261/Q4# conda activate zwh
+(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --ff-only
+remote: Enumerating objects: 25, done.
+remote: Counting objects: 100% (25/25), done.
+remote: Compressing objects: 100% (19/19), done.
+remote: Total 25 (delta 8), reused 13 (delta 5), pack-reused 0 (from 0)
+Unpacking objects: 100% (25/25), 28.66 KiB | 863.00 KiB/s, done.
+From https://github.com/zhangwenhao91/Q4
+   75d0edc..928d68c  main       -> origin/main
+fatal: Not possible to fast-forward, aborting.
