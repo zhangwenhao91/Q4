@@ -1,12 +1,40 @@
-cd /home/z30086261/Q4
-set -o pipefail
-
-OUT="results/mhc/repeat-$(date +%Y%m%d-%H%M%S)"
-mkdir -p "$OUT"
-
-for i in 1 2 3; do
-  python operators/mhc/bench_mhc_post.py \
-    --warmup 200 --iters 1000 --rounds 9 \
-    --output "$OUT/run-$i.csv" \
-    2>&1 | tee "$OUT/run-$i.log" || break
-done
+(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# OUT="results/mhc/repeat-$(date +%Y%m%d-%H%M%S)"
+(zwh) root@ubuntu162:/home/z30086261/Q4# mkdir -p "$OUT"
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# for i in 1 2 3; do
+>   python operators/mhc/bench_mhc_post.py \
+>     --warmup 200 --iters 1000 --rounds 9 \
+>     --output "$OUT/run-$i.csv" \
+>     2>&1 | tee "$OUT/run-$i.log" || break
+> done
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+{"python": "3.12.15", "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "device": "Ascend950PR_9579", "args": {"device": 0, "tokens": [512, 8192], "hidden": [4096, 5120, 7168], "warmup": 200, "iters": 1000, "rounds": 9, "output": "results/mhc/repeat-20261026-154133/run-1.csv"}}
+512 4096 {'tilelang': 16.799560546875, 'ascendc': 16.262645721435547} AscendC_us/TileLang_us= 0.9680399481914229
+512 5120 {'tilelang': 16.925235748291016, 'ascendc': 19.5119686126709} AscendC_us/TileLang_us= 1.1528329001054578
+512 7168 {'tilelang': 18.42275619506836, 'ascendc': 26.25654411315918} AscendC_us/TileLang_us= 1.4252234483886765
+8192 4096 {'tilelang': 398.87469482421875, 'ascendc': 419.5079040527344} AscendC_us/TileLang_us= 1.0517285490813313
+8192 5120 {'tilelang': 499.6600036621094, 'ascendc': 524.0574340820312} AscendC_us/TileLang_us= 1.0488280635654408
+8192 7168 {'tilelang': 698.5092163085938, 'ascendc': 739.6944580078125} AscendC_us/TileLang_us= 1.058961629621539
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+{"python": "3.12.15", "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "device": "Ascend950PR_9579", "args": {"device": 0, "tokens": [512, 8192], "hidden": [4096, 5120, 7168], "warmup": 200, "iters": 1000, "rounds": 9, "output": "results/mhc/repeat-20261026-154133/run-2.csv"}}
+512 4096 {'tilelang': 17.095367431640625, 'ascendc': 16.26981544494629} AscendC_us/TileLang_us= 0.9517090235120435
+512 5120 {'tilelang': 17.265710830688477, 'ascendc': 19.513643264770508} AscendC_us/TileLang_us= 1.130196344426579
+512 7168 {'tilelang': 18.424503326416016, 'ascendc': 26.255971908569336} AscendC_us/TileLang_us= 1.4250572427059676
+8192 4096 {'tilelang': 398.83056640625, 'ascendc': 419.46307373046875} AscendC_us/TileLang_us= 1.0517325126560195
+8192 5120 {'tilelang': 499.7112731933594, 'ascendc': 524.0547485351562} AscendC_us/TileLang_us= 1.04871508138336
+8192 7168 {'tilelang': 698.3049926757812, 'ascendc': 739.677490234375} AscendC_us/TileLang_us= 1.0592470310144306
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+{"python": "3.12.15", "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "device": "Ascend950PR_9579", "args": {"device": 0, "tokens": [512, 8192], "hidden": [4096, 5120, 7168], "warmup": 200, "iters": 1000, "rounds": 9, "output": "results/mhc/repeat-20261026-154133/run-3.csv"}}
+512 4096 {'tilelang': 16.485673904418945, 'ascendc': 16.266653060913086} AscendC_us/TileLang_us= 0.9867144743505358
+512 5120 {'tilelang': 16.68040657043457, 'ascendc': 19.50716781616211} AscendC_us/TileLang_us= 1.1694659679781352
+512 7168 {'tilelang': 18.42469596862793, 'ascendc': 26.25037384033203} AscendC_us/TileLang_us= 1.4247385077631147
+8192 4096 {'tilelang': 398.9696044921875, 'ascendc': 419.54461669921875} AscendC_us/TileLang_us= 1.0515703752249983
+8192 5120 {'tilelang': 499.8982238769531, 'ascendc': 524.0878295898438} AscendC_us/TileLang_us= 1.0483890611278601
+8192 7168 {'tilelang': 698.6322631835938, 'ascendc': 739.8467407226562} AscendC_us/TileLang_us= 1.0589930922331763
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
