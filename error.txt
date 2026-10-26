@@ -1,23 +1,164 @@
-conda activate zwh
-source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
-export ASCEND_RT_VISIBLE_DEVICES=4
-set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# conda activate zwh
+(zwh) root@ubuntu162:/home/z30086261/Q4# source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_RT_VISIBLE_DEVICES=4
+(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4/third_party/ops-transformer
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# mkdir -p /home/z30086261/Q4/third_party/mhc-opp
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# bash build_out/cann-ops-transformer-custom_linux-x86_64.run \
+>   --install-path=/home/z30086261/Q4/third_party/mhc-opp \
+>   2>&1 | tee ../../mhc-ascendc-install.log
+Verifying archive integrity...  100%   SHA256 checksums are OK. All good.
+Uncompressing version:1.0  100%  
+[ops_custom] [2026-10-26 15:11:02] [INFO] create /home/z30086261/Q4/third_party/mhc-opp/vendors.
+[ops_custom] [2026-10-26 15:11:02] [INFO] create /home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer.
+[ops_custom] [2026-10-26 15:11:02] [INFO] validate shared libraries before installation
+[ops_custom] [2026-10-26 15:11:02] [INFO] upgrade framework
+[ops_custom] [2026-10-26 15:11:02] [INFO] no need to upgrade ops framework files
+[ops_custom] [2026-10-26 15:11:02] [INFO] upgrade op proto
+[ops_custom] [2026-10-26 15:11:02] [INFO] create /home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_proto.
+[ops_custom] [2026-10-26 15:11:02] [INFO] copy new ops op_proto files ......
+[ops_custom] [2026-10-26 15:11:02] [INFO] upgrade op impl
+[ops_custom] [2026-10-26 15:11:02] [INFO] create /home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_impl.
+[ops_custom] [2026-10-26 15:11:02] [INFO] copy new ops op_impl files ......
+[ops_custom] [2026-10-26 15:11:02] [INFO] upgrade op api
+[ops_custom] [2026-10-26 15:11:02] [INFO] create /home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api.
+[ops_custom] [2026-10-26 15:11:02] [INFO] copy new ops op_api files ......
+[ops_custom] [2026-10-26 15:11:02] [INFO] upgrade uninstall
+[ops_custom] [2026-10-26 15:11:02] [INFO] copy new uninstall.sh files ......
+[ops_custom] [2026-10-26 15:11:02] [INFO] upgrade version.info
+[ops_custom] [2026-10-26 15:11:02] [INFO] copy new version.info files ......
+[ops_custom] [2026-10-26 15:11:02] [INFO] no need to upgrade custom.proto files
+[ops_custom] [2026-10-26 15:11:02] [INFO] using requirements: when custom module install finished or before you run the custom module, execute the command [ source /home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/bin/set_env.bash ] to set the environment path
+SUCCESS
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# python -m pip install --force-reinstall --no-deps \
+>   build_out/cann_ops_transformer-*.whl
+Processing ./build_out/cann_ops_transformer-1.0.0-py3-none-any.whl
+Installing collected packages: cann-ops-transformer
+  Attempting uninstall: cann-ops-transformer
+    Found existing installation: cann_ops_transformer 1.0.0
+    Uninstalling cann_ops_transformer-1.0.0:
+      Successfully uninstalled cann_ops_transformer-1.0.0
+Successfully installed cann-ops-transformer-1.0.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# source /home/z30086261/Q4/third_party/mhc-opp/vendors/custom/bin/set_env.bash
+bash: /home/z30086261/Q4/third_party/mhc-opp/vendors/custom/bin/set_env.bash: No such file or directory
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# cd ..
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party# ll
+total 60
+drwxr-xr-x  7 root root 4096 Oct 26 15:11 ./
+drwxr-xr-x  6 root root 4096 Oct 26 15:06 ../
+-rw-r--r--  1 root root 4045 Oct 26 11:41 bench_mhc_post.py
+-rw-r--r--  1 root root  848 Oct 26 11:45 framework.txt
+drwxr-xr-x  3 root root 4096 Oct 26 15:11 mhc-opp/
+-rw-r--r--  1 root root  848 Oct 26 11:46 mhc_post.log
+-rw-r--r--  1 root root 5000 Oct 26 11:43 npu-smi.txt
+drwxr-xr-x 24 root root 4096 Oct 26 15:06 ops-transformer/
+-rw-r--r--  1 root root 7478 Oct 26 11:47 pip-freeze.txt
+drwxr-xr-x  2 root root 4096 Oct 26 11:45 .pkl_memoize_py3/
+-rw-r--r--  1 root root  848 Oct 26 11:46 smoke.log
+drwxr-xr-x  6 root root 4096 Oct 26 11:45 TileKernels/
+drwxr-xr-x 19 root root 4096 Oct 26 14:37 tilelang-950/
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party# cd mhc-opp/
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/mhc-opp# ll
+total 12
+drwxr-xr-x 3 root root 4096 Oct 26 15:11 ./
+drwxr-xr-x 7 root root 4096 Oct 26 15:11 ../
+drwxr-x--- 3 root root 4096 Oct 26 15:11 vendors/
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/mhc-opp# cd vendors/
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/mhc-opp/vendors# ll
+total 12
+drwxr-x--- 3 root root 4096 Oct 26 15:11 ./
+drwxr-xr-x 3 root root 4096 Oct 26 15:11 ../
+drwxr-x--- 7 root root 4096 Oct 26 15:11 custom_transformer/
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/mhc-opp/vendors# cd custom_transformer/
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer# ll
+total 32
+drwxr-x--- 7 root root 4096 Oct 26 15:11 ./
+drwxr-x--- 3 root root 4096 Oct 26 15:11 ../
+drwxr-x--- 2 root root 4096 Oct 26 15:11 bin/
+drwxr-x--- 4 root root 4096 Oct 26 15:11 op_api/
+drwxr-x--- 3 root root 4096 Oct 26 15:11 op_impl/
+drwxr-x--- 5 root root 4096 Oct 26 15:11 op_proto/
+dr-xr-x--- 2 root root 4096 Oct 26 15:11 scripts/
+-rwxr-x--- 1 root root   34 Oct 26 15:11 version.info*
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer# cd bin/
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/bin# ll
+total 12
+drwxr-x--- 2 root root 4096 Oct 26 15:11 ./
+drwxr-x--- 7 root root 4096 Oct 26 15:11 ../
+-rw-r--r-- 1 root root  254 Oct 26 15:11 set_env.bash
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/bin# source /home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/bin/set_env.bash
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/bin# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/run.sh smoke
+Results: /home/z30086261/Q4/results/mhc/20261026-151246-smoke-1252268
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to load op 'quant_flash_mla': Error building extension 'quant_flash_mla': [1/2] c++ -MMD -MF quant_flash_mla.o.d -DTORCH_EXTENSION_NAME=quant_flash_mla -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/csrc/attention/quant_flash_mla.cpp -o quant_flash_mla.o 
+FAILED: [code=1] quant_flash_mla.o 
+c++ -MMD -MF quant_flash_mla.o.d -DTORCH_EXTENSION_NAME=quant_flash_mla -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/csrc/attention/quant_flash_mla.cpp -o quant_flash_mla.o 
+c++: error: unrecognized command line option ‘-std=c++20’; did you mean ‘-std=c++2a’?
+ninja: build stopped: subcommand failed.
 
-cd /home/z30086261/Q4/third_party/ops-transformer
+[1/2] c++ -MMD -MF inplace_partial_rotary_mul.o.d -DTORCH_EXTENSION_NAME=inplace_partial_rotary_mul -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/csrc/posembedding/inplace_partial_rotary_mul.cpp -o inplace_partial_rotary_mul.o 
+FAILED: [code=1] inplace_partial_rotary_mul.o 
+c++ -MMD -MF inplace_partial_rotary_mul.o.d -DTORCH_EXTENSION_NAME=inplace_partial_rotary_mul -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/csrc/posembedding/inplace_partial_rotary_mul.cpp -o inplace_partial_rotary_mul.o 
+c++: error: unrecognized command line option ‘-std=c++20’; did you mean ‘-std=c++2a’?
+ninja: build stopped: subcommand failed.
+Failed to load op 'inplace_partial_rotary_mul': Error building extension 'inplace_partial_rotary_mul'
+[1/2] c++ -MMD -MF partial_rotary_mul_quant.o.d -DTORCH_EXTENSION_NAME=partial_rotary_mul_quant -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/csrc/posembedding/partial_rotary_mul_quant.cpp -o partial_rotary_mul_quant.o 
+FAILED: [code=1] partial_rotary_mul_quant.o 
+c++ -MMD -MF partial_rotary_mul_quant.o.d -DTORCH_EXTENSION_NAME=partial_rotary_mul_quant -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/csrc/posembedding/partial_rotary_mul_quant.cpp -o partial_rotary_mul_quant.o 
+c++: error: unrecognized command line option ‘-std=c++20’; did you mean ‘-std=c++2a’?
+ninja: build stopped: subcommand failed.
+Failed to load op 'partial_rotary_mul_quant': Error building extension 'partial_rotary_mul_quant'
+Failed to register legacy module 'inplace_partial_rotary_mul': /root/.cache/torch_extensions/py312_cpu/inplace_partial_rotary_mul/inplace_partial_rotary_mul.so: cannot open shared object file: No such file or directory
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'quant_flash_mla': /root/.cache/torch_extensions/py312_cpu/quant_flash_mla/quant_flash_mla.so: cannot open shared object file: No such file or directory
+{"python": "3.12.15", "torch": "2.13.0+cpu", "torch_npu": "2.13.0", "tilelang": "0.1.15+cpu.gita7cb753d", "device": "Ascend950PR_9579", "args": {"device": 0, "tokens": [512], "hidden": [4096], "warmup": 20, "iters": 20, "rounds": 3, "output": "/home/z30086261/Q4/results/mhc/20261026-151246-smoke-1252268/mhc_post.csv"}}
+[1/2] c++ -MMD -MF mhc_post.o.d -DTORCH_EXTENSION_NAME=mhc_post -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/csrc/mhc/mhc_post.cpp -o mhc_post.o 
+FAILED: [code=1] mhc_post.o 
+c++ -MMD -MF mhc_post.o.d -DTORCH_EXTENSION_NAME=mhc_post -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/mhc-opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/csrc/mhc/mhc_post.cpp -o mhc_post.o 
+c++: error: unrecognized command line option ‘-std=c++20’; did you mean ‘-std=c++2a’?
+ninja: build stopped: subcommand failed.
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 2893, in _run_ninja_build
+    subprocess.run(
+  File "/root/miniconda3/envs/zwh/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['ninja', '-v']' returned non-zero exit status 1.
 
-# 指定独立安装位置
-mkdir -p /home/z30086261/Q4/third_party/mhc-opp
-bash build_out/cann-ops-transformer-custom_linux-x86_64.run \
-  --install-path=/home/z30086261/Q4/third_party/mhc-opp \
-  2>&1 | tee ../../mhc-ascendc-install.log
+The above exception was the direct cause of the following exception:
 
-# 安装本次构建的 Python 封装
-python -m pip install --force-reinstall --no-deps \
-  build_out/cann_ops_transformer-*.whl
-
-
-
-source /home/z30086261/Q4/third_party/mhc-opp/vendors/custom/bin/set_env.bash
-
-cd /home/z30086261/Q4
-bash operators/mhc/run.sh smoke
+Traceback (most recent call last):
+  File "/home/z30086261/Q4/operators/mhc/bench_mhc_post.py", line 85, in <module>
+    main()
+  File "/home/z30086261/Q4/operators/mhc/bench_mhc_post.py", line 49, in main
+    y = fn().cpu()
+        ^^^^
+  File "/home/z30086261/Q4/operators/mhc/bench_mhc_post.py", line 44, in <lambda>
+    ac = lambda: mhc_post(r, c, x, h)
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/mhc/mhc_post/mhc_post.py", line 75, in mhc_post
+    return torch.ops.cann_ops_transformer.mhc_post(x, h_res, h_out, h_post)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/_ops.py", line 1279, in __call__
+    return self._op(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/mhc/mhc_post/mhc_post.py", line 60, in _mhc_post_dispatch
+    op_module = mhc_post_op_builder.load()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/op_builder/builder.py", line 219, in load
+    op_module = load(
+                ^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 1927, in load
+    return _jit_compile(
+           ^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 2382, in _jit_compile
+    _write_ninja_file_and_build_library(
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 2543, in _write_ninja_file_and_build_library
+    _run_ninja_build(
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 2910, in _run_ninja_build
+    raise RuntimeError(message) from e
+RuntimeError: Error building extension 'mhc_post'
+[ERROR] 2026-10-26-15:14:30 (PID:1253821, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
