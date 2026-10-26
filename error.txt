@@ -1,6 +1,69 @@
-cd /home/z30086261/Q4
-git pull --ff-only
-set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --ff-only
+remote: Enumerating objects: 40, done.
+remote: Counting objects: 100% (40/40), done.
+remote: Compressing objects: 100% (34/34), done.
+remote: Total 40 (delta 16), reused 10 (delta 5), pack-reused 0 (from 0)
+Unpacking objects: 100% (40/40), 21.49 KiB | 611.00 KiB/s, done.
+From https://github.com/zhangwenhao91/Q4
+   928d68c..f7555b4  main       -> origin/main
+fatal: Not possible to fast-forward, aborting.
+(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/extended/repair_deepjit_host.sh \
+>   2>&1 | tee mhc-deepjit-repair.log
+bash: operators/mhc/extended/repair_deepjit_host.sh: No such file or directory
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull
 
-bash operators/mhc/extended/repair_deepjit_host.sh \
-  2>&1 | tee mhc-deepjit-repair.log
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: unable to auto-detect email address (got 'root@ubuntu162.(none)')
+(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.email "zhangwenhao91@h-partners.com"
+(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.name "zhangwenhao91"
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull
+Merge made by the 'recursive' strategy.
+ error.txt                                     | 10 ++-------
+ operators/mhc/extended/FUSED_PROJECTION.md    | 14 +++++++++++++
+ operators/mhc/extended/install_deepgemm.sh    |  7 ++++++-
+ operators/mhc/extended/patch_deepjit_host.py  | 79 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ operators/mhc/extended/repair_deepjit_host.sh | 28 +++++++++++++++++++++++++
+ operators/mhc/extended/test_toolkit_patch.py  | 18 ++++++++++++++++
+ 6 files changed, 147 insertions(+), 9 deletions(-)
+ create mode 100644 operators/mhc/extended/patch_deepjit_host.py
+ create mode 100644 operators/mhc/extended/repair_deepjit_host.sh
+ create mode 100644 operators/mhc/extended/test_toolkit_patch.py
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/extended/repair_deepjit_host.sh \
+>   2>&1 | tee mhc-deepjit-repair.log
+candidate: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/asc/include/adv_api exists: True
+candidate: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/asc/include/adv_api exists: True
+Header patched. Rebuild the deep_gemm native extension; restarting Python alone is insufficient.
+Processing ./.
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: deep_gemm
+  Building wheel for deep_gemm (pyproject.toml): started
+  Building wheel for deep_gemm (pyproject.toml): finished with status 'done'
+  Created wheel for deep_gemm: filename=deep_gemm-0.1.1+local-cp312-cp312-linux_x86_64.whl size=2251024 sha256=509ae8d3cd81a7f0e3421d358293458f681f1891c06d95375f0a3d77c045a187
+  Stored in directory: /tmp/pip-ephem-wheel-cache-vnpmxm4j/wheels/91/13/95/138b2b5b82a873d405ee8535cd03f29b338b07e0722427d774
+Successfully built deep_gemm
+Installing collected packages: deep_gemm
+  Attempting uninstall: deep_gemm
+    Found existing installation: deep_gemm 0.1.1+local
+    Can't uninstall 'deep_gemm'. No files were found to uninstall.
+Successfully installed deep_gemm-0.1.1+3a35326
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+distribution: 0.1.1+3a35326
+module: /root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/__init__.py
+AI cores: 28
+DeepGEMM JIT initialization passed
+Patch provenance: /home/z30086261/Q4/third_party/deepjit-host-fix
+This source now contains an intentional patch; do not re-run the original clean-source installer.
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
