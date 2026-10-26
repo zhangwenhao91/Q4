@@ -1,23 +1,50 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# python - <<'PY' 2>&1 | tee tilelang-check.txt
-> import torch
-> import torch_npu
-> import tilelang
-> from tilelang.ascend import language as T
-> from tilelang.ascend.language import simd as S
-> 
-> print("TileLang:", tilelang.__version__)
-> print("路径:", tilelang.__file__)
-> print("NPU:", torch.npu.get_device_name(0))
-> for name in ("SimdVF", "Persistent", "dynamic", "const"):
->     print(name, hasattr(T, name))
-> print("simd.vld", hasattr(S, "vld"))
-> PY
-TileLang: 0.1.15+cpu.gita7cb753d
-路径: /root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py
-NPU: Ascend950PR_9579
-SimdVF True
-Persistent True
-dynamic True
-const True
-simd.vld True
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
+# 下一步：验证 TileKernels mHC Post 前向
+# 已确认：zwh 环境中 TileLang 0.1.15，Ascend950PR 可见，所需接口存在。
+# 在服务器 bash 中执行以下命令；完成后用实际完整输出更新本文件。
+
+conda activate zwh
+cd /home/z30086261/Q4
+source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+export ASCEND_RT_VISIBLE_DEVICES=4
+set -o pipefail
+
+# 获取锁定版本的两个算子仓库；有本地修改时会停止并提示。
+bash operators/mhc/prepare_sources.sh
+
+# 保留当前已配置好的框架及 TileLang。
+python -m pip install --no-deps -e ./third_party/TileKernels
+
+# 单独验证 TileLang Post 前向，暂不依赖 AscendC 包。
+python - <<'PY' 2>&1 | tee mhc-tilelang-smoke.txt
+import torch
+import torch_npu
+from tile_kernels.mhc import mhc_post_fwd
+
+torch.npu.set_device(0)
+torch.manual_seed(42)
+
+B, S, N, D = 1, 512, 4, 4096
+r = torch.randn(B, S, N, D, dtype=torch.bfloat16)
+x = torch.randn(B, S, D, dtype=torch.bfloat16)
+c = torch.randn(B, S, N, N).softmax(-1)
+h = torch.rand(B, S, N, 1) * 2
+
+ref = (
+    torch.einsum("bsij,bsid->bsjd", c, r.float())
+    + x.float().unsqueeze(-2) * h
+).bfloat16()
+
+with torch.inference_mode():
+    out = mhc_post_fwd(x.npu(), r.npu(), h.npu(), c.npu())
+    torch.npu.synchronize()
+    out = out.cpu()
+
+print("输出形状:", tuple(out.shape))
+print("最大绝对误差:", (out.float() - ref.float()).abs().max().item())
+torch.testing.assert_close(out, ref, rtol=0.02, atol=0.02)
+print("TileLang mHC Post 前向冒烟验证通过")
+PY
+
+# 预期最后显示：TileLang mHC Post 前向冒烟验证通过。
+# 该阈值仅用于初步精度验证；这里没有进行性能计时。
+# 通过后再构建 AscendC mhc_post，并运行统一性能测试。
