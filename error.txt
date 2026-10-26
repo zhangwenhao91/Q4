@@ -1,49 +1,17 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# conda install -c conda-forge \
->   gcc_linux-64=13 gxx_linux-64=13 -y
-/root/miniconda3/lib/python3.14/site-packages/urllib3/connectionpool.py:1110: InsecureRequestWarning: Unverified HTTPS request is being made to host '141.3.1.3'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
-  warnings.warn(
-/root/miniconda3/lib/python3.14/site-packages/urllib3/connectionpool.py:1110: InsecureRequestWarning: Unverified HTTPS request is being made to host '141.3.1.3'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
-  warnings.warn(
-/root/miniconda3/lib/python3.14/site-packages/urllib3/connectionpool.py:1110: InsecureRequestWarning: Unverified HTTPS request is being made to host '141.3.1.3'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
-  warnings.warn(
-/root/miniconda3/lib/python3.14/site-packages/urllib3/connectionpool.py:1110: InsecureRequestWarning: Unverified HTTPS request is being made to host '141.3.1.3'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
-  warnings.warn(
-/root/miniconda3/lib/python3.14/site-packages/urllib3/connectionpool.py:1110: InsecureRequestWarning: Unverified HTTPS request is being made to host '141.3.1.3'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
-  warnings.warn(
-/root/miniconda3/lib/python3.14/site-packages/urllib3/connectionpool.py:1110: InsecureRequestWarning: Unverified HTTPS request is being made to host '141.3.1.3'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
-  warnings.warn(
-/root/miniconda3/lib/python3.14/site-packages/urllib3/connectionpool.py:1110: InsecureRequestWarning: Unverified HTTPS request is being made to host '141.3.1.3'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
-  warnings.warn(
-/root/miniconda3/lib/python3.14/site-packages/urllib3/connectionpool.py:1110: InsecureRequestWarning: Unverified HTTPS request is being made to host '141.3.1.3'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
-  warnings.warn(
-/root/miniconda3/lib/python3.14/site-packages/urllib3/connectionpool.py:1110: InsecureRequestWarning: Unverified HTTPS request is being made to host '141.3.1.3'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
-  warnings.warn(
-2 channel Terms of Service accepted
-Channels:
- - conda-forge
- - https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge
- - https://mirrors.ustc.edu.cn/anaconda/pkgs/r
- - https://mirrors.ustc.edu.cn/anaconda/pkgs/main
- - defaults
-Platform: linux-64
-Collecting package metadata (repodata.json): \ /root/miniconda3/lib/python3.14/site-packages/urllib3/connectionpool.py:1110: InsecureRequestWarning: Unverified HTTPS request is being made to host '141.3.1.3'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
-  warnings.warn(
-/root/miniconda3/lib/python3.14/site-packages/urllib3/connectionpool.py:1110: InsecureRequestWarning: Unverified HTTPS request is being made to host '141.3.1.3'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
-  warnings.warn(
-failed
+conda activate zwh
+set -o pipefail
 
-CondaHTTPError: HTTP 403 Forbidden for url <https://repo.anaconda.com/pkgs/main/linux-64/repodata.json>
-Elapsed: 00:01.538184
-
-You do not have permission to access this resource.
-
-This may indicate:
-  - The channel requires authentication. Check your credentials.
-  - You do not have access to this private channel or package.
-
-You will need to modify your conda configuration to proceed.
-Use `conda config --show` to view your configuration's current state.
-Further configuration help can be found at <https://conda.io/docs/config.html>.
+conda install --override-channels \
+  -c https://conda.anaconda.org/conda-forge \
+  gcc_linux-64=13 gxx_linux-64=13 -y \
+  2>&1 | tee /home/z30086261/Q4/compiler-install.log
 
 
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+
+export CC="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-gcc"
+export CXX="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-g++"
+
+"$CXX" --version
+
+printf 'int main() { return 0; }\n' > /tmp/q4-cxx20-check.cpp
+"$CXX" -std=c++20 -fsyntax-only /tmp/q4-cxx20-check.cpp
