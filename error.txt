@@ -1,47 +1,11 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# git branch "backup/npu-before-merge-$(date +%Y%m%d-%H%M%S)"
-(zwh) root@ubuntu162:/home/z30086261/Q4# git status --short
-?? mhc-deepgemm-install.log
-?? mhc-extended-kernels.txt
-(zwh) root@ubuntu162:/home/z30086261/Q4# git log --oneline --left-right HEAD...origin/main
-< ef79736 (HEAD -> main, backup/npu-before-merge-20261026-182703) Merge branch 'main' of https://github.com/zhangwenhao91/Q4 into main
-< d15e921 Q4
-> 928d68c (origin/main, origin/HEAD) Update error.txt
-> 4450c5c Integrate fused DeepGEMM Ascend HC projection and squared sum
-> 4f5b1f9 Update error.txt
-> eb88cf6 Update error.txt
-> 4bf726a Update error.txt
-(zwh) root@ubuntu162:/home/z30086261/Q4# git merge --no-edit origin/main
+conda activate zwh
+cd /home/z30086261/Q4
 
-*** Please tell me who you are.
+source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4mhc-opp/vendors/q4mhc_transformer"
+export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
+export ASCEND_RT_VISIBLE_DEVICES=4
+set -o pipefail
 
-Run
-
-  git config --global user.email "you@example.com"
-  git config --global user.name "Your Name"
-
-to set your account's default identity.
-Omit --global to set the identity only in this repository.
-
-fatal: unable to auto-detect email address (got 'root@ubuntu162.(none)')
-(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.email "zhangwenhao91@h-partners.com"
-(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.name "zhangwenhao91"
-(zwh) root@ubuntu162:/home/z30086261/Q4# git merge --no-edit origin/main
-Merge made by the 'recursive' strategy.
- error.txt                                          | 17 +++++++------
- operators/mhc/extended/FUSED_PROJECTION.md         | 84 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- operators/mhc/extended/README.md                   |  4 ++++
- operators/mhc/extended/aclnn_bridge.cpp            | 17 +++++++++++++
- operators/mhc/extended/bench_forward.py            | 67 ++++++++++++++++++++++++++++++++++++++++++----------
- operators/mhc/extended/fused_projection.py         | 47 ++++++++++++++++++++++++++++++++++++
- operators/mhc/extended/install_deepgemm.sh         | 46 ++++++++++++++++++++++++++++++++++++
- operators/mhc/extended/run_fused.sh                | 58 +++++++++++++++++++++++++++++++++++++++++++++
- operators/mhc/extended/test_projection_contract.py | 52 ++++++++++++++++++++++++++++++++++++++++
- 9 files changed, 372 insertions(+), 20 deletions(-)
- create mode 100644 operators/mhc/extended/FUSED_PROJECTION.md
- create mode 100644 operators/mhc/extended/fused_projection.py
- create mode 100644 operators/mhc/extended/install_deepgemm.sh
- create mode 100644 operators/mhc/extended/run_fused.sh
- create mode 100644 operators/mhc/extended/test_projection_contract.py
-(zwh) root@ubuntu162:/home/z30086261/Q4# ls operators/mhc/extended/install_deepgemm.sh
-operators/mhc/extended/install_deepgemm.sh
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+bash operators/mhc/extended/install_deepgemm.sh \
+  2>&1 | tee mhc-deepgemm-install.log
