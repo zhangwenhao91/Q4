@@ -1,50 +1,63 @@
-# 下一步：验证 TileKernels mHC Post 前向
-# 已确认：zwh 环境中 TileLang 0.1.15，Ascend950PR 可见，所需接口存在。
-# 在服务器 bash 中执行以下命令；完成后用实际完整输出更新本文件。
-
-conda activate zwh
-cd /home/z30086261/Q4
-source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
-export ASCEND_RT_VISIBLE_DEVICES=4
-set -o pipefail
-
-# 获取锁定版本的两个算子仓库；有本地修改时会停止并提示。
-bash operators/mhc/prepare_sources.sh
-
-# 保留当前已配置好的框架及 TileLang。
-python -m pip install --no-deps -e ./third_party/TileKernels
-
-# 单独验证 TileLang Post 前向，暂不依赖 AscendC 包。
-python - <<'PY' 2>&1 | tee mhc-tilelang-smoke.txt
-import torch
-import torch_npu
-from tile_kernels.mhc import mhc_post_fwd
-
-torch.npu.set_device(0)
-torch.manual_seed(42)
-
-B, S, N, D = 1, 512, 4, 4096
-r = torch.randn(B, S, N, D, dtype=torch.bfloat16)
-x = torch.randn(B, S, D, dtype=torch.bfloat16)
-c = torch.randn(B, S, N, N).softmax(-1)
-h = torch.rand(B, S, N, 1) * 2
-
-ref = (
-    torch.einsum("bsij,bsid->bsjd", c, r.float())
-    + x.float().unsqueeze(-2) * h
-).bfloat16()
-
-with torch.inference_mode():
-    out = mhc_post_fwd(x.npu(), r.npu(), h.npu(), c.npu())
-    torch.npu.synchronize()
-    out = out.cpu()
-
-print("输出形状:", tuple(out.shape))
-print("最大绝对误差:", (out.float() - ref.float()).abs().max().item())
-torch.testing.assert_close(out, ref, rtol=0.02, atol=0.02)
-print("TileLang mHC Post 前向冒烟验证通过")
-PY
-
-# 预期最后显示：TileLang mHC Post 前向冒烟验证通过。
-# 该阈值仅用于初步精度验证；这里没有进行性能计时。
-# 通过后再构建 AscendC mhc_post，并运行统一性能测试。
+(zwh) root@ubuntu162:/home/z30086261/Q4# conda activate zwh
+(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_RT_VISIBLE_DEVICES=4
+(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/prepare_sources.sh
+HEAD is now at c1cf914 Merge pull request #38 from deepseek-ai/v2.1.0-release
+c1cf914a82e6901c679445f872051ce44ac2cc63
+HEAD is now at ba5162411 fix: allto_all_quant_matmul 960 apace同步错误
+ba5162411c919e15fbabb28298e8b420c11ad905
+(zwh) root@ubuntu162:/home/z30086261/Q4# python -m pip install --no-deps -e ./third_party/TileKernels
+Obtaining file:///home/z30086261/Q4/third_party/TileKernels
+  Installing build dependencies ... done
+  Checking if build backend supports build_editable ... done
+  Getting requirements to build editable ... done
+  Preparing editable metadata (pyproject.toml) ... done
+Building wheels for collected packages: tile_kernels
+  Building editable for tile_kernels (pyproject.toml) ... done
+  Created wheel for tile_kernels: filename=tile_kernels-0.1.dev7+gc1cf914a8-0.editable-py3-none-any.whl size=6425 sha256=e5679cd0ee379d88acfbc6dc410ad5be3239fb88c3f12164234af47aece1dac0
+  Stored in directory: /tmp/pip-ephem-wheel-cache-hgwdjc19/wheels/2b/a0/6c/fcc14fbcbbb3e948646f8cd6d6da52d4f65ec47b6082cc99ec
+Successfully built tile_kernels
+Installing collected packages: tile_kernels
+  Attempting uninstall: tile_kernels
+    Found existing installation: tile_kernels 0.1.dev7+gc1cf914a8
+    Uninstalling tile_kernels-0.1.dev7+gc1cf914a8:
+      Successfully uninstalled tile_kernels-0.1.dev7+gc1cf914a8
+Successfully installed tile_kernels-0.1.dev7+gc1cf914a8
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+(zwh) root@ubuntu162:/home/z30086261/Q4# python - <<'PY' 2>&1 | tee mhc-tilelang-smoke.txt
+> import torch
+> import torch_npu
+> from tile_kernels.mhc import mhc_post_fwd
+> 
+> torch.npu.set_device(0)
+> torch.manual_seed(42)
+> 
+> B, S, N, D = 1, 512, 4, 4096
+> r = torch.randn(B, S, N, D, dtype=torch.bfloat16)
+> x = torch.randn(B, S, D, dtype=torch.bfloat16)
+> c = torch.randn(B, S, N, N).softmax(-1)
+> h = torch.rand(B, S, N, 1) * 2
+> 
+> ref = (
+>     torch.einsum("bsij,bsid->bsjd", c, r.float())
+>     + x.float().unsqueeze(-2) * h
+> ).bfloat16()
+> 
+> with torch.inference_mode():
+>     out = mhc_post_fwd(x.npu(), r.npu(), h.npu(), c.npu())
+>     torch.npu.synchronize()
+>     out = out.cpu()
+> 
+> print("输出形状:", tuple(out.shape))
+> print("最大绝对误差:", (out.float() - ref.float()).abs().max().item())
+> torch.testing.assert_close(out, ref, rtol=0.02, atol=0.02)
+> print("TileLang mHC Post 前向冒烟验证通过")
+> PY
+2026-10-26 14:50:51  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_post_fwd_asc` with `out_idx=None`
+2026-10-26 14:50:53  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_post_fwd_asc`
+输出形状: (1, 512, 4, 4096)
+最大绝对误差: 0.03125
+TileLang mHC Post 前向冒烟验证通过
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
