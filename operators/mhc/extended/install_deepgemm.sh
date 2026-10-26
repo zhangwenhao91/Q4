@@ -10,6 +10,7 @@ export CC="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-gcc"
 export CXX="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-g++"
 "$CXX" --version
 command -v bisheng
+printf '#include <elfutils/libdwfl.h>\n' | "$CXX" -std=c++20 -x c++ -fsyntax-only -
 mkdir -p "$ROOT/third_party/toolchain-check"
 cat > "$ROOT/third_party/toolchain-check/format.cpp" <<'CPP'
 #include <format>
@@ -36,10 +37,14 @@ cd "$ROOT"
 python - <<'PY'
 import importlib.metadata
 import deep_gemm
+import torch
+import torch_npu
 print('distribution:', importlib.metadata.version('deep_gemm'))
 print('module:', deep_gemm.__file__)
 assert callable(deep_gemm.tf32_hc_prenorm_gemm)
-print('HC fused projection API available')
+torch.npu.set_device(0)
+print('AI cores:', deep_gemm.get_num_sms())
+print('HC fused projection API available; JIT initialization passed')
 PY
 python -m pip freeze > "$ROOT/third_party/deepgemm-install-freeze.txt"
 git -C "$TARGET" rev-parse HEAD > "$ROOT/third_party/deepgemm-revision.txt"

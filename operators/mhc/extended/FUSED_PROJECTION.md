@@ -82,3 +82,17 @@ profile：8192×4096 上分别采集新 TL 路径和 AC，30 次 API。Pre 是�
 - https://github.com/deepseek-ai/DeepGEMM-Ascend/blob/3a35326271b069b8b5bf1a754435acd6cc91575b/deep_gemm/tilelang_ops/hc_prenorm.py
 - https://github.com/deepseek-ai/DeepGEMM-Ascend/blob/3a35326271b069b8b5bf1a754435acd6cc91575b/tests/test_hyperconnection.py
 - 锁定 ops-transformer 的 mhc/mhc_pre/op_host/op_api/aclnn_mhc_pre_v2.h（HF32 mode=1）。
+
+## 已知上游问题：x86_64 主机的 adv_api 目录发现
+
+锁定的 DeepJIT 65f5139 在 backend.hpp 中写死 aarch64-linux/asc/include/adv_api；当前服务器为 x86_64，运行 get_num_sms 时因此失败。补丁只调整主机工具链目录发现，依次检查本机架构目录与通用 asc/include/adv_api，不改设备数值 kernel，也不往 CANN 系统目录创建软链接。
+
+在原有 zwh、CANN、q4mhc vendor、ASCEND_RT_VISIBLE_DEVICES=4 环境下执行：
+
+```bash
+bash operators/mhc/extended/repair_deepjit_host.sh 2>&1 | tee mhc-deepjit-repair.log
+```
+
+修复脚本先验证锁定子模块 SHA 和现有头文件目录，再按精确上下文应用补丁并重编 deep_gemm `_C`。目录不存在时停止，不猜测安装路径；源码上下文不匹配时停止。补丁可重复应用，记录原始头文件、diff 和前后 SHA256 到 third_party/deepjit-host-fix/。源树会有可解释的修改，安装版本可能标为 +local；此时不要再执行要求干净源码树的 install_deepgemm.sh。
+
+重装后验证真实调用 deep_gemm.get_num_sms()，覆盖此前仅验证导入没有触发的延迟 JIT 初始化。出现 `DeepGEMM JIT initialization passed` 后，再执行 run_fused.sh check；数值和性能仍需设备验证。
