@@ -1,7 +1,10 @@
-conda activate zwh
-cd /home/z30086261/Q4/third_party/ops-transformer
-set -o pipefail
-
-CMAKE_TLS_VERIFY=0 \
-  bash build.sh --pkg --soc=ascend950 --ops=mhc_post \
-  2>&1 | tee ../../mhc-ascendc-build-retry.log
+[2026-10-26 15:02:08] CRC: 3533018238
+[2026-10-26 15:02:08] SHA256: c8d36f2f6e1e2ff8cb0bf237e9a9e33dc423cb85eb2a46ce0c491addbdf4a120
+[2026-10-26 15:02:08] Skipping md5sum at user request
+[2026-10-26 15:02:08] 
+[2026-10-26 15:02:08] Self-extractable archive "cann-ops-transformer-custom_linux-x86_64.run" successfully created.
+[2026-10-26 15:02:08] Copy /home/z30086261/Q4/third_party/ops-transformer/build/_CPack_Packages/Linux/External/cann-ops-transformer-custom_linux-x86_64.run/cann-ops-transformer-custom_linux-x86_64.run to /home/z30086261/Q4/third_party/ops-transformer/build/
+[2026-10-26 15:02:08] Copy /home/z30086261/Q4/third_party/ops-transformer/build/_CPack_Packages/Linux/External/cann-ops-transformer-custom_linux-x86_64.run/cann-ops-transformer-custom_linux-x86_64.run to /home/z30086261/Q4/third_party/ops-transformer/build_out/
+[2026-10-26 15:02:08] CPack: - package: /home/z30086261/Q4/third_party/ops-transformer/build/cann-ops-transformer-custom_linux-x86_64.run.json generated.
+[2026-10-26 15:02:08] CPack: - package: /home/z30086261/Q4/third_party/ops-transformer/build/cann-ops-transformer-custom_linux-x86_64.run generated.
+(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer# 
