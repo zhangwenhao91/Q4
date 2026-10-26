@@ -1,47 +1,16 @@
-(mhc) root@ubuntu162:/home/z30086261/Q4# python -m pip install Cython
-Collecting Cython
-  Downloading cython-3.3.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (28 kB)
-Downloading cython-3.3.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (3.4 MB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.4/3.4 MB 17.8 MB/s  0:00:00
-Installing collected packages: Cython
-Successfully installed Cython-3.3.0
-WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
-(mhc) root@ubuntu162:/home/z30086261/Q4# python -m pip install Cython
-Requirement already satisfied: Cython in /root/miniconda3/envs/mhc/lib/python3.12/site-packages (3.3.0)
-WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
-(mhc) root@ubuntu162:/home/z30086261/Q4# python -c "import sys, Cython; print(sys.executable); print(Cython.__version__)"
-/root/miniconda3/envs/mhc/bin/python
-3.3.0
-(mhc) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
-(mhc) root@ubuntu162:/home/z30086261/Q4# python -c 'import sys,torch,torch_npu; print(sys.version); print(torch.__version__,torch_npu.__version__); print(torch.npu.is_available()); print(torch.npu.get_device_name(0))' \
->   2>&1 | tee framework.txt
-3.12.15 (main, Oct 13 2026, 16:52:04) [GCC 15.3.0]
-2.13.0+cpu 2.13.0
-True
-Ascend950PR_9579
-(mhc) root@ubuntu162:/home/z30086261/Q4# python -c 'import tilelang; print(tilelang.__version__); print(tilelang.__file__)' \
->   2>&1 | tee tilelang-import.txt
-2026-10-26 14:20:12  [TileLang:tilelang.env:WARNING]: Loading tilelang libs from dev root: /home/h00932613/tilelang-te/tilelang-mlir-ascend/build
-2026-10-26 14:20:12  [TileLang:tilelang.env:WARNING]: CUTLASS is not installed or found in the expected path
-2026-10-26 14:20:12  [TileLang:tilelang.env:WARNING]: Composable Kernel is not installed or found in the expected path
-2026-10-26 14:20:14  [TileLang:tilelang.jit.adapter.cython.adapter:INFO]: No cached version found for cython jit adapter, need to compile...
-2026-10-26 14:20:14  [TileLang:tilelang.jit.adapter.cython.adapter:INFO]: Waiting for lock to compile cython jit adapter...
-2026-10-26 14:20:14  [TileLang:tilelang.jit.adapter.cython.adapter:INFO]: Compiling cython jit adapter...
-0.1.2+aea9af59de6e2cb9590ee1feb5a190338590d225
-/home/h00932613/tilelang-te/tilelang-mlir-ascend/tilelang/__init__.py
-(mhc) root@ubuntu162:/home/z30086261/Q4# python - <<'PY' 2>&1 | tee tilelang-api.txt
-> from tilelang.ascend import language as T
-> from tilelang.ascend.language import simd as S
-> 
-> for name in ("SimdVF", "Persistent", "dynamic", "const"):
->     print(name, hasattr(T, name))
-> print("simd.vld", hasattr(S, "vld"))
-> PY
-2026-10-26 14:20:30  [TileLang:tilelang.env:WARNING]: Loading tilelang libs from dev root: /home/h00932613/tilelang-te/tilelang-mlir-ascend/build
-2026-10-26 14:20:30  [TileLang:tilelang.env:WARNING]: CUTLASS is not installed or found in the expected path
-2026-10-26 14:20:30  [TileLang:tilelang.env:WARNING]: Composable Kernel is not installed or found in the expected path
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-ModuleNotFoundError: No module named 'tilelang.ascend'
-[ERROR] 2026-10-26-14:20:31 (PID:1168394, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception
-(mhc) root@ubuntu162:/home/z30086261/Q4# 
+cd /home/z30086261/Q4
+
+python - <<'PY' 2>&1 | tee tilelang-check.txt
+import torch
+import torch_npu
+import tilelang
+from tilelang.ascend import language as T
+from tilelang.ascend.language import simd as S
+
+print("TileLang:", tilelang.__version__)
+print("路径:", tilelang.__file__)
+print("NPU:", torch.npu.get_device_name(0))
+for name in ("SimdVF", "Persistent", "dynamic", "const"):
+    print(name, hasattr(T, name))
+print("simd.vld", hasattr(S, "vld"))
+PY
