@@ -1,10 +1,37 @@
-[2026-10-26 16:20:01] CRC: 4100051272
-[2026-10-26 16:20:01] SHA256: 7015a2ac43c87b1dee0754cb1f8b87ceb0dfba347087bee11b3200e900c01fa9
-[2026-10-26 16:20:01] Skipping md5sum at user request
-[2026-10-26 16:20:01] 
-[2026-10-26 16:20:01] Self-extractable archive "cann-ops-transformer-q4mhc_linux-x86_64.run" successfully created.
-[2026-10-26 16:20:01] Copy /home/z30086261/Q4/third_party/ops-transformer/build/_CPack_Packages/Linux/External/cann-ops-transformer-q4mhc_linux-x86_64.run/cann-ops-transformer-q4mhc_linux-x86_64.run to /home/z30086261/Q4/third_party/ops-transformer/build/
-[2026-10-26 16:20:01] Copy /home/z30086261/Q4/third_party/ops-transformer/build/_CPack_Packages/Linux/External/cann-ops-transformer-q4mhc_linux-x86_64.run/cann-ops-transformer-q4mhc_linux-x86_64.run to /home/z30086261/Q4/third_party/ops-transformer/build_out/
-[2026-10-26 16:20:01] CPack: - package: /home/z30086261/Q4/third_party/ops-transformer/build/cann-ops-transformer-q4mhc_linux-x86_64.run.json generated.
-[2026-10-26 16:20:01] CPack: - package: /home/z30086261/Q4/third_party/ops-transformer/build/cann-ops-transformer-q4mhc_linux-x86_64.run generated.
-(zwh) root@ubuntu162:/home/z30086261/Q4/third_party/ops-transformer#
+conda activate zwh
+cd /home/z30086261/Q4/third_party/ops-transformer
+set -o pipefail
+
+mkdir -p /home/z30086261/Q4/third_party/q4mhc-opp
+
+bash build_out/cann-ops-transformer-q4mhc_linux-x86_64.run \
+  --install-path=/home/z30086261/Q4/third_party/q4mhc-opp \
+  2>&1 | tee ../../mhc-extended-install.log
+
+find /home/z30086261/Q4/third_party/q4mhc-opp \
+  -name set_env.bash -printconda activate zwh
+cd /home/z30086261/Q4/third_party/ops-transformer
+set -o pipefail
+
+mkdir -p /home/z30086261/Q4/third_party/q4mhc-opp
+
+bash build_out/cann-ops-transformer-q4mhc_linux-x86_64.run \
+  --install-path=/home/z30086261/Q4/third_party/q4mhc-opp \
+  2>&1 | tee ../../mhc-extended-install.log
+
+find /home/z30086261/Q4/third_party/q4mhc-opp \
+  -name set_env.bash -print
+
+
+
+cd /home/z30086261/Q4
+
+export CC="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-gcc"
+export CXX="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-g++"
+export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
+export ASCEND_RT_VISIBLE_DEVICES=4
+
+# 先验证独立 Sinkhorn；首次会编译 C++ 桥接层
+python operators/mhc/extended/bench_forward.py \
+  --suite sinkhorn --tokens 512 --check-only \
+  --output results/mhc/ext-check-sinkhorn
