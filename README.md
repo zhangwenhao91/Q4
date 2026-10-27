@@ -39,3 +39,7 @@ Post、Sinkhorn、Pre 与 Pre+Sinkhorn 的反向校验、独立反向及前向+�
 ## 按同事规格表测试
 
 严格规格的 MHA 单侧前向、mHC Post 和 shifted Pre 前向，参见 [规格 v1 运行说明](operators/spec_v1/README.md)。MHA 的 AscendC FP32 输出尚未匹配；shifted Pre 的 AscendC 侧为注明额外工作的混合组合路径。
+
+## MHA BF16 双侧原生比较
+
+用户确认将输出统一为 BF16，新增 [MHA BF16 原生比较说明](operators/mha/README.md)，分别统计 AscendC metadata 复用和每次生成的计时边界。历史 FP32 输出结果保留。

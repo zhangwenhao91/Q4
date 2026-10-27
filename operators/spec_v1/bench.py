@@ -13,9 +13,11 @@ import time
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--suite',choices=['mha','mhc_post','mhc_shifted'],required=True)
+    p.add_argument('--suite',choices=['mha','mha_bf16','mhc_post','mhc_shifted'],required=True)
     p.add_argument('--tokens',type=int,default=512,help='mHC only; MHA is fixed at 4096')
     p.add_argument('--seed',type=int,default=42)
+    p.add_argument('--ac-metadata',choices=['cached','per_call'],default='cached',
+                   help='mha_bf16: reuse fixed-shape metadata or include native metadata generation each call')
     p.add_argument('--warmup',type=int,default=100)
     p.add_argument('--iters',type=int,default=100)
     p.add_argument('--rounds',type=int,default=9)
@@ -34,7 +36,11 @@ def main():
     torch.manual_seed(a.seed);torch.npu.set_device(0)
     torch.npu.matmul.allow_hf32=True
     with torch.no_grad():
-        functions,refs,names,meta={'mha':mha_case,'mhc_post':post_case,'mhc_shifted':shifted_case}[a.suite](a)
+        if a.suite=='mha_bf16':
+            from mha_bf16 import make_case
+            functions,refs,names,meta=make_case(a)
+        else:
+            functions,refs,names,meta={'mha':mha_case,'mhc_post':post_case,'mhc_shifted':shifted_case}[a.suite](a)
     meta.update(arguments={k:str(v) if isinstance(v,Path) else v for k,v in vars(a).items()},
                 torch=torch.__version__,torch_npu=torch_npu.__version__,device=torch.npu.get_device_name(0),
                 q4_revision=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
@@ -68,7 +74,7 @@ def main():
             delta=y.double()-r.double();err=delta.norm().item()/max(r.double().norm().item(),1e-30)
             finite=bool(torch.isfinite(y).all() and torch.isfinite(r).all())
             rtol,atol=(.02,.02) if r.dtype==torch.bfloat16 else (1e-3,1e-4)
-            if a.suite=='mha':
+            if a.suite in ('mha','mha_bf16'):
                 passed=finite and err<=.01 and delta.abs().max().item()<=.02
                 gate={'relative_l2_max':.01,'max_abs_max':.02}
             else:
