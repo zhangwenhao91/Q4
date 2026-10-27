@@ -1,250 +1,67 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# cat results/mhc/fused-projection-20261026-194206-profile-1539031/kernel-details.txt 
-results/mhc/fused-projection-20261026-194206-profile-1539031/pre_sinkhorn-ascendc/profile-8192-4096/ubuntu162_1541074_20261026194256702_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-Step Id,Device_id,Name,Type,Accelerator Core,Start Time(us),Duration(us),Wait Time(us),Block Num,Mix Block Num,Input Shapes,Input Data Types,Input Formats,Output Shapes,Output Data Types,Output Formats
-2,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776757763.213        ,609.137,0,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776758372.372        ,603.543,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776758975.937        ,614.505,0.207000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776759590.464        ,608.966,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776760199.452        ,605.539,0.034000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776760805.013        ,601.295,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776761406.330        ,618.366,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776762024.718        ,602.321,0.134000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776762627.061        ,610.291,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776763237.374        ,613.051,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776763935.441        ,601.843,85.199000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776764537.306        ,614.392,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776765151.720        ,603.441,0.108000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776765755.183        ,605.561,0.059000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776766360.766        ,615.905,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776766976.693        ,598.738,0.095000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776767575.453        ,612.360,0.012000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776768187.835        ,619.391,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776768807.248        ,603.715,0.109000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776769410.985        ,611.233,0.035000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776770112.690        ,613.593,90.517000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776770726.305        ,607.338,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776771333.665        ,611.872,0.162000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776771945.559        ,605.301,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776772550.882        ,621.225,0.199000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776773172.129        ,610.316,0.025000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776773782.467        ,603.289,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776774385.778        ,606.493,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776774992.293        ,610.331,0.007000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn,N/A,N/A,1793043776775602.646        ,601.105,0.169000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-results/mhc/fused-projection-20261026-194206-profile-1539031/pre_sinkhorn-tilelang/profile-8192-4096/ubuntu162_1540405_20261026194242250_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-Device_id,Name,Type,Accelerator Core,Start Time(us),Duration(us),Wait Time(us),Block Num,Mix Block Num,Input Shapes,Input Data Types,Input Formats,Output Shapes,Output Data Types,Output Formats
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762302794.981       ,253.069,0,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762303048.072  ,227.472,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762303275.566       ,250.206,0.028000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762303525.794  ,227.745,0.044000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762303753.561       ,239.408,0.005000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762303992.991  ,228.546,0.092000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762304221.559       ,255.196,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762304476.777  ,226.571,0.054000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762304703.370       ,252.593,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762304955.985  ,228.106,0.157000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762305184.113       ,246.142,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762305430.277  ,227.704,0.108000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762305658.003       ,252.159,0.046000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762305910.184  ,228.493,0.091000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762306138.699       ,240.492,0.007000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762306379.213  ,227.244,0.008000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762306606.479       ,244.869,0.006000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762306851.370  ,227.732,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762307079.124       ,242.423,0.018000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762307321.569  ,227.966,0.077000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762307640.638       ,246.949,91.284000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762307887.609  ,228.683,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762308116.314       ,247.045,0.067000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762308363.381  ,227.235,0.205000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762308590.638       ,250.436,0.015000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762308841.096  ,228.021,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762309069.139       ,247.468,0.229000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762309316.629  ,229.291,0.032000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762309545.942       ,243.351,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762309789.315  ,228.613,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762310017.950       ,242.927,0.137000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762310260.899  ,227.193,0.073000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762310488.114       ,241.352,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762310729.488  ,227.615,0.148000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762310957.125       ,244.025,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762311201.172  ,227.619,0.225000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762311428.813       ,247.237,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762311676.072  ,226.940,0.013000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762311903.034       ,243.637,0.060000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762312146.693  ,229.194,0.113000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762312476.376       ,250.786,100.556000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762312727.184  ,233.367,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762312960.573       ,248.921,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762313209.516  ,228.302,0.079000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762313437.840       ,240.954,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762313678.816  ,227.655,0.046000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762313906.493       ,245.459,0.095000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762314151.974  ,227.169,0.041000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762314379.165       ,253.215,0.081000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762314632.402  ,228.579,0.035000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762314861.003       ,254.199,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762315115.224  ,227.369,0.051000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762315342.615       ,242.822,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762315585.459  ,229.315,0.178000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762315814.796       ,248.062,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762316062.880  ,226.773,0.188000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762316289.675       ,235.102,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762316524.799  ,229.953,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043762316754.774       ,245.529,0.047000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_big_fuse_fwd_asc_kernel,N/A,N/A,1793043762317000.325  ,227.737,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-results/mhc/fused-projection-20261026-194206-profile-1539031/pre-tilelang/profile-8192-4096/ubuntu162_1539073_20261026194214297_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-Device_id,Name,Type,Accelerator Core,Start Time(us),Duration(us),Wait Time(us),Block Num,Mix Block Num,Input Shapes,Input Data Types,Input Formats,Output Shapes,Output Data Types,Output Formats
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734353311.364       ,263.258,0,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734353574.644   ,7.517,0.242000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734353582.183     ,3.804,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734353586.009 ,222.511,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734353808.542       ,262.868,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734354071.432   ,7.078,0.132000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734354078.532     ,3.634,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734354082.188 ,222.907,0.116000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734354305.117       ,267.672,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734354572.811   ,6.855,0.078000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734354579.688     ,3.887,0.145000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734354583.597 ,223.015,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734354806.634       ,265.121,0.235000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734355071.777   ,7.391,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734355079.190     ,3.649,0.109000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734355082.861 ,222.169,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734355305.052       ,259.702,0.081000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734355564.776   ,6.932,0.048000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734355571.730     ,3.533,0.068000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734355575.285 ,222.718,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734355798.025       ,262.847,0.032000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734356060.894   ,6.819,0.153000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734356067.735     ,4.250,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734356072.007 ,223.005,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734356295.034       ,266.786,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734356561.842   ,7.170,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734356569.034     ,3.470,0.080000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734356572.526 ,222.200,0.030000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734356794.748       ,264.991,0.050000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734357059.761   ,6.942,0.009000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734357066.725     ,3.887,0.058000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734357070.634 ,224.554,0.113000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734357295.210       ,267.018,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734357562.250   ,6.715,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734357568.987     ,3.763,0.035000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734357572.772 ,223.161,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734357795.955       ,259.163,0.089000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734358055.140   ,7.372,0.087000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734358062.534     ,3.662,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734358066.218 ,223.206,0.088000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734358409.089       ,256.080,119.544000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734358665.191   ,7.619,0.170000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734358672.832     ,3.954,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734358676.808 ,222.092,0.046000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734358898.922       ,263.550,0.158000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734359162.494   ,7.449,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734359169.965     ,3.345,0.051000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734359173.332 ,222.527,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734359395.881       ,258.143,0.223000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734359654.046   ,6.779,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734359660.847     ,3.515,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734359664.384 ,222.616,0.235000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734359887.022       ,262.247,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734360149.291   ,6.725,0.003000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734360156.038     ,3.363,0.025000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734360159.423 ,222.959,0.137000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734360382.404       ,266.455,0.041000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734360648.881   ,7.010,0.045000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734360655.913     ,3.656,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734360659.591 ,222.969,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734360882.582       ,262.156,0.031000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734361144.760   ,6.829,0.094000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734361151.611     ,3.745,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734361155.378 ,222.616,0.255000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734361378.016       ,263.700,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734361641.738   ,6.824,0.050000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734361648.584     ,3.707,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734361652.313 ,223.543,0.043000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734361875.878       ,262.799,0.207000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734362138.699   ,7.556,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734362146.277     ,3.794,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734362150.093 ,223.899,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734362374.014       ,267.089,0.101000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734362641.125   ,6.789,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734362647.936     ,3.582,0.211000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734362651.540 ,222.747,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734362874.309       ,259.220,0.003000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734363133.551   ,7.154,0.030000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734363140.727     ,3.724,0.096000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734363144.473 ,223.290,0.026000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734363442.842       ,267.393,74.960000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734363710.257   ,7.049,0.107000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734363717.328     ,3.709,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734363721.059 ,222.469,0.041000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734363943.550       ,259.635,0.031000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734364203.207   ,6.836,0.115000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734364210.065     ,3.988,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734364214.075 ,223.094,0.012000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734364437.191       ,265.733,0.156000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734364702.946   ,7.584,0.017000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734364710.552     ,3.600,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734364714.174 ,222.743,0.150000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734364936.939       ,266.958,0.007000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734365203.919   ,6.937,0.042000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734365210.878     ,3.848,0.063000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734365214.748 ,222.802,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734365437.572       ,267.923,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734365705.517   ,6.840,0.077000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734365712.379     ,3.660,0.160000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734365716.061 ,222.441,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734365938.524       ,263.505,0.059000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734366202.051   ,6.969,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734366209.042     ,3.752,0.031000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734366212.816 ,223.121,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734366435.959       ,262.253,0.129000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734366698.234   ,6.877,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734366705.133     ,3.915,0.123000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734366709.070 ,222.541,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734366931.633       ,262.722,0.209000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734367194.377   ,7.708,0.028000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734367202.107     ,3.823,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734367205.952 ,222.819,0.177000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734367428.793       ,262.229,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734367691.044   ,6.713,0.021000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734367697.779     ,3.522,0.037000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734367701.323 ,223.089,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,tf32_hc_prenorm_gemm_kernel_kernel,N/A,N/A,1793043734367924.434       ,265.264,0.161000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel,N/A,N/A,1793043734368189.720   ,6.756,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel,N/A,N/A,1793043734368196.498     ,3.930,0.000000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-4,mhc_pre_apply_mix_fwd_asc_kernel,N/A,N/A,1793043734368200.450 ,222.841,0.070000,56,0,N/A,N/A,N/A,N/A,N/A,N/A
-results/mhc/fused-projection-20261026-194206-profile-1539031/pre-ascendc/profile-8192-4096/ubuntu162_1539731_20261026194228269_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-Step Id,Device_id,Name,Type,Accelerator Core,Start Time(us),Duration(us),Wait Time(us),Block Num,Mix Block Num,Input Shapes,Input Data Types,Input Formats,Output Shapes,Output Data Types,Output Formats
-2,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748324652.843    ,503.191,0,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748325156.056    ,499.944,0.059000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748325656.022    ,500.715,0.056000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748326156.759    ,499.351,0.035000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748326656.132    ,504.105,0.149000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748327160.259    ,502.440,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748327662.721    ,503.270,0.060000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748328166.013    ,499.355,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748328665.390    ,503.840,0.145000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748329169.252    ,505.861,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-2,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748329736.791    ,500.795,61.639000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748330237.608    ,504.808,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748330742.438    ,506.069,0.192000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748331248.529    ,501.485,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748331750.036    ,505.388,0.015000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748332255.446    ,499.684,0.112000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748332755.152    ,500.716,0.066000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748333255.890    ,503.531,0.034000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748333759.443    ,504.128,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748334263.593    ,499.786,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-3,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748334817.676    ,506.079,54.464000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748335323.777    ,501.382,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748335825.181    ,504.940,0.118000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748336330.143    ,506.598,0.060000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748336836.763    ,505.821,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748337342.606    ,498.078,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748337840.706    ,500.311,0.172000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748338341.039    ,500.844,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748338841.905    ,505.077,0.156000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-4,4,aclnnMhcPreV2_MhcPre_MhcPre,N/A,N/A,1793043748339347.004    ,498.492,0.000000,28,56,N/A,N/A,N/A,N/A,N/A,N/A
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+(zwh) root@ubuntu162:/home/z30086261/Q4# conda activate zwh
+(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
+Already up to date.
+(zwh) root@ubuntu162:/home/z30086261/Q4# source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_RT_VISIBLE_DEVICES=4
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_NPU_ARCH=dav-3510
+(zwh) root@ubuntu162:/home/z30086261/Q4# export CC="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-gcc"
+(zwh) root@ubuntu162:/home/z30086261/Q4# export CXX="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-g++"
+(zwh) root@ubuntu162:/home/z30086261/Q4# export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4mhc-opp/vendors/q4mhc_transformer"
+(zwh) root@ubuntu162:/home/z30086261/Q4# export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
+(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/spec_v1/prepare_mha.py 2>&1 | tee spec-v1-prepare-mha.log
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 1357, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/root/miniconda3/envs/zwh/lib/python3.12/http/client.py", line 1386, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/root/miniconda3/envs/zwh/lib/python3.12/http/client.py", line 1432, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/root/miniconda3/envs/zwh/lib/python3.12/http/client.py", line 1381, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/root/miniconda3/envs/zwh/lib/python3.12/http/client.py", line 1141, in _send_output
+    self.send(msg)
+  File "/root/miniconda3/envs/zwh/lib/python3.12/http/client.py", line 1085, in send
+    self.connect()
+  File "/root/miniconda3/envs/zwh/lib/python3.12/http/client.py", line 1527, in connect
+    self.sock = self._context.wrap_socket(self.sock,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/ssl.py", line 1054, in _create
+    self.do_handshake()
+  File "/root/miniconda3/envs/zwh/lib/python3.12/ssl.py", line 1332, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1010)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/z30086261/Q4/operators/spec_v1/prepare_mha.py", line 29, in <module>
+    if __name__=='__main__': main()
+                             ^^^^^^
+  File "/home/z30086261/Q4/operators/spec_v1/prepare_mha.py", line 18, in main
+    with urllib.request.urlopen(url,timeout=60) as response: data=response.read()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 515, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 532, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 1405, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 1360, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1010)>
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
