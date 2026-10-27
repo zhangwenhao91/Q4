@@ -1,7 +1,828 @@
-cd /home/z30086261/Q4
-git pull --no-rebase
-source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
-set -o pipefail
+(base) root@ubuntu162:/home/z30086261# conda activate zwh
+(zwh) root@ubuntu162:/home/z30086261# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
+fatal: unable to access 'https://github.com/zhangwenhao91/Q4.git/': Could not resolve host: github.com
+(zwh) root@ubuntu162:/home/z30086261/Q4# export http_proxy=http://141.3.1.3:3128
+(zwh) root@ubuntu162:/home/z30086261/Q4# export https_proxy=${http_proxy}
+(zwh) root@ubuntu162:/home/z30086261/Q4# export no_proxy=127.0.0.1,*.huawei.com,localhost,local,.local,inhuawei.com
+(zwh) root@ubuntu162:/home/z30086261/Q4# export GIT_SSL_NO_VERIFY=true
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
 
-bash operators/mha/build_ascendc.sh build \
-  2>&1 | tee mha-bf16-build.log
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: unable to auto-detect email address (got 'root@ubuntu162.(none)')
+(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.email "zhangwenhao91@h-partners.com"
+(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.name "zhangwenhao91"
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull
+Merge made by the 'recursive' strategy.
+ README.md                             |  4 ++++
+ error.txt                             | 72 +++++------------------------------------------------------
+ operators/mha/README.md               | 89 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ operators/mha/build_ascendc.sh        | 39 ++++++++++++++++++++++++++++++++
+ operators/mha/run_bf16.sh             | 40 +++++++++++++++++++++++++++++++++
+ operators/mha/test_native_boundary.py | 53 +++++++++++++++++++++++++++++++++++++++++++
+ operators/spec_v1/bench.py            | 12 +++++++---
+ operators/spec_v1/mha_bf16.py         | 95 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 8 files changed, 335 insertions(+), 69 deletions(-)
+ create mode 100644 operators/mha/README.md
+ create mode 100644 operators/mha/build_ascendc.sh
+ create mode 100644 operators/mha/run_bf16.sh
+ create mode 100644 operators/mha/test_native_boundary.py
+ create mode 100644 operators/spec_v1/mha_bf16.py
+(zwh) root@ubuntu162:/home/z30086261/Q4# source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/build_ascendc.sh build \
+>   2>&1 | tee mha-bf16-build.log
+x86_64-conda-linux-gnu-g++ (conda-forge gcc 13.4.0-20) 13.4.0
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Preparing worktree (detached HEAD ba5162411)
+HEAD is now at ba5162411 fix: allto_all_quant_matmul 960 apace同步错误
+[2026-10-27 20:10:58] Warning: The current environment is configured for ascend950, Please use Ascend 950PR/Ascend 950DT series hardware for optimal performance.
+[2026-10-27 20:10:58] [2026-10-27 20:10:58] Info: cmake config -DBUILD_OPEN_PROJECT=ON -DVENDOR_NAME=q4fa -DASCEND_OP_NAME=flash_attn,flash_attn_metadata -DENABLE_TILING_SINK=OFF -DUT_INFERSHAPE_FLAG=TRUE -DENABLE_UT_EXEC=TRUE -DCANN_3RD_LIB_PATH=/home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party -DENABLE_AICPU_KERNEL=FALSE -DPACKAGE_TYPE=run -DCUSTOM_ASCEND_CANN_PACKAGE_PATH=/home/CANN/9.3.0.weekly.20260930/cann-9.3.0 -DCHECK_COMPATIBLE=true -DASCEND_COMPUTE_UNIT=ascend950 -DENABLE_BUILT_IN=OFF -DENABLE_OPS_HOST=ON -DENABLE_OPS_KERNEL=ON -DENABLE_BUILD_PKG=ON .
+CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1968 (message):
+  Calling FetchContent_Populate(cann-cmake) is deprecated, call
+  FetchContent_MakeAvailable(cann-cmake) instead.  Policy CMP0169 can be set
+  to OLD to allow FetchContent_Populate(cann-cmake) to be called directly for
+  now, but the ability to call it with declared details will be removed
+  completely in a future version.
+Call Stack (most recent call first):
+  cmake/fetch_cann_cmake.cmake:34 (FetchContent_Populate)
+  CMakeLists.txt:12 (include)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+[2026-10-27 20:11:02] -- The C compiler identification is GNU 13.4.0
+[2026-10-27 20:11:03] -- The CXX compiler identification is GNU 13.4.0
+[2026-10-27 20:11:03] -- Detecting C compiler ABI info
+[2026-10-27 20:11:03] -- Detecting C compiler ABI info - done
+[2026-10-27 20:11:03] -- Check for working C compiler: /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-gcc - skipped
+[2026-10-27 20:11:03] -- Detecting C compile features
+[2026-10-27 20:11:03] -- Detecting C compile features - done
+[2026-10-27 20:11:03] -- Detecting CXX compiler ABI info
+[2026-10-27 20:11:03] -- Detecting CXX compiler ABI info - done
+[2026-10-27 20:11:03] -- Check for working CXX compiler: /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ - skipped
+[2026-10-27 20:11:03] -- Detecting CXX compile features
+[2026-10-27 20:11:03] -- Detecting CXX compile features - done
+[2026-10-27 20:11:03] -- Initialization summary: Ccache not found, TARGET_ARCH: x86_64
+[2026-10-27 20:11:03] -- ASCEND_CANN_PACKAGE_PATH=/home/CANN/9.3.0.weekly.20260930/cann-9.3.0
+[2026-10-27 20:11:03] -- compile project with library
+CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1968 (message):
+  Calling FetchContent_Populate(opbase) is deprecated, call
+  FetchContent_MakeAvailable(opbase) instead.  Policy CMP0169 can be set to
+  OLD to allow FetchContent_Populate(opbase) to be called directly for now,
+  but the ability to call it with declared details will be removed completely
+  in a future version.
+Call Stack (most recent call first):
+  cmake/third_party/opbase.cmake:37 (FetchContent_Populate)
+  CMakeLists.txt:163 (include)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+[2026-10-27 20:11:08] -- Found Python3: /root/miniconda3/envs/zwh/bin/python3.12 (found version "3.12.15") found components: Interpreter
+[2026-10-27 20:11:08] -- ENABLE_CCACHE=ON, CUSTOM_CCACHE=
+[2026-10-27 20:11:08] -- CCACHE_PROGRAM=CCACHE_PROGRAM-NOTFOUND
+[2026-10-27 20:11:08] -- ASCEND_COMPUTE_UNIT=ascend950
+[2026-10-27 20:11:08] -- ASCEND_OP_NAME=flash_attn,flash_attn_metadata
+[2026-10-27 20:11:08] -- TILING_KEY=
+[2026-10-27 20:11:08] -- TESTS_UT_OPS_TEST=
+[2026-10-27 20:11:08] -- TESTS_EXAMPLE_OPS_TEST=
+[2026-10-27 20:11:08] -- CMAKE_BUILD_TYPE=Release
+[2026-10-27 20:11:08] -- VERSION=
+CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1968 (message):
+  Calling FetchContent_Populate(cann-cmake) is deprecated, call
+  FetchContent_MakeAvailable(cann-cmake) instead.  Policy CMP0169 can be set
+  to OLD to allow FetchContent_Populate(cann-cmake) to be called directly for
+  now, but the ability to call it with declared details will be removed
+  completely in a future version.
+Call Stack (most recent call first):
+  cmake/fetch_cann_cmake.cmake:34 (FetchContent_Populate)
+  CMakeLists.txt:12 (include)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+HEAD is now at 0a83b91 refactor(arch): 将NpuArch常量定义迁移至新增op_const_def.h头文件
+CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject/shared_internal_commands.cmake:1277 (message):
+  The DOWNLOAD_EXTRACT_TIMESTAMP option was not given and policy CMP0135 is
+  not set.  The policy's OLD behavior will be used.  When using a URL
+  download, the timestamps of extracted files should preferably be that of
+  the time of extraction, otherwise code that depends on the extracted
+  contents might not be rebuilt if the URL changes.  The OLD behavior
+  preserves the timestamps from the archive instead, but this is usually not
+  what you want.  Update your project to the NEW behavior or specify the
+  DOWNLOAD_EXTRACT_TIMESTAMP option with a value of true to avoid this
+  robustness issue.
+Call Stack (most recent call first):
+  /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject.cmake:3283 (_ep_add_download_command)
+  build/prepare_build/_deps/cann-cmake-src/third_party/json.cmake:77 (ExternalProject_Add)
+  build/prepare_build/_deps/cann-cmake-src/function/prepare.cmake:314 (include)
+  CMakeLists.txt:168 (add_cann_third_party)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+CMake Warning at cmake/third_party/ops-tensor.cmake:88 (message):
+  [ThirdPartyLib][ops-tensor] failed to access
+  git@atomgit.com:cann/ops-tensor.git, trying fallback protocol:
+  https://atomgit.com/cann/ops-tensor.git
+Call Stack (most recent call first):
+  CMakeLists.txt:194 (include)
+
+
+CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1968 (message):
+  Calling FetchContent_Populate(ops-tensor) is deprecated, call
+  FetchContent_MakeAvailable(ops-tensor) instead.  Policy CMP0169 can be set
+  to OLD to allow FetchContent_Populate(ops-tensor) to be called directly for
+  now, but the ability to call it with declared details will be removed
+  completely in a future version.
+Call Stack (most recent call first):
+  cmake/third_party/ops-tensor.cmake:117 (FetchContent_Populate)
+  CMakeLists.txt:194 (include)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1968 (message):
+  Calling FetchContent_Populate(catlass) is deprecated, call
+  FetchContent_MakeAvailable(catlass) instead.  Policy CMP0169 can be set to
+  OLD to allow FetchContent_Populate(catlass) to be called directly for now,
+  but the ability to call it with declared details will be removed completely
+  in a future version.
+Call Stack (most recent call first):
+  cmake/third_party/catlass.cmake:34 (FetchContent_Populate)
+  CMakeLists.txt:195 (include)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject/shared_internal_commands.cmake:1277 (message):
+  The DOWNLOAD_EXTRACT_TIMESTAMP option was not given and policy CMP0135 is
+  not set.  The policy's OLD behavior will be used.  When using a URL
+  download, the timestamps of extracted files should preferably be that of
+  the time of extraction, otherwise code that depends on the extracted
+  contents might not be rebuilt if the URL changes.  The OLD behavior
+  preserves the timestamps from the archive instead, but this is usually not
+  what you want.  Update your project to the NEW behavior or specify the
+  DOWNLOAD_EXTRACT_TIMESTAMP option with a value of true to avoid this
+  robustness issue.
+Call Stack (most recent call first):
+  /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject.cmake:3283 (_ep_add_download_command)
+  build/prepare_build/_deps/cann-cmake-src/third_party/eigen.cmake:27 (ExternalProject_Add)
+  build/prepare_build/_deps/cann-cmake-src/function/prepare.cmake:314 (include)
+  CMakeLists.txt:198 (add_cann_third_party)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject/shared_internal_commands.cmake:1277 (message):
+  The DOWNLOAD_EXTRACT_TIMESTAMP option was not given and policy CMP0135 is
+  not set.  The policy's OLD behavior will be used.  When using a URL
+  download, the timestamps of extracted files should preferably be that of
+  the time of extraction, otherwise code that depends on the extracted
+  contents might not be rebuilt if the URL changes.  The OLD behavior
+  preserves the timestamps from the archive instead, but this is usually not
+  what you want.  Update your project to the NEW behavior or specify the
+  DOWNLOAD_EXTRACT_TIMESTAMP option with a value of true to avoid this
+  robustness issue.
+Call Stack (most recent call first):
+  /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject.cmake:3283 (_ep_add_download_command)
+  build/prepare_build/_deps/cann-cmake-src/third_party/abseil-cpp.cmake:86 (ExternalProject_Add)
+  build/prepare_build/_deps/cann-cmake-src/function/prepare.cmake:314 (include)
+  CMakeLists.txt:199 (add_cann_third_party)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject/shared_internal_commands.cmake:1277 (message):
+  The DOWNLOAD_EXTRACT_TIMESTAMP option was not given and policy CMP0135 is
+  not set.  The policy's OLD behavior will be used.  When using a URL
+  download, the timestamps of extracted files should preferably be that of
+  the time of extraction, otherwise code that depends on the extracted
+  contents might not be rebuilt if the URL changes.  The OLD behavior
+  preserves the timestamps from the archive instead, but this is usually not
+  what you want.  Update your project to the NEW behavior or specify the
+  DOWNLOAD_EXTRACT_TIMESTAMP option with a value of true to avoid this
+  robustness issue.
+Call Stack (most recent call first):
+  /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject.cmake:3283 (_ep_add_download_command)
+  build/prepare_build/_deps/cann-cmake-src/third_party/protobuf.cmake:136 (ExternalProject_Add)
+  build/prepare_build/_deps/cann-cmake-src/function/prepare.cmake:314 (include)
+  CMakeLists.txt:200 (add_cann_third_party)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+LIBASAN_PATH = 
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/continuous_vector.h:20,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/runtime_attrs.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/infer_shape_context.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_impl_registry.h:19,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_def.h:19,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_def_registry.h:14,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/attention/flash_attn/op_host/flash_attn_def.cpp:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+   15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+      |                                                                                                                          ^
+/home/z30086261/Q4/third_party/ops-transformer-q4fa/cmake/scripts/util/ascendc_impl_build.py:247: SyntaxWarning: invalid escape sequence '\d'
+  ascendc_api_version = re.findall(r"#define ASCENDC_API_VERSION (\d+)", ascendc_api_version_file.read())
+[2026-10-27 20:11:54] -- Could NOT find json (missing: JSON_SOURCE) 
+[2026-10-27 20:11:54] -- [ThirdParty][json] not use cache, download json source.
+CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject/shared_internal_commands.cmake:1277 (message):
+  The DOWNLOAD_EXTRACT_TIMESTAMP option was not given and policy CMP0135 is
+  not set.  The policy's OLD behavior will be used.  When using a URL
+  download, the timestamps of extracted files should preferably be that of
+  the time of extraction, otherwise code that depends on the extracted
+  contents might not be rebuilt if the URL changes.  The OLD behavior
+  preserves the timestamps from the archive instead, but this is usually not
+  what you want.  Update your project to the NEW behavior or specify the
+  DOWNLOAD_EXTRACT_TIMESTAMP option with a value of true to avoid this
+  robustness issue.
+Call Stack (most recent call first):
+  /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject.cmake:3283 (_ep_add_download_command)
+  build/_deps/cann-cmake-src/third_party/json.cmake:77 (ExternalProject_Add)
+  build/_deps/cann-cmake-src/function/prepare.cmake:314 (include)
+  CMakeLists.txt:168 (add_cann_third_party)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+[2026-10-27 20:11:54] -- Start building custom package.
+[2026-10-27 20:11:54] -- Search libs under install path /home/CANN/9.3.0.weekly.20260930/cann-9.3.0
+[2026-10-27 20:11:54] -- CMAKE_MODULE_PATH            :/home/z30086261/Q4/third_party/ops-transformer-q4fa/cmake/modules;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/ge/cmake
+[2026-10-27 20:11:54] -- compile option:-fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /root/miniconda3/envs/zwh/include   -Wall -Wextra -Wshadow -Wformat=2 -fno-common -fPIC -Wformat-signedness -Wno-missing-include-dirs -Wno-write-strings
+[2026-10-27 20:11:54] -- Found dlog: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/pkg_inc/base
+[2026-10-27 20:11:54] -- Transformer Variables in dlog module:
+[2026-10-27 20:11:54] -- dlog_TRANSFORMER_INCLUDE_DIR="/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/pkg_inc/base"
+[2026-10-27 20:11:54] -- dlog_SHARED_LIBRARY="/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libascendalog.so"
+[2026-10-27 20:11:54] -- 
+[2026-10-27 20:11:54]  Properties for TARGET dlog:
+[2026-10-27 20:11:54]    dlog.INTERFACE_COMPILE_DEFINITIONS = "LOG_CPP;PROCESS_LOG"
+[2026-10-27 20:11:54]    dlog.INTERFACE_LINK_LIBRARIES = "dlog_headers"
+[2026-10-27 20:11:54]    dlog.IMPORTED_LOCATION = "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libascendalog.so"
+[2026-10-27 20:11:54] 
+[2026-10-27 20:11:54] -- 
+[2026-10-27 20:11:54]  Properties for TARGET dlog_headers:
+[2026-10-27 20:11:54]    dlog_headers.INTERFACE_INCLUDE_DIRECTORIES = "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/pkg_inc/base"
+[2026-10-27 20:11:54] 
+[2026-10-27 20:11:54] -- Found securec: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include
+[2026-10-27 20:11:54] -- Found OPBASE: /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/include
+[2026-10-27 20:11:54] -- Found OPABSE include:/home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/include
+[2026-10-27 20:11:54] -- Found OPABSE lib:
+[2026-10-27 20:11:54] -- Found platform: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include
+[2026-10-27 20:11:54] -- Found platform include:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include
+[2026-10-27 20:11:54] -- Found register library:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/lib64/libregister.so
+[2026-10-27 20:11:54] -- Found opp_registry library:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/lib64/libopp_registry.so
+[2026-10-27 20:11:54] -- Found exe_graph library:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/lib64/libexe_graph.so
+[2026-10-27 20:11:54] -- Found graph_base library:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/lib64/libgraph_base.so
+[2026-10-27 20:11:54] -- Found error_manager library:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/lib64/liberror_manager.so
+[2026-10-27 20:11:54] -- Found metadef library:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/lib64/libmetadef.so
+[2026-10-27 20:11:54] -- Found rt2_registry library:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/lib64/librt2_registry.a
+[2026-10-27 20:11:54] -- Found metadef: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include
+[2026-10-27 20:11:54] -- Found source metadef include dir:  /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/exe_graph
+[2026-10-27 20:11:54] -- Found graph library:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/lib64/libgraph.so
+[2026-10-27 20:11:54] -- Found mmpa library:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/lib64/libmmpa.so
+[2026-10-27 20:11:54] -- Found source acl include dir:  /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include
+[2026-10-27 20:11:54] -- [transformer]Found source npuruntime include dir: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/runtime
+[2026-10-27 20:11:54] -- Found aclnn include dir:  /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include
+[2026-10-27 20:11:54] -- Found opdev include dir:  /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aclnn
+[2026-10-27 20:11:54] -- Found tilingapi include:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include
+[2026-10-27 20:11:54] -- TILINGAPI_INC_DIRS: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/ascendc;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/ascendc/include;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/ascendc/include/highlevel_api;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/ascendc/include/highlevel_api/lib;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/ascendc/include/highlevel_api/impl;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/ascendc/include/highlevel_api/tiling
+[2026-10-27 20:11:54] -- Found tilingapi lib:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/lib64/libtiling_api.a
+[2026-10-27 20:11:54] -- Using AICPU include dirs: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment/cce;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment/msprof;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu_common/context;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu_common/context/common;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu_common/context/cpu_proto;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu_common/context/utils;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu_common/context;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu_common/context/common;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu_common/context/cpu_proto;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu_common/context/utils;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment/datagw/aicpu/common;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment/datagw/aicpu/common;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu
+[2026-10-27 20:11:54] -- Finding gen es pkg
+[2026-10-27 20:11:54] -- [add_es_library] Module loaded from: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/ge/cmake
+[2026-10-27 20:11:54] -- Find ops-tensor source dir: /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/ops-tensor
+CMake Warning at cmake/third_party/ops-tensor.cmake:37 (message):
+  Git fetch failed (network unavailable?), checkout to cached
+  6618ee2a91396f86c63a315c425523fe4e0f1773
+Call Stack (most recent call first):
+  CMakeLists.txt:194 (include)
+
+
+[2026-10-27 20:12:15] -- Find catlass source dir: /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/catlass
+[2026-10-27 20:12:15] -- [ThirdParty][eigen] package needs to be downloaded.
+CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject/shared_internal_commands.cmake:1277 (message):
+  The DOWNLOAD_EXTRACT_TIMESTAMP option was not given and policy CMP0135 is
+  not set.  The policy's OLD behavior will be used.  When using a URL
+  download, the timestamps of extracted files should preferably be that of
+  the time of extraction, otherwise code that depends on the extracted
+  contents might not be rebuilt if the URL changes.  The OLD behavior
+  preserves the timestamps from the archive instead, but this is usually not
+  what you want.  Update your project to the NEW behavior or specify the
+  DOWNLOAD_EXTRACT_TIMESTAMP option with a value of true to avoid this
+  robustness issue.
+Call Stack (most recent call first):
+  /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject.cmake:3283 (_ep_add_download_command)
+  build/_deps/cann-cmake-src/third_party/eigen.cmake:27 (ExternalProject_Add)
+  build/_deps/cann-cmake-src/function/prepare.cmake:314 (include)
+  CMakeLists.txt:198 (add_cann_third_party)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+[2026-10-27 20:12:15] -- Could NOT find abseil-cpp (missing: ABSL_SOURCE_DIR) 
+[2026-10-27 20:12:15] -- [ThirdParty][abseil-cpp] not found, need download.
+[2026-10-27 20:12:15] -- [ThirdParty][abseil-cpp] cve patch need download to: /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/patch/backport-CVE-2025-0838.patch
+[2026-10-27 20:12:15] -- [ThirdParty][abseil-cpp] cve patch use cache: /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/patch/backport-CVE-2025-0838.patch
+CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject/shared_internal_commands.cmake:1277 (message):
+  The DOWNLOAD_EXTRACT_TIMESTAMP option was not given and policy CMP0135 is
+  not set.  The policy's OLD behavior will be used.  When using a URL
+  download, the timestamps of extracted files should preferably be that of
+  the time of extraction, otherwise code that depends on the extracted
+  contents might not be rebuilt if the URL changes.  The OLD behavior
+  preserves the timestamps from the archive instead, but this is usually not
+  what you want.  Update your project to the NEW behavior or specify the
+  DOWNLOAD_EXTRACT_TIMESTAMP option with a value of true to avoid this
+  robustness issue.
+Call Stack (most recent call first):
+  /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject.cmake:3283 (_ep_add_download_command)
+  build/_deps/cann-cmake-src/third_party/abseil-cpp.cmake:86 (ExternalProject_Add)
+  build/_deps/cann-cmake-src/function/prepare.cmake:314 (include)
+  CMakeLists.txt:199 (add_cann_third_party)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+[2026-10-27 20:12:15] -- [ThirdParty][protobuf] /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/protobuf/protobuf-25.1.tar.gz not found, need download.
+CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject/shared_internal_commands.cmake:1277 (message):
+  The DOWNLOAD_EXTRACT_TIMESTAMP option was not given and policy CMP0135 is
+  not set.  The policy's OLD behavior will be used.  When using a URL
+  download, the timestamps of extracted files should preferably be that of
+  the time of extraction, otherwise code that depends on the extracted
+  contents might not be rebuilt if the URL changes.  The OLD behavior
+  preserves the timestamps from the archive instead, but this is usually not
+  what you want.  Update your project to the NEW behavior or specify the
+  DOWNLOAD_EXTRACT_TIMESTAMP option with a value of true to avoid this
+  robustness issue.
+Call Stack (most recent call first):
+  /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject.cmake:3283 (_ep_add_download_command)
+  build/_deps/cann-cmake-src/third_party/protobuf.cmake:136 (ExternalProject_Add)
+  build/_deps/cann-cmake-src/function/prepare.cmake:314 (include)
+  CMakeLists.txt:200 (add_cann_third_party)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+[2026-10-27 20:12:15] -- [ThirdParty][protobuf] protobuf_shared build.
+[2026-10-27 20:12:15] -- [ThirdParty][protobuf] protoc build.
+[2026-10-27 20:12:15] -- [ThirdParty][protobuf] protobuf_static build.
+[2026-10-27 20:12:15] -- [ThirdParty][protobuf] protobuf_host_static build.
+[2026-10-27 20:12:15] -- Found alog: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include
+[2026-10-27 20:12:15] -- Variables in alog module:
+[2026-10-27 20:12:15] -- alog_a_INCLUDE_DIR="/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include"
+[2026-10-27 20:12:15] -- slog_a_SHARED_LIBRARY="/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libascendalog.so"
+[2026-10-27 20:12:15] -- alog_a_SHARED_LIBRARY="/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libascendalog.so"
+[2026-10-27 20:12:15] -- 
+[2026-10-27 20:12:15]  Properties for TARGET slog_a:
+[2026-10-27 20:12:15]    slog_a.INTERFACE_COMPILE_DEFINITIONS = "LOG_CPP;PROCESS_LOG"
+[2026-10-27 20:12:15]    slog_a.INTERFACE_LINK_LIBRARIES = "alog_headers"
+[2026-10-27 20:12:15]    slog_a.IMPORTED_LOCATION = "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libascendalog.so"
+[2026-10-27 20:12:15] 
+[2026-10-27 20:12:15] -- 
+[2026-10-27 20:12:15]  Properties for TARGET alog_a:
+[2026-10-27 20:12:15]    alog_a.INTERFACE_COMPILE_DEFINITIONS = "LOG_CPP;PROCESS_LOG"
+[2026-10-27 20:12:15]    alog_a.INTERFACE_LINK_LIBRARIES = "alog_headers"
+[2026-10-27 20:12:15]    alog_a.IMPORTED_LOCATION = "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libascendalog.so"
+[2026-10-27 20:12:15] 
+[2026-10-27 20:12:15] -- 
+[2026-10-27 20:12:15]  Properties for TARGET alog_headers:
+[2026-10-27 20:12:15]    alog_headers.INTERFACE_INCLUDE_DIRECTORIES = "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/base"
+[2026-10-27 20:12:15] 
+[2026-10-27 20:12:15] -- Could NOT find unified_dlog (missing: _INCLUDE_ROOT_DIR) 
+[2026-10-27 20:12:15] -- Generated helper script: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/cmake/run_gen_esb_with_lock.sh
+[2026-10-27 20:12:15] -- Using existing Python3: /root/miniconda3/envs/zwh/bin/python3.12
+[2026-10-27 20:12:15] -- _add_es_library_impl: OUTPUT_PATH is /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/es_packages_math
+[2026-10-27 20:12:15] -- _add_es_library_impl: EXCLUDE_OPS is not provided
+[2026-10-27 20:12:15] -- add_es_package: OPP_PROTO_TARGET output directory: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build
+[2026-10-27 20:12:15] -- add_es_package: Derived ASCEND_OPP_PATH: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build
+[2026-10-27 20:12:15] --   - Created standard OPP path: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/common/stub/op_graph/es_math_build/opp_standard_path_proto_math
+[2026-10-27 20:12:15] -- _add_es_library_impl: gen_esb target not found, searching in environment...
+[2026-10-27 20:12:15] --     Found gen_esb in PATH (environment variables configured)
+[2026-10-27 20:12:15] --     - gen_esb path: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/gen_esb
+[2026-10-27 20:12:15] --     - library path: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64
+[2026-10-27 20:12:15] -- Using proto library path (derived from OPP_PROTO_TARGET): /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/common/stub/op_graph/es_math_build/opp_standard_path_proto_math
+[2026-10-27 20:12:15] -- add_es_package: Module name for gen_esb: math
+[2026-10-27 20:12:15] -- [add_es_library] No history registry found at /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/history_registry/math, skipping
+[2026-10-27 20:12:15] -- Trying to locate eager_style_graph_builder_base library from run package...
+[2026-10-27 20:12:15] --   Found library in run package: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libeager_style_graph_builder_base.so
+[2026-10-27 20:12:15] -- Configuring ES package: es_math
+[2026-10-27 20:12:15] --   - Exported target: es_math (public interface)
+[2026-10-27 20:12:15] --   - Internal .obj target: es_math_obj (compile once)
+[2026-10-27 20:12:15] --   - Internal .so target: es_math_so
+[2026-10-27 20:12:15] --   - Internal .a target: es_math_a
+[2026-10-27 20:12:15] --   - Module name (for gen_esb): math
+[2026-10-27 20:12:15] --   - OPP proto target: proto_math (type: SHARED_LIBRARY)
+[2026-10-27 20:12:15] --   - OPP proto path: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/common/stub/op_graph/es_math_build/opp_standard_path_proto_math
+[2026-10-27 20:12:15] --   - Output path: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/es_packages_math (artifacts will be copied)
+[2026-10-27 20:12:15] --   - Library files: libes_math.so, libes_math.a
+[2026-10-27 20:12:15] --   - Python package: es_math
+[2026-10-27 20:12:15] -- ES package 'es_math' using single-file compilation mode
+[2026-10-27 20:12:15] --   - Wrapper file: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/common/stub/op_graph/es_math_build/generated_code/es_math_all_in_one.cpp
+[2026-10-27 20:12:15] --   - Module name: math
+[2026-10-27 20:12:15] -- add_es_library: Using default compile options: -fPIC;-Wall;-fstack-protector-all;-std=c++17;-D_GLIBCXX_USE_CXX11_ABI=0;-O2;-Wno-free-nonheap-object
+[2026-10-27 20:12:15] -- add_es_library: Set _GLIBCXX_USE_CXX11_ABI=0 for ABI compatibility
+[2026-10-27 20:12:15] -- add_es_library: Deduced header base path from cmake file: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0
+[2026-10-27 20:12:15] -- add_es_library: metadef_headers target not found, skipping
+[2026-10-27 20:12:15] -- add_es_library: Found c_sec target
+[2026-10-27 20:12:15] -- add_es_library: Linking with CANN libraries: c_sec
+[2026-10-27 20:12:15] -- add_es_package: 'build_es_math' is the first ES package (will be built first)
+[2026-10-27 20:12:15] -- ES package 'es_math' configured successfully (single-file mode):
+[2026-10-27 20:12:15] --   - Exported target (for linking): es_math
+[2026-10-27 20:12:15] --   - Build target: build_es_math
+[2026-10-27 20:12:15] --   - Wrapper file: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/common/stub/op_graph/es_math_build/generated_code/es_math_all_in_one.cpp
+[2026-10-27 20:12:15] --   - Internal targets:
+[2026-10-27 20:12:15] --     * Code generation: generate_es_math_code
+[2026-10-27 20:12:15] --     * Object library: es_math_obj (compiled once)
+[2026-10-27 20:12:15] --     * Shared library: es_math_so
+[2026-10-27 20:12:15] --     * Static library: es_math_a
+[2026-10-27 20:12:15] --     * Wheel generation: generate_es_math_whl
+[2026-10-27 20:12:15] --     * Install: install_es_math
+[2026-10-27 20:12:15] --   - Library files: libes_math.so, libes_math.a
+[2026-10-27 20:12:15] --   - Python package: es_math
+[2026-10-27 20:12:15] --   - ES base library: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libeager_style_graph_builder_base.so (from library)
+[2026-10-27 20:12:15] -- 
+[2026-10-27 20:12:15] -- Build mode: Single-file compilation (no reconfiguration needed)
+[2026-10-27 20:12:15] -- 
+[2026-10-27 20:12:15] -- Quick start:
+[2026-10-27 20:12:15] --   1. Link:    target_link_libraries(your_target PRIVATE es_math)
+[2026-10-27 20:12:15] --   2. Build:   make your_target  (recommended, triggers automatically)
+[2026-10-27 20:12:15] -- 
+[2026-10-27 20:12:15] -- [ flash_attn_metadata] Found aicpu sources: /home/z30086261/Q4/third_party/ops-transformer-q4fa/attention/flash_attn_metadata/op_kernel_aicpu/flash_attn_metadata_aicpu.cpp, ascend dir: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0, ophsot name: ophost_transformer
+[2026-10-27 20:12:15] -- add_aicpu_cust_kernel_modules for flash_attn_metadata_cust_obj
+LIBASAN_PATH = 
+[2026-10-27 20:12:15] -- aicpu or host aicpu no need aclnn.
+[2026-10-27 20:12:15] -- Start Generating es transformer for custom pkg
+[2026-10-27 20:12:15] -- _add_es_library_impl: OUTPUT_PATH is /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/es_packages
+[2026-10-27 20:12:15] -- _add_es_library_impl: EXCLUDE_OPS is not provided
+[2026-10-27 20:12:15] -- add_es_package: Using default output directory: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build
+[2026-10-27 20:12:15] -- add_es_package: OPP_PROTO_TARGET output directory: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build
+[2026-10-27 20:12:15] -- add_es_package: Derived ASCEND_OPP_PATH: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build
+[2026-10-27 20:12:15] --   - Created standard OPP path: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/es_transformer_cust_build/opp_standard_path_proto_transformer_cust
+[2026-10-27 20:12:15] -- _add_es_library_impl: gen_esb target not found, searching in environment...
+[2026-10-27 20:12:15] --     Found gen_esb in PATH (environment variables configured)
+[2026-10-27 20:12:15] --     - gen_esb path: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/gen_esb
+[2026-10-27 20:12:15] --     - library path: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64
+[2026-10-27 20:12:15] -- Using proto library path (derived from OPP_PROTO_TARGET): /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/es_transformer_cust_build/opp_standard_path_proto_transformer_cust
+[2026-10-27 20:12:15] -- add_es_package: Module name for gen_esb: transformer_cust
+[2026-10-27 20:12:15] -- [add_es_library] No history registry found at /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/history_registry/transformer_cust, skipping
+[2026-10-27 20:12:15] -- Trying to locate eager_style_graph_builder_base library from run package...
+[2026-10-27 20:12:15] --   Found library in run package: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libeager_style_graph_builder_base.so
+[2026-10-27 20:12:15] -- Configuring ES package: es_transformer_cust
+[2026-10-27 20:12:15] --   - Exported target: es_transformer_cust (public interface)
+[2026-10-27 20:12:15] --   - Internal .obj target: es_transformer_cust_obj (compile once)
+[2026-10-27 20:12:15] --   - Internal .so target: es_transformer_cust_so
+[2026-10-27 20:12:15] --   - Internal .a target: es_transformer_cust_a
+[2026-10-27 20:12:15] --   - Module name (for gen_esb): transformer_cust
+[2026-10-27 20:12:15] --   - OPP proto target: proto_transformer_cust (type: SHARED_LIBRARY)
+[2026-10-27 20:12:15] --   - OPP proto path: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/es_transformer_cust_build/opp_standard_path_proto_transformer_cust
+[2026-10-27 20:12:15] --   - Output path: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/es_packages (artifacts will be copied)
+[2026-10-27 20:12:15] --   - Library files: libes_transformer_cust.so, libes_transformer_cust.a
+[2026-10-27 20:12:15] --   - Python package: es_transformer_cust
+[2026-10-27 20:12:15] -- ES package 'es_transformer_cust' using single-file compilation mode
+[2026-10-27 20:12:15] --   - Wrapper file: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/es_transformer_cust_build/generated_code/es_transformer_cust_all_in_one.cpp
+[2026-10-27 20:12:15] --   - Module name: transformer_cust
+[2026-10-27 20:12:15] -- add_es_library: Using default compile options: -fPIC;-Wall;-fstack-protector-all;-std=c++17;-D_GLIBCXX_USE_CXX11_ABI=0;-O2;-Wno-free-nonheap-object
+[2026-10-27 20:12:15] -- add_es_library: Set _GLIBCXX_USE_CXX11_ABI=0 for ABI compatibility
+[2026-10-27 20:12:15] -- add_es_library: Deduced header base path from cmake file: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0
+[2026-10-27 20:12:15] -- add_es_library: metadef_headers target not found, skipping
+[2026-10-27 20:12:15] -- add_es_library: Found c_sec target
+[2026-10-27 20:12:15] -- add_es_library: Linking with CANN libraries: c_sec
+[2026-10-27 20:12:15] -- add_es_package: 'build_es_transformer_cust' depends on 'build_es_math' to avoid concurrent builds of shared dependencies
+[2026-10-27 20:12:15] -- ES package 'es_transformer_cust' configured successfully (single-file mode):
+[2026-10-27 20:12:15] --   - Exported target (for linking): es_transformer_cust
+[2026-10-27 20:12:15] --   - Build target: build_es_transformer_cust
+[2026-10-27 20:12:15] --   - Wrapper file: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/es_transformer_cust_build/generated_code/es_transformer_cust_all_in_one.cpp
+[2026-10-27 20:12:15] --   - Internal targets:
+[2026-10-27 20:12:15] --     * Code generation: generate_es_transformer_cust_code
+[2026-10-27 20:12:15] --     * Object library: es_transformer_cust_obj (compiled once)
+[2026-10-27 20:12:15] --     * Shared library: es_transformer_cust_so
+[2026-10-27 20:12:15] --     * Static library: es_transformer_cust_a
+[2026-10-27 20:12:15] --     * Wheel generation: generate_es_transformer_cust_whl
+[2026-10-27 20:12:15] --     * Install: install_es_transformer_cust
+[2026-10-27 20:12:15] --   - Library files: libes_transformer_cust.so, libes_transformer_cust.a
+[2026-10-27 20:12:15] --   - Python package: es_transformer_cust
+[2026-10-27 20:12:15] --   - ES base library: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libeager_style_graph_builder_base.so (from library)
+[2026-10-27 20:12:15] -- 
+[2026-10-27 20:12:15] -- Build mode: Single-file compilation (no reconfiguration needed)
+[2026-10-27 20:12:15] -- 
+[2026-10-27 20:12:15] -- Quick start:
+[2026-10-27 20:12:15] --   1. Link:    target_link_libraries(your_target PRIVATE es_transformer_cust)
+[2026-10-27 20:12:15] --   2. Build:   make your_target  (recommended, triggers automatically)
+[2026-10-27 20:12:15] -- 
+[2026-10-27 20:12:15] -- Detected architecture: x86_64
+[2026-10-27 20:12:15] -- End building custom package.
+[2026-10-27 20:12:15] -- create aclnn master header file: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/aclnn_ops_transformer_q4fa.h
+[2026-10-27 20:12:15] -- no operator info to generate
+[2026-10-27 20:12:15] -- Start building custom package.
+[2026-10-27 20:12:15] -- Linking cust_aicpu_kernels with ARM toolchain: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/toolkit/toolchain/hcc/bin/aarch64-target-linux-gnu-g++
+[2026-10-27 20:12:15] -- Objects: $<TARGET_OBJECTS:flash_attn_metadata_cust_obj>
+[2026-10-27 20:12:15] -- Output: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/libtransformer_aicpu_kernels.so
+[2026-10-27 20:12:15] -- Configuring done (76.8s)
+[2026-10-27 20:12:15] -- Generating done (0.0s)
+[2026-10-27 20:12:15] -- Build files have been written to: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build
+[2026-10-27 20:12:16] [  1%] Generating op_host_aclnn_stub.cpp
+[2026-10-27 20:12:16] [  1%] Generating op_host_aclnn_exc_stub.cpp
+[2026-10-27 20:12:16] [  2%] Building CXX object CMakeFiles/op_host_aclnnInner.dir/attention/flash_attn/op_host/flash_attn_def.cpp.o
+[2026-10-27 20:12:16] [  3%] Generating version.ops-transformer.info
+[2026-10-27 20:12:16] [  3%] Building CXX object attention/flash_attn/op_host/CMakeFiles/ophost_transformer_infer_obj.dir/flash_attn_infershape.cpp.o
+[2026-10-27 20:12:16] [  4%] Creating directories for 'third_party_json'
+[2026-10-27 20:12:16] [  5%] Building CXX object attention/flash_attn/op_host/CMakeFiles/opbase_util_objs.dir/__/__/__/third_party/opbase/src/op_common/log/log.cpp.o
+[2026-10-27 20:12:16] [  5%] Building CXX object common/stub/op_api/CMakeFiles/opapi_math.dir/opapi_stub.cpp.o
+[2026-10-27 20:12:16] [  5%] Building CXX object CMakeFiles/op_host_aclnn.dir/op_host_aclnn_stub.cpp.o
+[2026-10-27 20:12:16] [  6%] Building CXX object CMakeFiles/op_host_aclnnExc.dir/op_host_aclnn_exc_stub.cpp.o
+[2026-10-27 20:12:16] [  7%] Linking CXX shared library libop_host_aclnn.so
+[2026-10-27 20:12:16] [  7%] Linking CXX shared library libop_host_aclnnExc.so
+[2026-10-27 20:12:16] [  7%] Built target version_ops-transformer_info
+[2026-10-27 20:12:16] [  7%] Built target update_proto_target
+[2026-10-27 20:12:16] [  8%] Building CXX object attention/flash_attn/op_host/CMakeFiles/ophost_transformer_infer_obj.dir/__/__/flash_attn_metadata/op_host/proto_stub.cpp.o
+[2026-10-27 20:12:16] [ 10%] Performing download step (download, verify and extract) for 'third_party_json'
+[2026-10-27 20:12:16] -- Downloading...
+[2026-10-27 20:12:16]    dst='/home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/pkg/json-3.12.0.tar.gz'
+[2026-10-27 20:12:16]    timeout='300 seconds'
+[2026-10-27 20:12:16]    inactivity timeout='none'
+[2026-10-27 20:12:16] -- Using src='https://cann-3rd.obs.cn-north-4.myhuaweicloud.com/json/json-3.12.0.tar.gz'
+[2026-10-27 20:12:16] [ 10%] Building CXX object common/stub/op_graph/CMakeFiles/proto_math.dir/math_proto_stub.cpp.o
+[2026-10-27 20:12:16] [ 10%] Built target op_host_aclnn
+[2026-10-27 20:12:16] [ 10%] Building CXX object attention/flash_attn/op_host/CMakeFiles/ophost_transformer_infer_obj.dir/__/__/common/op_host/proto_stub.cpp.o
+[2026-10-27 20:12:16] [ 10%] Built target op_host_aclnnExc
+[2026-10-27 20:12:16] [ 10%] Building CXX object attention/flash_attn/op_host/CMakeFiles/opbase_util_objs.dir/__/__/__/third_party/opbase/src/op_common/op_host/util/fp16.cpp.o
+[2026-10-27 20:12:16] [ 11%] Building CXX object common/CMakeFiles/common_transformer_obj.dir/src/op_host/tiling_util.cpp.o
+In file included from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/include/op_common/log/log.h:25,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/src/op_common/log/log.cpp:18:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/graph/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aclnn/opdev/common_types.h:21,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aclnn/opdev/op_executor.h:20,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/common/stub/op_api/opapi_stub.cpp:16:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/tensor.h:14:111: note: '#pragma message: Warning: tensor.h is deprecated and will be removed after 2027-06. Include "runtime_tensor.h" instead.'
+   14 |     "Warning: tensor.h is deprecated and will be removed after 2027-06. Include \"runtime_tensor.h\" instead.")
+      |                                                                                                               ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/continuous_vector.h:20,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/runtime_attrs.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/infer_shape_context.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_impl_registry.h:19,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_def.h:19,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_def_registry.h:14,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/attention/flash_attn/op_host/flash_attn_def.cpp:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+   15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/continuous_vector.h:20,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/runtime_attrs.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/infer_shape_context.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_impl_registry.h:19,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/attention/flash_attn/op_host/flash_attn_infershape.cpp:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+   15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/include/op_common/log/log.h:25,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/attention/flash_attn/op_host/flash_attn_infershape.cpp:18:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/graph/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/continuous_vector.h:20,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/runtime_attrs.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/infer_shape_context.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_impl_registry.h:19,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/common/stub/op_graph/math_proto_stub.cpp:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+   15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/continuous_vector.h:20,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/runtime_attrs.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/infer_shape_context.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_impl_registry.h:19,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/common/include/op_host/tiling_util.h:18,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/common/src/op_host/tiling_util.cpp:16:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+   15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+      |                                                                                                                          ^
+[2026-10-27 20:12:16] [ 12%] Building CXX object common/CMakeFiles/common_transformer_fallback_obj.dir/src/fallback/fallback_comm.cpp.o
+CMake Error at /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/third_party_json-prefix/src/third_party_json-stamp/download-third_party_json.cmake:163 (message):
+  Each download failed!
+
+    error: downloading 'https://cann-3rd.obs.cn-north-4.myhuaweicloud.com/json/json-3.12.0.tar.gz' failed
+          status_code: 60
+          status_string: "SSL peer certificate or SSH remote key was not OK.  If this is due to https certificate verification failure, one may set environment variable CMAKE_TLS_VERIFY=0 to suppress it."
+          log:
+          --- LOG BEGIN ---
+          Uses proxy env variable no_proxy == '127.0.0.1,*.huawei.com,localhost,local,.local,inhuawei.com'
+
+  Uses proxy env variable https_proxy == 'http://141.3.1.3:3128'
+
+    Trying 141.3.1.3:3128...
+
+  CONNECT: no ALPN negotiated
+
+  allocate connect buffer
+
+  Establish HTTP proxy tunnel to
+  cann-3rd.obs.cn-north-4.myhuaweicloud.com:443
+
+  CONNECT cann-3rd.obs.cn-north-4.myhuaweicloud.com:443 HTTP/1.1
+
+  Host: cann-3rd.obs.cn-north-4.myhuaweicloud.com:443
+
+  User-Agent: curl/8.20.0
+
+  Proxy-Connection: Keep-Alive
+
+  
+
+  HTTP/1.1 200 Connection established
+
+  Proxy-agent: netentsec
+
+  Connection: close
+
+  
+
+  CONNECT phase completed
+
+  CONNECT tunnel established, response 200
+
+  ALPN: curl offers h2,http/1.1
+
+  [5 bytes data]
+
+  TLSv1.3 (OUT), TLS handshake, Client hello (1):
+
+  [1587 bytes data]
+
+  SSL Trust Anchors:
+
+    CAfile: /etc/ssl/certs/ca-certificates.crt
+    CApath: /etc/ssl/certs
+
+  [5 bytes data]
+
+  TLSv1.3 (IN), TLS handshake, Server hello (2):
+
+  [93 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (IN), TLS handshake, Certificate (11):
+
+  [4052 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (IN), TLS handshake, Server key exchange (12):
+
+  [333 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (IN), TLS handshake, Server finished (14):
+
+  [4 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
+
+  [70 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):
+
+  [1 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (OUT), TLS handshake, Finished (20):
+
+  [16 bytes data]
+
+  [5 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (IN), TLS handshake, Finished (20):
+
+  [16 bytes data]
+
+  SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384 / secp256r1 /
+  rsaEncryption
+
+  ALPN: server did not agree on a protocol.  Uses default.
+
+  Server certificate:
+
+    subject: C=CN; ST=Jiangsu; L=Nanjing; O="Huawei Software Technologies Co., Ltd."; CN=obs.cn-north-4.myhuaweicloud.com
+    start date: Oct 26 12:12:54 2026 GMT
+    expire date: Oct 28 12:12:54 2026 GMT
+    issuer: C=CN; ST=GuangDong; L=Shenzhen; O=Huawei; OU=IT; CN=Huawei Web Secure Internet Gateway CA V2
+    Certificate level 0: Public key type RSA (2048/112 Bits/secBits), signed using sha256WithRSAEncryption
+    Certificate level 1: Public key type RSA (3072/128 Bits/secBits), signed using sha256WithRSAEncryption
+    subjectAltName: "cann-3rd.obs.cn-north-4.myhuaweicloud.com" matches cert's "*.obs.cn-north-4.myhuaweicloud.com"
+
+  OpenSSL verify result: 13
+
+  SSL certificate OpenSSL verify result: self-signed certificate in
+  certificate chain (19)
+
+  closing connection #0
+
+
+
+          --- LOG END ---
+          
+    
+
+
+[2026-10-27 20:12:16] [ 13%] Building CXX object attention/flash_attn/op_host/CMakeFiles/opbase_util_objs.dir/__/__/__/third_party/opbase/src/op_common/op_host/util/math_util.cpp.o
+make[2]: *** [CMakeFiles/third_party_json.dir/build.make:99: third_party_json-prefix/src/third_party_json-stamp/third_party_json-download] Error 1
+make[1]: *** [CMakeFiles/Makefile2:606: CMakeFiles/third_party_json.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+[2026-10-27 20:12:16] [ 14%] Building CXX object attention/flash_attn/op_host/CMakeFiles/opbase_util_objs.dir/__/__/__/third_party/opbase/src/op_common/op_host/util/op_arch_helper.cpp.o
+[2026-10-27 20:12:16] [ 14%] Building CXX object common/CMakeFiles/common_transformer_fallback_obj.dir/src/fallback/fallback_comm_2stages.cpp.o
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/external/ge_common/api_error_codes.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/exe_graph/runtime/continuous_vector.h:20,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/exe_graph/runtime/runtime_attrs.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/exe_graph/runtime/op_execute_context.h:16,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/common/include/fallback/fallback_comm.h:20,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/common/src/fallback/fallback_comm.cpp:16:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/external/ge_common/api_error_codes.h:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+   15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+      |                                                                                                                          ^
+[2026-10-27 20:12:16] [ 15%] Linking CXX shared library ../../../libopapi_math.so
+In file included from /home/z30086261/Q4/third_party/ops-transformer-q4fa/common/include/fallback/fallback_comm.h:21:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/exe_graph/runtime/tensor.h:14:111: note: '#pragma message: Warning: tensor.h is deprecated and will be removed after 2027-06. Include "runtime_tensor.h" instead.'
+   14 |     "Warning: tensor.h is deprecated and will be removed after 2027-06. Include \"runtime_tensor.h\" instead.")
+      |                                                                                                               ^
+[2026-10-27 20:12:16] [ 15%] Built target opapi_math
+[2026-10-27 20:12:16] [ 15%] Building CXX object attention/flash_attn/op_host/CMakeFiles/opbase_util_objs.dir/__/__/__/third_party/opbase/src/op_common/op_host/util/shape_util.cpp.o
+[2026-10-27 20:12:16] [ 16%] Linking CXX shared library libop_host_aclnnInner.so
+[2026-10-27 20:12:16] [ 17%] Linking CXX shared library ../../../libproto_math.so
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/continuous_vector.h:20,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/runtime_attrs.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/infer_shape_context.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_impl_registry.h:19,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_def.h:19,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_def_registry.h:14,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/include/op_common/op_host/util/op_arch_helper.h:19,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/src/op_common/op_host/util/op_arch_helper.cpp:16:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+   15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+      |                                                                                                                          ^
+[2026-10-27 20:12:16] [ 17%] Built target common_transformer_obj
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/external/ge_common/api_error_codes.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/exe_graph/runtime/continuous_vector.h:20,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/exe_graph/runtime/runtime_attrs.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/exe_graph/runtime/op_execute_context.h:16,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/common/include/fallback/fallback_comm_2stages.h:16,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/common/src/fallback/fallback_comm_2stages.cpp:16:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/external/ge_common/api_error_codes.h:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+   15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+      |                                                                                                                          ^
+[2026-10-27 20:12:16] [ 17%] Built target ophost_transformer_infer_obj
+[2026-10-27 20:12:16] [ 17%] Built target op_host_aclnnInner
+[2026-10-27 20:12:16] [ 17%] Built target proto_math
+In file included from /home/z30086261/Q4/third_party/ops-transformer-q4fa/common/include/fallback/fallback_comm_2stages.h:19:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/exe_graph/runtime/tensor.h:14:111: note: '#pragma message: Warning: tensor.h is deprecated and will be removed after 2027-06. Include "runtime_tensor.h" instead.'
+   14 |     "Warning: tensor.h is deprecated and will be removed after 2027-06. Include \"runtime_tensor.h\" instead.")
+      |                                                                                                               ^
+In file included from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/include/op_common/log/log.h:25,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/common/src/fallback/fallback_comm_2stages.cpp:25:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/graph/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/include/op_common/log/log.h:25,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/src/op_common/op_host/util/shape_util.cpp:15:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/graph/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+[2026-10-27 20:12:17] [ 17%] Built target common_transformer_fallback_obj
+make: *** [Makefile:156: all] Error 2
+[2026-10-27 20:12:17] [ 17%] Built target opbase_util_objs
+(zwh) root@ubuntu162:/home/z30086261/Q4#
