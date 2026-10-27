@@ -1,32 +1,11 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
-(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
-remote: Enumerating objects: 14, done.
-remote: Counting objects: 100% (14/14), done.
-remote: Compressing objects: 100% (11/11), done.
-remote: Total 14 (delta 4), reused 8 (delta 3), pack-reused 0 (from 0)
-Unpacking objects: 100% (14/14), 7.61 KiB | 2.54 MiB/s, done.
-From https://github.com/zhangwenhao91/Q4
-   3bad67f..dd45e96  main       -> origin/main
-Merge made by the 'recursive' strategy.
- error.txt                              |  5 +++++
- operators/mha/README.md                | 18 ++++++++++++++++++
- operators/mha/build_ascendc.sh         | 16 +---------------
- operators/mha/seed_dependency_cache.py | 54 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- operators/mha/test_dependency_cache.py | 46 ++++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 124 insertions(+), 15 deletions(-)
- create mode 100644 operators/mha/seed_dependency_cache.py
- create mode 100644 operators/mha/test_dependency_cache.py
-(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
-(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mha/seed_dependency_cache.py \
->   2>&1 | tee mha-dependency-cache.log
-Missing verified cache: eigen-5.0.0.tar.gz candidates: []
-Missing verified cache: abseil-cpp-20230802.1.tar.gz candidates: []
-Verified existing cache: /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/patch/backport-CVE-2025-0838.patch
-Traceback (most recent call last):
-  File "/home/z30086261/Q4/operators/mha/seed_dependency_cache.py", line 53, in <module>
-    seed(root/'third_party'/'ops-transformer'/'third_party',
-  File "/home/z30086261/Q4/operators/mha/seed_dependency_cache.py", line 41, in seed
-    raise RuntimeError('Offline dependencies incomplete: '+', '.join(missing)+
-RuntimeError: Offline dependencies incomplete: eigen-5.0.0.tar.gz, abseil-cpp-20230802.1.tar.gz. Stop before rebuilding; provide cache output for diagnosis.
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+cd /home/z30086261/Q4
+git pull --no-rebase
+set -o pipefail
+
+python operators/mha/seed_dependency_cache.py \
+  2>&1 | tee mha-dependency-cache.log
+
+
+
+bash operators/mha/build_ascendc.sh build \
+  2>&1 | tee mha-bf16-build-retry.log
