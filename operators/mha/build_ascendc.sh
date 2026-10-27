@@ -24,21 +24,7 @@ case "$ACTION" in
     [[ -z "$(git -C "$TARGET" status --porcelain --untracked-files=no)" ]] || {
       echo "Tracked source modified at $TARGET; preserve it before building." >&2; exit 1;
     }
-    # Reuse the exact-version archive from the previously successful mHC build.
-    # A fresh worktree has no ignored dependency cache; corporate TLS may block re-download.
-    JSON_SRC="$SRC/third_party/pkg/json-3.12.0.tar.gz"
-    JSON_DST="$TARGET/third_party/pkg/json-3.12.0.tar.gz"
-    if [[ -f "$JSON_SRC" ]]; then
-      tar -tzf "$JSON_SRC" > /dev/null
-      mkdir -p "$TARGET/third_party/pkg"
-      if ! cmp -s "$JSON_SRC" "$JSON_DST"; then
-        cp -p -- "$JSON_SRC" "$JSON_DST"
-      fi
-      echo "Reused JSON 3.12.0 archive from previous build:"
-      sha256sum "$JSON_DST"
-    else
-      echo "No prior JSON cache at $JSON_SRC; upstream may need a network download." >&2
-    fi
+    python "$ROOT/operators/mha/seed_dependency_cache.py"
     cd "$TARGET"
     bash build.sh --pkg --soc=ascend950 --vendor_name=q4fa \
       --ops=flash_attn,flash_attn_metadata "-j${Q4_BUILD_JOBS:-8}"

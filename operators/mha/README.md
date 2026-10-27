@@ -102,3 +102,21 @@ find /home/z30086261/Q4/third_party -type f -name json-3.12.0.tar.gz -size +0c -
 ```
 
 此时把结果更新至 error.txt，选择可信且完整的同版本缓存后再继续。不要把本次失败下载留下的空归档当作有效缓存。
+
+## Eigen 及其他依赖的统一离线缓存修复
+
+仅复用 JSON 不够；新 worktree 也缺少 Eigen、Abseil、Protobuf 等依赖缓存。
+现按上游 cann/cmake 的 master-059 依赖定义，查找旧 mHC 构建 third_party 下的同版本归档和补丁，
+用上游声明的 SHA256 验证后，复制到新 worktree 中各模块优先查找的本地位置。
+覆盖 JSON 3.12.0、Eigen 5.0.0、Abseil 20230802.1、Protobuf 25.1 及其 Abseil CVE 补丁。
+不会复用编译后的共享库，不修改原生算子源码，不关闭 TLS 校验。
+
+构建脚本已自动调用 seed_dependency_cache.py。也可以先单独执行它：
+
+```bash
+python operators/mha/seed_dependency_cache.py 2>&1 | tee mha-dependency-cache.log
+```
+
+看到 All dependency caches ready 后再运行原 build 命令。
+如果某个归档缺失或校验不匹配，脚本在构建之前停止，并列出缺失项与候选位置，避免再次盲目触发网络下载。
+依赖来源：https://atomgit.com/cann/cmake/tree/master-059/third_party
