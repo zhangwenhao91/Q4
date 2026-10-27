@@ -1,10 +1,49 @@
-OUT="results/spec-v1/mha-profile-$(date +%Y%m%d-%H%M%S)-$$"
-
-python operators/spec_v1/bench.py --suite mha --profile tilelang \
-  --output "$OUT" \
-  2>&1 | tee "$OUT.log"
-
-
-
-find "$OUT/profile" -type f -name kernel_details.csv \
-  -print -exec cat {} \; | tee "$OUT/kernel-details.txt"
+(zwh) root@ubuntu162:/home/z30086261/Q4# OUT="results/spec-v1/mha-profile-$(date +%Y%m%d-%H%M%S)-$$"
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/spec_v1/bench.py --suite mha --profile tilelang \
+>   --output "$OUT" \
+>   2>&1 | tee "$OUT.log"
+{'implementation': 'tilelang', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.00020444579422473907, 'rmse': 4.031027883003994e-05, 'relative_l2': 0.0015169614367132286, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+Correctness passed. Implementations: ['tilelang']
+blocked: stock FlashAttn BF16 input has BF16 output; no dtype substitution
+[2026-10-27 19:10:19] [WARNING] [556730] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-27 19:10:19] [WARNING] [556730] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-27 19:10:19] [INFO] [557082] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/spec-v1/mha-profile-20261027-191015-422159/profile/ubuntu162_556730_20261027191019201_ascend_pt
+[2026-10-27 19:10:21] [ERROR] [557082] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/spec-v1/mha-profile-20261027-191015-422159/profile/ubuntu162_556730_20261027191019201_ascend_pt/logs
+[2026-10-27 19:10:21] [INFO] [557098] profiler.py: CANN profiling data parsed in a total time of 0:00:02.014276
+[2026-10-27 19:10:22] [INFO] [557082] profiler.py: All profiling data parsed in a total time of 0:00:02.922306
+(zwh) root@ubuntu162:/home/z30086261/Q4# find "$OUT/profile" -type f -name kernel_details.csv \
+>   -print -exec cat {} \; | tee "$OUT/kernel-details.txt"
+results/spec-v1/mha-profile-20261027-191015-422159/profile/ubuntu162_556730_20261027191019201_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+Device_id,Name,Type,Accelerator Core,Start Time(us),Duration(us),Wait Time(us),Block Num,Mix Block Num,Input Shapes,Input Data Types,Input Formats,Output Shapes,Output Data Types,Output Formats
+4,main_kernel,N/A,N/A,1793128219366227.928      ,53.230,0,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219366281.180      ,52.536,0.020000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219366333.738      ,52.208,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219366385.968      ,52.965,0.042000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219366438.955      ,52.670,0.035000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219366491.647      ,52.476,0.080000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219366544.145      ,52.322,0.024000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219366596.489      ,53.092,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219366649.603      ,52.611,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219366702.236      ,52.918,0.139000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219366808.146      ,52.495,53.082000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219366860.663      ,53.045,0.005000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219366913.730      ,52.308,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219366966.060      ,52.621,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367018.703      ,52.692,0.129000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367071.417      ,52.876,0.058000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367124.315      ,52.572,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367176.909      ,52.557,0.178000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367229.488      ,52.433,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367281.943      ,52.906,0.067000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367371.546      ,52.777,36.594000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367424.345      ,52.511,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367476.878      ,52.447,0.239000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367529.347      ,52.846,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367582.215      ,52.562,0.154000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367634.799      ,52.408,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367687.229      ,52.450,0.092000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367739.701      ,52.635,0.050000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367792.358      ,52.687,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+4,main_kernel,N/A,N/A,1793128219367845.067      ,52.253,0.063000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+(zwh) root@ubuntu162:/home/z30086261/Q4#
