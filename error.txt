@@ -1,67 +1,43 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# conda activate zwh
-(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.email "zhangwenhao91@h-partners.com"
+(zwh) root@ubuntu162:/home/z30086261/Q4# git config --global user.name "zhangwenhao91"
 (zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
-Already up to date.
-(zwh) root@ubuntu162:/home/z30086261/Q4# source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
-(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_RT_VISIBLE_DEVICES=4
-(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_NPU_ARCH=dav-3510
-(zwh) root@ubuntu162:/home/z30086261/Q4# export CC="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-gcc"
-(zwh) root@ubuntu162:/home/z30086261/Q4# export CXX="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-g++"
-(zwh) root@ubuntu162:/home/z30086261/Q4# export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
-(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4mhc-opp/vendors/q4mhc_transformer"
-(zwh) root@ubuntu162:/home/z30086261/Q4# export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
+Merge made by the 'recursive' strategy.
+ .gitattributes                                   |   1 +
+ error.txt                                        | 317 ++++++++--------------------------
+ operators/spec_v1/README.md                      |  10 +-
+ operators/spec_v1/prepare_mha.py                 |  43 +++--
+ operators/spec_v1/test_prepare_mha.py            |  39 +++++
+ operators/spec_v1/upstream_mha/LICENSE           |  23 +++
+ operators/spec_v1/upstream_mha/README.md         | 164 ++++++++++++++++++
+ operators/spec_v1/upstream_mha/THIRDPARTYNOTICES | 616 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ operators/spec_v1/upstream_mha/core.py           | 516 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ operators/spec_v1/upstream_mha/example_mha.py    | 117 +++++++++++++
+ operators/spec_v1/upstream_mha/source.json       |  13 ++
+ operators/spec_v1/upstream_mha/test_mha.py       |  36 ++++
+ 12 files changed, 1625 insertions(+), 270 deletions(-)
+ create mode 100644 operators/spec_v1/test_prepare_mha.py
+ create mode 100644 operators/spec_v1/upstream_mha/LICENSE
+ create mode 100644 operators/spec_v1/upstream_mha/README.md
+ create mode 100644 operators/spec_v1/upstream_mha/THIRDPARTYNOTICES
+ create mode 100644 operators/spec_v1/upstream_mha/core.py
+ create mode 100644 operators/spec_v1/upstream_mha/example_mha.py
+ create mode 100644 operators/spec_v1/upstream_mha/source.json
+ create mode 100644 operators/spec_v1/upstream_mha/test_mha.py
 (zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
 (zwh) root@ubuntu162:/home/z30086261/Q4# python operators/spec_v1/prepare_mha.py 2>&1 | tee spec-v1-prepare-mha.log
-Traceback (most recent call last):
-  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 1357, in do_open
-    h.request(req.get_method(), req.selector, req.data, headers,
-  File "/root/miniconda3/envs/zwh/lib/python3.12/http/client.py", line 1386, in request
-    self._send_request(method, url, body, headers, encode_chunked)
-  File "/root/miniconda3/envs/zwh/lib/python3.12/http/client.py", line 1432, in _send_request
-    self.endheaders(body, encode_chunked=encode_chunked)
-  File "/root/miniconda3/envs/zwh/lib/python3.12/http/client.py", line 1381, in endheaders
-    self._send_output(message_body, encode_chunked=encode_chunked)
-  File "/root/miniconda3/envs/zwh/lib/python3.12/http/client.py", line 1141, in _send_output
-    self.send(msg)
-  File "/root/miniconda3/envs/zwh/lib/python3.12/http/client.py", line 1085, in send
-    self.connect()
-  File "/root/miniconda3/envs/zwh/lib/python3.12/http/client.py", line 1527, in connect
-    self.sock = self._context.wrap_socket(self.sock,
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/ssl.py", line 455, in wrap_socket
-    return self.sslsocket_class._create(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/ssl.py", line 1054, in _create
-    self.do_handshake()
-  File "/root/miniconda3/envs/zwh/lib/python3.12/ssl.py", line 1332, in do_handshake
-    self._sslobj.do_handshake()
-ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1010)
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/z30086261/Q4/operators/spec_v1/prepare_mha.py", line 29, in <module>
-    if __name__=='__main__': main()
-                             ^^^^^^
-  File "/home/z30086261/Q4/operators/spec_v1/prepare_mha.py", line 18, in main
-    with urllib.request.urlopen(url,timeout=60) as response: data=response.read()
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 215, in urlopen
-    return opener.open(url, data, timeout)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 515, in open
-    response = self._open(req, data)
-               ^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 532, in _open
-    result = self._call_chain(self.handle_open, protocol, protocol +
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 492, in _call_chain
-    result = func(*args)
-             ^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 1405, in https_open
-    return self.do_open(http.client.HTTPSConnection, req,
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/urllib/request.py", line 1360, in do_open
-    raise URLError(err)
-urllib.error.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1010)>
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
+core.py 0c1af6f07f2c727ca6ef6d09d4ce3c21ce16286d5931e75e8a9c6f2248ed23b0
+example_mha.py c103fb72c83e96e84c407e69738304c7f37631b93f2bb091e3bd254d4f3b7233
+test_mha.py 2fc51899243ef830cd5723ebb0e50ce097425f4d0de17a36dd35b24a3ad2d16e
+README.md 5b9b3a18b303322f968fbf7b7cfa0c5f9ef083e154105f5235c1794943dcbab2
+LICENSE f70e5cdc24c3797af741930440086f9a0ad36930b05a3dfc25b420936dc2cfa1
+THIRDPARTYNOTICES 0e52d10a051779861d7cb71452c888f1610ff47b974a7d125f931a4bf03577d4
+Offline source ready: /home/z30086261/Q4/third_party/tilelang-mha-spec-v1 ; installed TileLang was not changed.
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/spec_v1/bench.py --suite mha --check-only \
+>   --output "results/spec-v1/mha-first-$(date +%Y%m%d-%H%M%S)-$$" \
+>   2>&1 | tee spec-v1-mha-first.log
+2026-10-27 17:28:56  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `main` with `out_idx=-1`
+2026-10-27 17:28:58  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `main`
+{'implementation': 'tilelang', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.00020444579422473907, 'rmse': 4.031027883003994e-05, 'relative_l2': 0.0015169614367132286, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+Correctness passed. Implementations: ['tilelang']
+blocked: stock FlashAttn BF16 input has BF16 output; no dtype substitution
+(zwh) root@ubuntu162:/home/z30086261/Q4#
