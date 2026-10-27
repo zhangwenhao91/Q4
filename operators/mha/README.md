@@ -87,3 +87,18 @@ check：种子42/43/44，两个 metadata 模式。bench：两个模式各3个独
 ## 本机验证范围
 
 本机无NPU：Python语法、CLI入口、原生调用的参数和 metadata 计时边界测试可验证。实际精度、AscendC 包构建与性能由服务器执行，不能提前声明通过。
+
+## 构建下载 JSON 时的 SSL 证书错误
+
+若 third_party_json 下载 json-3.12.0.tar.gz 因企业代理 CA 失败，更新后的构建脚本会优先复用已成功 mHC 构建的
+third_party/ops-transformer/third_party/pkg/json-3.12.0.tar.gz，将其复制到新 worktree 的同一缓存位置。
+先检查归档能被 tar 读取，并打印 SHA256；后续仍走上游原有校验/构建流程。
+不删除 build、不关闭 TLS 校验、不改动 AscendC kernel。重新运行同一 build 命令即可增量继续。
+
+如果日志提示 No prior JSON cache，先查看已有归档位置：
+
+```bash
+find /home/z30086261/Q4/third_party -type f -name json-3.12.0.tar.gz -size +0c -print
+```
+
+此时把结果更新至 error.txt，选择可信且完整的同版本缓存后再继续。不要把本次失败下载留下的空归档当作有效缓存。
