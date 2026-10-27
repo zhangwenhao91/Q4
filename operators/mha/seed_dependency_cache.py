@@ -21,8 +21,9 @@ def sha256(path):
     return h.hexdigest()
 
 
-def seed(source,target,dependencies=DEPENDENCIES):
+def seed(source,target,dependencies=DEPENDENCIES,bundle=None):
     source=Path(source).resolve();target=Path(target).resolve()
+    bundle=Path(bundle) if bundle is not None else Path(__file__).with_name('dependency_archives')
     plans=[];missing=[]
     for name,relative,digest in dependencies:
         dst=(target/relative).resolve()
@@ -30,6 +31,7 @@ def seed(source,target,dependencies=DEPENDENCIES):
         if dst.is_file() and sha256(dst)==digest:
             print('Verified existing cache:',dst,flush=True);continue
         candidates=list(source.rglob(name))
+        if (bundle/name).is_file(): candidates.append(bundle/name)
         # Some previous CANN releases saved the protobuf archive under this alias.
         if name=='protobuf-25.1.tar.gz': candidates+=list(source.rglob('protobuf-all-25.1.tar.gz'))
         match=next((p for p in candidates if p.is_file() and sha256(p)==digest),None)

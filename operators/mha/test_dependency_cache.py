@@ -4,7 +4,7 @@ import io
 from pathlib import Path
 import tempfile
 import unittest
-from seed_dependency_cache import seed
+from seed_dependency_cache import seed,DEPENDENCIES,sha256
 
 
 class CacheTest(unittest.TestCase):
@@ -36,6 +36,21 @@ class CacheTest(unittest.TestCase):
             (src/'protobuf-all-25.1.tar.gz').write_bytes(b'alias')
             self.call(src,dst,[('protobuf-25.1.tar.gz','protobuf-25.1.tar.gz',hashlib.sha256(b'alias').hexdigest())])
             self.assertEqual((dst/'protobuf-25.1.tar.gz').read_bytes(),b'alias')
+
+    def test_bundled_real_archives_match_upstream(self):
+        bundle=Path(__file__).with_name('dependency_archives')
+        for name in ['eigen-5.0.0.tar.gz','abseil-cpp-20230802.1.tar.gz']:
+            digest=next(h for n,_,h in DEPENDENCIES if n==name)
+            self.assertEqual(sha256(bundle/name),digest)
+
+    def test_use_bundle_when_old_cache_missing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            bundle=Path(tmp)/'bundle';bundle.mkdir()
+            (bundle/'x.gz').write_bytes(b'fixture')
+            spec=[('x.gz','x.gz',hashlib.sha256(b'fixture').hexdigest())]
+            with contextlib.redirect_stdout(io.StringIO()):
+                seed(Path(tmp)/'no-old-cache',Path(tmp)/'new',spec,bundle)
+            self.assertEqual((Path(tmp)/'new'/'x.gz').read_bytes(),b'fixture')
 
     def test_target_escape_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:

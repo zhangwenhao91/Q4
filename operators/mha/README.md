@@ -120,3 +120,10 @@ python operators/mha/seed_dependency_cache.py 2>&1 | tee mha-dependency-cache.lo
 看到 All dependency caches ready 后再运行原 build 命令。
 如果某个归档缺失或校验不匹配，脚本在构建之前停止，并列出缺失项与候选位置，避免再次盲目触发网络下载。
 依赖来源：https://atomgit.com/cann/cmake/tree/master-059/third_party
+
+## 服务器缺少 Eigen/Abseil 归档时
+
+日志已确认旧目录没有 eigen-5.0.0.tar.gz 与 abseil-cpp-20230802.1.tar.gz。
+两份官方原始归档现已随 Q4 放在 operators/mha/dependency_archives（合计约5.1MB），
+本机已核对上游 SHA256，归档包含原有许可证。更新后原 seeder 自动使用这两个离线副本，
+其余依赖仍复用已有缓存。先重新运行 seed_dependency_cache.py，成功后再构建即可。
