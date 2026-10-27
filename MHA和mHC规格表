@@ -1,0 +1,84 @@
+MHA规格
+参考代码仓：
+https://github.com/tile-ai/tilelang
+参考文件：
+examples/ascend/flash_attention/example_mha.py
+内核定义：core.py::flash_attention_fwd
+测试调用：test_mha.py
+计算属性：
+SEQ_LEN（Q/K/V序列长度）　静态　4096
+head_dim（注意力头维度）　静态　128
+scaling（注意力分数缩放系数）　静态　1/sqrt(128)，约0.08838835
+out_dtype（输出数据类型）　静态　float32
+causal（因果屏蔽）　静态　False
+dropout（随机丢弃概率）　静态　0
+运行时动态shape：无；Q/K/V数据内容为运行时输入。
+输入输出：
+input：
+Q　shape:[SEQ_LEN,head_dim] = [4096,128]　dtype:BF16
+K　shape:[SEQ_LEN,head_dim] = [4096,128]　dtype:BF16
+V　shape:[SEQ_LEN,head_dim] = [4096,128]　dtype:BF16
+output：
+O　shape:[SEQ_LEN,head_dim] = [4096,128]　dtype:FP32
+
+---
+
+mHC规格：DeepSeek-V4.1-Flash-1017
+
+参考仓库：
+https://github.com/deepseek-ai/DeepInfer
+实际调用位置：HCLayerMixin._hc_pre的hc_shifted分支，以及hc_post。
+https://github.com/deepseek-ai/DeepInfer/blob/9bd9cf243fc53ef9afbf8f04d391d989117d6ab9/deepinfer/model_executor/models/v4_modules/hc.py#L317-L366
+
+参考配置：
+https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017/blob/1bae0e1088993b9b82de08f59de5be5a34e42170/config.json
+配置补充（shifted与post乘数）：
+https://github.com/deepseek-ai/DeepInfer/blob/9bd9cf243fc53ef9afbf8f04d391d989117d6ab9/deepinfer/hugging_face/config.py
+
+计算属性：
+hidden_size（隐藏维度）          静态    5120
+hc_mult（残差流数）              静态    4
+hc_hidden_size（展平维度）       静态    20480
+mix_channels（系数通道数）       静态    24
+hc_shifted（半层偏移）           静态    True
+rms_eps（mHC归一化epsilon）      静态    1e-20
+hc_pre_eps                      静态    1e-6
+hc_sinkhorn_eps                 静态    1e-6
+hc_post_mult_value（post乘数）   静态    2.0
+sinkhorn_repeat（迭代次数）      静态    20
+N（本次处理token总数）           动态
+residual、x、pre/post/comb系数   动态
+fn、scale、base的shape           静态    数值来自模型权重，运行时以张量传入
+
+一、Pre阶段
+
+实际调用：mhc_pre_apply_mix、mhc_pre_norm_fn、mhc_pre_split_mixes、sinkhorn_normalize。
+以下是上述调用合并描述的逻辑阶段规格，并非源码已有一个同名融合接口。
+
+input:
+residual       shape:[N,4,5120]    dtype:BF16
+prev_pre_mix   shape:[N,4,1]       dtype:FP32
+fn             shape:[24,20480]    dtype:FP32
+scale          shape:[3]           dtype:FP32
+base           shape:[24]          dtype:FP32
+
+output:
+layer_input    shape:[N,5120]      dtype:BF16
+next_pre_mix   shape:[N,4,1]       dtype:FP32
+post_mix       shape:[N,4,1]       dtype:FP32
+comb_mix       shape:[N,4,4]       dtype:FP32
+
+
+二、Post阶段
+
+调用接口：mhc_post。
+https://github.com/deepseek-ai/DeepInfer/blob/9bd9cf243fc53ef9afbf8f04d391d989117d6ab9/deepinfer/model_executor/models/v4_modules/mhc_ops.py#L37-L43
+
+input:
+x                 shape:[N,5120]    dtype:BF16
+residual          shape:[N,4,5120]  dtype:BF16
+post_layer_mix    shape:[N,4,1]     dtype:FP32
+comb_res_mix      shape:[N,4,4]     dtype:FP32
+
+output:
+new_residual      shape:[N,4,5120]  dtype:BF16
