@@ -1,61 +1,10 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/spec_v1/run.sh check-mha
-Results: /home/z30086261/Q4/results/spec-v1/20261027-190504-check-mha-552280
-{'implementation': 'tilelang', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.00020444579422473907, 'rmse': 4.031027883003994e-05, 'relative_l2': 0.0015169614367132286, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang']
-blocked: stock FlashAttn BF16 input has BF16 output; no dtype substitution
-{'implementation': 'tilelang', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.0001997347571887076, 'rmse': 4.019283697051959e-05, 'relative_l2': 0.001566789503106168, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang']
-blocked: stock FlashAttn BF16 input has BF16 output; no dtype substitution
-{'implementation': 'tilelang', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.00022126361727714539, 'rmse': 4.010737327857409e-05, 'relative_l2': 0.0015317282307942934, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang']
-blocked: stock FlashAttn BF16 input has BF16 output; no dtype substitution
-(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
-(zwh) root@ubuntu162:/home/z30086261/Q4# OUT="results/spec-v1/mha-perf-$(date +%Y%m%d-%H%M%S)-$$"
-(zwh) root@ubuntu162:/home/z30086261/Q4# mkdir -p "$OUT"
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
-(zwh) root@ubuntu162:/home/z30086261/Q4# for rep in 1 2 3; do
->   python operators/spec_v1/bench.py --suite mha \
->     --warmup 100 --iters 100 --rounds 9 \
->     --output "$OUT/rep-$rep" \
->     2>&1 | tee "$OUT/rep-$rep.log" || break
-> done
-{'implementation': 'tilelang', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.00020444579422473907, 'rmse': 4.031027883003994e-05, 'relative_l2': 0.0015169614367132286, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang']
-blocked: stock FlashAttn BF16 input has BF16 output; no dtype substitution
-{'round': 0, 'implementation': 'tilelang', 'event_us': 52.91551113128662, 'wall_us': 58.26669999805745}
-{'round': 1, 'implementation': 'tilelang', 'event_us': 52.75805950164795, 'wall_us': 53.23804998624837}
-{'round': 2, 'implementation': 'tilelang', 'event_us': 52.725348472595215, 'wall_us': 53.17246002960019}
-{'round': 3, 'implementation': 'tilelang', 'event_us': 52.67735958099365, 'wall_us': 53.08351999701699}
-{'round': 4, 'implementation': 'tilelang', 'event_us': 52.692627906799316, 'wall_us': 53.01612000039313}
-{'round': 5, 'implementation': 'tilelang', 'event_us': 52.69265174865723, 'wall_us': 53.31506999937119}
-{'round': 6, 'implementation': 'tilelang', 'event_us': 52.73396015167236, 'wall_us': 53.115070004423615}
-{'round': 7, 'implementation': 'tilelang', 'event_us': 52.8163480758667, 'wall_us': 53.228340002533514}
-{'round': 8, 'implementation': 'tilelang', 'event_us': 52.754149436950684, 'wall_us': 53.09053001838038}
-{'tilelang': {'event_us': 52.73396015167236, 'wall_us': 53.17246002960019}}
-{'implementation': 'tilelang', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.00020444579422473907, 'rmse': 4.031027883003994e-05, 'relative_l2': 0.0015169614367132286, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang']
-blocked: stock FlashAttn BF16 input has BF16 output; no dtype substitution
-{'round': 0, 'implementation': 'tilelang', 'event_us': 53.095641136169434, 'wall_us': 59.3090599795687}
-{'round': 1, 'implementation': 'tilelang', 'event_us': 52.71976947784424, 'wall_us': 53.27031001797877}
-{'round': 2, 'implementation': 'tilelang', 'event_us': 52.745351791381836, 'wall_us': 53.27490998752182}
-{'round': 3, 'implementation': 'tilelang', 'event_us': 52.77450084686279, 'wall_us': 53.29022998921573}
-{'round': 4, 'implementation': 'tilelang', 'event_us': 52.748661041259766, 'wall_us': 53.55653000151506}
-{'round': 5, 'implementation': 'tilelang', 'event_us': 52.801079750061035, 'wall_us': 53.30856001819484}
-{'round': 6, 'implementation': 'tilelang', 'event_us': 52.74134159088135, 'wall_us': 53.264689995558}
-{'round': 7, 'implementation': 'tilelang', 'event_us': 52.7146577835083, 'wall_us': 53.270600001269486}
-{'round': 8, 'implementation': 'tilelang', 'event_us': 52.72024154663086, 'wall_us': 53.20119998941664}
-{'tilelang': {'event_us': 52.745351791381836, 'wall_us': 53.27490998752182}}
-{'implementation': 'tilelang', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.00020444579422473907, 'rmse': 4.031027883003994e-05, 'relative_l2': 0.0015169614367132286, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang']
-blocked: stock FlashAttn BF16 input has BF16 output; no dtype substitution
-{'round': 0, 'implementation': 'tilelang', 'event_us': 52.78911113739014, 'wall_us': 56.18857998342719}
-{'round': 1, 'implementation': 'tilelang', 'event_us': 52.652587890625, 'wall_us': 52.98898002365604}
-{'round': 2, 'implementation': 'tilelang', 'event_us': 52.61064052581787, 'wall_us': 52.88341999403201}
-{'round': 3, 'implementation': 'tilelang', 'event_us': 52.639479637145996, 'wall_us': 52.88071999530075}
-{'round': 4, 'implementation': 'tilelang', 'event_us': 52.59041786193848, 'wall_us': 52.85468003421556}
-{'round': 5, 'implementation': 'tilelang', 'event_us': 52.609171867370605, 'wall_us': 52.8762099929736}
-{'round': 6, 'implementation': 'tilelang', 'event_us': 52.625179290771484, 'wall_us': 53.01101002260111}
-{'round': 7, 'implementation': 'tilelang', 'event_us': 52.6170015335083, 'wall_us': 52.90854998747818}
-{'round': 8, 'implementation': 'tilelang', 'event_us': 52.64876842498779, 'wall_us': 52.89744000037899}
-{'tilelang': {'event_us': 52.625179290771484, 'wall_us': 52.89744000037899}}
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+OUT="results/spec-v1/mha-profile-$(date +%Y%m%d-%H%M%S)-$$"
+
+python operators/spec_v1/bench.py --suite mha --profile tilelang \
+  --output "$OUT" \
+  2>&1 | tee "$OUT.log"
+
+
+
+find "$OUT/profile" -type f -name kernel_details.csv \
+  -print -exec cat {} \; | tee "$OUT/kernel-details.txt"
