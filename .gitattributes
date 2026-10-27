@@ -2,3 +2,4 @@
 *.sh text eol=lf
 *.py text eol=lf
 *.md text eol=lf
+operators/spec_v1/upstream_mha/** text eol=lf

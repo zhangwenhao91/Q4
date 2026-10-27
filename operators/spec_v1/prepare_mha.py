@@ -1,29 +1,38 @@
-"""Download ONLY the pinned Ascend MHA example; preserve installed TileLang."""
+"""Prepare the pinned, bundled Ascend MHA source offline; no compiler reinstall."""
 import hashlib
 import json
 from pathlib import Path
-import urllib.request
 
 REV='80364b3d9758854a9692cc0f14089025f54d3f3f'
-FILES=['core.py','example_mha.py','test_mha.py','README.md']
+FILES=['core.py','example_mha.py','test_mha.py','README.md','LICENSE','THIRDPARTYNOTICES']
+
+
+def prepare(dst, bundle=None):
+    bundle=Path(bundle) if bundle is not None else Path(__file__).with_name('upstream_mha')
+    dst=Path(dst)
+    manifest=json.loads((bundle/'source.json').read_text(encoding='utf-8'))
+    if manifest['revision']!=REV or set(manifest['sha256'])!=set(FILES):
+        raise RuntimeError('Bundled source manifest does not match the pinned contract')
+    data={}
+    # Validate every source and existing target before copying anything.
+    for name in FILES:
+        data[name]=(bundle/name).read_bytes()
+        digest=hashlib.sha256(data[name]).hexdigest()
+        if digest!=manifest['sha256'][name]:
+            raise RuntimeError(f'Bundled source checksum mismatch: {name}')
+        target=dst/name
+        if target.exists() and target.read_bytes()!=data[name]:
+            raise RuntimeError(f'Local file differs; preserve it before proceeding: {target}')
+    dst.mkdir(parents=True,exist_ok=True)
+    for name in FILES:
+        (dst/name).write_bytes(data[name])
+        print(name,manifest['sha256'][name],flush=True)
+    (dst/'source.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8',newline='\n')
+    print('Offline source ready:',dst,'; installed TileLang was not changed.')
 
 
 def main():
-    root=Path(__file__).resolve().parents[2]
-    dst=root/'third_party'/'tilelang-mha-spec-v1'
-    dst.mkdir(parents=True,exist_ok=True)
-    hashes={}
-    for name in FILES:
-        url=f'https://raw.githubusercontent.com/tile-ai/tilelang/{REV}/examples/ascend/flash_attention/{name}'
-        with urllib.request.urlopen(url,timeout=60) as response: data=response.read()
-        path=dst/name
-        if path.exists() and path.read_bytes()!=data:
-            raise RuntimeError(f'Local file differs; preserve it before proceeding: {path}')
-        path.write_bytes(data)
-        hashes[name]=hashlib.sha256(data).hexdigest()
-        print(name,hashes[name],flush=True)
-    (dst/'source.json').write_text(json.dumps(dict(repository='https://github.com/tile-ai/tilelang',revision=REV,sha256=hashes),indent=2))
-    print('Source ready:',dst,'; installed TileLang was not changed.')
+    prepare(Path(__file__).resolve().parents[2]/'third_party'/'tilelang-mha-spec-v1')
 
 
 if __name__=='__main__': main()

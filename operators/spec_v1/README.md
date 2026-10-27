@@ -4,7 +4,7 @@
 
 ## 固定比较范围
 
-- MHA：严格使用单 head 的二维 Q/K/V [4096,128]、BF16 输入、FP32 输出、scale=1/sqrt(128)、无 causal/dropout。下载并固定 TileLang 示例提交 `80364b3d9758854a9692cc0f14089025f54d3f3f`。它是注意力核心，未加入 QKV/输出投影。
+- MHA：严格使用单 head 的二维 Q/K/V [4096,128]、BF16 输入、FP32 输出、scale=1/sqrt(128)、无 causal/dropout。随仓库附带并固定 TileLang 示例提交 `80364b3d9758854a9692cc0f14089025f54d3f3f`。它是注意力核心，未加入 QKV/输出投影。
 - 当前 stock AscendC FlashAttn 的 BF16 输入对应 BF16 输出，FlashAttentionScoreV2 文档同样要求输出 dtype 与 query 一致。因此 **MHA 首轮只有 TileLang 严格规格单侧测试**。不会将 BF16 转 FP32 冒充匹配实现，不会生成双侧加速比。后续需要找到或适配 BF16 输入/FP32 输出的 AscendC 实现。
 - mHC Post：hidden=5120、4条流，BF16 特征、FP32 post/comb 系数、BF16 输出。
 - mHC shifted Pre：旧 `prev_pre_mix` 用来生成当前 layer_input；新 pre 系数单独输出为 next_pre_mix。fn=[24,20480]、scale=[3]、base=[24]。norm_eps=1e-20、pre_eps=1e-6、Sinkhorn eps=1e-6，20轮，post乘数2。输出4项均校验。
@@ -23,7 +23,7 @@
 
 ## 服务器第一步：环境及 MHA 精度
 
-不重装已验证的 torch、tilelang、DeepGEMM 或 q4mhc 包。MHA 下载的是固定示例文件，不改变已安装编译器。若现有 TileLang 缺少所需 API，先保留报错，再决定兼容处理；不要直接升级整个环境。
+不重装已验证的 torch、tilelang、DeepGEMM 或 q4mhc 包。MHA 示例源码和许可证已随 Q4 附带。准备脚本仅校验 SHA256 并从本地复制文件，完全不联网，不改变已安装编译器。若现有 TileLang 缺少所需 API，先保留报错，再决定兼容处理；不要直接升级整个环境。
 
 ```bash
 conda activate zwh
@@ -41,7 +41,7 @@ set -o pipefail
 python operators/spec_v1/prepare_mha.py 2>&1 | tee spec-v1-prepare-mha.log
 ```
 
-下载成功后先运行一个种子的最小检查：
+离线准备成功后先运行一个种子的最小检查：
 
 ```bash
 python operators/spec_v1/bench.py --suite mha --check-only \
@@ -73,3 +73,7 @@ timings.csv 中 event_us 为完整调用链的 stream event 间隔（可能包�
 ## 本机检查范围
 
 本机没有 torch/NPU/CANN：已检查 Python 语法、CLI --help、固定上游示例内容/哈希，以及 ACLNN 调用参数对照。不能在本机编译验证 ACLNN 桥，不能提前声称 NPU 精度通过。Git Bash 在本应用内被 Windows 权限限制，shell 脚本须在服务器验证。
+
+## 首步 SSL 证书报错修复
+
+旧准备脚本通过 urllib 从 raw.githubusercontent.com 下载文件，服务器代理证书链触发 CERTIFICATE_VERIFY_FAILED。现改为使用本目录 upstream_mha 中固定提交的原样源码（含许可证和来源清单），无需关闭 TLS 校验或重装环境。先 git pull --no-rebase，再重新执行同一个 prepare_mha.py 命令；成功后继续上面的单种子精度检查。已存在但被修改的源码会被保护并停止，不自动覆盖。

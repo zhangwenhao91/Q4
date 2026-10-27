@@ -1,0 +1,13 @@
+{
+  "repository": "https://github.com/tile-ai/tilelang",
+  "revision": "80364b3d9758854a9692cc0f14089025f54d3f3f",
+  "source_directory": "examples/ascend/flash_attention",
+  "sha256": {
+    "core.py": "0c1af6f07f2c727ca6ef6d09d4ce3c21ce16286d5931e75e8a9c6f2248ed23b0",
+    "example_mha.py": "c103fb72c83e96e84c407e69738304c7f37631b93f2bb091e3bd254d4f3b7233",
+    "test_mha.py": "2fc51899243ef830cd5723ebb0e50ce097425f4d0de17a36dd35b24a3ad2d16e",
+    "README.md": "5b9b3a18b303322f968fbf7b7cfa0c5f9ef083e154105f5235c1794943dcbab2",
+    "LICENSE": "f70e5cdc24c3797af741930440086f9a0ad36930b05a3dfc25b420936dc2cfa1",
+    "THIRDPARTYNOTICES": "0e52d10a051779861d7cb71452c888f1610ff47b974a7d125f931a4bf03577d4"
+  }
+}
