@@ -35,3 +35,7 @@ Pre、Sinkhorn 和 Pre+Sinkhorn 的安装、精度检查、计时及 profiler �
 ## mHC 反向覆盖
 
 Post、Sinkhorn、Pre 与 Pre+Sinkhorn 的反向校验、独立反向及前向+反向计时，见 [反向运行说明](operators/mhc/backward/README.md)。Pre 梯度暂为 TileKernels + PyTorch 投影梯度的混合路径；NPU 验证结果待补充。
+
+## 按同事规格表测试
+
+严格规格的 MHA 单侧前向、mHC Post 和 shifted Pre 前向，参见 [规格 v1 运行说明](operators/spec_v1/README.md)。MHA 的 AscendC FP32 输出尚未匹配；shifted Pre 的 AscendC 侧为注明额外工作的混合组合路径。
