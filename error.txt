@@ -1,6 +1,190 @@
-cd /home/z30086261/Q4
-git pull --no-rebase
-set -o pipefail
+[2026-10-27 20:17:21] [ 30%] Building CXX object attention/flash_attn/op_host/CMakeFiles/opbase_infer_objs.dir/__/__/__/third_party/opbase/src/op_common/op_host/infershape_elewise_util.cpp.o
+[2026-10-27 20:17:21] [ 30%] Building CXX object attention/flash_attn/op_host/CMakeFiles/opbase_infer_objs.dir/__/__/__/third_party/opbase/src/op_common/op_host/infershape_reduce_util.cpp.o
+In file included from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/include/op_common/log/log.h:25,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/src/op_common/op_host/infershape_elewise_util.cpp:16:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/graph/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+CMake Error at external_eigen-stamp/download-external_eigen.cmake:163 (message):
+  Each download failed!
 
-bash operators/mha/build_ascendc.sh build \
-  2>&1 | tee mha-bf16-build-retry.log
+    error: downloading 'https://cann-3rd.obs.cn-north-4.myhuaweicloud.com/eigen/eigen-5.0.0.tar.gz' failed
+          status_code: 60
+          status_string: "SSL peer certificate or SSH remote key was not OK.  If this is due to https certificate verification failure, one may set environment variable CMAKE_TLS_VERIFY=0 to suppress it."
+          log:
+          --- LOG BEGIN ---
+          Uses proxy env variable no_proxy == '127.0.0.1,*.huawei.com,localhost,local,.local,inhuawei.com'
+
+  Uses proxy env variable https_proxy == 'http://141.3.1.3:3128'
+
+    Trying 141.3.1.3:3128...
+
+  CONNECT: no ALPN negotiated
+
+  allocate connect buffer
+
+  Establish HTTP proxy tunnel to
+  cann-3rd.obs.cn-north-4.myhuaweicloud.com:443
+
+  CONNECT cann-3rd.obs.cn-north-4.myhuaweicloud.com:443 HTTP/1.1
+
+  Host: cann-3rd.obs.cn-north-4.myhuaweicloud.com:443
+
+  User-Agent: curl/8.20.0
+
+  Proxy-Connection: Keep-Alive
+
+  
+
+  HTTP/1.1 200 Connection established
+
+  Proxy-agent: netentsec
+
+  Connection: close
+
+  
+
+  CONNECT phase completed
+
+  CONNECT tunnel established, response 200
+
+  ALPN: curl offers h2,http/1.1
+
+  [5 bytes data]
+
+  TLSv1.3 (OUT), TLS handshake, Client hello (1):
+
+  [1587 bytes data]
+
+  SSL Trust Anchors:
+
+    CAfile: /etc/ssl/certs/ca-certificates.crt
+    CApath: /etc/ssl/certs
+
+  [5 bytes data]
+
+  TLSv1.3 (IN), TLS handshake, Server hello (2):
+
+  [93 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (IN), TLS handshake, Certificate (11):
+
+  [4052 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (IN), TLS handshake, Server key exchange (12):
+
+  [333 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (IN), TLS handshake, Server finished (14):
+
+  [4 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
+
+  [70 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):
+
+  [1 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (OUT), TLS handshake, Finished (20):
+
+  [16 bytes data]
+
+  [5 bytes data]
+
+  [5 bytes data]
+
+  TLSv1.2 (IN), TLS handshake, Finished (20):
+
+  [16 bytes data]
+
+  SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384 / secp256r1 /
+  rsaEncryption
+
+  ALPN: server did not agree on a protocol.  Uses default.
+
+  Server certificate:
+
+    subject: C=CN; ST=Jiangsu; L=Nanjing; O="Huawei Software Technologies Co., Ltd."; CN=obs.cn-north-4.myhuaweicloud.com
+    start date: Oct 26 12:12:54 2026 GMT
+    expire date: Oct 28 12:12:54 2026 GMT
+    issuer: C=CN; ST=GuangDong; L=Shenzhen; O=Huawei; OU=IT; CN=Huawei Web Secure Internet Gateway CA V2
+    Certificate level 0: Public key type RSA (2048/112 Bits/secBits), signed using sha256WithRSAEncryption
+    Certificate level 1: Public key type RSA (3072/128 Bits/secBits), signed using sha256WithRSAEncryption
+    subjectAltName: "cann-3rd.obs.cn-north-4.myhuaweicloud.com" matches cert's "*.obs.cn-north-4.myhuaweicloud.com"
+
+  OpenSSL verify result: 13
+
+  SSL certificate OpenSSL verify result: self-signed certificate in
+  certificate chain (19)
+
+  closing connection #0
+
+
+
+          --- LOG END ---
+          
+    
+
+
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/continuous_vector.h:20,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/runtime_attrs.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/infer_shape_context.h:16,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/include/op_common/op_host/infershape_elewise_util.h:18,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/src/op_common/op_host/infershape_elewise_util.cpp:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+   15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+      |                                                                                                                          ^
+make[2]: *** [CMakeFiles/external_eigen.dir/build.make:99: third_party/src/external_eigen-stamp/external_eigen-download] Error 1
+make[1]: *** [CMakeFiles/Makefile2:638: CMakeFiles/external_eigen.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+In file included from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/include/op_common/log/log.h:25,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/src/op_common/op_host/infershape_reduce_util.cpp:16:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/graph/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/continuous_vector.h:20,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/runtime_attrs.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/infer_shape_context.h:16,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/include/op_common/op_host/infershape_reduce_util.h:18,
+                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/opbase/src/op_common/op_host/infershape_reduce_util.cpp:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+   15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+      |                                                                                                                          ^
+[2026-10-27 20:17:22] -- verifying file...
+[2026-10-27 20:17:22]        file='/home/z30086261/Q4/third_party/ops-transformer-q4fa/third_party/patch/backport-CVE-2025-0838.patch'
+[2026-10-27 20:17:22] -- Downloading... done
+[2026-10-27 20:17:22] [ 31%] No update step for 'abseil_cve_patch'
+[2026-10-27 20:17:22] [ 31%] Built target opbase_infer_objs
+[2026-10-27 20:17:22] [ 32%] No patch step for 'abseil_cve_patch'
+[2026-10-27 20:17:22] [ 33%] No configure step for 'abseil_cve_patch'
+[2026-10-27 20:17:22] [ 33%] No build step for 'abseil_cve_patch'
+[2026-10-27 20:17:22] [ 34%] No install step for 'abseil_cve_patch'
+[2026-10-27 20:17:22] [ 35%] Completed 'abseil_cve_patch'
+[2026-10-27 20:17:22] [ 35%] Built target abseil_cve_patch
+make: *** [Makefile:156: all] Error 2
+[2026-10-27 20:17:24] [ 35%] Built target opbase_tiling_objs
+(zwh) root@ubuntu162:/home/z30086261/Q4#
