@@ -97,5 +97,25 @@
     "tilelang_nostore_s2": 51.90293073654175,
     "ascendc": 40.03274440765381
   },
-  "outcome": "nostore stages2 small API improvement; device confirmation pending"
+  "outcome": "nostore stages2 small API improvement; device confirmation pending",
+  "device_profile": {
+    "source_revision": "761d84b",
+    "statistics": {
+      "ascendc": {
+        "count": 30,
+        "mean_us": 39.87906666666667,
+        "median_us": 39.893
+      },
+      "tilelang_nostore_s2": {
+        "count": 30,
+        "mean_us": 51.76533333333333,
+        "median_us": 51.6385
+      },
+      "tilelang_nostore": {
+        "count": 30,
+        "mean_us": 52.07853333333333,
+        "median_us": 52.0305
+      }
+    }
+  }
 }
