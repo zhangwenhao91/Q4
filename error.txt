@@ -1,19 +1,55 @@
-cd /home/z30086261/Q4
-set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/build_ascendc.sh install \
+>   2>&1 | tee mha-bf16-install.log
+x86_64-conda-linux-gnu-g++ (conda-forge gcc 13.4.0-20) 13.4.0
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-bash operators/mha/build_ascendc.sh install \
-  2>&1 | tee mha-bf16-install.log
-
-
-
-
-export ASCEND_RT_VISIBLE_DEVICES=4
-export ASCEND_NPU_ARCH=dav-3510
-export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
-export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4fa-opp/vendors/q4fa_transformer"
-export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
-
-python operators/spec_v1/bench.py \
-  --suite mha_bf16 --ac-metadata cached --check-only \
-  --output "results/mha-bf16/first-$(date +%Y%m%d-%H%M%S)-$$" \
-  2>&1 | tee mha-bf16-first.log
+Verifying archive integrity...  100%   SHA256 checksums are OK. All good.
+Uncompressing version:1.0  100%  
+[ops_custom] [2026-10-28 09:52:25] [INFO] create /home/z30086261/Q4/third_party/q4fa-opp/vendors.
+[ops_custom] [2026-10-28 09:52:25] [INFO] create /home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer.
+[ops_custom] [2026-10-28 09:52:25] [INFO] validate shared libraries before installation
+[ops_custom] [2026-10-28 09:52:25] [INFO] upgrade framework
+[ops_custom] [2026-10-28 09:52:25] [INFO] no need to upgrade ops framework files
+[ops_custom] [2026-10-28 09:52:25] [INFO] upgrade op proto
+[ops_custom] [2026-10-28 09:52:25] [INFO] create /home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer/op_proto.
+[ops_custom] [2026-10-28 09:52:25] [INFO] copy new ops op_proto files ......
+[ops_custom] [2026-10-28 09:52:25] [INFO] upgrade op impl
+[ops_custom] [2026-10-28 09:52:25] [INFO] create /home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer/op_impl.
+[ops_custom] [2026-10-28 09:52:25] [INFO] copy new ops op_impl files ......
+[ops_custom] [2026-10-28 09:52:25] [INFO] upgrade op api
+[ops_custom] [2026-10-28 09:52:25] [INFO] create /home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer/op_api.
+[ops_custom] [2026-10-28 09:52:25] [INFO] copy new ops op_api files ......
+[ops_custom] [2026-10-28 09:52:26] [INFO] upgrade uninstall
+[ops_custom] [2026-10-28 09:52:26] [INFO] copy new uninstall.sh files ......
+[ops_custom] [2026-10-28 09:52:26] [INFO] upgrade version.info
+[ops_custom] [2026-10-28 09:52:26] [INFO] copy new version.info files ......
+[ops_custom] [2026-10-28 09:52:26] [INFO] no need to upgrade custom.proto files
+[ops_custom] [2026-10-28 09:52:26] [INFO] using requirements: when custom module install finished or before you run the custom module, execute the command [ source /home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer/bin/set_env.bash ] to set the environment path
+SUCCESS
+/home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer/bin/set_env.bash
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_RT_VISIBLE_DEVICES=4
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_NPU_ARCH=dav-3510
+(zwh) root@ubuntu162:/home/z30086261/Q4# export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4fa-opp/vendors/q4fa_transformer"
+(zwh) root@ubuntu162:/home/z30086261/Q4# export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/spec_v1/bench.py \
+>   --suite mha_bf16 --ac-metadata cached --check-only \
+>   --output "results/mha-bf16/first-$(date +%Y%m%d-%H%M%S)-$$" \
+>   2>&1 | tee mha-bf16-first.log
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+2026-10-28 09:52:50  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `main` with `out_idx=-1`
+2026-10-28 09:52:52  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `main`
+[1/2] /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-c++ -MMD -MF flash_attn.o.d -DTORCH_EXTENSION_NAME=flash_attn -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/csrc/attention/flash_attn.cpp -o flash_attn.o 
+[2/2] /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-c++ flash_attn.o -shared -L/home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer/op_api/lib -L/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/lib -L/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64 -lascendcl -L/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/lib -ltorch_npu -L/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/lib -lc10 -ltorch_cpu -ltorch -ltorch_python -o flash_attn.so
+{'implementation': 'tilelang', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.385011693769341e-05, 'relative_l2': 0.002402810443424686, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+Correctness passed. Implementations: ['tilelang', 'ascendc']
+(zwh) root@ubuntu162:/home/z30086261/Q4#
