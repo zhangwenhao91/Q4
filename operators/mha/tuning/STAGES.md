@@ -40,3 +40,15 @@ bash operators/mha/tuning/run_stages.sh bench
 确认API收益后再采集profile/pipe。本轮不混入输出归一化/转换融合。
 
 下一轮再单独测试输出归一化和BF16转换融合，以本轮结果选择相同的调度配置做对照。
+
+## 本轮API结果与设备复核
+
+90项精度通过。nostore stages2约51.903us，相对原始stages3降低1.45%，
+相对nostore stages3降低0.42%。完整结果见reports/mha_stages/report.md。
+额外收益较小，先比较nostore stages3、nostore stages2与AscendC设备计时：
+
+```bash
+bash operators/mha/tuning/run_stages.sh profile_best
+```
+
+该模式自动打印设备CSV，不需要重新运行check/bench。将输出反馈到error.txt。

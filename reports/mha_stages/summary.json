@@ -1,0 +1,101 @@
+{
+  "source_revision": "03ee3e8",
+  "correctness_passed": 90,
+  "api_process_summaries": [
+    {
+      "tilelang_q128": {
+        "event_us": 52.66775131225586,
+        "wall_us": 53.04982500092592
+      },
+      "tilelang_nostore": {
+        "event_us": 52.12242603302002,
+        "wall_us": 52.488130022538826
+      },
+      "tilelang_s2": {
+        "event_us": 52.98874378204346,
+        "wall_us": 53.35222500434611
+      },
+      "tilelang_nostore_s2": {
+        "event_us": 51.911609172821045,
+        "wall_us": 52.32884002907667
+      },
+      "ascendc": {
+        "event_us": 39.94575500488281,
+        "wall_us": 40.3255350101972
+      },
+      "ratios": {
+        "original_s3_over_s2": 0.9939422517524114,
+        "nostore_s3_over_s2": 1.0040610734970117,
+        "best_s3_over_original_s2": 0.9836509098500839,
+        "ascendc_over_original_s2": 0.7538535951935402,
+        "ascendc_over_nostore_s2": 0.7694956030335677
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.76568412780762,
+        "wall_us": 53.248070034896955
+      },
+      "tilelang_nostore": {
+        "event_us": 52.1546196937561,
+        "wall_us": 52.59053497866262
+      },
+      "tilelang_s2": {
+        "event_us": 53.003201484680176,
+        "wall_us": 53.47080004867166
+      },
+      "tilelang_nostore_s2": {
+        "event_us": 51.85731649398804,
+        "wall_us": 52.33109004620928
+      },
+      "ascendc": {
+        "event_us": 40.2393913269043,
+        "wall_us": 40.58252496179193
+      },
+      "ratios": {
+        "original_s3_over_s2": 0.9955188111242448,
+        "nostore_s3_over_s2": 1.005733100358221,
+        "best_s3_over_original_s2": 0.9839899899033582,
+        "ascendc_over_original_s2": 0.75918793959144,
+        "ascendc_over_nostore_s2": 0.7759636257223098
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.62696981430054,
+        "wall_us": 52.980820037191734
+      },
+      "tilelang_nostore": {
+        "event_us": 52.08701133728027,
+        "wall_us": 52.45562504569534
+      },
+      "tilelang_s2": {
+        "event_us": 52.99976110458374,
+        "wall_us": 53.337099961936474
+      },
+      "tilelang_nostore_s2": {
+        "event_us": 51.90293073654175,
+        "wall_us": 52.238054922781885
+      },
+      "ascendc": {
+        "event_us": 40.03274440765381,
+        "wall_us": 40.388125053141266
+      },
+      "ratios": {
+        "original_s3_over_s2": 0.9929661703654177,
+        "nostore_s3_over_s2": 1.0035466321097148,
+        "best_s3_over_original_s2": 0.9827782286508359,
+        "ascendc_over_original_s2": 0.7553382048016729,
+        "ascendc_over_nostore_s2": 0.7713002683963884
+      }
+    }
+  ],
+  "median_event_us": {
+    "tilelang_q128": 52.66775131225586,
+    "tilelang_nostore": 52.12242603302002,
+    "tilelang_s2": 52.99976110458374,
+    "tilelang_nostore_s2": 51.90293073654175,
+    "ascendc": 40.03274440765381
+  },
+  "outcome": "nostore stages2 small API improvement; device confirmation pending"
+}

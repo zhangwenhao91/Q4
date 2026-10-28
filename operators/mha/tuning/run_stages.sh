@@ -24,9 +24,14 @@ case "$ACTION" in
     find "$OUT" -type f -name kernel_details.csv -print -exec cat {} \; > "$OUT/kernel-details.txt"
     cat "$OUT/kernel-details.txt"
     ;;
+  profile_best)
+    for impl in tilelang_nostore tilelang_nostore_s2 ascendc; do run_case "$impl" --profile "$impl"; done
+    find "$OUT" -type f -name kernel_details.csv -print -exec cat {} \; > "$OUT/kernel-details.txt"
+    cat "$OUT/kernel-details.txt"
+    ;;
   profile)
     for impl in tilelang_q128 tilelang_nostore tilelang_s2 tilelang_nostore_s2 ascendc; do run_case "$impl" --profile "$impl"; done
     find "$OUT" -type f -name kernel_details.csv -print -exec cat {} \; > "$OUT/kernel-details.txt"
     ;;
-  *) echo 'Usage: bash operators/mha/tuning/run_stages.sh [check|bench|profile|pipe]' >&2; exit 2 ;;
+  *) echo 'Usage: bash operators/mha/tuning/run_stages.sh [check|bench|profile|profile_best|pipe]' >&2; exit 2 ;;
 esac
