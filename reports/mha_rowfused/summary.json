@@ -1,0 +1,66 @@
+{
+  "source_revision": "e4f03a7",
+  "correctness_passed": 36,
+  "api_process_summaries": [
+    {
+      "tilelang_q128": {
+        "event_us": 52.66684055328369,
+        "wall_us": 53.05026992573403
+      },
+      "tilelang_rowfused": {
+        "event_us": 61.9697904586792,
+        "wall_us": 62.326290062628686
+      },
+      "ascendc": {
+        "event_us": 40.00286102294922,
+        "wall_us": 40.35293008200824
+      },
+      "ratios": {
+        "q128_over_rowfused": 0.8498792744571467,
+        "ascendc_over_rowfused": 0.645521966862591
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.73214817047119,
+        "wall_us": 53.07269995682873
+      },
+      "tilelang_rowfused": {
+        "event_us": 62.247281074523926,
+        "wall_us": 62.61751987040043
+      },
+      "ascendc": {
+        "event_us": 40.02964973449707,
+        "wall_us": 40.35011996165849
+      },
+      "ratios": {
+        "q128_over_rowfused": 0.8471397828178071,
+        "ascendc_over_rowfused": 0.6430746699855472
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.62870788574219,
+        "wall_us": 52.97366005834192
+      },
+      "tilelang_rowfused": {
+        "event_us": 61.96951866149902,
+        "wall_us": 62.35742999706417
+      },
+      "ascendc": {
+        "event_us": 40.08236885070801,
+        "wall_us": 40.39068997371942
+      },
+      "ratios": {
+        "q128_over_rowfused": 0.8492676564622055,
+        "ascendc_over_rowfused": 0.6468078132033441
+      }
+    }
+  ],
+  "median_event_us": {
+    "tilelang_q128": 52.66684055328369,
+    "tilelang_rowfused": 61.9697904586792,
+    "ascendc": 40.02964973449707
+  },
+  "outcome": "not adopted: slower than baseline"
+}

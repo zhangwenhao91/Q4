@@ -37,3 +37,5 @@ bash operators/mha/tuning/run_rowfused.sh bench
 
 若编译或精度失败则停止，保留日志，不回退隐藏错误。
 确认API收益后才执行profile或pipe模式。
+
+实测结论：精度通过，但API耗时退化17.66%，不采用；详见reports/mha_rowfused/report.md。
