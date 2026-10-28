@@ -1,8 +1,47 @@
-cd /home/z30086261/Q4
-git pull --no-rebase
-set -o pipefail
-
-python operators/spec_v1/bench.py \
-  --suite mha_manual --ac-metadata cached --check-only \
-  --output "results/mha-tuning/manual-first-$(date +%Y%m%d-%H%M%S)-$$" \
-  2>&1 | tee mha-manual-first.log
+(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
+remote: Enumerating objects: 27, done.
+remote: Counting objects: 100% (27/27), done.
+remote: Compressing objects: 100% (21/21), done.
+remote: Total 27 (delta 9), reused 18 (delta 6), pack-reused 0 (from 0)
+Unpacking objects: 100% (27/27), 13.26 KiB | 468.00 KiB/s, done.
+From https://github.com/zhangwenhao91/Q4
+   3ce0b1c..11fc009  main       -> origin/main
+Merge made by the 'recursive' strategy.
+ error.txt                              |  6 +++---
+ operators/mha/tuning/FMA.md            |  4 ++++
+ operators/mha/tuning/MANUAL.md         | 36 ++++++++++++++++++++++++++++++++++++
+ operators/mha/tuning/README.md         |  4 ++++
+ operators/mha/tuning/manual_variant.py | 29 +++++++++++++++++++++++++++++
+ operators/mha/tuning/run_manual.sh     | 27 +++++++++++++++++++++++++++
+ operators/mha/tuning/test_manual.py    | 20 ++++++++++++++++++++
+ operators/spec_v1/bench.py             | 13 ++++++++++---
+ operators/spec_v1/mha_manual.py        | 17 +++++++++++++++++
+ reports/mha_fma/report.md              | 15 +++++++++++++++
+ reports/mha_fma/summary.json           | 66 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 11 files changed, 231 insertions(+), 6 deletions(-)
+ create mode 100644 operators/mha/tuning/MANUAL.md
+ create mode 100644 operators/mha/tuning/manual_variant.py
+ create mode 100644 operators/mha/tuning/run_manual.sh
+ create mode 100644 operators/mha/tuning/test_manual.py
+ create mode 100644 operators/spec_v1/mha_manual.py
+ create mode 100644 reports/mha_fma/report.md
+ create mode 100644 reports/mha_fma/summary.json
+(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/spec_v1/bench.py \
+>   --suite mha_manual --ac-metadata cached --check-only \
+>   --output "results/mha-tuning/manual-first-$(date +%Y%m%d-%H%M%S)-$$" \
+>   2>&1 | tee mha-manual-first.log
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+2026-10-28 14:24:06  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `main` with `out_idx=-1`
+2026-10-28 14:24:09  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `main`
+{'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_manual', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.385011693769341e-05, 'relative_l2': 0.002402810443424686, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_q128_vs_tilelang_manual', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_manual_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+Correctness passed. Implementations: ['tilelang_q128', 'tilelang_manual', 'ascendc']
+(zwh) root@ubuntu162:/home/z30086261/Q4#
