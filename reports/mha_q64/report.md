@@ -23,3 +23,18 @@ Profile曾提示ACL/NPU flow关联失败；设备CSV每侧30条完整。统计�
 - https://github.com/zhangwenhao91/Q4/blob/5d06bd5/error.txt （profile）
 
 summary.json保存各进程摘要和kernel统计。此为负向优化实验，未替换已验证的原始实现。
+
+## Level1 管线指标
+
+每侧30次。以下为相应字段均值，采样可能影响耗时，不替换Level0的结论。
+
+| 实现 | AIC MAC ratio | AIC MTE2 ratio | AIV Vector时间 μs | cube_utilization (%) |
+|---|---:|---:|---:|---:|
+| tilelang_q128 | 82.57% | 73.92% | 42.390 | 55.55 |
+| tilelang_q64 | 54.52% | 82.90% | 38.186 | 75.09 |
+| ascendc | 77.91% | 69.08% | 21.975 | 74.56 |
+
+Q64的搬运活跃占比更高、MAC活跃占比更低，支持停止继续缩小Q；但不能据聚合指标证明精确临界路径。
+Q128相较AC的Vector活跃时间明显较长，下一轮独立尝试Q128输出累积FMA，先精度再计时。
+各管线重叠，比例不能相加；cube_utilization与MAC ratio定义不同，Q64某个百分比较高不等于有用吞吐更高。
+原始证据：https://github.com/zhangwenhao91/Q4/blob/3494649/error.txt

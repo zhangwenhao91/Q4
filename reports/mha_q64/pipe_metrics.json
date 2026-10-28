@@ -1,0 +1,46 @@
+{
+  "source_revision": "3494649",
+  "profile": "Level1 PipeUtilization",
+  "groups": {
+    "ascendc": {
+      "count": 30,
+      "means": {
+        "Duration(us)": 40.456066666666665,
+        "aic_mac_time(us)": 31.243266666666667,
+        "aic_mac_ratio": 0.7791,
+        "aic_mte2_time(us)": 27.708266666666667,
+        "aic_mte2_ratio": 0.6908,
+        "aiv_vec_time(us)": 21.975366666666666,
+        "aiv_vec_ratio": 0.5573666666666667,
+        "cube_utilization(%)": 74.56366666666666
+      }
+    },
+    "tilelang_q128": {
+      "count": 30,
+      "means": {
+        "Duration(us)": 53.223,
+        "aic_mac_time(us)": 43.6503,
+        "aic_mac_ratio": 0.8257333333333333,
+        "aic_mte2_time(us)": 39.09373333333333,
+        "aic_mte2_ratio": 0.7392333333333333,
+        "aiv_vec_time(us)": 42.389833333333335,
+        "aiv_vec_ratio": 0.8062666666666667,
+        "cube_utilization(%)": 55.5455
+      }
+    },
+    "tilelang_q64": {
+      "count": 30,
+      "means": {
+        "Duration(us)": 65.68973333333334,
+        "aic_mac_time(us)": 35.628566666666664,
+        "aic_mac_ratio": 0.5452,
+        "aic_mte2_time(us)": 54.1777,
+        "aic_mte2_ratio": 0.8289666666666666,
+        "aiv_vec_time(us)": 38.18613333333333,
+        "aiv_vec_ratio": 0.5866333333333333,
+        "cube_utilization(%)": 75.0889
+      }
+    }
+  },
+  "interpretation": "Counters overlap. Do not add active times/ratios or conflate MAC ratio and cube_utilization. Use Level0 for final latency."
+}

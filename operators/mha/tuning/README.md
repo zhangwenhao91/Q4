@@ -81,3 +81,7 @@ cat "$LATEST/csv-files.txt"
 将这两份输出更新error.txt。优先核对Cube/Vector/MTE等实际导出的字段，避免将缺失字段或N/A当作0利用率。
 指标采样可能影响耗时，Level1数据用于瓶颈定位，不直接替换之前Level0性能结论。
 官方接口来源：https://github.com/Ascend/pytorch/blob/master/torch_npu/profiler/experimental_config.py
+
+## Vector路径下一轮实验
+
+Level1数据已收到，Q64仍不采用。回到Q128尝试单独的[Vector融合乘加实验](FMA.md)，其舍入和性能均待NPU验证。
