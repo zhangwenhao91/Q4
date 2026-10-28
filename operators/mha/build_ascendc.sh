@@ -24,10 +24,22 @@ case "$ACTION" in
     [[ -z "$(git -C "$TARGET" status --porcelain --untracked-files=no)" ]] || {
       echo "Tracked source modified at $TARGET; preserve it before building." >&2; exit 1;
     }
+    # Host GCC and ARM AICPU share global CMake flags. Conda's x86 ISA flags
+    # must not leak into the ARM compiler; keep sanitation local to this script.
+    for flag_var in CFLAGS CXXFLAGS CPPFLAGS LDFLAGS ASFLAGS; do
+      if [[ -n "${!flag_var:-}" ]]; then
+        echo "Ignoring inherited $flag_var for this mixed-architecture build."
+      fi
+      unset "$flag_var"
+    done
+    python "$ROOT/operators/mha/clean_build_flags.py"
     python "$ROOT/operators/mha/seed_dependency_cache.py"
     cd "$TARGET"
-    bash build.sh --pkg --soc=ascend950 --vendor_name=q4fa \
+    bash -o pipefail build.sh --incremental --pkg --soc=ascend950 --vendor_name=q4fa \
       --ops=flash_attn,flash_attn_metadata "-j${Q4_BUILD_JOBS:-8}"
+    [[ -f "$TARGET/build_out/cann-ops-transformer-q4fa_linux-x86_64.run" ]] || {
+      echo "Build did not produce the expected q4fa package; inspect the full log." >&2; exit 1;
+    }
     ;;
   install)
     PACKAGE="$TARGET/build_out/cann-ops-transformer-q4fa_linux-x86_64.run"

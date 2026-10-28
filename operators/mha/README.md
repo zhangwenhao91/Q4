@@ -127,3 +127,15 @@ python operators/mha/seed_dependency_cache.py 2>&1 | tee mha-dependency-cache.lo
 两份官方原始归档现已随 Q4 放在 operators/mha/dependency_archives（合计约5.1MB），
 本机已核对上游 SHA256，归档包含原有许可证。更新后原 seeder 自动使用这两个离线副本，
 其余依赖仍复用已有缓存。先重新运行 seed_dependency_cache.py，成功后再构建即可。
+
+## AICPU 收到 x86 ISA 参数时
+
+已定位日志：flash_attn_metadata_aicpu.cpp 编译出现 unknown architecture nocona、
+unknown value haswell。该目标使用 CANN 的 ARM 交叉编译器，但全局 flags 携带 Conda 的 x86 参数。
+构建脚本现仅在本次子进程内清除 CFLAGS/CXXFLAGS/CPPFLAGS/LDFLAGS/ASFLAGS，
+并备份后清空根 CMakeCache.txt 中继承的 C/C++/ASM 和链接全局 flags。
+保留编译器路径、目标特定参数与依赖缓存，上游 CMake 继续设置项目所需选项。
+不修改算子源码、不禁用 AICPU、不修改 Conda 环境配置或已安装的 mHC 包。
+
+脚本新增 --incremental，保留已完成的依赖和 kernel 产物；更改编译命令涉及的目标仍可能重新编译。
+重新 git pull 后执行原 build 命令即可。完整日志应保留，以便确认 ARM 编译命令不再带 nocona/haswell。
