@@ -1,36 +1,19 @@
-[2026-10-28 09:48:18] [ 98%] Building CXX object CMakeFiles/cust_proto.dir/autogen/inner/flash_attn_proto.cpp.o
-In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:16,
-                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/continuous_vector.h:20,
-                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/runtime_attrs.h:16,
-                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/infer_shape_context.h:16,
-                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_impl_registry.h:19,
-                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/autogen/inner/flash_attn_proto.h:5,
-                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/autogen/inner/flash_attn_proto.cpp:1:
-/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
-   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
-      |                                                                                                                          ^
-In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:17:
-/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
-   15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
-      |                                                                                                                          ^
-[2026-10-28 09:48:19] [100%] Linking CXX shared library libcust_opsproto_rt2.0.so
-[2026-10-28 09:48:19] [100%] Built target cust_proto
-[2026-10-28 09:48:19] Run CPack packaging tool...
-[2026-10-28 09:48:19] CPack: Create package using External
-[2026-10-28 09:48:19] CPack: Install projects
-[2026-10-28 09:48:19] CPack: - Run preinstall target for: cann_ops-transformer
-[2026-10-28 09:48:40] CPack: - Install project: cann_ops-transformer []
-[2026-10-28 09:48:40] CPack: Create package
-[2026-10-28 09:48:40] 
-[2026-10-28 09:48:40] About to compress 85976 KB of data...
-[2026-10-28 09:48:40] Adding files to archive named "cann-ops-transformer-q4fa_linux-x86_64.run"...
-[2026-10-28 09:48:42] CRC: 1376031759
-[2026-10-28 09:48:42] SHA256: 943d4bc9aede1990dee1f63661f2e4e65451d781ce323e314047b069282b3d76
-[2026-10-28 09:48:42] Skipping md5sum at user request
-[2026-10-28 09:48:42] 
-[2026-10-28 09:48:42] Self-extractable archive "cann-ops-transformer-q4fa_linux-x86_64.run" successfully created.
-[2026-10-28 09:48:42] Copy /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/_CPack_Packages/Linux/External/cann-ops-transformer-q4fa_linux-x86_64.run/cann-ops-transformer-q4fa_linux-x86_64.run to /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/
-[2026-10-28 09:48:42] Copy /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/_CPack_Packages/Linux/External/cann-ops-transformer-q4fa_linux-x86_64.run/cann-ops-transformer-q4fa_linux-x86_64.run to /home/z30086261/Q4/third_party/ops-transformer-q4fa/build_out/
-[2026-10-28 09:48:42] CPack: - package: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/cann-ops-transformer-q4fa_linux-x86_64.run.json generated.
-[2026-10-28 09:48:42] CPack: - package: /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/cann-ops-transformer-q4fa_linux-x86_64.run generated.
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+cd /home/z30086261/Q4
+set -o pipefail
+
+bash operators/mha/build_ascendc.sh install \
+  2>&1 | tee mha-bf16-install.log
+
+
+
+
+export ASCEND_RT_VISIBLE_DEVICES=4
+export ASCEND_NPU_ARCH=dav-3510
+export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
+export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4fa-opp/vendors/q4fa_transformer"
+export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
+
+python operators/spec_v1/bench.py \
+  --suite mha_bf16 --ac-metadata cached --check-only \
+  --output "results/mha-bf16/first-$(date +%Y%m%d-%H%M%S)-$$" \
+  2>&1 | tee mha-bf16-first.log
