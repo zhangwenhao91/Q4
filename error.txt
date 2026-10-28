@@ -1,68 +1,6 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
-remote: Enumerating objects: 23, done.
-remote: Counting objects: 100% (23/23), done.
-remote: Compressing objects: 100% (17/17), done.
-remote: Total 23 (delta 8), reused 18 (delta 6), pack-reused 0 (from 0)
-Unpacking objects: 100% (23/23), 12.24 KiB | 391.00 KiB/s, done.
-From https://github.com/zhangwenhao91/Q4
-   11fc009..1c2fe15  main       -> origin/main
-Merge made by the 'recursive' strategy.
- error.txt                               | 157 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
- operators/mha/tuning/MANUAL.md          |   2 +-
- operators/mha/tuning/NOSTORE.md         |  41 ++++++++++++++++++++
- operators/mha/tuning/nostore_variant.py |  42 ++++++++++++++++++++
- operators/mha/tuning/run_nostore.sh     |  27 +++++++++++++
- operators/mha/tuning/test_nostore.py    |  36 +++++++++++++++++
- operators/spec_v1/bench.py              |  13 +++++--
- operators/spec_v1/mha_nostore.py        |  17 +++++++++
- reports/mha_manual/report.md            |  13 +++++++
- reports/mha_manual/summary.json         |  65 +++++++++++++++++++++++++++++++
- 10 files changed, 401 insertions(+), 12 deletions(-)
- create mode 100644 operators/mha/tuning/NOSTORE.md
- create mode 100644 operators/mha/tuning/nostore_variant.py
- create mode 100644 operators/mha/tuning/run_nostore.sh
- create mode 100644 operators/mha/tuning/test_nostore.py
- create mode 100644 operators/spec_v1/mha_nostore.py
- create mode 100644 reports/mha_manual/report.md
- create mode 100644 reports/mha_manual/summary.json
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/tuning/run_nostore.sh check
-Results: /home/z30086261/Q4/results/mha-tuning/nostore-20261028-145805-check-1266710
-CASE: suite=mha_nostore metadata=cached tag=seed42 output=results/mha-tuning/nostore-20261028-145805-check-1266710/seed42
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-2026-10-28 14:58:09  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `main` with `out_idx=-1`
-2026-10-28 14:58:12  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `main`
-{'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_nostore', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.385011693769341e-05, 'relative_l2': 0.002402810443424686, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_nostore', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_nostore_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang_q128', 'tilelang_nostore', 'ascendc']
-CASE: suite=mha_nostore metadata=cached tag=seed43 output=results/mha-tuning/nostore-20261028-145805-check-1266710/seed43
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-{'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.322855514397345e-05, 'relative_l2': 0.002464784010507589, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_nostore', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.322855514397345e-05, 'relative_l2': 0.002464784010507589, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.262073895116062e-05, 'relative_l2': 0.002441090038219888, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_nostore', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.454711685447574e-05, 'relative_l2': 0.0017365376146649787, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_nostore_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.454711685447574e-05, 'relative_l2': 0.0017365376146649787, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang_q128', 'tilelang_nostore', 'ascendc']
-CASE: suite=mha_nostore metadata=cached tag=seed44 output=results/mha-tuning/nostore-20261028-145805-check-1266710/seed44
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-{'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 6.406429459260068e-05, 'relative_l2': 0.0024466363437922107, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_nostore', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 6.406429459260068e-05, 'relative_l2': 0.0024466363437922107, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 6.355775895747998e-05, 'relative_l2': 0.0024272915823741192, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_nostore', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 4.528714744415066e-05, 'relative_l2': 0.0017295438500280265, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_nostore_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 4.528714744415066e-05, 'relative_l2': 0.0017295438500280265, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang_q128', 'tilelang_nostore', 'ascendc']
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/tuning/run_nostore.sh bench
-Results: /home/z30086261/Q4/results/mha-tuning/nostore-20261028-145915-bench-1268257
-CASE: suite=mha_nostore metadata=cached tag=rep1 output=results/mha-tuning/nostore-20261028-145915-bench-1268257/rep1
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/tuning/run_nostore.sh profile
+Results: /home/z30086261/Q4/results/mha-tuning/nostore-20261028-150814-profile-1273248
+CASE: suite=mha_nostore metadata=cached tag=tilelang_q128 output=results/mha-tuning/nostore-20261028-150814-profile-1273248/tilelang_q128
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 {'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
@@ -72,35 +10,14 @@ Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot impor
 {'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_nostore_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 Correctness passed. Implementations: ['tilelang_q128', 'tilelang_nostore', 'ascendc']
-{'round': 0, 'implementation': 'tilelang_q128', 'event_us': 52.741451263427734, 'wall_us': 58.341510011814535}
-{'round': 0, 'implementation': 'tilelang_nostore', 'event_us': 52.07728862762451, 'wall_us': 52.491839887807146}
-{'round': 0, 'implementation': 'ascendc', 'event_us': 40.166401863098145, 'wall_us': 40.64225999172777}
-{'round': 1, 'implementation': 'tilelang_nostore', 'event_us': 52.11715221405029, 'wall_us': 52.47080000117421}
-{'round': 1, 'implementation': 'ascendc', 'event_us': 39.91307973861694, 'wall_us': 40.33771008835174}
-{'round': 1, 'implementation': 'tilelang_q128', 'event_us': 52.661871910095215, 'wall_us': 53.05999002302997}
-{'round': 2, 'implementation': 'ascendc', 'event_us': 39.8895001411438, 'wall_us': 40.20721011329442}
-{'round': 2, 'implementation': 'tilelang_q128', 'event_us': 52.65151023864746, 'wall_us': 52.98677002429031}
-{'round': 2, 'implementation': 'tilelang_nostore', 'event_us': 52.106451988220215, 'wall_us': 52.5372099946253}
-{'round': 3, 'implementation': 'ascendc', 'event_us': 39.81703042984009, 'wall_us': 40.1751599565614}
-{'round': 3, 'implementation': 'tilelang_nostore', 'event_us': 52.151498794555664, 'wall_us': 52.484119951259345}
-{'round': 3, 'implementation': 'tilelang_q128', 'event_us': 52.645249366760254, 'wall_us': 52.97897005220875}
-{'round': 4, 'implementation': 'tilelang_q128', 'event_us': 52.621779441833496, 'wall_us': 52.92728994390927}
-{'round': 4, 'implementation': 'ascendc', 'event_us': 39.96849060058594, 'wall_us': 40.352329961024225}
-{'round': 4, 'implementation': 'tilelang_nostore', 'event_us': 52.11160182952881, 'wall_us': 52.428339986363426}
-{'round': 5, 'implementation': 'tilelang_nostore', 'event_us': 52.004661560058594, 'wall_us': 52.29654008871876}
-{'round': 5, 'implementation': 'tilelang_q128', 'event_us': 52.610788345336914, 'wall_us': 53.04295991663821}
-{'round': 5, 'implementation': 'ascendc', 'event_us': 39.769299030303955, 'wall_us': 40.192689921241254}
-{'round': 6, 'implementation': 'tilelang_q128', 'event_us': 52.670350074768066, 'wall_us': 53.001899941591546}
-{'round': 6, 'implementation': 'tilelang_nostore', 'event_us': 52.10953235626221, 'wall_us': 53.595089993905276}
-{'round': 6, 'implementation': 'ascendc', 'event_us': 39.835710525512695, 'wall_us': 40.15241996967234}
-{'round': 7, 'implementation': 'tilelang_nostore', 'event_us': 52.07253932952881, 'wall_us': 52.39339006948285}
-{'round': 7, 'implementation': 'ascendc', 'event_us': 39.86907958984375, 'wall_us': 40.28021008707583}
-{'round': 7, 'implementation': 'tilelang_q128', 'event_us': 52.625861167907715, 'wall_us': 52.934300038032234}
-{'round': 8, 'implementation': 'ascendc', 'event_us': 39.84494924545288, 'wall_us': 40.14911988633685}
-{'round': 8, 'implementation': 'tilelang_q128', 'event_us': 52.622361183166504, 'wall_us': 52.92618996463716}
-{'round': 8, 'implementation': 'tilelang_nostore', 'event_us': 52.108402252197266, 'wall_us': 52.42522995104082}
-{'tilelang_q128': {'event_us': 52.645249366760254, 'wall_us': 52.98677002429031}, 'tilelang_nostore': {'event_us': 52.108402252197266, 'wall_us': 52.47080000117421}, 'ascendc': {'event_us': 39.86907958984375, 'wall_us': 40.20721011329442}, 'ratios': {'q128_over_nostore': 1.0103025057641324, 'ascendc_over_nostore': 0.7651180590201762}}
-CASE: suite=mha_nostore metadata=cached tag=rep2 output=results/mha-tuning/nostore-20261028-145915-bench-1268257/rep2
+Profiler metrics: default
+[2026-10-28 15:08:18] [WARNING] [1273264] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-28 15:08:18] [WARNING] [1273264] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-28 15:08:19] [INFO] [1273620] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mha-tuning/nostore-20261028-150814-profile-1273248/tilelang_q128/profile/ubuntu162_1273264_20261028150818704_ascend_pt
+[2026-10-28 15:08:20] [ERROR] [1273620] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mha-tuning/nostore-20261028-150814-profile-1273248/tilelang_q128/profile/ubuntu162_1273264_20261028150818704_ascend_pt/logs
+[2026-10-28 15:08:21] [INFO] [1273637] profiler.py: CANN profiling data parsed in a total time of 0:00:02.012286
+[2026-10-28 15:08:21] [INFO] [1273620] profiler.py: All profiling data parsed in a total time of 0:00:02.868356
+CASE: suite=mha_nostore metadata=cached tag=tilelang_nostore output=results/mha-tuning/nostore-20261028-150814-profile-1273248/tilelang_nostore
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 {'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
@@ -110,35 +27,14 @@ Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot impor
 {'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_nostore_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 Correctness passed. Implementations: ['tilelang_q128', 'tilelang_nostore', 'ascendc']
-{'round': 0, 'implementation': 'tilelang_q128', 'event_us': 52.85201072692871, 'wall_us': 56.87490993295796}
-{'round': 0, 'implementation': 'tilelang_nostore', 'event_us': 52.132320404052734, 'wall_us': 52.52568007563241}
-{'round': 0, 'implementation': 'ascendc', 'event_us': 40.123610496520996, 'wall_us': 40.46479007229209}
-{'round': 1, 'implementation': 'tilelang_nostore', 'event_us': 52.35459804534912, 'wall_us': 52.75303003145382}
-{'round': 1, 'implementation': 'ascendc', 'event_us': 40.19402027130127, 'wall_us': 40.6094100617338}
-{'round': 1, 'implementation': 'tilelang_q128', 'event_us': 52.6747989654541, 'wall_us': 53.01832003169693}
-{'round': 2, 'implementation': 'ascendc', 'event_us': 40.09592056274414, 'wall_us': 40.43955996166915}
-{'round': 2, 'implementation': 'tilelang_q128', 'event_us': 52.73911952972412, 'wall_us': 53.086730040377006}
-{'round': 2, 'implementation': 'tilelang_nostore', 'event_us': 52.14451789855957, 'wall_us': 52.482519968179986}
-{'round': 3, 'implementation': 'ascendc', 'event_us': 40.04779815673828, 'wall_us': 40.416419942630455}
-{'round': 3, 'implementation': 'tilelang_nostore', 'event_us': 52.11345195770264, 'wall_us': 52.44186002528295}
-{'round': 3, 'implementation': 'tilelang_q128', 'event_us': 52.66980171203613, 'wall_us': 54.215919954003766}
-{'round': 4, 'implementation': 'tilelang_q128', 'event_us': 52.721548080444336, 'wall_us': 53.128790023038164}
-{'round': 4, 'implementation': 'ascendc', 'event_us': 39.91329908370972, 'wall_us': 40.231739985756576}
-{'round': 4, 'implementation': 'tilelang_nostore', 'event_us': 52.16818809509277, 'wall_us': 52.52918999758549}
-{'round': 5, 'implementation': 'tilelang_nostore', 'event_us': 52.103519439697266, 'wall_us': 52.40940998191945}
-{'round': 5, 'implementation': 'tilelang_q128', 'event_us': 52.71753787994385, 'wall_us': 53.05558006512001}
-{'round': 5, 'implementation': 'ascendc', 'event_us': 39.87924098968506, 'wall_us': 40.21821994683705}
-{'round': 6, 'implementation': 'tilelang_q128', 'event_us': 52.756619453430176, 'wall_us': 53.09864995069802}
-{'round': 6, 'implementation': 'tilelang_nostore', 'event_us': 52.17010974884033, 'wall_us': 52.66089006909169}
-{'round': 6, 'implementation': 'ascendc', 'event_us': 39.869019985198975, 'wall_us': 40.22503999294713}
-{'round': 7, 'implementation': 'tilelang_nostore', 'event_us': 52.14860916137695, 'wall_us': 52.48532004770823}
-{'round': 7, 'implementation': 'ascendc', 'event_us': 39.90469932556152, 'wall_us': 40.28553012176417}
-{'round': 7, 'implementation': 'tilelang_q128', 'event_us': 52.71472930908203, 'wall_us': 53.02784004015848}
-{'round': 8, 'implementation': 'ascendc', 'event_us': 39.93551969528198, 'wall_us': 40.28551993542351}
-{'round': 8, 'implementation': 'tilelang_q128', 'event_us': 52.72822856903076, 'wall_us': 53.15913003869355}
-{'round': 8, 'implementation': 'tilelang_nostore', 'event_us': 52.08816051483154, 'wall_us': 52.42472994723357}
-{'tilelang_q128': {'event_us': 52.721548080444336, 'wall_us': 53.09864995069802}, 'tilelang_nostore': {'event_us': 52.14451789855957, 'wall_us': 52.48532004770823}, 'ascendc': {'event_us': 39.93551969528198, 'wall_us': 40.28553012176417}, 'ratios': {'q128_over_nostore': 1.0110659798026573, 'ascendc_over_nostore': 0.7658622862900254}}
-CASE: suite=mha_nostore metadata=cached tag=rep3 output=results/mha-tuning/nostore-20261028-145915-bench-1268257/rep3
+Profiler metrics: default
+[2026-10-28 15:08:28] [WARNING] [1273903] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-28 15:08:28] [WARNING] [1273903] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-28 15:08:28] [INFO] [1274262] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mha-tuning/nostore-20261028-150814-profile-1273248/tilelang_nostore/profile/ubuntu162_1273903_20261028150828538_ascend_pt
+[2026-10-28 15:08:30] [ERROR] [1274262] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mha-tuning/nostore-20261028-150814-profile-1273248/tilelang_nostore/profile/ubuntu162_1273903_20261028150828538_ascend_pt/logs
+[2026-10-28 15:08:31] [INFO] [1274279] profiler.py: CANN profiling data parsed in a total time of 0:00:02.012801
+[2026-10-28 15:08:31] [INFO] [1274262] profiler.py: All profiling data parsed in a total time of 0:00:02.872624
+CASE: suite=mha_nostore metadata=cached tag=ascendc output=results/mha-tuning/nostore-20261028-150814-profile-1273248/ascendc
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 {'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
@@ -148,32 +44,10 @@ Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot impor
 {'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_nostore_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 Correctness passed. Implementations: ['tilelang_q128', 'tilelang_nostore', 'ascendc']
-{'round': 0, 'implementation': 'tilelang_q128', 'event_us': 52.66308784484863, 'wall_us': 56.95853993529454}
-{'round': 0, 'implementation': 'tilelang_nostore', 'event_us': 52.11021900177002, 'wall_us': 52.507560030790046}
-{'round': 0, 'implementation': 'ascendc', 'event_us': 40.172109603881836, 'wall_us': 40.51165989949368}
-{'round': 1, 'implementation': 'tilelang_nostore', 'event_us': 52.163071632385254, 'wall_us': 52.55583004327491}
-{'round': 1, 'implementation': 'ascendc', 'event_us': 39.909820556640625, 'wall_us': 40.20720996777527}
-{'round': 1, 'implementation': 'tilelang_q128', 'event_us': 52.63786792755127, 'wall_us': 53.01101002260111}
-{'round': 2, 'implementation': 'ascendc', 'event_us': 40.008912086486816, 'wall_us': 40.34191006212495}
-{'round': 2, 'implementation': 'tilelang_q128', 'event_us': 52.65726089477539, 'wall_us': 52.9833699692972}
-{'round': 2, 'implementation': 'tilelang_nostore', 'event_us': 52.110252380371094, 'wall_us': 52.436849946388975}
-{'round': 3, 'implementation': 'ascendc', 'event_us': 40.017218589782715, 'wall_us': 40.36735001136549}
-{'round': 3, 'implementation': 'tilelang_nostore', 'event_us': 52.09092140197754, 'wall_us': 52.406600007088855}
-{'round': 3, 'implementation': 'tilelang_q128', 'event_us': 52.63236045837402, 'wall_us': 52.937809959985316}
-{'round': 4, 'implementation': 'tilelang_q128', 'event_us': 52.640957832336426, 'wall_us': 52.9689498944208}
-{'round': 4, 'implementation': 'ascendc', 'event_us': 39.886629581451416, 'wall_us': 41.389890102436766}
-{'round': 4, 'implementation': 'tilelang_nostore', 'event_us': 52.136850357055664, 'wall_us': 52.53600000287406}
-{'round': 5, 'implementation': 'tilelang_nostore', 'event_us': 52.09920883178711, 'wall_us': 52.439960127230734}
-{'round': 5, 'implementation': 'tilelang_q128', 'event_us': 52.617249488830566, 'wall_us': 53.13218993251212}
-{'round': 5, 'implementation': 'ascendc', 'event_us': 39.91291046142578, 'wall_us': 40.24776993901469}
-{'round': 6, 'implementation': 'tilelang_q128', 'event_us': 52.66276836395264, 'wall_us': 53.01961995428428}
-{'round': 6, 'implementation': 'tilelang_nostore', 'event_us': 52.142701148986816, 'wall_us': 52.58496996248141}
-{'round': 6, 'implementation': 'ascendc', 'event_us': 39.92448091506958, 'wall_us': 40.307960007339716}
-{'round': 7, 'implementation': 'tilelang_nostore', 'event_us': 52.09524154663086, 'wall_us': 52.44826999842189}
-{'round': 7, 'implementation': 'ascendc', 'event_us': 39.93791103363037, 'wall_us': 40.35894002299756}
-{'round': 7, 'implementation': 'tilelang_q128', 'event_us': 52.57608890533447, 'wall_us': 53.045259992359206}
-{'round': 8, 'implementation': 'ascendc', 'event_us': 39.81484889984131, 'wall_us': 40.20049003884196}
-{'round': 8, 'implementation': 'tilelang_q128', 'event_us': 52.6712703704834, 'wall_us': 53.027340036351234}
-{'round': 8, 'implementation': 'tilelang_nostore', 'event_us': 52.12512969970703, 'wall_us': 52.44055006187409}
-{'tilelang_q128': {'event_us': 52.640957832336426, 'wall_us': 53.01961995428428}, 'tilelang_nostore': {'event_us': 52.110252380371094, 'wall_us': 52.44826999842189}, 'ascendc': {'event_us': 39.92448091506958, 'wall_us': 40.34191006212495}, 'ratios': {'q128_over_nostore': 1.0101842809758725, 'ascendc_over_nostore': 0.7661540501405889}}
+Profiler metrics: default
+[2026-10-28 15:08:38] [WARNING] [1274545] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-28 15:08:38] [WARNING] [1274545] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-28 15:08:39] [INFO] [1274903] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mha-tuning/nostore-20261028-150814-profile-1273248/ascendc/profile/ubuntu162_1274545_20261028150838759_ascend_pt
+[2026-10-28 15:08:41] [INFO] [1274919] profiler.py: CANN profiling data parsed in a total time of 0:00:02.012457
+[2026-10-28 15:08:42] [INFO] [1274903] profiler.py: All profiling data parsed in a total time of 0:00:02.907537
 (zwh) root@ubuntu162:/home/z30086261/Q4#
