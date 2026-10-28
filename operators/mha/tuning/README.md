@@ -85,3 +85,7 @@ cat "$LATEST/csv-files.txt"
 ## Vector路径下一轮实验
 
 Level1数据已收到，Q64仍不采用。回到Q128尝试单独的[Vector融合乘加实验](FMA.md)，其舍入和性能均待NPU验证。
+
+## 后续调度实验
+
+FMA没有有效API收益，回到原始Q128测试上游[手工阶段调度](MANUAL.md)，不叠加此前候选。

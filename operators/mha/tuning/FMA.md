@@ -47,3 +47,7 @@ profile每侧30次调用。q128_over_fma>1表示改善TL，ascendc_over_fma>1表
 原始管线指标证据：Q4提交3494649的error.txt。
 SIMD指令语义来自固定TileLang源码 tilelang/ascend/language/simd.py 的 vmula 定义，
 以及已使用的TileKernels mhc/pre_apply_mix_asc.py 中alloc_var/vmula示例。
+
+## 实测状态
+
+NPU精度已通过，但三个进程API中位数与基线同为约52.693us，未观察到有效加速，不采用。见 reports/mha_fma/report.md。

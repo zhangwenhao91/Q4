@@ -1,0 +1,66 @@
+{
+  "outcome": "not adopted: no effective API improvement",
+  "source_revision": "4947173",
+  "correctness_passed": 36,
+  "api_process_summaries": [
+    {
+      "tilelang_q128": {
+        "event_us": 52.76051998138428,
+        "wall_us": 53.16103997756727
+      },
+      "tilelang_fma": {
+        "event_us": 52.70973205566406,
+        "wall_us": 53.140709933359176
+      },
+      "ascendc": {
+        "event_us": 39.895830154418945,
+        "wall_us": 40.41341002448462
+      },
+      "ratios": {
+        "q128_over_fma": 1.0009635398196786,
+        "ascendc_over_fma": 0.7568968499457935
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.60039806365967,
+        "wall_us": 52.90856002829969
+      },
+      "tilelang_fma": {
+        "event_us": 52.602739334106445,
+        "wall_us": 52.92208006721921
+      },
+      "ascendc": {
+        "event_us": 39.88234043121338,
+        "wall_us": 40.191980078816414
+      },
+      "ratios": {
+        "q128_over_fma": 0.9999554914729458,
+        "ascendc_over_fma": 0.7581799148880932
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.69296169281006,
+        "wall_us": 53.05678001604974
+      },
+      "tilelang_fma": {
+        "event_us": 52.69299030303955,
+        "wall_us": 53.06008999468759
+      },
+      "ascendc": {
+        "event_us": 39.906160831451416,
+        "wall_us": 40.25578004075214
+      },
+      "ratios": {
+        "q128_over_fma": 0.9999994570391749,
+        "ascendc_over_fma": 0.7573333872674419
+      }
+    }
+  ],
+  "api_median_us": {
+    "tilelang_q128": 52.69296169281006,
+    "tilelang_fma": 52.69299030303955,
+    "ascendc": 39.895830154418945
+  }
+}
