@@ -23,7 +23,7 @@ def implementation_order(labels,round_index):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--suite',choices=['mha','mha_bf16','mha_q64','mha_fma','mha_nostore','mha_manual','mhc_post','mhc_shifted'],required=True)
+    p.add_argument('--suite',choices=['mha','mha_bf16','mha_q64','mha_fma','mha_nostore','mha_rowfused','mha_manual','mhc_post','mhc_shifted'],required=True)
     p.add_argument('--tokens',type=int,default=512,help='mHC only; MHA is fixed at 4096')
     p.add_argument('--seed',type=int,default=42)
     p.add_argument('--ac-metadata',choices=['cached','per_call'],default='cached',
@@ -49,7 +49,10 @@ def main():
     torch.manual_seed(a.seed);torch.npu.set_device(0)
     torch.npu.matmul.allow_hf32=True
     with torch.no_grad():
-        if a.suite=='mha_nostore':
+        if a.suite=='mha_rowfused':
+            from mha_rowfused import make_case
+            functions,refs,names,meta=make_case(a)
+        elif a.suite=='mha_nostore':
             from mha_nostore import make_case
             functions,refs,names,meta=make_case(a)
         elif a.suite=='mha_manual':
@@ -99,7 +102,7 @@ def main():
             delta=y.double()-r.double();err=delta.norm().item()/max(r.double().norm().item(),1e-30)
             finite=bool(torch.isfinite(y).all() and torch.isfinite(r).all())
             rtol,atol=(.02,.02) if r.dtype==torch.bfloat16 else (1e-3,1e-4)
-            if a.suite in ('mha','mha_bf16','mha_q64','mha_fma','mha_manual','mha_nostore'):
+            if a.suite in ('mha','mha_bf16','mha_q64','mha_fma','mha_manual','mha_nostore','mha_rowfused'):
                 passed=finite and err<=.01 and delta.abs().max().item()<=.02
                 gate={'relative_l2_max':.01,'max_abs_max':.02}
             else:
@@ -178,6 +181,10 @@ def main():
             summary['ratios']=dict(
                 q128_over_fma=summary['tilelang_q128']['event_us']/summary['tilelang_fma']['event_us'],
                 ascendc_over_fma=summary['ascendc']['event_us']/summary['tilelang_fma']['event_us'])
+        if a.suite=='mha_rowfused':
+            summary['ratios']=dict(
+                q128_over_rowfused=summary['tilelang_q128']['event_us']/summary['tilelang_rowfused']['event_us'],
+                ascendc_over_rowfused=summary['ascendc']['event_us']/summary['tilelang_rowfused']['event_us'])
         if a.suite=='mha_nostore':
             summary['ratios']=dict(
                 q128_over_nostore=summary['tilelang_q128']['event_us']/summary['tilelang_nostore']['event_us'],

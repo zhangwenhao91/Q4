@@ -1,0 +1,51 @@
+{
+  "source_revision": "2c14e82",
+  "aggregation": "mean of all 30 samples per implementation",
+  "metrics": {
+    "ascendc": {
+      "count": 30,
+      "means": {
+        "Duration(us)": 40.49766666666667,
+        "aic_mac_time(us)": 31.280166666666666,
+        "aic_mac_ratio": 0.7787333333333334,
+        "aic_mte2_time(us)": 27.744133333333334,
+        "aic_mte2_ratio": 0.6907,
+        "aiv_vec_time(us)": 21.9752,
+        "aiv_vec_ratio": 0.5565,
+        "aiv_mte2_time(us)": 2.043433333333333,
+        "aiv_mte2_ratio": 0.051666666666666666,
+        "cube_utilization(%)": 74.50423333333333
+      }
+    },
+    "tilelang_nostore": {
+      "count": 30,
+      "means": {
+        "Duration(us)": 52.63583333333333,
+        "aic_mac_time(us)": 43.528800000000004,
+        "aic_mac_ratio": 0.8326,
+        "aic_mte2_time(us)": 38.3931,
+        "aic_mte2_ratio": 0.7343666666666666,
+        "aiv_vec_time(us)": 42.9737,
+        "aiv_vec_ratio": 0.8252666666666666,
+        "aiv_mte2_time(us)": 0.01,
+        "aiv_mte2_ratio": 0.0,
+        "cube_utilization(%)": 55.629466666666666
+      }
+    },
+    "tilelang_q128": {
+      "count": 30,
+      "means": {
+        "Duration(us)": 53.13636666666667,
+        "aic_mac_time(us)": 43.622366666666665,
+        "aic_mac_ratio": 0.8263666666666666,
+        "aic_mte2_time(us)": 38.64236666666667,
+        "aic_mte2_ratio": 0.7318333333333333,
+        "aiv_vec_time(us)": 42.3946,
+        "aiv_vec_ratio": 0.8062,
+        "aiv_mte2_time(us)": 0.01,
+        "aiv_mte2_ratio": 0.0,
+        "cube_utilization(%)": 55.64523333333333
+      }
+    }
+  }
+}
