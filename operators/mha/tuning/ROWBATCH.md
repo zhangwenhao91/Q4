@@ -25,3 +25,5 @@ bash operators/mha/tuning/run_rowbatch.sh bench
 ```
 
 编译或精度失败则停止；将输出反馈到error.txt。API确认收益后再profile。
+
+实测结果：36项精度通过，但比同轮基线慢约6.17%，不采用。详见reports/mha_rowbatch/report.md。
