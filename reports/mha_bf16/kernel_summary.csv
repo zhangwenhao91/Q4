@@ -1,0 +1,6 @@
+case,kernel,count,mean_us,median_us,min_us,max_us
+cached-ascendc,FlashAttn,30,39.6894,39.7245,38.316,41.311
+per_call-tilelang,main_kernel,30,52.643766666666664,52.721000000000004,51.967,53.316
+cached-tilelang,main_kernel,30,52.5612,52.5425,51.933,53.24
+per_call-ascendc,aclnnFlashAttnMetadata_FlashAttnMetadata_FlashAttnMetadata,30,43.106433333333335,42.6185,41.551,49.224
+per_call-ascendc,FlashAttn,30,39.8359,39.8365,38.537,41.276

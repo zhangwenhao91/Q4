@@ -1,0 +1,197 @@
+{
+  "date": "2026-10-28",
+  "api_log_revision": "be6a517",
+  "profile_log_revision": "17ce416",
+  "contract": {
+    "batch": 1,
+    "heads": 1,
+    "sequence": 4096,
+    "head_dim": 128,
+    "input": "BF16",
+    "output": "BF16",
+    "causal": false,
+    "dropout": 0,
+    "scale": "1/sqrt(128)",
+    "scope": "attention core only"
+  },
+  "correctness": {
+    "records": 36,
+    "failed": 0
+  },
+  "mode_assignment": "Recorded run_bf16.sh bench order: cached, per_call, per_call, cached, cached, per_call",
+  "api": {
+    "cached": {
+      "process_summaries": [
+        {
+          "tilelang": {
+            "event_us": 52.65668869018555,
+            "wall_us": 53.04035992594436
+          },
+          "ascendc": {
+            "event_us": 39.909420013427734,
+            "wall_us": 40.451270033372566
+          },
+          "ratio": {
+            "numerator": "ascendc",
+            "denominator": "tilelang",
+            "event_ratio": 0.7579173891514808
+          }
+        },
+        {
+          "tilelang": {
+            "event_us": 52.76165962219238,
+            "wall_us": 53.12088003847748
+          },
+          "ascendc": {
+            "event_us": 40.070037841796875,
+            "wall_us": 40.43364999233745
+          },
+          "ratio": {
+            "numerator": "ascendc",
+            "denominator": "tilelang",
+            "event_ratio": 0.7594537042375897
+          }
+        },
+        {
+          "tilelang": {
+            "event_us": 52.67731189727783,
+            "wall_us": 52.98877993482165
+          },
+          "ascendc": {
+            "event_us": 39.96040105819702,
+            "wall_us": 40.294240025104955
+          },
+          "ratio": {
+            "numerator": "ascendc",
+            "denominator": "tilelang",
+            "event_ratio": 0.7585884628304662
+          }
+        }
+      ],
+      "median_of_process_medians": {
+        "tilelang": {
+          "event_us": 52.67731189727783,
+          "wall_us": 53.04035992594436
+        },
+        "ascendc": {
+          "event_us": 39.96040105819702,
+          "wall_us": 40.43364999233745
+        }
+      },
+      "ascendc_over_tilelang": 0.7585884628304662
+    },
+    "per_call": {
+      "process_summaries": [
+        {
+          "tilelang": {
+            "event_us": 52.783122062683105,
+            "wall_us": 53.211720078252256
+          },
+          "ascendc": {
+            "event_us": 81.76918983459473,
+            "wall_us": 82.55091990577057
+          },
+          "ratio": {
+            "numerator": "ascendc",
+            "denominator": "tilelang",
+            "event_ratio": 1.5491540977339109
+          }
+        },
+        {
+          "tilelang": {
+            "event_us": 52.68295764923096,
+            "wall_us": 53.04296006215736
+          },
+          "ascendc": {
+            "event_us": 82.17313766479492,
+            "wall_us": 82.63684998382814
+          },
+          "ratio": {
+            "numerator": "ascendc",
+            "denominator": "tilelang",
+            "event_ratio": 1.5597669783825139
+          }
+        },
+        {
+          "tilelang": {
+            "event_us": 52.72243022918701,
+            "wall_us": 53.22062992490828
+          },
+          "ascendc": {
+            "event_us": 81.93285942077637,
+            "wall_us": 82.3087600292638
+          },
+          "ratio": {
+            "numerator": "ascendc",
+            "denominator": "tilelang",
+            "event_ratio": 1.554041781924888
+          }
+        }
+      ],
+      "median_of_process_medians": {
+        "tilelang": {
+          "event_us": 52.72243022918701,
+          "wall_us": 53.211720078252256
+        },
+        "ascendc": {
+          "event_us": 81.93285942077637,
+          "wall_us": 82.55091990577057
+        }
+      },
+      "ascendc_over_tilelang": 1.554041781924888
+    }
+  },
+  "kernels": [
+    {
+      "case": "cached-ascendc",
+      "kernel": "FlashAttn",
+      "count": 30,
+      "mean_us": 39.6894,
+      "median_us": 39.7245,
+      "min_us": 38.316,
+      "max_us": 41.311
+    },
+    {
+      "case": "per_call-tilelang",
+      "kernel": "main_kernel",
+      "count": 30,
+      "mean_us": 52.643766666666664,
+      "median_us": 52.721000000000004,
+      "min_us": 51.967,
+      "max_us": 53.316
+    },
+    {
+      "case": "cached-tilelang",
+      "kernel": "main_kernel",
+      "count": 30,
+      "mean_us": 52.5612,
+      "median_us": 52.5425,
+      "min_us": 51.933,
+      "max_us": 53.24
+    },
+    {
+      "case": "per_call-ascendc",
+      "kernel": "aclnnFlashAttnMetadata_FlashAttnMetadata_FlashAttnMetadata",
+      "count": 30,
+      "mean_us": 43.106433333333335,
+      "median_us": 42.6185,
+      "min_us": 41.551,
+      "max_us": 49.224
+    },
+    {
+      "case": "per_call-ascendc",
+      "kernel": "FlashAttn",
+      "count": 30,
+      "mean_us": 39.8359,
+      "median_us": 39.8365,
+      "min_us": 38.537,
+      "max_us": 41.276
+    }
+  ],
+  "server_profile_paths": {
+    "cached-ascendc": "results/mha-bf16/20261028-100628-profile-1022967/cached-ascendc/profile/ubuntu162_1023742_20261028100643501_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv",
+    "per_call-tilelang": "results/mha-bf16/20261028-100628-profile-1022967/per_call-tilelang/profile/ubuntu162_1024525_20261028100707348_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv",
+    "cached-tilelang": "results/mha-bf16/20261028-100628-profile-1022967/cached-tilelang/profile/ubuntu162_1022977_20261028100632647_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv",
+    "per_call-ascendc": "results/mha-bf16/20261028-100628-profile-1022967/per_call-ascendc/profile/ubuntu162_1030365_20261028100723106_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv"
+  }
+}

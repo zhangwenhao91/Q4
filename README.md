@@ -43,3 +43,7 @@ Post、Sinkhorn、Pre 与 Pre+Sinkhorn 的反向校验、独立反向及前向+�
 ## MHA BF16 双侧原生比较
 
 用户确认将输出统一为 BF16，新增 [MHA BF16 原生比较说明](operators/mha/README.md)，分别统计 AscendC metadata 复用和每次生成的计时边界。历史 FP32 输出结果保留。
+
+## MHA BF16 测试结果
+
+[双侧原生前向结果报告](reports/mha_bf16/report.md)：固定形状且复用 metadata 时 AscendC API 快约1.318倍；每次生成 metadata 时 TL 完整调用快约1.554倍。报告分列API与设备kernel耗时，并保留原始日志提交号。
