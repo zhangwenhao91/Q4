@@ -78,5 +78,44 @@
     "tilelang_finalize": 51.609389781951904,
     "ascendc": 40.006184577941895
   },
-  "outcome": "small API improvement; device confirmation pending"
+  "outcome": "API and device improvement confirmed; AscendC still faster",
+  "device_profile": {
+    "source_revision": "2d99bac",
+    "aggregation": "all 30 Duration(us) records per implementation, no trimming",
+    "statistics": {
+      "ascendc": {
+        "count": 30,
+        "mean_us": 39.70936666666667,
+        "median_us": 39.6435,
+        "min_us": 38.709,
+        "max_us": 41.582
+      },
+      "tilelang_nostore_s2": {
+        "count": 30,
+        "mean_us": 51.850966666666665,
+        "median_us": 51.93000000000001,
+        "min_us": 50.947,
+        "max_us": 53.071
+      },
+      "tilelang_q128": {
+        "count": 30,
+        "mean_us": 52.582566666666665,
+        "median_us": 52.5715,
+        "min_us": 52.002,
+        "max_us": 53.298
+      },
+      "tilelang_finalize": {
+        "count": 30,
+        "mean_us": 51.596333333333334,
+        "median_us": 51.581,
+        "min_us": 50.884,
+        "max_us": 53.056
+      }
+    },
+    "ratios": {
+      "reduction_vs_original_percent": 1.8755899452099767,
+      "reduction_vs_previous_percent": 0.4910869549844432,
+      "ascendc_speedup": 1.2993491879749615
+    }
+  }
 }

@@ -37,3 +37,5 @@ bash operators/mha/tuning/run_finalize.sh profile
 ```
 
 自动打印kernel-details.txt，将输出反馈error.txt。无需重复check/bench或重建AscendC。
+
+设备profile已确认同方向收益，详见reports/mha_finalize/report.md及summary.json。
