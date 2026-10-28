@@ -1,7 +1,51 @@
-cd /home/z30086261/Q4
-
-grep -nEi -B 8 -A 15 \
-  'error:|fatal error|FAILED:|Traceback|Killed|Error [0-9]+|\[ERROR\]|RuntimeError|CMake Error' \
-  mha-bf16-build-retry.log \
-  | sed -n '1,260p' \
-  | tee mha-bf16-errors.txt
+(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# grep -nEi -B 8 -A 15 \
+>   'error:|fatal error|FAILED:|Traceback|Killed|Error [0-9]+|\[ERROR\]|RuntimeError|CMake Error' \
+>   mha-bf16-build-retry.log \
+>   | sed -n '1,260p' \
+>   | tee mha-bf16-errors.txt
+2580-[2026-10-27 20:32:58] [ 81%] Building CXX object CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_enum_util.cc.o
+2581-[2026-10-27 20:32:59] [ 81%] Building CXX object CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_message_bases.cc.o
+2582-[2026-10-27 20:32:59] [ 64%] Building CXX object CMakeFiles/libprotobuf.dir/src/google/protobuf/dynamic_message.cc.o
+2583-[2026-10-27 20:32:59] [ 81%] Building CXX object CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_message_reflection.cc.o
+2584-[2026-10-27 20:33:01] [ 84%] ES package 'es_math' build completed (single-file mode)
+2585-[2026-10-27 20:33:01] [ 84%] Built target build_es_math
+2586-[2026-10-27 20:33:01] [ 85%] Building CXX object attention/flash_attn_metadata/op_kernel_aicpu/CMakeFiles/flash_attn_metadata_cust_obj.dir/flash_attn_metadata_aicpu.cpp.o
+2587-Assembler messages:
+2588:Error: unknown architecture `nocona'
+2589-
+2590:Error: unrecognized option -march=nocona
+2591:cc1plus: error: unknown value 'nocona' for '-march'
+2592-cc1plus: note: valid arguments are: armv8-a armv8.1-a armv8.2-a armv8.3-a armv8.4-a armv8.5-a armv8.6-a armv8.7-a armv8.8-a armv8.9-a armv8-r armv9-a armv9.1-a armv9.2-a armv9.3-a armv9.4-a
+2593:cc1plus: error: unknown value 'haswell' for '-mtune'
+2594-cc1plus: note: valid arguments are: cortex-a34 cortex-a35 cortex-a53 cortex-a57 cortex-a72 cortex-a73 thunderx thunderxt88p1 thunderxt88 octeontx octeontx81 octeontx83 thunderxt81 thunderxt83 ampere1 ampere1a ampere1b emag xgene1 falkor qdf24xx exynos-m1 phecda thunderx2t99p1 vulcan thunderx2t99 cortex-a55 cortex-a75 cortex-a76 cortex-a76ae cortex-a77 cortex-a78 cortex-a78ae cortex-a78c cortex-a65 cortex-a65ae cortex-x1 cortex-x1c neoverse-n1 ares neoverse-e1 octeontx2 octeontx2t98 octeontx2t96 octeontx2t93 octeontx2f95 octeontx2f95n octeontx2f95mm a64fx fujitsu-monaka tsv110 thunderx3t110 neoverse-v1 zeus neoverse-512tvb saphira cortex-a57.cortex-a53 cortex-a72.cortex-a53 cortex-a73.cortex-a35 cortex-a73.cortex-a53 cortex-a75.cortex-a55 cortex-a76.cortex-a55 cortex-r82 cortex-a510 cortex-a520 cortex-a710 cortex-a715 cortex-a720 cortex-a725 cortex-x2 cortex-x3 cortex-x4 cortex-x925 neoverse-n2 cobalt-100 neoverse-n3 neoverse-v2 grace neoverse-v3 neoverse-v3ae demeter generic generic-armv8-a generic-armv9-a
+2595:make[2]: *** [attention/flash_attn_metadata/op_kernel_aicpu/CMakeFiles/flash_attn_metadata_cust_obj.dir/build.make:79: attention/flash_attn_metadata/op_kernel_aicpu/CMakeFiles/flash_attn_metadata_cust_obj.dir/flash_attn_metadata_aicpu.cpp.o] Error 1
+2596:make[1]: *** [CMakeFiles/Makefile2:2992: attention/flash_attn_metadata/op_kernel_aicpu/CMakeFiles/flash_attn_metadata_cust_obj.dir/all] Error 2
+2597-make[1]: *** Waiting for unfinished jobs....
+2598-[2026-10-27 20:33:02] [ 64%] Building CXX object CMakeFiles/libprotobuf.dir/src/google/protobuf/extension_set.cc.o
+2599-[2026-10-27 20:33:03] [ 82%] Building CXX object CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_message_tctable_full.cc.o
+2600-[2026-10-27 20:33:03] [ 82%] Building CXX object CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_message_tctable_gen.cc.o
+2601-[2026-10-27 20:33:04] [ 83%] Building CXX object CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_message_tctable_lite.cc.o
+2602-[2026-10-27 20:33:04] [ 83%] Building CXX object CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_message_util.cc.o
+2603-[2026-10-27 20:33:04] [ 65%] Building CXX object CMakeFiles/libprotobuf.dir/src/google/protobuf/extension_set_heavy.cc.o
+2604-In file included from /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/protobuf_src-prefix/src/protobuf_src/src/google/protobuf/generated_message_tctable_decl.h:22,
+2605-                 from /home/z30086261/Q4/third_party/ops-transformer-q4fa/build/protobuf_src-prefix/src/protobuf_src/src/google/protobuf/generated_message_tctable_lite.cc:22:
+2606-/home/z30086261/Q4/third_party/ops-transformer-q4fa/build/protobuf_src-prefix/src/protobuf_src/src/google/protobuf/parse_context.h:1125:1: warning: 'always_inline' function might not be inlinable [-Wattributes]
+2607- 1125 | ParseContext::ParseLengthDelimitedInlined(const char* ptr, const Func& func) {
+2608-      | ^~~~~~~~~~~~
+2609-/home/z30086261/Q4/third_party/ops-transformer-q4fa/build/protobuf_src-prefix/src/protobuf_src/src/google/protobuf/parse_context.h:1125:1: warning: 'always_inline' function might not be inlinable [-Wattributes]
+2610-/home/z30086261/Q4/third_party/ops-transformer-q4fa/build/protobuf_src-prefix/src/protobuf_src/src/google/protobuf/generated_message_tctable_lite.cc:830:36: warning: 'always_inline' function might not be inlinable [-Wattributes]
+2611-  830 | PROTOBUF_ALWAYS_INLINE const char* TcParser::FastVarintS1(
+--
+3820-[2026-10-27 20:34:52] [ 88%] Built target protobuf_host_build
+3821-[2026-10-27 20:42:45] Opc tool start working now, please wait for a moment.
+3822-[2026-10-27 20:42:45] [ascend950] Generating FlashAttn_761df6ce7ae0609539d8a454b0416279 Done
+3823-[2026-10-27 20:42:45] /usr/bin/make
+3824-[2026-10-27 20:42:45] [ 88%] Built target flash_attn_ascend950_0
+3825-[2026-10-27 20:43:07] Opc tool start working now, please wait for a moment.
+3826-[2026-10-27 20:43:07] [ascend950] Generating FlashAttn_7a9b290f0be5028cb35fc6d409953d1d Done
+3827-[2026-10-27 20:43:07] /usr/bin/make
+3828:make: *** [Makefile:156: all] Error 2
+3829-[2026-10-27 20:43:07] [ 88%] Built target flash_attn_ascend950_1
+(zwh) root@ubuntu162:/home/z30086261/Q4#
