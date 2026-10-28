@@ -5,7 +5,7 @@ Q64退化，FMA未观察到有效API收益，均不采用。当前最佳仍为�
 本轮仅启用固定core.py已有的 manual_schedule=True：kv_manual用T.Stage为K搬运、QK GEMM、
 softmax/概率打包、V搬运、PV GEMM、输出累积指定阶段。数值宏、shape、buffer版本和精度保留，
 没有修改上游源码，也不叠加Q64/FMA。Q=128、KV=128、num_stages=3、BF16输入/输出，
-对照原始自动调度与复用metadata的原生AscendC。候选是否更快尚未验证。
+对照原始自动调度与复用metadata的原生AscendC。已完成验证：精度通过，API耗时比基线慢4.11%，不采用。详见reports/mha_manual/report.md。
 
 此实验测试上游已有的调度方案，不能将性能变化归因到某一条具体同步指令。
 若编译器拒绝阶段约束或精度失败，停止并保留日志，不自动降级到自动调度。

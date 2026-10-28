@@ -1,0 +1,65 @@
+{
+  "source_revision": "b1f808b",
+  "api_process_summaries": [
+    {
+      "tilelang_q128": {
+        "event_us": 52.673959732055664,
+        "wall_us": 53.08382009388879
+      },
+      "tilelang_manual": {
+        "event_us": 54.83748912811279,
+        "wall_us": 55.256380001083016
+      },
+      "ascendc": {
+        "event_us": 39.918339252471924,
+        "wall_us": 40.53259006468579
+      },
+      "ratios": {
+        "q128_over_manual": 0.9605465270117923,
+        "ascendc_over_manual": 0.7279388587470452
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.71994113922119,
+        "wall_us": 53.08312000124715
+      },
+      "tilelang_manual": {
+        "event_us": 54.8691987991333,
+        "wall_us": 55.19288999494165
+      },
+      "ascendc": {
+        "event_us": 39.97375011444092,
+        "wall_us": 40.342909924220294
+      },
+      "ratios": {
+        "q128_over_manual": 0.960829432414711,
+        "ascendc_over_manual": 0.7285280446827361
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.63676166534424,
+        "wall_us": 52.96385003020987
+      },
+      "tilelang_manual": {
+        "event_us": 54.83139991760254,
+        "wall_us": 55.19669008208439
+      },
+      "ascendc": {
+        "event_us": 39.936890602111816,
+        "wall_us": 40.34020996186882
+      },
+      "ratios": {
+        "q128_over_manual": 0.9599747908031478,
+        "ascendc_over_manual": 0.72835803320956
+      }
+    }
+  ],
+  "median_event_us": {
+    "tilelang_q128": 52.673959732055664,
+    "tilelang_manual": 54.83748912811279,
+    "ascendc": 39.936890602111816
+  },
+  "outcome": "not adopted: 4.11% slower than baseline"
+}
