@@ -28,3 +28,14 @@ cat "$OUT/codegen.txt"
 ```
 
 将codegen.txt内容反馈到error.txt。该步骤只编译/导出，不执行kernel或计时。
+
+## 编译后源码检查
+
+服务器导出三版均成功，TileLang为0.1.15+cpu.gita7cb753d。
+生成C++显示：原始alpha_reg exp、l_scaled乘法、l_updated加法在行循环外，
+各处理64个行统计量一次。rowfused则在32次循环内为两行分别调用：
+每个KV块的alpha exp、l乘法/加法各64次，且只使用一个lane更新统计量。
+减少UB读写并不等于减少执行指令；该重复开销为后续候选提供直接修改依据。
+这里只检查生成C++，没有物理寄存器/spill证据，也不能精确归因全部性能差距。
+rowbatch候选保留单遍分数处理，恢复循环外批量统计更新，收益待测。
+证据：https://github.com/zhangwenhao91/Q4/blob/1d97603/error.txt
