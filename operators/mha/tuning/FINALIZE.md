@@ -27,3 +27,13 @@ bash operators/mha/tuning/run_finalize.sh bench
 
 任何编译或精度失败都停止，保留日志并反馈error.txt。计时确认收益后再采集profile。
 比较matched_best_over_finalize，而不只看是否超过原始基线。
+
+## API结果后复核
+
+60项精度通过，API观察到小幅改善。下一步：
+
+```bash
+bash operators/mha/tuning/run_finalize.sh profile
+```
+
+自动打印kernel-details.txt，将输出反馈error.txt。无需重复check/bench或重建AscendC。

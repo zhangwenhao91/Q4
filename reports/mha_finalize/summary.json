@@ -1,0 +1,82 @@
+{
+  "source_revision": "23155ee",
+  "correctness_passed": 60,
+  "api_process_summaries": [
+    {
+      "tilelang_q128": {
+        "event_us": 52.67925500869751,
+        "wall_us": 53.036450044601224
+      },
+      "tilelang_nostore_s2": {
+        "event_us": 51.837990283966064,
+        "wall_us": 52.202950028004125
+      },
+      "tilelang_finalize": {
+        "event_us": 51.596410274505615,
+        "wall_us": 51.947219981229864
+      },
+      "ascendc": {
+        "event_us": 39.90795016288757,
+        "wall_us": 40.2942350046942
+      },
+      "ratios": {
+        "matched_best_over_finalize": 1.0046821088555422,
+        "original_over_finalize": 1.0209868230838326,
+        "ascendc_over_finalize": 0.7734636954502735
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.648513317108154,
+        "wall_us": 53.045114982523955
+      },
+      "tilelang_nostore_s2": {
+        "event_us": 51.846935749053955,
+        "wall_us": 52.25622509897221
+      },
+      "tilelang_finalize": {
+        "event_us": 51.609389781951904,
+        "wall_us": 52.02694010222331
+      },
+      "ascendc": {
+        "event_us": 40.10096549987793,
+        "wall_us": 40.72017996804789
+      },
+      "ratios": {
+        "matched_best_over_finalize": 1.0046027664366053,
+        "original_over_finalize": 1.0201343891014119,
+        "ascendc_over_finalize": 0.7770090998809186
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.69718885421753,
+        "wall_us": 53.05903498083353
+      },
+      "tilelang_nostore_s2": {
+        "event_us": 51.88312530517578,
+        "wall_us": 52.26935005339328
+      },
+      "tilelang_finalize": {
+        "event_us": 51.647236347198486,
+        "wall_us": 51.99573999561835
+      },
+      "ascendc": {
+        "event_us": 40.006184577941895,
+        "wall_us": 40.451075037708506
+      },
+      "ratios": {
+        "matched_best_over_finalize": 1.0045673103666484,
+        "original_over_finalize": 1.0203293066827572,
+        "ascendc_over_finalize": 0.7746045559727603
+      }
+    }
+  ],
+  "median_event_us": {
+    "tilelang_q128": 52.67925500869751,
+    "tilelang_nostore_s2": 51.846935749053955,
+    "tilelang_finalize": 51.609389781951904,
+    "ascendc": 40.006184577941895
+  },
+  "outcome": "small API improvement; device confirmation pending"
+}

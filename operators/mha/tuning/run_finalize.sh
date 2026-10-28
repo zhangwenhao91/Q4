@@ -27,6 +27,7 @@ case "$ACTION" in
   profile)
     for impl in tilelang_q128 tilelang_nostore_s2 tilelang_finalize ascendc; do run_case "$impl" --profile "$impl"; done
     find "$OUT" -type f -name kernel_details.csv -print -exec cat {} \; > "$OUT/kernel-details.txt"
+    cat "$OUT/kernel-details.txt"
     ;;
   *) echo 'Usage: bash operators/mha/tuning/run_finalize.sh [check|bench|profile|pipe]' >&2; exit 2 ;;
 esac
