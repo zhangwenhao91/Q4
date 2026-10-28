@@ -23,11 +23,18 @@ case "$ACTION" in
     for rep in 1 2 3; do
       run_case "rep$rep" --warmup 100 --iters 100 --rounds 9
     done ;;
+  metrics)
+    for impl in tilelang_q128 tilelang_q64 ascendc; do
+      run_case "$impl" --profile "$impl" --profile-pipe-metrics
+    done
+    find "$OUT" -type f -name kernel_details.csv -print -exec cat {} \; > "$OUT/kernel-details.txt"
+    find "$OUT" -type f -name '*.csv' -print > "$OUT/csv-files.txt"
+    ;;
   profile)
     for impl in tilelang_q128 tilelang_q64 ascendc; do
       run_case "$impl" --profile "$impl"
     done
     find "$OUT" -type f -name kernel_details.csv -print -exec cat {} \; > "$OUT/kernel-details.txt"
     ;;
-  *) echo 'Usage: bash operators/mha/tuning/run_q64.sh [check|bench|profile]' >&2; exit 2 ;;
+  *) echo 'Usage: bash operators/mha/tuning/run_q64.sh [check|bench|profile|metrics]' >&2; exit 2 ;;
 esac

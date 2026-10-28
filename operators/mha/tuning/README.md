@@ -1,6 +1,6 @@
 # Q64 候选：分块与任务分配优化实验
 
-状态：本机静态验证完成，尚未有候选的 NPU 编译、精度或性能结果。不是已证明有效的优化。
+状态：Q64已在NPU编译并通过三种种子精度，但性能退化，当前不采用。汇总见 reports/mha_q64/report.md。原始Q128继续作为最佳TL基线。
 
 ## 三条原生路径，同进程、相同输入
 
@@ -64,3 +64,20 @@ summary.json 保存三侧event/wall中位数和两个比值：
 
 以同轮实测的Q128和AC为参照，不仅与历史52.56/39.69us比较；最终结论结合3进程API中位数、设备kernel时间和精度。
 只对当前单head固定形状得出结论，不能推广为全部attention场景。
+
+## 下一步：收集管线利用率，先定位再改流水线
+
+Level0 已确认退化发生在设备kernel内，但没有足够的利用率指标确定搬运、Cube或Vector瓶颈。
+新增 metrics 模式显式请求 torch_npu Level1 + AiCMetrics.PipeUtilization + Text导出，
+不修改kernel、不再计时扫描参数；每侧采集30次调用。不支持接口时明确报错，不降级成Level0。
+
+```bash
+bash operators/mha/tuning/run_q64.sh metrics
+LATEST=$(find results/mha-tuning -maxdepth 1 -type d -name 'q64-*-metrics-*' | sort | tail -n 1)
+cat "$LATEST/kernel-details.txt"
+cat "$LATEST/csv-files.txt"
+```
+
+将这两份输出更新error.txt。优先核对Cube/Vector/MTE等实际导出的字段，避免将缺失字段或N/A当作0利用率。
+指标采样可能影响耗时，Level1数据用于瓶颈定位，不直接替换之前Level0性能结论。
+官方接口来源：https://github.com/Ascend/pytorch/blob/master/torch_npu/profiler/experimental_config.py

@@ -33,8 +33,11 @@ def main():
     p.add_argument('--rounds',type=int,default=9)
     p.add_argument('--check-only',action='store_true')
     p.add_argument('--profile',help='exact implementation label printed by check')
+    p.add_argument('--profile-pipe-metrics',action='store_true',help='explicit Level1 PipeUtilization counters; requires --profile')
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
+    if a.profile_pipe_metrics and (not a.profile or a.check_only):
+        p.error('--profile-pipe-metrics requires --profile and cannot be combined with --check-only')
     if a.tokens<=0 or a.iters<=0 or a.rounds<=0 or a.warmup<0:
         p.error('tokens/iters/rounds > 0; warmup >= 0')
     if a.suite.startswith('mhc') and a.tokens%128:
@@ -125,11 +128,14 @@ def main():
         if a.profile:
             if a.profile not in functions: p.error(f'profile implementation must be one of {list(functions)}')
             fn=functions[a.profile]
+            from profiling_config import extra_profile_options
+            profile_options=extra_profile_options(torch_npu.profiler,a.profile_pipe_metrics)
+            print('Profiler metrics:', 'Level1 PipeUtilization' if a.profile_pipe_metrics else 'default',flush=True)
             with torch_npu.profiler.profile(
                 activities=[torch_npu.profiler.ProfilerActivity.CPU,torch_npu.profiler.ProfilerActivity.NPU],
                 schedule=torch_npu.profiler.schedule(wait=1,warmup=1,active=3,repeat=1),
                 on_trace_ready=torch_npu.profiler.tensorboard_trace_handler(str(a.output/'profile')),
-                record_shapes=True,profile_memory=False,with_stack=False) as prof:
+                record_shapes=True,profile_memory=False,with_stack=False,**profile_options) as prof:
                 for _ in range(5):
                     for _ in range(10): fn()
                     torch.npu.synchronize();prof.step()

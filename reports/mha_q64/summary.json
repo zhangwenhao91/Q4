@@ -1,0 +1,84 @@
+{
+  "outcome": "rejected: Q64 slower",
+  "api_log": "c42c48b",
+  "profile_log": "5d06bd5",
+  "correctness_passed": 36,
+  "api_process_summaries": [
+    {
+      "tilelang_q128": {
+        "event_us": 52.60328769683838,
+        "wall_us": 53.002100030425936
+      },
+      "tilelang_q64": {
+        "event_us": 65.11891841888428,
+        "wall_us": 65.44977004523389
+      },
+      "ascendc": {
+        "event_us": 39.856159687042236,
+        "wall_us": 40.1864800369367
+      },
+      "ratios": {
+        "q128_over_q64": 0.8078034613299657,
+        "ascendc_over_q64": 0.6120519298349415
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.7207088470459,
+        "wall_us": 53.05537997628562
+      },
+      "tilelang_q64": {
+        "event_us": 65.13299942016602,
+        "wall_us": 65.49432990141213
+      },
+      "ascendc": {
+        "event_us": 39.96027946472168,
+        "wall_us": 40.26558992336504
+      },
+      "ratios": {
+        "q128_over_q64": 0.8094316140264053,
+        "ascendc_over_q64": 0.6135181831093358
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.6151704788208,
+        "wall_us": 52.98728006891906
+      },
+      "tilelang_q64": {
+        "event_us": 65.21162033081055,
+        "wall_us": 65.5560300219804
+      },
+      "ascendc": {
+        "event_us": 39.958319664001465,
+        "wall_us": 40.324489964405075
+      },
+      "ratios": {
+        "q128_over_q64": 0.806837342975232,
+        "ascendc_over_q64": 0.6127484558932567
+      }
+    }
+  ],
+  "api_median_us": {
+    "tilelang_q128": 52.6151704788208,
+    "tilelang_q64": 65.13299942016602,
+    "ascendc": 39.958319664001465
+  },
+  "kernels": {
+    "ascendc": {
+      "count": 30,
+      "mean_us": 39.823766666666664,
+      "median_us": 39.652
+    },
+    "tilelang_q128": {
+      "count": 30,
+      "mean_us": 52.654066666666665,
+      "median_us": 52.568
+    },
+    "tilelang_q64": {
+      "count": 30,
+      "mean_us": 64.97026666666667,
+      "median_us": 64.97649999999999
+    }
+  }
+}
