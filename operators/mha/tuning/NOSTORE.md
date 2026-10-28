@@ -39,3 +39,11 @@ bench进行3进程、各9轮、每轮100次，轮换顺序。若精度失败就�
 ```bash
 bash operators/mha/tuning/run_nostore.sh profile
 ```
+
+设备profile确认平均耗时降低约0.92%。继续定位前可采集显式Level1管线计数器：
+
+```bash
+bash operators/mha/tuning/run_nostore.sh pipe
+```
+
+该模式自动打印kernel-details.txt供反馈；计数器与Duration分开解释，不将并行管线时间相加。

@@ -62,5 +62,32 @@
     "tilelang_nostore": 52.110252380371094,
     "ascendc": 39.92448091506958
   },
-  "outcome": "small consistent API improvement; device profiling pending"
+  "outcome": "small API and device improvement; native AscendC still faster",
+  "device_profile": {
+    "source_revision": "5b37592",
+    "statistics": {
+      "ascendc": {
+        "count": 30,
+        "mean_us": 39.790166666666664,
+        "median_us": 39.8635,
+        "min_us": 38.654,
+        "max_us": 41.542
+      },
+      "tilelang_nostore": {
+        "count": 30,
+        "mean_us": 52.15913333333334,
+        "median_us": 52.169,
+        "min_us": 51.355,
+        "max_us": 53.694
+      },
+      "tilelang_q128": {
+        "count": 30,
+        "mean_us": 52.64566666666667,
+        "median_us": 52.592,
+        "min_us": 52.161,
+        "max_us": 53.719
+      }
+    },
+    "aggregation": "all 30 recorded kernel durations per implementation; no trimming"
+  }
 }

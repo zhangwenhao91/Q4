@@ -19,9 +19,14 @@ case "$ACTION" in
     for seed in 42 43 44; do run_case "seed$seed" --seed "$seed" --check-only; done ;;
   bench)
     for rep in 1 2 3; do run_case "rep$rep" --warmup 100 --iters 100 --rounds 9; done ;;
+  pipe)
+    for impl in tilelang_q128 tilelang_nostore ascendc; do run_case "$impl" --profile "$impl" --profile-pipe-metrics; done
+    find "$OUT" -type f -name kernel_details.csv -print -exec cat {} \; > "$OUT/kernel-details.txt"
+    cat "$OUT/kernel-details.txt"
+    ;;
   profile)
     for impl in tilelang_q128 tilelang_nostore ascendc; do run_case "$impl" --profile "$impl"; done
     find "$OUT" -type f -name kernel_details.csv -print -exec cat {} \; > "$OUT/kernel-details.txt"
     ;;
-  *) echo 'Usage: bash operators/mha/tuning/run_nostore.sh [check|bench|profile]' >&2; exit 2 ;;
+  *) echo 'Usage: bash operators/mha/tuning/run_nostore.sh [check|bench|profile|pipe]' >&2; exit 2 ;;
 esac
