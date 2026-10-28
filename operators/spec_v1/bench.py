@@ -11,9 +11,19 @@ import subprocess
 import time
 
 
+def implementation_order(labels,round_index):
+    order=list(labels)
+    if len(order)>2:
+        shift=round_index%len(order);order=order[shift:]+order[:shift]
+        if (round_index//len(order))%2: order.reverse()
+    elif round_index%2:
+        order.reverse()
+    return order
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--suite',choices=['mha','mha_bf16','mhc_post','mhc_shifted'],required=True)
+    p.add_argument('--suite',choices=['mha','mha_bf16','mha_q64','mhc_post','mhc_shifted'],required=True)
     p.add_argument('--tokens',type=int,default=512,help='mHC only; MHA is fixed at 4096')
     p.add_argument('--seed',type=int,default=42)
     p.add_argument('--ac-metadata',choices=['cached','per_call'],default='cached',
@@ -36,7 +46,10 @@ def main():
     torch.manual_seed(a.seed);torch.npu.set_device(0)
     torch.npu.matmul.allow_hf32=True
     with torch.no_grad():
-        if a.suite=='mha_bf16':
+        if a.suite=='mha_q64':
+            from mha_q64 import make_case
+            functions,refs,names,meta=make_case(a)
+        elif a.suite=='mha_bf16':
             from mha_bf16 import make_case
             functions,refs,names,meta=make_case(a)
         else:
@@ -74,7 +87,7 @@ def main():
             delta=y.double()-r.double();err=delta.norm().item()/max(r.double().norm().item(),1e-30)
             finite=bool(torch.isfinite(y).all() and torch.isfinite(r).all())
             rtol,atol=(.02,.02) if r.dtype==torch.bfloat16 else (1e-3,1e-4)
-            if a.suite in ('mha','mha_bf16'):
+            if a.suite in ('mha','mha_bf16','mha_q64'):
                 passed=finite and err<=.01 and delta.abs().max().item()<=.02
                 gate={'relative_l2_max':.01,'max_abs_max':.02}
             else:
@@ -92,6 +105,10 @@ def main():
             validate(label,values[label],refs)
         labels=list(functions)
         if len(labels)==2: validate('pairwise',values[labels[0]],values[labels[1]])
+        elif len(labels)>2:
+            from itertools import combinations
+            for left,right in combinations(labels,2):
+                validate(left+'_vs_'+right,values[left],values[right])
     (a.output/'correctness.json').write_text(json.dumps(records,indent=2))
     if not all(r['passed'] for r in records): raise AssertionError('Correctness failed; timing skipped')
     print('Correctness passed. Implementations:',list(functions),flush=True)
@@ -122,8 +139,7 @@ def main():
             writer=csv.DictWriter(f,fieldnames=['round','implementation','event_us','wall_us'])
             writer.writeheader()
             for rnd in range(a.rounds):
-                order=list(functions)
-                if rnd%2: order.reverse()
+                order=implementation_order(functions,rnd)
                 for label in order:
                     fn=functions[label];torch.npu.synchronize()
                     start=torch.npu.Event(enable_timing=True);end=torch.npu.Event(enable_timing=True)
@@ -139,6 +155,10 @@ def main():
             first,second=list(functions)
             summary['ratio']=dict(numerator=second,denominator=first,
                                   event_ratio=summary[second]['event_us']/summary[first]['event_us'])
+        if a.suite=='mha_q64':
+            summary['ratios']=dict(
+                q128_over_q64=summary['tilelang_q128']['event_us']/summary['tilelang_q64']['event_us'],
+                ascendc_over_q64=summary['ascendc']['event_us']/summary['tilelang_q64']['event_us'])
         (a.output/'summary.json').write_text(json.dumps(summary,indent=2));print(summary)
 
 

@@ -47,3 +47,7 @@ Post、Sinkhorn、Pre 与 Pre+Sinkhorn 的反向校验、独立反向及前向+�
 ## MHA BF16 测试结果
 
 [双侧原生前向结果报告](reports/mha_bf16/report.md)：固定形状且复用 metadata 时 AscendC API 快约1.318倍；每次生成 metadata 时 TL 完整调用快约1.554倍。报告分列API与设备kernel耗时，并保留原始日志提交号。
+
+## MHA Q64 优化实验
+
+[Q64 候选实验说明](operators/mha/tuning/README.md)：同进程比较原始Q128、独立Q64候选和复用metadata的原生AscendC。Q64对行统计数组做必要的SIMD存储补齐；结果尚待NPU验证。

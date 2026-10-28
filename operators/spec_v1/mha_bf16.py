@@ -11,7 +11,7 @@ import time
 ROOT=Path(__file__).resolve().parents[2]
 
 
-def make_case(a):
+def make_case(a,extra_builder=None):
     import torch
     import tilelang
     import cann_ops_transformer
@@ -61,11 +61,16 @@ def make_case(a):
     setup_ms=(time.perf_counter()-begin)*1000
     def tl(): return (kernel(q,k,v),)
     ac=native_runner(op,aq,ak,av,prepare_metadata,metadata,a.ac_metadata)
-    return {'tilelang':tl,'ascendc':ac},(ref,),['O'],{
+    functions={'tilelang':tl,'ascendc':ac}
+    tuning_info=None
+    if extra_builder is not None:
+        extra,tuning_info=extra_builder(source,q,k,v)
+        functions={'tilelang_q128':tl,**extra,'ascendc':ac}
+    return functions,(ref,),['O'],{
         'contract':dict(Q=[4096,128],K=[4096,128],V=[4096,128],batch=1,heads=1,
                         input_dtype='bfloat16',output_dtype='bfloat16',scale=1/math.sqrt(128),
                         causal=False,dropout=0,attention_bias=False,return_lse=False),
-        'source':manifest,'comparison_available':True,
+        'source':manifest,'comparison_available':True,'tuning':tuning_info,
         'native_source_revision':native_rev,'native_vendor':str(opp),'native_library_sha256':library_hashes,
         'native_kernels':dict(tilelang='core.py::flash_attention_fwd(out_dtype=bfloat16)',
                               ascendc='ops-transformer FlashAttn + FlashAttnMetadata'),
