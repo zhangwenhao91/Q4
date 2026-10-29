@@ -129,4 +129,5 @@ DSA源码的GEMM输入在L1，并且PR声明依赖GEMM模板展开相关编译�
 5. persistent任务分配、跨Q tile循环合并以及编译器pass改动作为较大后续实验。
 
 后续设备复核已确认K/V双版本组合为当前最佳：约51.071us，较同轮原始TL降低3.00%。
-详见reports/mha_buffers/report.md。首块PV直接初始化O的候选已准备，NPU验证待执行。
+详见reports/mha_buffers/report.md。首块PV直接初始化O已完成NPU验证：精度通过，但相对KV2最佳API耗时增加1.89%，不采用。
+详见reports/mha_firstpv/report.md。生成代码的流水线结构随条件复制改变，不能只按省去的指令预测收益。

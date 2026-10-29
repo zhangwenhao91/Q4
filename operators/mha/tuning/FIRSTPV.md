@@ -36,3 +36,5 @@ bash operators/mha/tuning/run_firstpv.sh bench
 
 若编译或精度失败，停止并反馈完整日志；不要跳过失败配置。
 将含CODEGEN行的输出更新到error.txt。若有API收益，再profile复核设备时间。
+
+实测结论：60项精度通过，但比同轮KV2最佳慢约1.9%，不采用。详见reports/mha_firstpv/report.md。

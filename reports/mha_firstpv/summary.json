@@ -1,0 +1,82 @@
+{
+  "source_revision": "af7ca60",
+  "correctness_passed": 60,
+  "api_process_summaries": [
+    {
+      "tilelang_q128": {
+        "event_us": 52.75499105453491,
+        "wall_us": 53.13415007549338
+      },
+      "tilelang_kv2": {
+        "event_us": 51.14741086959839,
+        "wall_us": 51.58112006029114
+      },
+      "tilelang_firstpv": {
+        "event_us": 52.12622404098511,
+        "wall_us": 52.563439967343584
+      },
+      "ascendc": {
+        "event_us": 40.177881717681885,
+        "wall_us": 40.55317505844869
+      },
+      "ratios": {
+        "matched_best_over_firstpv": 0.9812222506157916,
+        "original_over_firstpv": 1.0120623932601645,
+        "ascendc_over_firstpv": 0.7707805899405136
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.7124810218811,
+        "wall_us": 53.05978484102525
+      },
+      "tilelang_kv2": {
+        "event_us": 51.083059310913086,
+        "wall_us": 51.46709503605962
+      },
+      "tilelang_firstpv": {
+        "event_us": 52.066829204559326,
+        "wall_us": 52.41902996203862
+      },
+      "ascendc": {
+        "event_us": 40.121469497680664,
+        "wall_us": 40.53063996252604
+      },
+      "ratios": {
+        "matched_best_over_firstpv": 0.981105630808029,
+        "original_over_firstpv": 1.0124004443363577,
+        "ascendc_over_firstpv": 0.7705763940425885
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.71015405654907,
+        "wall_us": 53.01491488353349
+      },
+      "tilelang_kv2": {
+        "event_us": 51.100945472717285,
+        "wall_us": 51.50835495442152
+      },
+      "tilelang_firstpv": {
+        "event_us": 52.061028480529785,
+        "wall_us": 52.447314956225455
+      },
+      "ascendc": {
+        "event_us": 40.117104053497314,
+        "wall_us": 40.65953515237197
+      },
+      "ratios": {
+        "matched_best_over_firstpv": 0.9815585086227876,
+        "original_over_firstpv": 1.0124685507560045,
+        "ascendc_over_firstpv": 0.7705784004728343
+      }
+    }
+  ],
+  "median_event_us": {
+    "tilelang_q128": 52.7124810218811,
+    "tilelang_kv2": 51.100945472717285,
+    "tilelang_firstpv": 52.066829204559326,
+    "ascendc": 40.121469497680664
+  },
+  "outcome": "not adopted: first PV initialization slower than matched KV2 best"
+}
