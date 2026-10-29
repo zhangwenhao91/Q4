@@ -1,0 +1,83 @@
+{
+  "source_revision": "41f0db2",
+  "correctness_passed": 60,
+  "api_process_summaries": [
+    {
+      "tilelang_q128": {
+        "event_us": 52.720065116882324,
+        "wall_us": 53.10220003593713
+      },
+      "tilelang_finalize": {
+        "event_us": 51.621623039245605,
+        "wall_us": 52.01421998208389
+      },
+      "tilelang_qresident": {
+        "event_us": 51.69633388519287,
+        "wall_us": 52.097639854764566
+      },
+      "ascendc": {
+        "event_us": 40.026209354400635,
+        "wall_us": 40.47711496241391
+      },
+      "ratios": {
+        "matched_best_over_qresident": 0.9985548134590514,
+        "original_over_qresident": 1.0198027820302105,
+        "ascendc_over_qresident": 0.7742562450035775
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.678704261779785,
+        "wall_us": 53.16910508554429
+      },
+      "tilelang_finalize": {
+        "event_us": 51.617817878723145,
+        "wall_us": 52.00214509386569
+      },
+      "tilelang_qresident": {
+        "event_us": 51.57067537307739,
+        "wall_us": 51.92203010665253
+      },
+      "ascendc": {
+        "event_us": 40.097219944000244,
+        "wall_us": 40.55157507536933
+      },
+      "ratios": {
+        "matched_best_over_qresident": 1.000914133958974,
+        "original_over_qresident": 1.0214856385084465,
+        "ascendc_over_qresident": 0.777519775607459
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.688164710998535,
+        "wall_us": 53.05728496750817
+      },
+      "tilelang_finalize": {
+        "event_us": 51.61072492599487,
+        "wall_us": 51.97957012569532
+      },
+      "tilelang_qresident": {
+        "event_us": 51.673691272735596,
+        "wall_us": 52.0291349675972
+      },
+      "ascendc": {
+        "event_us": 39.97683525085449,
+        "wall_us": 40.32313489005901
+      },
+      "ratios": {
+        "matched_best_over_qresident": 0.9987814621872398,
+        "original_over_qresident": 1.0196323005629404,
+        "ascendc_over_qresident": 0.7736400142164283
+      }
+    }
+  ],
+  "median_event_us": {
+    "tilelang_q128": 52.688164710998535,
+    "tilelang_finalize": 51.617817878723145,
+    "tilelang_qresident": 51.673691272735596,
+    "ascendc": 40.026209354400635
+  },
+  "outcome": "not adopted: no consistent API improvement",
+  "codegen": "Q copy at candidate C++ line129 before kv loop at130; matched copy at150 inside loop starting128. Pipeline bounds differ:41 vs40; not a count of actual useful KV blocks."
+}

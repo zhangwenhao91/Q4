@@ -36,3 +36,5 @@ bash operators/mha/tuning/run_qresident.sh bench
 
 编译或精度失败即停止，将包含CODEGEN行的输出更新到error.txt。
 若API有收益，下一步再用profile复核设备耗时。
+
+实测：精度通过，生成C++确认Q复制外提，但三个进程的API收益方向不一致，不采用；详见reports/mha_qresident/report.md。
