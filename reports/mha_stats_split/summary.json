@@ -112,5 +112,44 @@
     "tilelang_alpha2buf": 63.124544620513916,
     "ascendc": 40.09284019470215
   },
-  "outcome": "S versions2 small API gain pending device; alpha versions2 large regression"
+  "outcome": "S versions2 is fastest observed: API ~0.24%, device ~0.105% lower than KV2; marginal, not a statistically established gain",
+  "device_profile": {
+    "source_revision": "c9348c0",
+    "aggregation": "all 30 device Duration records per implementation; no trimming",
+    "statistics": {
+      "ascendc": {
+        "count": 30,
+        "mean_us": 39.84596666666667,
+        "median_us": 39.798,
+        "min_us": 38.866,
+        "max_us": 41.133
+      },
+      "tilelang_kv2": {
+        "count": 30,
+        "mean_us": 50.97516666666667,
+        "median_us": 50.8305,
+        "min_us": 50.558,
+        "max_us": 51.631
+      },
+      "tilelang_s2buf": {
+        "count": 30,
+        "mean_us": 50.92163333333333,
+        "median_us": 50.7845,
+        "min_us": 50.341,
+        "max_us": 51.908
+      },
+      "tilelang_q128": {
+        "count": 30,
+        "mean_us": 52.632666666666665,
+        "median_us": 52.565,
+        "min_us": 52.023,
+        "max_us": 53.365
+      }
+    },
+    "ratios": {
+      "reduction_vs_previous_percent": 0.1050184566995016,
+      "reduction_vs_original_percent": 3.250896148146276,
+      "ascendc_speedup": 1.2779620522026904
+    }
+  }
 }

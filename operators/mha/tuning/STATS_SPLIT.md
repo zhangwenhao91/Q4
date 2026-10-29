@@ -44,3 +44,7 @@ bash operators/mha/tuning/run_stats_split.sh profile_best
 ```
 
 自动打印设备CSV，反馈error.txt；无需重复check/bench或重建AscendC。
+
+设备复核：S双版本50.922us，KV2对照50.975us，额外约0.105%；方向与API一致但差异极小。
+相对同轮原始TL累计降低3.25%。保留S双版本为观测最快候选，alpha仍3版本。
+详见reports/mha_stats_split/report.md；不将额外0.105%表述成统计显著的稳定提速。
