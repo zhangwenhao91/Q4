@@ -39,3 +39,5 @@ bash operators/mha/tuning/run_pbuffer.sh bench
 将含CODEGEN行的输出更新到error.txt。
 比较matched_best_over_pbuffer；确认API收益后再profile。
 后续按优先级独立测试Q/O的L2策略，不与本轮混在一起。
+
+实测：60项精度通过，P的L1地址确实交替，但API退化约4.53%，不采用；详见reports/mha_pbuffer/report.md。

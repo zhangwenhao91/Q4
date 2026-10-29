@@ -1,0 +1,82 @@
+{
+  "source_revision": "09e0996",
+  "correctness_passed": 60,
+  "api_process_summaries": [
+    {
+      "tilelang_q128": {
+        "event_us": 52.73240566253662,
+        "wall_us": 53.105905099073425
+      },
+      "tilelang_kv2": {
+        "event_us": 51.14971160888672,
+        "wall_us": 51.52783516678028
+      },
+      "tilelang_pbuffer": {
+        "event_us": 53.46503973007202,
+        "wall_us": 53.851874836254865
+      },
+      "ascendc": {
+        "event_us": 40.072855949401855,
+        "wall_us": 40.48617498483509
+      },
+      "ratios": {
+        "matched_best_over_pbuffer": 0.9566945403412275,
+        "original_over_pbuffer": 0.9862969508442482,
+        "ascendc_over_pbuffer": 0.7495151252429056
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.621636390686035,
+        "wall_us": 52.93574999086559
+      },
+      "tilelang_kv2": {
+        "event_us": 51.045870780944824,
+        "wall_us": 51.40290493727662
+      },
+      "tilelang_pbuffer": {
+        "event_us": 53.46391439437866,
+        "wall_us": 53.80355010856874
+      },
+      "ascendc": {
+        "event_us": 40.01957654953003,
+        "wall_us": 40.342755091842264
+      },
+      "ratios": {
+        "matched_best_over_pbuffer": 0.9547724172308626,
+        "original_over_pbuffer": 0.984245859787229,
+        "ascendc_over_pbuffer": 0.7485343526163096
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.742300033569336,
+        "wall_us": 53.142510005272925
+      },
+      "tilelang_kv2": {
+        "event_us": 51.16525411605835,
+        "wall_us": 51.61386987310834
+      },
+      "tilelang_pbuffer": {
+        "event_us": 53.47808837890625,
+        "wall_us": 53.878519975114614
+      },
+      "ascendc": {
+        "event_us": 40.13785123825073,
+        "wall_us": 40.551374841015786
+      },
+      "ratios": {
+        "matched_best_over_pbuffer": 0.9567517401433487,
+        "original_over_pbuffer": 0.9862413117663507,
+        "ascendc_over_pbuffer": 0.7505476065984923
+      }
+    }
+  ],
+  "median_event_us": {
+    "tilelang_q128": 52.73240566253662,
+    "tilelang_kv2": 51.14971160888672,
+    "tilelang_pbuffer": 53.46503973007202,
+    "ascendc": 40.072855949401855
+  },
+  "outcome": "not adopted: actual P double-buffering but API regression"
+}
