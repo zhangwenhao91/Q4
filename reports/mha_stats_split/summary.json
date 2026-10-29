@@ -1,0 +1,116 @@
+{
+  "source_revision": "8d5878e",
+  "correctness_passed": 90,
+  "api_process_summaries": [
+    {
+      "tilelang_q128": {
+        "event_us": 52.757840156555176,
+        "wall_us": 53.10630484018475
+      },
+      "tilelang_kv2": {
+        "event_us": 51.14511966705322,
+        "wall_us": 51.51346995262429
+      },
+      "tilelang_s2buf": {
+        "event_us": 51.047818660736084,
+        "wall_us": 51.36650011991151
+      },
+      "tilelang_alpha2buf": {
+        "event_us": 63.09817314147949,
+        "wall_us": 63.418774952879176
+      },
+      "ascendc": {
+        "event_us": 40.09284019470215,
+        "wall_us": 40.448924992233515
+      },
+      "ratios": {
+        "tilelang_s2buf": {
+          "matched_best_over_candidate": 1.00190607569275,
+          "original_over_candidate": 1.0334984244318821,
+          "ascendc_over_candidate": 0.7853977162307219
+        },
+        "tilelang_alpha2buf": {
+          "matched_best_over_candidate": 0.810564191016672,
+          "original_over_candidate": 0.8361231003988167,
+          "ascendc_over_candidate": 0.6354041361039962
+        }
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.68364191055298,
+        "wall_us": 53.08051506290212
+      },
+      "tilelang_kv2": {
+        "event_us": 51.06793403625488,
+        "wall_us": 51.47360498085618
+      },
+      "tilelang_s2buf": {
+        "event_us": 50.91244459152222,
+        "wall_us": 51.267695089336485
+      },
+      "tilelang_alpha2buf": {
+        "event_us": 63.124544620513916,
+        "wall_us": 63.50450508762151
+      },
+      "ascendc": {
+        "event_us": 40.014281272888184,
+        "wall_us": 40.371405048063025
+      },
+      "ratios": {
+        "tilelang_s2buf": {
+          "matched_best_over_candidate": 1.0030540557614191,
+          "original_over_candidate": 1.0347890841471339,
+          "ascendc_over_candidate": 0.785943036008749
+        },
+        "tilelang_alpha2buf": {
+          "matched_best_over_candidate": 0.8090028109233927,
+          "original_over_candidate": 0.8345983678341198,
+          "ascendc_over_candidate": 0.6338941771927576
+        }
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.7436900138855,
+        "wall_us": 53.147269936744124
+      },
+      "tilelang_kv2": {
+        "event_us": 51.16666555404663,
+        "wall_us": 51.62733999895863
+      },
+      "tilelang_s2buf": {
+        "event_us": 51.02099895477295,
+        "wall_us": 51.48186508449726
+      },
+      "tilelang_alpha2buf": {
+        "event_us": 63.16287040710449,
+        "wall_us": 63.583169830963016
+      },
+      "ascendc": {
+        "event_us": 40.34355878829956,
+        "wall_us": 41.009309788933024
+      },
+      "ratios": {
+        "tilelang_s2buf": {
+          "matched_best_over_candidate": 1.0028550322858791,
+          "original_over_candidate": 1.033764353783814,
+          "ascendc_over_candidate": 0.7907245960444973
+        },
+        "tilelang_alpha2buf": {
+          "matched_best_over_candidate": 0.8100750523885542,
+          "original_over_candidate": 0.8350426393534032,
+          "ascendc_over_candidate": 0.6387226946507131
+        }
+      }
+    }
+  ],
+  "median_event_us": {
+    "tilelang_q128": 52.7436900138855,
+    "tilelang_kv2": 51.14511966705322,
+    "tilelang_s2buf": 51.02099895477295,
+    "tilelang_alpha2buf": 63.124544620513916,
+    "ascendc": 40.09284019470215
+  },
+  "outcome": "S versions2 small API gain pending device; alpha versions2 large regression"
+}

@@ -131,3 +131,10 @@ DSA源码的GEMM输入在L1，并且PR声明依赖GEMM模板展开相关编译�
 后续设备复核已确认K/V双版本组合为当前最佳：约51.071us，较同轮原始TL降低3.00%。
 详见reports/mha_buffers/report.md。首块PV直接初始化O已完成NPU验证：精度通过，但相对KV2最佳API耗时增加1.89%，不采用。
 详见reports/mha_firstpv/report.md。生成代码的流水线结构随条件复制改变，不能只按省去的指令预测收益。
+
+## 后续S/alpha拆分验证
+
+已单独完成S与alpha的双版本实验：90项精度通过，S双版本API约51.021us，
+比同轮KV2最佳约51.145us降低0.24%；alpha双版本约63.125us，增加23.42%。
+因此alpha降为双版本单独就会明显退化，不能把此前组合退化归因于S。
+S的微小收益仍待设备profile确认。详见reports/mha_stats_split/report.md。
