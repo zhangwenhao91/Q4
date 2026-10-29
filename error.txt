@@ -1,258 +1,310 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/tuning/run_stats_split.sh profile_best
-Results: /home/z30086261/Q4/results/mha-tuning/stats-split-20261029-144955-profile_best-2397922
-CASE: suite=mha_stats_split metadata=cached tag=tilelang_q128 output=results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/tilelang_q128
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-CODEGEN tilelang_kv2:126: for (int32_t kv = 0; kv < 40; ++kv) {
-CODEGEN tilelang_kv2:231: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-CODEGEN tilelang_s2buf:126: for (int32_t kv = 0; kv < 39; ++kv) {
-CODEGEN tilelang_s2buf:230: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-CODEGEN tilelang_alpha2buf:123: for (int32_t kv = 0; kv < 38; ++kv) {
-CODEGEN tilelang_alpha2buf:211: for (int32_t kv_1 = 0; kv_1 < 33; ++kv_1) {
-{'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_s2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.385011693769341e-05, 'relative_l2': 0.002402810443424686, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_s2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_s2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_s2buf_vs_tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_s2buf_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_alpha2buf_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_s2buf', 'tilelang_alpha2buf', 'ascendc']
-Profiler metrics: default
-[2026-10-29 14:50:00] [WARNING] [2397976] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-29 14:50:00] [WARNING] [2397976] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-29 14:50:01] [INFO] [2398572] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/tilelang_q128/profile/ubuntu162_2397976_20261029145000620_ascend_pt
-[2026-10-29 14:50:02] [ERROR] [2398572] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/tilelang_q128/profile/ubuntu162_2397976_20261029145000620_ascend_pt/logs
-[2026-10-29 14:50:03] [INFO] [2398589] profiler.py: CANN profiling data parsed in a total time of 0:00:02.014135
-[2026-10-29 14:50:03] [INFO] [2398572] profiler.py: All profiling data parsed in a total time of 0:00:02.964505
-CASE: suite=mha_stats_split metadata=cached tag=tilelang_kv2 output=results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/tilelang_kv2
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-CODEGEN tilelang_kv2:126: for (int32_t kv = 0; kv < 40; ++kv) {
-CODEGEN tilelang_kv2:231: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-CODEGEN tilelang_s2buf:126: for (int32_t kv = 0; kv < 39; ++kv) {
-CODEGEN tilelang_s2buf:230: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-CODEGEN tilelang_alpha2buf:123: for (int32_t kv = 0; kv < 38; ++kv) {
-CODEGEN tilelang_alpha2buf:211: for (int32_t kv_1 = 0; kv_1 < 33; ++kv_1) {
-{'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_s2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.385011693769341e-05, 'relative_l2': 0.002402810443424686, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_s2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_s2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_s2buf_vs_tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_s2buf_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_alpha2buf_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_s2buf', 'tilelang_alpha2buf', 'ascendc']
-Profiler metrics: default
-[2026-10-29 14:50:11] [WARNING] [2399092] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-29 14:50:11] [WARNING] [2399092] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-29 14:50:11] [INFO] [2399596] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/tilelang_kv2/profile/ubuntu162_2399092_20261029145011306_ascend_pt
-[2026-10-29 14:50:13] [ERROR] [2399596] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/tilelang_kv2/profile/ubuntu162_2399092_20261029145011306_ascend_pt/logs
-[2026-10-29 14:50:13] [INFO] [2399612] profiler.py: CANN profiling data parsed in a total time of 0:00:02.032024
-[2026-10-29 14:50:14] [INFO] [2399596] profiler.py: All profiling data parsed in a total time of 0:00:02.868539
-CASE: suite=mha_stats_split metadata=cached tag=tilelang_s2buf output=results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/tilelang_s2buf
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-CODEGEN tilelang_kv2:126: for (int32_t kv = 0; kv < 40; ++kv) {
-CODEGEN tilelang_kv2:231: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-CODEGEN tilelang_s2buf:126: for (int32_t kv = 0; kv < 39; ++kv) {
-CODEGEN tilelang_s2buf:230: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-CODEGEN tilelang_alpha2buf:123: for (int32_t kv = 0; kv < 38; ++kv) {
-CODEGEN tilelang_alpha2buf:211: for (int32_t kv_1 = 0; kv_1 < 33; ++kv_1) {
-{'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_s2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.385011693769341e-05, 'relative_l2': 0.002402810443424686, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_s2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_s2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_s2buf_vs_tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_s2buf_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_alpha2buf_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_s2buf', 'tilelang_alpha2buf', 'ascendc']
-Profiler metrics: default
-[2026-10-29 14:50:21] [WARNING] [2399968] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-29 14:50:21] [WARNING] [2399968] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-29 14:50:21] [INFO] [2400352] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/tilelang_s2buf/profile/ubuntu162_2399968_20261029145021341_ascend_pt
-[2026-10-29 14:50:23] [ERROR] [2400352] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/tilelang_s2buf/profile/ubuntu162_2399968_20261029145021341_ascend_pt/logs
-[2026-10-29 14:50:23] [INFO] [2400368] profiler.py: CANN profiling data parsed in a total time of 0:00:02.032964
-[2026-10-29 14:50:24] [INFO] [2400352] profiler.py: All profiling data parsed in a total time of 0:00:02.916659
-CASE: suite=mha_stats_split metadata=cached tag=ascendc output=results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/ascendc
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-CODEGEN tilelang_kv2:126: for (int32_t kv = 0; kv < 40; ++kv) {
-CODEGEN tilelang_kv2:231: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-CODEGEN tilelang_s2buf:126: for (int32_t kv = 0; kv < 39; ++kv) {
-CODEGEN tilelang_s2buf:230: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-CODEGEN tilelang_alpha2buf:123: for (int32_t kv = 0; kv < 38; ++kv) {
-CODEGEN tilelang_alpha2buf:211: for (int32_t kv_1 = 0; kv_1 < 33; ++kv_1) {
-{'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_s2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.385011693769341e-05, 'relative_l2': 0.002402810443424686, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_s2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_s2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_s2buf_vs_tilelang_alpha2buf', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_s2buf_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_alpha2buf_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_s2buf', 'tilelang_alpha2buf', 'ascendc']
-Profiler metrics: default
-[2026-10-29 14:50:31] [WARNING] [2400667] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-29 14:50:31] [WARNING] [2400667] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-29 14:50:31] [INFO] [2401037] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/ascendc/profile/ubuntu162_2400667_20261029145031389_ascend_pt
-[2026-10-29 14:50:33] [INFO] [2401060] profiler.py: CANN profiling data parsed in a total time of 0:00:02.031631
-[2026-10-29 14:50:34] [INFO] [2401037] profiler.py: All profiling data parsed in a total time of 0:00:02.919031
-results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/ascendc/profile/ubuntu162_2400667_20261029145031389_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-Step Id,Device_id,Name,Type,Accelerator Core,Start Time(us),Duration(us),Wait Time(us),Block Num,Mix Block Num,Input Shapes,Input Data Types,Input Formats,Output Shapes,Output Data Types,Output Formats
-2,4,FlashAttn,N/A,N/A,1793285431436233.021      ,39.658,0,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-2,4,FlashAttn,N/A,N/A,1793285431436277.818      ,40.599,5.092000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-2,4,FlashAttn,N/A,N/A,1793285431436318.439      ,40.280,0.151000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-2,4,FlashAttn,N/A,N/A,1793285431436358.741      ,39.922,0.000000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-2,4,FlashAttn,N/A,N/A,1793285431436398.685      ,39.770,0.078000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-2,4,FlashAttn,N/A,N/A,1793285431436438.477      ,41.133,0.000000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-2,4,FlashAttn,N/A,N/A,1793285431436479.632      ,40.549,0.117000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-2,4,FlashAttn,N/A,N/A,1793285431436520.203      ,38.981,0.000000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-2,4,FlashAttn,N/A,N/A,1793285431436559.206      ,39.921,0.019000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-2,4,FlashAttn,N/A,N/A,1793285431436599.149      ,39.743,0.079000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-3,4,FlashAttn,N/A,N/A,1793285431436723.723      ,39.534,84.757000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-3,4,FlashAttn,N/A,N/A,1793285431436763.279      ,39.883,0.000000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-3,4,FlashAttn,N/A,N/A,1793285431436803.184      ,39.688,0.117000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-3,4,FlashAttn,N/A,N/A,1793285431436842.894      ,40.267,0.062000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-3,4,FlashAttn,N/A,N/A,1793285431436883.183      ,39.826,0.000000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-3,4,FlashAttn,N/A,N/A,1793285431436923.031      ,39.523,0.000000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-3,4,FlashAttn,N/A,N/A,1793285431436962.576      ,39.481,0.000000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-3,4,FlashAttn,N/A,N/A,1793285431437002.079      ,38.866,0.019000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-3,4,FlashAttn,N/A,N/A,1793285431437040.967      ,39.759,0.134000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-3,4,FlashAttn,N/A,N/A,1793285431437080.748      ,40.024,0.000000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-4,4,FlashAttn,N/A,N/A,1793285431437203.862      ,39.698,82.976000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-4,4,FlashAttn,N/A,N/A,1793285431437243.582      ,39.375,0.052000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-4,4,FlashAttn,N/A,N/A,1793285431437282.979      ,40.810,0.125000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-4,4,FlashAttn,N/A,N/A,1793285431437323.811      ,39.474,0.000000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-4,4,FlashAttn,N/A,N/A,1793285431437363.307      ,39.235,0.026000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-4,4,FlashAttn,N/A,N/A,1793285431437402.564      ,39.836,0.015000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-4,4,FlashAttn,N/A,N/A,1793285431437442.422      ,40.151,0.164000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-4,4,FlashAttn,N/A,N/A,1793285431437482.595      ,40.251,0.000000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-4,4,FlashAttn,N/A,N/A,1793285431437522.868      ,39.162,0.000000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-4,4,FlashAttn,N/A,N/A,1793285431437562.052      ,39.980,0.088000,28,56,"""1,4096,1,128;1,4096,1,128;1,4096,1,128;;;;;;;;4096""",DT_BF16;DT_BF16;DT_BF16;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;DT_UNDEFINED;INT32,ND;ND;ND;NULL;NULL;NULL;NULL;NULL;NULL;NULL;ND,"""1,4096,1,128;""",DT_BF16;FLOAT,ND;ND
-results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/tilelang_kv2/profile/ubuntu162_2399092_20261029145011306_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-Device_id,Name,Type,Accelerator Core,Start Time(us),Duration(us),Wait Time(us),Block Num,Mix Block Num,Input Shapes,Input Data Types,Input Formats,Output Shapes,Output Data Types,Output Formats
-4,main_kernel,N/A,N/A,1793285411356263.336      ,51.278,0,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411356314.636      ,50.724,0.222000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411356365.382      ,51.425,0.026000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411356416.829      ,50.792,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411356467.643      ,50.989,0.208000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411356518.654      ,50.642,0.011000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411356569.318      ,51.264,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411356620.604      ,51.023,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411356671.649      ,50.666,0.227000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411356722.337      ,50.691,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411356855.115      ,51.495,82.059000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411356906.632      ,51.458,0.255000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411356958.112      ,50.812,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357008.946      ,50.725,0.188000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357059.693      ,51.134,0.025000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357110.849      ,50.784,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357161.655      ,50.852,0.216000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357212.529      ,50.620,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357263.171      ,51.389,0.130000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357314.582      ,50.796,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357408.995      ,51.461,43.704000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357460.478      ,50.970,0.039000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357511.470      ,51.631,0.030000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357563.123      ,50.689,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357613.834      ,50.825,0.061000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357664.681      ,50.807,0.175000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357715.510      ,51.195,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357766.727      ,50.836,0.055000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357817.585      ,50.558,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285411357868.165      ,50.724,0.192000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/tilelang_s2buf/profile/ubuntu162_2399968_20261029145021341_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-Device_id,Name,Type,Accelerator Core,Start Time(us),Duration(us),Wait Time(us),Block Num,Mix Block Num,Input Shapes,Input Data Types,Input Formats,Output Shapes,Output Data Types,Output Formats
-4,main_kernel,N/A,N/A,1793285421389986.415      ,51.396,0,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390037.833      ,50.910,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390088.765      ,51.166,0.090000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390139.953      ,50.388,0.084000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390190.363      ,50.894,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390241.279      ,50.758,0.106000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390292.059      ,51.396,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390343.477      ,50.727,0.104000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390394.226      ,50.727,0.023000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390444.975      ,50.535,0.023000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390541.901      ,51.404,46.465000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390593.327      ,51.142,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390644.491      ,50.341,0.108000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390694.854      ,50.735,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390745.611      ,51.056,0.015000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390796.689      ,50.604,0.194000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390847.315      ,50.621,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390897.958      ,50.729,0.129000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421390948.709      ,51.876,0.021000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421391000.607      ,50.811,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421391086.984      ,51.578,35.689000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421391138.584      ,50.477,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421391189.083      ,50.832,0.023000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421391239.937      ,50.685,0.168000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421391290.644      ,51.324,0.065000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421391341.990      ,50.466,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421391392.478      ,51.908,0.034000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421391444.408      ,51.024,0.092000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421391495.454      ,50.683,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285421391546.159      ,50.456,0.067000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-results/mha-tuning/stats-split-20261029-144955-profile_best-2397922/tilelang_q128/profile/ubuntu162_2397976_20261029145000620_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-Device_id,Name,Type,Accelerator Core,Start Time(us),Duration(us),Wait Time(us),Block Num,Mix Block Num,Input Shapes,Input Data Types,Input Formats,Output Shapes,Output Data Types,Output Formats
-4,main_kernel,N/A,N/A,1793285400668715.000      ,53.365,0,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400668768.387      ,52.571,0.135000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400668820.980      ,53.164,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400668874.166      ,52.023,0.086000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400668926.211      ,52.684,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400668978.917      ,52.287,0.066000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669031.226      ,53.145,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669084.393      ,52.227,0.105000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669136.642      ,52.935,0.023000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669189.599      ,52.362,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669284.964      ,52.959,43.138000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669337.945      ,52.797,0.041000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669390.764      ,53.086,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669443.872      ,52.220,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669496.114      ,52.793,0.030000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669548.929      ,52.386,0.207000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669601.337      ,52.498,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669653.857      ,52.387,0.002000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669706.266      ,52.961,0.113000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669759.249      ,52.407,0.039000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669848.030      ,53.197,36.343000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669901.249      ,52.317,0.053000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400669953.588      ,53.167,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400670006.777      ,52.048,0.083000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400670058.847      ,52.614,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400670111.483      ,52.323,0.136000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400670163.828      ,52.924,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400670216.774      ,52.351,0.076000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400670269.147      ,52.559,0.149000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
-4,main_kernel,N/A,N/A,1793285400670321.728      ,52.223,0.000000,32,64,N/A,N/A,N/A,N/A,N/A,N/A
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/tuning/run_timeline.sh probe
+PROBE: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof --version
+PROBE RESULT: {"name": "msprof-version", "argv": ["/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof", "--version"], "exit_code": 255, "output_file": "msprof-version.txt"}
+PROBE: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof --help
+PROBE RESULT: {"name": "msprof-help", "argv": ["/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof", "--help"], "exit_code": 0, "output_file": "msprof-help.txt"}
+PROBE: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof op --help
+PROBE RESULT: {"name": "msprof-op-help", "argv": ["/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof", "op", "--help"], "exit_code": 0, "output_file": "msprof-op-help.txt", "metric_names_mentioned_in_help": ["Default", "Occupancy", "TimelineDetail", "PipeTimeline", "PipeUtilization", "ResourceConflictRatio", "MemoryDetail"], "note": "Mentioned in help does not establish support on this device."}
+{
+  "q4_revision": "56671f3ee7dfbc4a0590386ed5e1e5e7bd3d00e4",
+  "python": "3.12.15 (main, Oct 13 2026, 16:52:04) [GCC 15.3.0]",
+  "python_executable": "/root/miniconda3/envs/zwh/bin/python",
+  "platform": "Linux-5.4.0-144-generic-x86_64-with-glibc2.31",
+  "environment": {
+    "CONDA_DEFAULT_ENV": "zwh",
+    "ASCEND_RT_VISIBLE_DEVICES": "4",
+    "ASCEND_HOME_PATH": "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0",
+    "ASCEND_NPU_ARCH": "dav-3510"
+  },
+  "packages": {
+    "torch": "2.13.0+cpu",
+    "torch-npu": "2.13.0",
+    "tilelang": "0.1.15+cpu.gita7cb753d"
+  },
+  "tools": {
+    "msprof": "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof",
+    "msopprof": "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msopprof"
+  },
+  "commands": [
+    {
+      "name": "msprof-version",
+      "argv": [
+        "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof",
+        "--version"
+      ],
+      "exit_code": 255,
+      "output_file": "msprof-version.txt"
+    },
+    {
+      "name": "msprof-help",
+      "argv": [
+        "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof",
+        "--help"
+      ],
+      "exit_code": 0,
+      "output_file": "msprof-help.txt"
+    },
+    {
+      "name": "msprof-op-help",
+      "argv": [
+        "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof",
+        "op",
+        "--help"
+      ],
+      "exit_code": 0,
+      "output_file": "msprof-op-help.txt",
+      "metric_names_mentioned_in_help": [
+        "Default",
+        "Occupancy",
+        "TimelineDetail",
+        "PipeTimeline",
+        "PipeUtilization",
+        "ResourceConflictRatio",
+        "MemoryDetail"
+      ],
+      "note": "Mentioned in help does not establish support on this device."
+    }
+  ],
+  "scope": "Read tool help/version and device properties only; no compilation, kernel execution or profiling.",
+  "device": {
+    "name": "Ascend950PR_9579",
+    "cube_core_num": 28,
+    "vector_core_num": 56,
+    "total_memory": 132338679808
+  }
+}
+
+===== msprof-version.txt =====
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof: unrecognized option '--version'
+
+Usage:
+      msprof [--options]
+
+This is subcommand for operator optimization situation:
+      op                                Use binary msopprof to operator optimization (msprof op ...)
+
+Options:
+      --output                          <Optional> Specify the directory that is used for storing data results.
+      --application                     <Optional> Specify application path, considering the risk of privilege escalation, please pay attention to
+                                                   the group of the application and confirm whether it is the same as the user currently.
+                                                   [Note] This option will be discarded in later versions.
+                                                   you can try to use: msprof [msprof arguments] <app> [app arguments]
+      --ascendcl                        <Optional> Show acl profiling data, the default value is on.
+      --ge-api                          <Optional> Specify if report GE event, the default value is off. The possible parameters are 'l0', 'l1' or 'off'.
+      --runtime-api                     <Optional> Show runtime api profiling data, the default value is off.
+      --task-time                       <Optional> Show task profiling data, the default value is on. The possible parameters are 'l0', 'l1', 'l2', 'l3', 'on' or 'off'.
+      --aicore-shape                    <Optional> Collect AI Core operator shape data. This option takes effect only when task-time is l0. The possible values are 'on' and 'off', and the default value is off.
+      --task-tsfw                       <Optional> Specify the start of collection of ts management data, the default value is off.
+      --task-memory                     <Optional> Show the memory usage of the operator, the default value is off. The possible parameters are 'on' or 'off'.
+      --ai-core                         <Optional> Turn on / off the ai core profiling, the default value is on when collecting app Profiling.
+      --aic-mode                        <Optional> Set the aic profiling mode to task-based or sample-based.
+                                                   In task-based mode, profiling data will be collected by tasks.
+                                                   In sample-based mode, profiling data will be collected in a specific interval.
+                                                   The default value is task-based in AI task mode, sample-based in system mode.
+      --aic-freq                        <Optional> The aic sampling frequency in hertz, the default value is 100 Hz, the range is 1 to 100 Hz.
+      --environment                     <Optional> User app custom environment variable configuration.
+      --sys-period                      <Optional> Set total sampling period of system profiling in seconds.
+      --sys-devices                     <Optional> Specify the profiling scope by device ID when collect sys profiling.The value is all or ID list (split with ',').
+      --msproftx                        <Optional> Show msproftx and mstx data, the default value is off.
+      --mstx-domain-include             <Optional> Choose to only include mstx events from a comma separated list of domains;
+                                                   `default` filters the mstx default domain;
+                                                   The switch is only applicable when parameter msproftx is set to on;
+                                                   The switch cannot be set with mstx-domain-exclude at the same time.
+      --mstx-domain-exclude             <Optional> Choose to exclude mstx events from a comma separated list of domains;
+                                                   `default` excludes the mstx default domain;
+                                                   The switch is only applicable when parameter msproftx is set to on;
+                                                   The switch cannot be set with mstx-domain-include at the same time.
+      --storage-limit                   <Optional> Specify the output directory volume. range 200MB ~ 4294967295MB.
+      --hccl                            <Optional> Show hccl profiling data, the default value is off. [Note] This option will be discarded in later versions.
+      --model-execution                 <Optional> Show ge model execution profiling data, the default value is off. [Note] This option will be discarded in later versions.
+      --aic-metrics                     <Optional> The aic metrics groups, include ArithmeticUtilization, PipeUtilization, Memory, MemoryL0, ResourceConflictRatio, MemoryUB, L2Cache.
+                                                   the default value is PipeUtilization.
+      --python-path                     <Optional> Specify the python interpreter path that is used for analysis, please ensure the python version is 3.7.5 or later.
+      --parse                           <Optional> Switch for using msprof to parse collecting data, the default value is off.
+      --query                           <Optional> Switch for using msprof to query collecting data, the default value is off.
+      --export                          <Optional> Switch for using msprof to export collecting data, the default value is off.
+      --clear                           <Optional> Switch for using msprof to analyze or export data in clear mode, the default value is off.
+      --analyze                         <Optional> Switch for using msprof to analyze collecting data, the default value is off.
+      --rule                            <Optional> Switch specified rule for using msprof to analyze collecting data, include communication, communication_matrix.
+                                                   the default value is communication,communication_matrix.
+      --iteration-id                    <Optional> The export iteration id, only used when argument export is on, the default value is 1.
+      --model-id                        <Optional> The export model id, only used when argument export is on, msprof will export minimum accessible model by default.
+      --summary-format                  <Optional> The export summary file format, only used when argument export is on, include csv, json, the default value is csv.
+      --type                            <Optional> The export type, only used when argument `export` is on 
+                                                   or when collecting data, include text, db.
+                                                   the default value is text(which will also export the database).
+      --reports                         <Optional> Specify the path that is used for controlling the export scope of collecting results
+      --aicpu                           <Optional> Show aicpu profiling data, the default value is off.
+      --sys-hardware-mem                <Optional> QOS, HBM, LLC, SOC and mem acquisition switch, optional on / off, the default value is off.
+      --sys-hardware-mem-freq           <Optional> QOS, HBM, LLC, SOC and mem acquisition frequency, range 1 ~ 10000 for QOS and SOC, 1 ~ 100 for HBM, LLC and mem, the default value is 50, unit Hz.
+      --sys-mem-serviceflow             <Optional> The qos serviceflow group, based on user customized.
+      --llc-profiling                   <Optional> The llc profiling groups, include read, write. the default value is read.
+      --sys-cpu-profiling               <Optional> The CPU acquisition switch, optional on / off,the default value is off.
+      --sys-cpu-freq                    <Optional> The cpu sampling frequency in hertz. the default value is 50 Hz, the range is 1 to 50 Hz.
+      --sys-profiling                   <Optional> The System CPU usage and system memory acquisition switch,the default value is off.
+      --sys-sampling-freq               <Optional> The sys sampling frequency in hertz. the default value is 10 Hz, the range is 1 to 10 Hz.
+      --sys-pid-profiling               <Optional> The CPU usage of the process and the memory acquisition switch of the process,the default value is off.
+      --sys-pid-sampling-freq           <Optional> The pid sampling frequency in hertz. the default value is 10 Hz, the range is 1 to 10 Hz.
+      --sys-io-profiling                <Optional> UB acquisition switch, the default value is off.
+      --sys-io-sampling-freq            <Optional> UB acquisition frequency, range 1 ~ 100, the default value is 100, unit Hz.
+      --instr-profiling                 <Optional> Show instr profiling data, the default value is off.
+      --sys-interconnection-profiling   <Optional> PCIE, CCU, SIO and UB acquisition switch, the default value is off.
+      --sys-interconnection-freq        <Optional> PCIE, CCU, SIO and UB acquisition frequency, range 1 ~ 50, the default value is 50, unit Hz.
+      --dvpp-profiling                  <Optional> DVPP acquisition switch, the default value is off.
+      --dvpp-freq                       <Optional> DVPP acquisition frequency, range 1 ~ 100, the default value is 50, unit Hz.
+      --l2                              <Optional> L2 Cache and SMMU acquisition switch. The default value is off.
+      --npu-events                      <Optional> Customize soc pmu parameters for collection. The input is hexadecimal number starting with 0x. Maximum of 8 parameters can be received for MATA and SMMU. 4 parameters for NOC.
+      --host-sys                        <Optional> The host-sys data type, include cpu, mem, disk, network, osrt, numa, threads-sync, cache
+      --host-sys-pid                    <Optional> Set the PID of the app process for which you want to collect performance data.
+      --host-sys-usage                  <Optional> The host-sys-usage data type, include cpu, mem.(full-platform)
+      --host-sys-usage-freq             <Optional> The sampling frequency in hertz. the default value is 50 Hz the range is 1 to 50 Hz.
+      --task-block                      <Optional> Show task block profiling data, the default value is off.The possible parameters are 'all', 'on', 'off'.
+      --sys-lp                          <Optional> Open low power profiling data config, the default value is on.
+      --sys-lp-freq                     <Optional> Config low power frequency, the default value is 100Hz, the range is 1 to 100Hz.
+      --dynamic                         <Optional> Dynamic profiling switch, the default value is off.
+      --pid                             <Optional> Dynamic profiling pids of the target processes
+      --delay                           <Optional> Collect start delay time in seconds, range 1 ~ 4294967295s.
+      --duration                        <Optional> Collection duration in seconds, range 1 ~ 4294967295s.
+      --help                            <Optional> help message.
+
+
+===== msprof-help.txt =====
+
+Usage:
+      msprof [--options]
+
+This is subcommand for operator optimization situation:
+      op                                Use binary msopprof to operator optimization (msprof op ...)
+
+Options:
+      --output                          <Optional> Specify the directory that is used for storing data results.
+      --application                     <Optional> Specify application path, considering the risk of privilege escalation, please pay attention to
+                                                   the group of the application and confirm whether it is the same as the user currently.
+                                                   [Note] This option will be discarded in later versions.
+                                                   you can try to use: msprof [msprof arguments] <app> [app arguments]
+      --ascendcl                        <Optional> Show acl profiling data, the default value is on.
+      --ge-api                          <Optional> Specify if report GE event, the default value is off. The possible parameters are 'l0', 'l1' or 'off'.
+      --runtime-api                     <Optional> Show runtime api profiling data, the default value is off.
+      --task-time                       <Optional> Show task profiling data, the default value is on. The possible parameters are 'l0', 'l1', 'l2', 'l3', 'on' or 'off'.
+      --aicore-shape                    <Optional> Collect AI Core operator shape data. This option takes effect only when task-time is l0. The possible values are 'on' and 'off', and the default value is off.
+      --task-tsfw                       <Optional> Specify the start of collection of ts management data, the default value is off.
+      --task-memory                     <Optional> Show the memory usage of the operator, the default value is off. The possible parameters are 'on' or 'off'.
+      --ai-core                         <Optional> Turn on / off the ai core profiling, the default value is on when collecting app Profiling.
+      --aic-mode                        <Optional> Set the aic profiling mode to task-based or sample-based.
+                                                   In task-based mode, profiling data will be collected by tasks.
+                                                   In sample-based mode, profiling data will be collected in a specific interval.
+                                                   The default value is task-based in AI task mode, sample-based in system mode.
+      --aic-freq                        <Optional> The aic sampling frequency in hertz, the default value is 100 Hz, the range is 1 to 100 Hz.
+      --environment                     <Optional> User app custom environment variable configuration.
+      --sys-period                      <Optional> Set total sampling period of system profiling in seconds.
+      --sys-devices                     <Optional> Specify the profiling scope by device ID when collect sys profiling.The value is all or ID list (split with ',').
+      --msproftx                        <Optional> Show msproftx and mstx data, the default value is off.
+      --mstx-domain-include             <Optional> Choose to only include mstx events from a comma separated list of domains;
+                                                   `default` filters the mstx default domain;
+                                                   The switch is only applicable when parameter msproftx is set to on;
+                                                   The switch cannot be set with mstx-domain-exclude at the same time.
+      --mstx-domain-exclude             <Optional> Choose to exclude mstx events from a comma separated list of domains;
+                                                   `default` excludes the mstx default domain;
+                                                   The switch is only applicable when parameter msproftx is set to on;
+                                                   The switch cannot be set with mstx-domain-include at the same time.
+      --storage-limit                   <Optional> Specify the output directory volume. range 200MB ~ 4294967295MB.
+      --hccl                            <Optional> Show hccl profiling data, the default value is off. [Note] This option will be discarded in later versions.
+      --model-execution                 <Optional> Show ge model execution profiling data, the default value is off. [Note] This option will be discarded in later versions.
+      --aic-metrics                     <Optional> The aic metrics groups, include ArithmeticUtilization, PipeUtilization, Memory, MemoryL0, ResourceConflictRatio, MemoryUB, L2Cache.
+                                                   the default value is PipeUtilization.
+      --python-path                     <Optional> Specify the python interpreter path that is used for analysis, please ensure the python version is 3.7.5 or later.
+      --parse                           <Optional> Switch for using msprof to parse collecting data, the default value is off.
+      --query                           <Optional> Switch for using msprof to query collecting data, the default value is off.
+      --export                          <Optional> Switch for using msprof to export collecting data, the default value is off.
+      --clear                           <Optional> Switch for using msprof to analyze or export data in clear mode, the default value is off.
+      --analyze                         <Optional> Switch for using msprof to analyze collecting data, the default value is off.
+      --rule                            <Optional> Switch specified rule for using msprof to analyze collecting data, include communication, communication_matrix.
+                                                   the default value is communication,communication_matrix.
+      --iteration-id                    <Optional> The export iteration id, only used when argument export is on, the default value is 1.
+      --model-id                        <Optional> The export model id, only used when argument export is on, msprof will export minimum accessible model by default.
+      --summary-format                  <Optional> The export summary file format, only used when argument export is on, include csv, json, the default value is csv.
+      --type                            <Optional> The export type, only used when argument `export` is on 
+                                                   or when collecting data, include text, db.
+                                                   the default value is text(which will also export the database).
+      --reports                         <Optional> Specify the path that is used for controlling the export scope of collecting results
+      --aicpu                           <Optional> Show aicpu profiling data, the default value is off.
+      --sys-hardware-mem                <Optional> QOS, HBM, LLC, SOC and mem acquisition switch, optional on / off, the default value is off.
+      --sys-hardware-mem-freq           <Optional> QOS, HBM, LLC, SOC and mem acquisition frequency, range 1 ~ 10000 for QOS and SOC, 1 ~ 100 for HBM, LLC and mem, the default value is 50, unit Hz.
+      --sys-mem-serviceflow             <Optional> The qos serviceflow group, based on user customized.
+      --llc-profiling                   <Optional> The llc profiling groups, include read, write. the default value is read.
+      --sys-cpu-profiling               <Optional> The CPU acquisition switch, optional on / off,the default value is off.
+      --sys-cpu-freq                    <Optional> The cpu sampling frequency in hertz. the default value is 50 Hz, the range is 1 to 50 Hz.
+      --sys-profiling                   <Optional> The System CPU usage and system memory acquisition switch,the default value is off.
+      --sys-sampling-freq               <Optional> The sys sampling frequency in hertz. the default value is 10 Hz, the range is 1 to 10 Hz.
+      --sys-pid-profiling               <Optional> The CPU usage of the process and the memory acquisition switch of the process,the default value is off.
+      --sys-pid-sampling-freq           <Optional> The pid sampling frequency in hertz. the default value is 10 Hz, the range is 1 to 10 Hz.
+      --sys-io-profiling                <Optional> UB acquisition switch, the default value is off.
+      --sys-io-sampling-freq            <Optional> UB acquisition frequency, range 1 ~ 100, the default value is 100, unit Hz.
+      --instr-profiling                 <Optional> Show instr profiling data, the default value is off.
+      --sys-interconnection-profiling   <Optional> PCIE, CCU, SIO and UB acquisition switch, the default value is off.
+      --sys-interconnection-freq        <Optional> PCIE, CCU, SIO and UB acquisition frequency, range 1 ~ 50, the default value is 50, unit Hz.
+      --dvpp-profiling                  <Optional> DVPP acquisition switch, the default value is off.
+      --dvpp-freq                       <Optional> DVPP acquisition frequency, range 1 ~ 100, the default value is 50, unit Hz.
+      --l2                              <Optional> L2 Cache and SMMU acquisition switch. The default value is off.
+      --npu-events                      <Optional> Customize soc pmu parameters for collection. The input is hexadecimal number starting with 0x. Maximum of 8 parameters can be received for MATA and SMMU. 4 parameters for NOC.
+      --host-sys                        <Optional> The host-sys data type, include cpu, mem, disk, network, osrt, numa, threads-sync, cache
+      --host-sys-pid                    <Optional> Set the PID of the app process for which you want to collect performance data.
+      --host-sys-usage                  <Optional> The host-sys-usage data type, include cpu, mem.(full-platform)
+      --host-sys-usage-freq             <Optional> The sampling frequency in hertz. the default value is 50 Hz the range is 1 to 50 Hz.
+      --task-block                      <Optional> Show task block profiling data, the default value is off.The possible parameters are 'all', 'on', 'off'.
+      --sys-lp                          <Optional> Open low power profiling data config, the default value is on.
+      --sys-lp-freq                     <Optional> Config low power frequency, the default value is 100Hz, the range is 1 to 100Hz.
+      --dynamic                         <Optional> Dynamic profiling switch, the default value is off.
+      --pid                             <Optional> Dynamic profiling pids of the target processes
+      --delay                           <Optional> Collect start delay time in seconds, range 1 ~ 4294967295s.
+      --duration                        <Optional> Collection duration in seconds, range 1 ~ 4294967295s.
+      --help                            <Optional> help message.
+
+
+===== msprof-op-help.txt =====
+Description:
+  Profile Ascend C operators by running the application on an Ascend device.
+
+Usage:
+  msopprof [options] (<application> [application-args] | --config <FILE>)
+
+Optional arguments:
+  Exactly one of <application> and --config must be specified.
+  -h, --help                                Show help message.
+  -V, --version                             Show version information.
+      --config <FILE>                       JSON operator configuration file.
+      --application <FILE>                  Application executable path.
+      --output <DIR>                        Output directory [default: ./].
+      --aic-metrics <NAME>[,<NAME>...]      Enable collection ability type:
+                                              Supported values: ArithmeticUtilization | MemoryUB | Memory | MemoryL0 | L2Cache |
+                                                | PipeUtilization | ResourceConflictRatio | Default | BasicInfo | Roofline |
+                                                | Occupancy | TimelineDetail | KernelScale | Source | MemoryDetail |
+                                                | PCSampling | PipeTimeline | InstrTimeline |
+      --instr-timeline-pipe <PIPE>          Specify the pipe for InstrTimeline.
+      --kernel-name <NAME>                  Specify the kernel name to profile.
+                                              Not effective in config mode.
+      --launch-count <N>                    Kernel launches to collect (1-5000) [default: 1].
+      --launch-skip-before-match <N>        Kernel launches to skip (0-1000) [default: 0].
+      --replay-mode {application,kernel,range}              Data collection replay mode [default: kernel].
+      --kill {true,false}                       Kill the process after launch-count [default: false].
+      --mstx {true,false}                       Enable mstx API [default: false].
+      --mstx-include <RANGE>                Specify the mstx range to collect.
+      --warm-up <N>                         Warm-up runs (0-500) [default: 5].
+      --core-id <ID>                        Specify the id of cores to be parsed.
+                                              Only effective when --aic-metrics=<TIMELINEDETAIL> and only
+                                              effective in simulation products.
+      --custom-input <FILE>                 JSON file for custom operator input.
+
+Examples:
+  msopprof ./my_operator
+  msopprof --config ./op_config.json
+
+Output:
+  Results are written to <output-dir>/OPPROF_{timestamp}_{random}.
+
+Troubleshooting:
+  Check that exactly one input is provided and option values are valid.
+
+
+Probe saved: /home/z30086261/Q4/results/mha-tuning/timeline-probe-20261029-154308-2467017/probe.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
