@@ -1,272 +1,284 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
-remote: Enumerating objects: 34, done.
-remote: Counting objects: 100% (34/34), done.
-remote: Compressing objects: 100% (11/11), done.
-remote: Total 21 (delta 12), reused 18 (delta 10), pack-reused 0 (from 0)
-Unpacking objects: 100% (21/21), 11.90 KiB | 5.95 MiB/s, done.
+remote: Enumerating objects: 26, done.
+remote: Counting objects: 100% (26/26), done.
+remote: Compressing objects: 100% (15/15), done.
+remote: Total 26 (delta 11), reused 24 (delta 11), pack-reused 0 (from 0)
+Unpacking objects: 100% (26/26), 14.10 KiB | 7.05 MiB/s, done.
 From https://github.com/zhangwenhao91/Q4
-   4ad729b..302e16a  main       -> origin/main
+   302e16a..e75fcfe  main       -> origin/main
 Merge made by the 'recursive' strategy.
- error.txt                               | 507 +++++++++++++++++++++++++++------------------------------------------------
- operators/mha/tuning/BUFFERS.md         |   2 +
- operators/mha/tuning/FIRSTPV.md         |  38 ++++++
- operators/mha/tuning/firstpv_variant.py |  90 ++++++++++++++
- operators/mha/tuning/run_firstpv.sh     |  33 +++++
- operators/mha/tuning/test_firstpv.py    |  57 +++++++++
+ error.txt                               | 498 ++++++++++++++++++++++++++++++++++-----------------------------------------
+ operators/mha/tuning/FIRSTPV.md         |   2 +
+ operators/mha/tuning/PBUFFER.md         |  41 +++++++
+ operators/mha/tuning/pbuffer_variant.py |  68 +++++++++++
+ operators/mha/tuning/run_pbuffer.sh     |  33 +++++
+ operators/mha/tuning/test_pbuffer.py    |  30 +++++
  operators/spec_v1/bench.py              |  14 ++-
- operators/spec_v1/mha_firstpv.py        |  19 +++
- reports/mha_buffers/report.md           |  15 +++
- reports/mha_buffers/summary.json        |  31 ++++-
- reports/mha_dsa_analysis.md             |   4 +-
- 11 files changed, 480 insertions(+), 330 deletions(-)
- create mode 100644 operators/mha/tuning/FIRSTPV.md
- create mode 100644 operators/mha/tuning/firstpv_variant.py
- create mode 100644 operators/mha/tuning/run_firstpv.sh
- create mode 100644 operators/mha/tuning/test_firstpv.py
- create mode 100644 operators/spec_v1/mha_firstpv.py
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/tuning/run_firstpv.sh check
-Results: /home/z30086261/Q4/results/mha-tuning/firstpv-20261029-110919-check-2083513
-CASE: suite=mha_firstpv metadata=cached tag=seed42 output=results/mha-tuning/firstpv-20261029-110919-check-2083513/seed42
+ operators/spec_v1/mha_pbuffer.py        |  19 +++
+ reports/mha_dsa_analysis.md             |   3 +-
+ reports/mha_firstpv/report.md           |  23 ++++
+ reports/mha_firstpv/summary.json        |  82 +++++++++++++
+ 11 files changed, 539 insertions(+), 274 deletions(-)
+ create mode 100644 operators/mha/tuning/PBUFFER.md
+ create mode 100644 operators/mha/tuning/pbuffer_variant.py
+ create mode 100644 operators/mha/tuning/run_pbuffer.sh
+ create mode 100644 operators/mha/tuning/test_pbuffer.py
+ create mode 100644 operators/spec_v1/mha_pbuffer.py
+ create mode 100644 reports/mha_firstpv/report.md
+ create mode 100644 reports/mha_firstpv/summary.json
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/tuning/run_pbuffer.sh check
+Results: /home/z30086261/Q4/results/mha-tuning/pbuffer-20261029-114941-check-2213320
+CASE: suite=mha_pbuffer metadata=cached tag=seed42 output=results/mha-tuning/pbuffer-20261029-114941-check-2213320/seed42
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 CODEGEN tilelang_kv2:126: for (int32_t kv = 0; kv < 40; ++kv) {
-CODEGEN tilelang_kv2:132: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[(((kv & 1) * 8192) + 24576)])), ((__cc__ float*)buf_dyn_l0c + (((kv & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_kv2:153: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((kv % 3) * 8192)])), ((__cc__ float*)buf_dyn_l0c + (((kv + 1) & 1) * 16384)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
+CODEGEN tilelang_kv2:163: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 65536), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_kv2:173: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a + 16384), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 81920), 0, 0, 8, 8, 8, 8);
 CODEGEN tilelang_kv2:231: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-[11:09:25] /home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/insert_sync.cc:1611: Warning: cross-iteration flag V->FIX: the synchronization ring is malformed.
-[11:09:25] /home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/insert_sync.cc:1611: Warning: cross-iteration flag FIX->V: the synchronization ring is malformed.
-2026-10-29 11:09:23  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `main` with `out_idx=-1`
-2026-10-29 11:09:27  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `main`
-CODEGEN tilelang_firstpv:118: for (int32_t kv = 0; kv < 50; ++kv) {
-CODEGEN tilelang_firstpv:163: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[49280])), ((__cc__ float*)buf_dyn_l0c + (((kv & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:182: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((kv % 3) * 8192)])), ((__cc__ float*)buf_dyn_l0c + (((kv + 1) & 1) * 16384)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:193: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((((kv + 1) & 1) * 8192) + 24576)])), ((__cc__ float*)buf_dyn_l0c + ((((kv + 1) & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:232: for (int32_t kv_1 = 0; kv_1 < 34; ++kv_1) {
+CODEGEN tilelang_kv2:240: asc_copy_ub2l1((__cbuf__ void*)(((__cbuf__ bfloat16_t*)buf_dyn_l1 + ((sid * 1024) + 81920))), (__ubuf__ void*)((&(((__ubuf__ bfloat16_t*)buf_dyn_shmem)[((((kv_1 + 1) & 1) * 8320) + 81920)]))), 8, 64, 1, 64);
+2026-10-29 11:49:45  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `main` with `out_idx=-1`
+2026-10-29 11:49:47  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `main`
+CODEGEN tilelang_pbuffer:128: for (int32_t kv = 0; kv < 37; ++kv) {
+CODEGEN tilelang_pbuffer:140: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 98304), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_pbuffer:188: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a + 16384), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + (((kv & 1) * 16384) + 65536)), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_pbuffer:237: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
+CODEGEN tilelang_pbuffer:246: asc_copy_ub2l1((__cbuf__ void*)(((__cbuf__ bfloat16_t*)buf_dyn_l1 + (((((kv_1 + 1) & 1) * 16384) + (sid * 1024)) + 65536))), (__ubuf__ void*)((&(((__ubuf__ bfloat16_t*)buf_dyn_shmem)[((((kv_1 + 1) & 1) * 8320) + 81920)]))), 8, 64, 1, 64);
+CODEGEN_IDENTICAL_PBUFFER: False
 {'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.385011693769341e-05, 'relative_l2': 0.002402810443424686, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_q128_vs_tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_q128_vs_tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_kv2_vs_tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_kv2_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_firstpv_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_firstpv', 'ascendc']
-CASE: suite=mha_firstpv metadata=cached tag=seed43 output=results/mha-tuning/firstpv-20261029-110919-check-2083513/seed43
+{'implementation': 'tilelang_pbuffer_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_pbuffer', 'ascendc']
+CASE: suite=mha_pbuffer metadata=cached tag=seed43 output=results/mha-tuning/pbuffer-20261029-114941-check-2213320/seed43
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 CODEGEN tilelang_kv2:126: for (int32_t kv = 0; kv < 40; ++kv) {
-CODEGEN tilelang_kv2:132: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[(((kv & 1) * 8192) + 24576)])), ((__cc__ float*)buf_dyn_l0c + (((kv & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_kv2:153: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((kv % 3) * 8192)])), ((__cc__ float*)buf_dyn_l0c + (((kv + 1) & 1) * 16384)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
+CODEGEN tilelang_kv2:163: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 65536), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_kv2:173: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a + 16384), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 81920), 0, 0, 8, 8, 8, 8);
 CODEGEN tilelang_kv2:231: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-CODEGEN tilelang_firstpv:118: for (int32_t kv = 0; kv < 50; ++kv) {
-CODEGEN tilelang_firstpv:163: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[49280])), ((__cc__ float*)buf_dyn_l0c + (((kv & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:182: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((kv % 3) * 8192)])), ((__cc__ float*)buf_dyn_l0c + (((kv + 1) & 1) * 16384)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:193: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((((kv + 1) & 1) * 8192) + 24576)])), ((__cc__ float*)buf_dyn_l0c + ((((kv + 1) & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:232: for (int32_t kv_1 = 0; kv_1 < 34; ++kv_1) {
+CODEGEN tilelang_kv2:240: asc_copy_ub2l1((__cbuf__ void*)(((__cbuf__ bfloat16_t*)buf_dyn_l1 + ((sid * 1024) + 81920))), (__ubuf__ void*)((&(((__ubuf__ bfloat16_t*)buf_dyn_shmem)[((((kv_1 + 1) & 1) * 8320) + 81920)]))), 8, 64, 1, 64);
+CODEGEN tilelang_pbuffer:128: for (int32_t kv = 0; kv < 37; ++kv) {
+CODEGEN tilelang_pbuffer:140: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 98304), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_pbuffer:188: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a + 16384), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + (((kv & 1) * 16384) + 65536)), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_pbuffer:237: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
+CODEGEN tilelang_pbuffer:246: asc_copy_ub2l1((__cbuf__ void*)(((__cbuf__ bfloat16_t*)buf_dyn_l1 + (((((kv_1 + 1) & 1) * 16384) + (sid * 1024)) + 65536))), (__ubuf__ void*)((&(((__ubuf__ bfloat16_t*)buf_dyn_shmem)[((((kv_1 + 1) & 1) * 8320) + 81920)]))), 8, 64, 1, 64);
+CODEGEN_IDENTICAL_PBUFFER: False
 {'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.322855514397345e-05, 'relative_l2': 0.002464784010507589, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.322855514397345e-05, 'relative_l2': 0.002464784010507589, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.322855514397345e-05, 'relative_l2': 0.002464784010507589, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.322855514397345e-05, 'relative_l2': 0.002464784010507589, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.262073895116062e-05, 'relative_l2': 0.002441090038219888, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_q128_vs_tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_q128_vs_tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.454711685447574e-05, 'relative_l2': 0.0017365376146649787, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_kv2_vs_tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_kv2_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.454711685447574e-05, 'relative_l2': 0.0017365376146649787, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_firstpv_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.454711685447574e-05, 'relative_l2': 0.0017365376146649787, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_firstpv', 'ascendc']
-CASE: suite=mha_firstpv metadata=cached tag=seed44 output=results/mha-tuning/firstpv-20261029-110919-check-2083513/seed44
+{'implementation': 'tilelang_pbuffer_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.454711685447574e-05, 'relative_l2': 0.0017365376146649787, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_pbuffer', 'ascendc']
+CASE: suite=mha_pbuffer metadata=cached tag=seed44 output=results/mha-tuning/pbuffer-20261029-114941-check-2213320/seed44
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 CODEGEN tilelang_kv2:126: for (int32_t kv = 0; kv < 40; ++kv) {
-CODEGEN tilelang_kv2:132: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[(((kv & 1) * 8192) + 24576)])), ((__cc__ float*)buf_dyn_l0c + (((kv & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_kv2:153: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((kv % 3) * 8192)])), ((__cc__ float*)buf_dyn_l0c + (((kv + 1) & 1) * 16384)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
+CODEGEN tilelang_kv2:163: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 65536), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_kv2:173: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a + 16384), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 81920), 0, 0, 8, 8, 8, 8);
 CODEGEN tilelang_kv2:231: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-CODEGEN tilelang_firstpv:118: for (int32_t kv = 0; kv < 50; ++kv) {
-CODEGEN tilelang_firstpv:163: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[49280])), ((__cc__ float*)buf_dyn_l0c + (((kv & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:182: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((kv % 3) * 8192)])), ((__cc__ float*)buf_dyn_l0c + (((kv + 1) & 1) * 16384)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:193: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((((kv + 1) & 1) * 8192) + 24576)])), ((__cc__ float*)buf_dyn_l0c + ((((kv + 1) & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:232: for (int32_t kv_1 = 0; kv_1 < 34; ++kv_1) {
+CODEGEN tilelang_kv2:240: asc_copy_ub2l1((__cbuf__ void*)(((__cbuf__ bfloat16_t*)buf_dyn_l1 + ((sid * 1024) + 81920))), (__ubuf__ void*)((&(((__ubuf__ bfloat16_t*)buf_dyn_shmem)[((((kv_1 + 1) & 1) * 8320) + 81920)]))), 8, 64, 1, 64);
+CODEGEN tilelang_pbuffer:128: for (int32_t kv = 0; kv < 37; ++kv) {
+CODEGEN tilelang_pbuffer:140: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 98304), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_pbuffer:188: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a + 16384), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + (((kv & 1) * 16384) + 65536)), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_pbuffer:237: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
+CODEGEN tilelang_pbuffer:246: asc_copy_ub2l1((__cbuf__ void*)(((__cbuf__ bfloat16_t*)buf_dyn_l1 + (((((kv_1 + 1) & 1) * 16384) + (sid * 1024)) + 65536))), (__ubuf__ void*)((&(((__ubuf__ bfloat16_t*)buf_dyn_shmem)[((((kv_1 + 1) & 1) * 8320) + 81920)]))), 8, 64, 1, 64);
+CODEGEN_IDENTICAL_PBUFFER: False
 {'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 6.406429459260068e-05, 'relative_l2': 0.0024466363437922107, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 6.406429459260068e-05, 'relative_l2': 0.0024466363437922107, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 6.406429459260068e-05, 'relative_l2': 0.0024466363437922107, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 6.406429459260068e-05, 'relative_l2': 0.0024466363437922107, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 6.355775895747998e-05, 'relative_l2': 0.0024272915823741192, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_q128_vs_tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_q128_vs_tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 4.528714744415066e-05, 'relative_l2': 0.0017295438500280265, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_kv2_vs_tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_kv2_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 4.528714744415066e-05, 'relative_l2': 0.0017295438500280265, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_firstpv_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 4.528714744415066e-05, 'relative_l2': 0.0017295438500280265, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_firstpv', 'ascendc']
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/tuning/run_firstpv.sh bench
-Results: /home/z30086261/Q4/results/mha-tuning/firstpv-20261029-110951-bench-2085020
-CASE: suite=mha_firstpv metadata=cached tag=rep1 output=results/mha-tuning/firstpv-20261029-110951-bench-2085020/rep1
+{'implementation': 'tilelang_pbuffer_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0009765625, 'rmse': 4.528714744415066e-05, 'relative_l2': 0.0017295438500280265, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_pbuffer', 'ascendc']
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/tuning/run_pbuffer.sh bench
+Results: /home/z30086261/Q4/results/mha-tuning/pbuffer-20261029-115035-bench-2216219
+CASE: suite=mha_pbuffer metadata=cached tag=rep1 output=results/mha-tuning/pbuffer-20261029-115035-bench-2216219/rep1
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 CODEGEN tilelang_kv2:126: for (int32_t kv = 0; kv < 40; ++kv) {
-CODEGEN tilelang_kv2:132: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[(((kv & 1) * 8192) + 24576)])), ((__cc__ float*)buf_dyn_l0c + (((kv & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_kv2:153: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((kv % 3) * 8192)])), ((__cc__ float*)buf_dyn_l0c + (((kv + 1) & 1) * 16384)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
+CODEGEN tilelang_kv2:163: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 65536), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_kv2:173: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a + 16384), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 81920), 0, 0, 8, 8, 8, 8);
 CODEGEN tilelang_kv2:231: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-CODEGEN tilelang_firstpv:118: for (int32_t kv = 0; kv < 50; ++kv) {
-CODEGEN tilelang_firstpv:163: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[49280])), ((__cc__ float*)buf_dyn_l0c + (((kv & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:182: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((kv % 3) * 8192)])), ((__cc__ float*)buf_dyn_l0c + (((kv + 1) & 1) * 16384)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:193: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((((kv + 1) & 1) * 8192) + 24576)])), ((__cc__ float*)buf_dyn_l0c + ((((kv + 1) & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:232: for (int32_t kv_1 = 0; kv_1 < 34; ++kv_1) {
+CODEGEN tilelang_kv2:240: asc_copy_ub2l1((__cbuf__ void*)(((__cbuf__ bfloat16_t*)buf_dyn_l1 + ((sid * 1024) + 81920))), (__ubuf__ void*)((&(((__ubuf__ bfloat16_t*)buf_dyn_shmem)[((((kv_1 + 1) & 1) * 8320) + 81920)]))), 8, 64, 1, 64);
+CODEGEN tilelang_pbuffer:128: for (int32_t kv = 0; kv < 37; ++kv) {
+CODEGEN tilelang_pbuffer:140: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 98304), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_pbuffer:188: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a + 16384), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + (((kv & 1) * 16384) + 65536)), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_pbuffer:237: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
+CODEGEN tilelang_pbuffer:246: asc_copy_ub2l1((__cbuf__ void*)(((__cbuf__ bfloat16_t*)buf_dyn_l1 + (((((kv_1 + 1) & 1) * 16384) + (sid * 1024)) + 65536))), (__ubuf__ void*)((&(((__ubuf__ bfloat16_t*)buf_dyn_shmem)[((((kv_1 + 1) & 1) * 8320) + 81920)]))), 8, 64, 1, 64);
+CODEGEN_IDENTICAL_PBUFFER: False
 {'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.385011693769341e-05, 'relative_l2': 0.002402810443424686, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_q128_vs_tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_q128_vs_tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_kv2_vs_tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_kv2_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_firstpv_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_firstpv', 'ascendc']
-{'round': 0, 'implementation': 'tilelang_q128', 'event_us': 52.95310020446777, 'wall_us': 57.22544010495767}
-{'round': 0, 'implementation': 'tilelang_kv2', 'event_us': 51.195688247680664, 'wall_us': 51.6176299424842}
-{'round': 0, 'implementation': 'tilelang_firstpv', 'event_us': 52.14066028594971, 'wall_us': 52.577860187739134}
-{'round': 0, 'implementation': 'ascendc', 'event_us': 40.561089515686035, 'wall_us': 41.01461992831901}
-{'round': 1, 'implementation': 'tilelang_kv2', 'event_us': 51.17673873901367, 'wall_us': 51.59309017471969}
-{'round': 1, 'implementation': 'tilelang_firstpv', 'event_us': 52.131757736206055, 'wall_us': 52.61602025711909}
-{'round': 1, 'implementation': 'ascendc', 'event_us': 40.1416015625, 'wall_us': 40.42833985295147}
-{'round': 1, 'implementation': 'tilelang_q128', 'event_us': 52.76750087738037, 'wall_us': 53.11686982167885}
-{'round': 2, 'implementation': 'tilelang_firstpv', 'event_us': 52.06721782684326, 'wall_us': 52.681019878946245}
-{'round': 2, 'implementation': 'ascendc', 'event_us': 40.359439849853516, 'wall_us': 40.713369962759316}
-{'round': 2, 'implementation': 'tilelang_q128', 'event_us': 52.73928165435791, 'wall_us': 53.11656976118684}
-{'round': 2, 'implementation': 'tilelang_kv2', 'event_us': 51.149020195007324, 'wall_us': 51.519679836928844}
-{'round': 3, 'implementation': 'ascendc', 'event_us': 40.07868766784668, 'wall_us': 40.42183019919321}
-{'round': 3, 'implementation': 'tilelang_q128', 'event_us': 52.7531623840332, 'wall_us': 53.153430053498596}
-{'round': 3, 'implementation': 'tilelang_kv2', 'event_us': 51.15740776062012, 'wall_us': 51.72187986318022}
-{'round': 3, 'implementation': 'tilelang_firstpv', 'event_us': 52.11349010467529, 'wall_us': 52.48481989838183}
-{'round': 4, 'implementation': 'ascendc', 'event_us': 40.178961753845215, 'wall_us': 40.53490003570914}
-{'round': 4, 'implementation': 'tilelang_firstpv', 'event_us': 52.16293811798096, 'wall_us': 52.51857015537098}
-{'round': 4, 'implementation': 'tilelang_kv2', 'event_us': 51.14580154418945, 'wall_us': 51.56914994586259}
-{'round': 4, 'implementation': 'tilelang_q128', 'event_us': 52.75681972503662, 'wall_us': 53.14602021826431}
-{'round': 5, 'implementation': 'tilelang_q128', 'event_us': 52.77172088623047, 'wall_us': 53.231439960654825}
-{'round': 5, 'implementation': 'ascendc', 'event_us': 40.176801681518555, 'wall_us': 40.57145008118823}
-{'round': 5, 'implementation': 'tilelang_firstpv', 'event_us': 52.16516971588135, 'wall_us': 52.57785989670083}
-{'round': 5, 'implementation': 'tilelang_kv2', 'event_us': 51.14264965057373, 'wall_us': 51.63635010831058}
-{'round': 6, 'implementation': 'tilelang_kv2', 'event_us': 51.11546993255615, 'wall_us': 51.526879833545536}
-{'round': 6, 'implementation': 'tilelang_q128', 'event_us': 52.74754047393799, 'wall_us': 53.11827000696212}
-{'round': 6, 'implementation': 'ascendc', 'event_us': 40.20599842071533, 'wall_us': 40.719280077610165}
-{'round': 6, 'implementation': 'tilelang_firstpv', 'event_us': 52.12069034576416, 'wall_us': 52.54902003798634}
-{'round': 7, 'implementation': 'tilelang_firstpv', 'event_us': 52.11092948913574, 'wall_us': 52.46829998213798}
-{'round': 7, 'implementation': 'tilelang_kv2', 'event_us': 51.13555908203125, 'wall_us': 51.48262978764251}
-{'round': 7, 'implementation': 'tilelang_q128', 'event_us': 52.73019790649414, 'wall_us': 53.12227993272245}
-{'round': 7, 'implementation': 'ascendc', 'event_us': 39.98482942581177, 'wall_us': 40.48592003528029}
-{'tilelang_q128': {'event_us': 52.75499105453491, 'wall_us': 53.13415007549338}, 'tilelang_kv2': {'event_us': 51.14741086959839, 'wall_us': 51.58112006029114}, 'tilelang_firstpv': {'event_us': 52.12622404098511, 'wall_us': 52.563439967343584}, 'ascendc': {'event_us': 40.177881717681885, 'wall_us': 40.55317505844869}, 'ratios': {'matched_best_over_firstpv': 0.9812222506157916, 'original_over_firstpv': 1.0120623932601645, 'ascendc_over_firstpv': 0.7707805899405136}}
-CASE: suite=mha_firstpv metadata=cached tag=rep2 output=results/mha-tuning/firstpv-20261029-110951-bench-2085020/rep2
+{'implementation': 'tilelang_pbuffer_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_pbuffer', 'ascendc']
+{'round': 0, 'implementation': 'tilelang_q128', 'event_us': 52.86303997039795, 'wall_us': 57.28632997488603}
+{'round': 0, 'implementation': 'tilelang_kv2', 'event_us': 51.1814022064209, 'wall_us': 51.60982022061944}
+{'round': 0, 'implementation': 'tilelang_pbuffer', 'event_us': 53.36284160614014, 'wall_us': 53.76393994083628}
+{'round': 0, 'implementation': 'ascendc', 'event_us': 40.37168025970459, 'wall_us': 40.715969807934016}
+{'round': 1, 'implementation': 'tilelang_kv2', 'event_us': 51.13174915313721, 'wall_us': 51.51908000698313}
+{'round': 1, 'implementation': 'tilelang_pbuffer', 'event_us': 53.52305889129639, 'wall_us': 53.94862004322931}
+{'round': 1, 'implementation': 'ascendc', 'event_us': 40.049238204956055, 'wall_us': 40.44135013828054}
+{'round': 1, 'implementation': 'tilelang_q128', 'event_us': 52.80506134033203, 'wall_us': 53.185469878371805}
+{'round': 2, 'implementation': 'tilelang_pbuffer', 'event_us': 53.47146034240723, 'wall_us': 53.8354497984983}
+{'round': 2, 'implementation': 'ascendc', 'event_us': 40.083088874816895, 'wall_us': 40.48942995723337}
+{'round': 2, 'implementation': 'tilelang_q128', 'event_us': 52.724690437316895, 'wall_us': 53.18117007846013}
+{'round': 2, 'implementation': 'tilelang_kv2', 'event_us': 51.14105224609375, 'wall_us': 51.51105986442417}
+{'round': 3, 'implementation': 'ascendc', 'event_us': 40.07315158843994, 'wall_us': 40.47380993142724}
+{'round': 3, 'implementation': 'tilelang_q128', 'event_us': 52.74147987365723, 'wall_us': 53.11968008754775}
+{'round': 3, 'implementation': 'tilelang_kv2', 'event_us': 51.17586135864258, 'wall_us': 51.52558005647734}
+{'round': 3, 'implementation': 'tilelang_pbuffer', 'event_us': 53.458619117736816, 'wall_us': 53.91017009969801}
+{'round': 4, 'implementation': 'ascendc', 'event_us': 40.03786087036133, 'wall_us': 40.506259829271585}
+{'round': 4, 'implementation': 'tilelang_pbuffer', 'event_us': 53.353590965270996, 'wall_us': 53.70684986701235}
+{'round': 4, 'implementation': 'tilelang_kv2', 'event_us': 51.163620948791504, 'wall_us': 51.53009027708322}
+{'round': 4, 'implementation': 'tilelang_q128', 'event_us': 52.72410869598389, 'wall_us': 53.0921301105991}
+{'round': 5, 'implementation': 'tilelang_q128', 'event_us': 52.71317958831787, 'wall_us': 53.0805200105533}
+{'round': 5, 'implementation': 'ascendc', 'event_us': 40.0836706161499, 'wall_us': 40.48292001243681}
+{'round': 5, 'implementation': 'tilelang_pbuffer', 'event_us': 53.3316707611084, 'wall_us': 53.71397011913359}
+{'round': 5, 'implementation': 'tilelang_kv2', 'event_us': 51.13512992858887, 'wall_us': 51.68453004444018}
+{'round': 6, 'implementation': 'tilelang_kv2', 'event_us': 51.13086223602295, 'wall_us': 51.5429099323228}
+{'round': 6, 'implementation': 'tilelang_q128', 'event_us': 52.70994186401367, 'wall_us': 53.06870007188991}
+{'round': 6, 'implementation': 'ascendc', 'event_us': 40.07256031036377, 'wall_us': 40.43435008497909}
+{'round': 6, 'implementation': 'tilelang_pbuffer', 'event_us': 53.49021911621094, 'wall_us': 53.86829987401143}
+{'round': 7, 'implementation': 'tilelang_pbuffer', 'event_us': 53.49252223968506, 'wall_us': 53.884219960309565}
+{'round': 7, 'implementation': 'tilelang_kv2', 'event_us': 51.15837097167969, 'wall_us': 51.48562020622194}
+{'round': 7, 'implementation': 'tilelang_q128', 'event_us': 52.74012088775635, 'wall_us': 53.08842984959483}
+{'round': 7, 'implementation': 'ascendc', 'event_us': 40.00021934509277, 'wall_us': 40.491039981134236}
+{'tilelang_q128': {'event_us': 52.73240566253662, 'wall_us': 53.105905099073425}, 'tilelang_kv2': {'event_us': 51.14971160888672, 'wall_us': 51.52783516678028}, 'tilelang_pbuffer': {'event_us': 53.46503973007202, 'wall_us': 53.851874836254865}, 'ascendc': {'event_us': 40.072855949401855, 'wall_us': 40.48617498483509}, 'ratios': {'matched_best_over_pbuffer': 0.9566945403412275, 'original_over_pbuffer': 0.9862969508442482, 'ascendc_over_pbuffer': 0.7495151252429056}}
+CASE: suite=mha_pbuffer metadata=cached tag=rep2 output=results/mha-tuning/pbuffer-20261029-115035-bench-2216219/rep2
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 CODEGEN tilelang_kv2:126: for (int32_t kv = 0; kv < 40; ++kv) {
-CODEGEN tilelang_kv2:132: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[(((kv & 1) * 8192) + 24576)])), ((__cc__ float*)buf_dyn_l0c + (((kv & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_kv2:153: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((kv % 3) * 8192)])), ((__cc__ float*)buf_dyn_l0c + (((kv + 1) & 1) * 16384)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
+CODEGEN tilelang_kv2:163: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 65536), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_kv2:173: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a + 16384), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 81920), 0, 0, 8, 8, 8, 8);
 CODEGEN tilelang_kv2:231: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-CODEGEN tilelang_firstpv:118: for (int32_t kv = 0; kv < 50; ++kv) {
-CODEGEN tilelang_firstpv:163: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[49280])), ((__cc__ float*)buf_dyn_l0c + (((kv & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:182: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((kv % 3) * 8192)])), ((__cc__ float*)buf_dyn_l0c + (((kv + 1) & 1) * 16384)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:193: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((((kv + 1) & 1) * 8192) + 24576)])), ((__cc__ float*)buf_dyn_l0c + ((((kv + 1) & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:232: for (int32_t kv_1 = 0; kv_1 < 34; ++kv_1) {
+CODEGEN tilelang_kv2:240: asc_copy_ub2l1((__cbuf__ void*)(((__cbuf__ bfloat16_t*)buf_dyn_l1 + ((sid * 1024) + 81920))), (__ubuf__ void*)((&(((__ubuf__ bfloat16_t*)buf_dyn_shmem)[((((kv_1 + 1) & 1) * 8320) + 81920)]))), 8, 64, 1, 64);
+CODEGEN tilelang_pbuffer:128: for (int32_t kv = 0; kv < 37; ++kv) {
+CODEGEN tilelang_pbuffer:140: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 98304), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_pbuffer:188: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a + 16384), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + (((kv & 1) * 16384) + 65536)), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_pbuffer:237: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
+CODEGEN tilelang_pbuffer:246: asc_copy_ub2l1((__cbuf__ void*)(((__cbuf__ bfloat16_t*)buf_dyn_l1 + (((((kv_1 + 1) & 1) * 16384) + (sid * 1024)) + 65536))), (__ubuf__ void*)((&(((__ubuf__ bfloat16_t*)buf_dyn_shmem)[((((kv_1 + 1) & 1) * 8320) + 81920)]))), 8, 64, 1, 64);
+CODEGEN_IDENTICAL_PBUFFER: False
 {'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.385011693769341e-05, 'relative_l2': 0.002402810443424686, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_q128_vs_tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_q128_vs_tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_kv2_vs_tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_kv2_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_firstpv_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_firstpv', 'ascendc']
-{'round': 0, 'implementation': 'tilelang_q128', 'event_us': 52.848711013793945, 'wall_us': 57.46520007960498}
-{'round': 0, 'implementation': 'tilelang_kv2', 'event_us': 51.11614227294922, 'wall_us': 51.53631005669013}
-{'round': 0, 'implementation': 'tilelang_firstpv', 'event_us': 52.0737886428833, 'wall_us': 52.414519886951894}
-{'round': 0, 'implementation': 'ascendc', 'event_us': 40.88181018829346, 'wall_us': 41.212520154658705}
-{'round': 1, 'implementation': 'tilelang_kv2', 'event_us': 51.11618995666504, 'wall_us': 51.466390141285956}
-{'round': 1, 'implementation': 'tilelang_firstpv', 'event_us': 52.078890800476074, 'wall_us': 52.42354003712535}
-{'round': 1, 'implementation': 'ascendc', 'event_us': 40.13312816619873, 'wall_us': 40.51697003887966}
-{'round': 1, 'implementation': 'tilelang_q128', 'event_us': 52.71398067474365, 'wall_us': 53.05417987983674}
-{'round': 2, 'implementation': 'tilelang_firstpv', 'event_us': 52.06798076629639, 'wall_us': 52.42373008513823}
-{'round': 2, 'implementation': 'ascendc', 'event_us': 40.095839500427246, 'wall_us': 40.56445002788678}
-{'round': 2, 'implementation': 'tilelang_q128', 'event_us': 52.720279693603516, 'wall_us': 53.06538980221376}
-{'round': 2, 'implementation': 'tilelang_kv2', 'event_us': 51.08243942260742, 'wall_us': 51.51327000930905}
-{'round': 3, 'implementation': 'ascendc', 'event_us': 40.1098108291626, 'wall_us': 40.482120239175856}
-{'round': 3, 'implementation': 'tilelang_q128', 'event_us': 52.72860050201416, 'wall_us': 53.098339994903654}
-{'round': 3, 'implementation': 'tilelang_kv2', 'event_us': 51.08367919921875, 'wall_us': 51.46779993083328}
-{'round': 3, 'implementation': 'tilelang_firstpv', 'event_us': 52.065677642822266, 'wall_us': 52.549119864124805}
-{'round': 4, 'implementation': 'ascendc', 'event_us': 40.069332122802734, 'wall_us': 40.439150179736316}
-{'round': 4, 'implementation': 'tilelang_firstpv', 'event_us': 52.07005023956299, 'wall_us': 52.41371982265264}
-{'round': 4, 'implementation': 'tilelang_kv2', 'event_us': 51.06785774230957, 'wall_us': 51.40369990840554}
-{'round': 4, 'implementation': 'tilelang_q128', 'event_us': 52.66648769378662, 'wall_us': 53.08202002197504}
-{'round': 5, 'implementation': 'tilelang_q128', 'event_us': 52.63154983520508, 'wall_us': 53.00299992086366}
-{'round': 5, 'implementation': 'ascendc', 'event_us': 40.07075786590576, 'wall_us': 40.449569933116436}
-{'round': 5, 'implementation': 'tilelang_firstpv', 'event_us': 52.06499099731445, 'wall_us': 52.43345018243417}
-{'round': 5, 'implementation': 'tilelang_kv2', 'event_us': 51.088900566101074, 'wall_us': 51.39688990311697}
-{'round': 6, 'implementation': 'tilelang_kv2', 'event_us': 51.07595920562744, 'wall_us': 51.42192996572703}
-{'round': 6, 'implementation': 'tilelang_q128', 'event_us': 52.710981369018555, 'wall_us': 53.035950113553554}
-{'round': 6, 'implementation': 'ascendc', 'event_us': 40.153841972351074, 'wall_us': 40.544410003349185}
-{'round': 6, 'implementation': 'tilelang_firstpv', 'event_us': 52.06193923950195, 'wall_us': 52.410810021683574}
-{'round': 7, 'implementation': 'tilelang_firstpv', 'event_us': 52.05638885498047, 'wall_us': 52.39088000962511}
-{'round': 7, 'implementation': 'tilelang_kv2', 'event_us': 51.078481674194336, 'wall_us': 52.24065011134371}
-{'round': 7, 'implementation': 'tilelang_q128', 'event_us': 52.69439220428467, 'wall_us': 53.002400090917945}
-{'round': 7, 'implementation': 'ascendc', 'event_us': 40.21249771118164, 'wall_us': 40.544309886172414}
-{'tilelang_q128': {'event_us': 52.7124810218811, 'wall_us': 53.05978484102525}, 'tilelang_kv2': {'event_us': 51.083059310913086, 'wall_us': 51.46709503605962}, 'tilelang_firstpv': {'event_us': 52.066829204559326, 'wall_us': 52.41902996203862}, 'ascendc': {'event_us': 40.121469497680664, 'wall_us': 40.53063996252604}, 'ratios': {'matched_best_over_firstpv': 0.981105630808029, 'original_over_firstpv': 1.0124004443363577, 'ascendc_over_firstpv': 0.7705763940425885}}
-CASE: suite=mha_firstpv metadata=cached tag=rep3 output=results/mha-tuning/firstpv-20261029-110951-bench-2085020/rep3
+{'implementation': 'tilelang_pbuffer_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_pbuffer', 'ascendc']
+{'round': 0, 'implementation': 'tilelang_q128', 'event_us': 52.738609313964844, 'wall_us': 57.07340984372422}
+{'round': 0, 'implementation': 'tilelang_kv2', 'event_us': 51.04957103729248, 'wall_us': 51.395290065556765}
+{'round': 0, 'implementation': 'tilelang_pbuffer', 'event_us': 53.40713977813721, 'wall_us': 53.74161002691835}
+{'round': 0, 'implementation': 'ascendc', 'event_us': 40.31052112579346, 'wall_us': 40.64667009515688}
+{'round': 1, 'implementation': 'tilelang_kv2', 'event_us': 51.09482765197754, 'wall_us': 51.43435002537444}
+{'round': 1, 'implementation': 'tilelang_pbuffer', 'event_us': 53.48721981048584, 'wall_us': 53.86850010836497}
+{'round': 1, 'implementation': 'ascendc', 'event_us': 39.93011951446533, 'wall_us': 40.280620160046965}
+{'round': 1, 'implementation': 'tilelang_q128', 'event_us': 52.63289928436279, 'wall_us': 52.91848006891087}
+{'round': 2, 'implementation': 'tilelang_pbuffer', 'event_us': 53.455820083618164, 'wall_us': 53.77025023335591}
+{'round': 2, 'implementation': 'ascendc', 'event_us': 40.07347106933594, 'wall_us': 40.95062002306804}
+{'round': 2, 'implementation': 'tilelang_q128', 'event_us': 52.56817817687988, 'wall_us': 52.921780152246356}
+{'round': 2, 'implementation': 'tilelang_kv2', 'event_us': 51.02839946746826, 'wall_us': 51.42283014720306}
+{'round': 3, 'implementation': 'ascendc', 'event_us': 40.00801086425781, 'wall_us': 40.318370156455785}
+{'round': 3, 'implementation': 'tilelang_q128', 'event_us': 52.635231018066406, 'wall_us': 52.985680231358856}
+{'round': 3, 'implementation': 'tilelang_kv2', 'event_us': 51.04217052459717, 'wall_us': 52.383980073500425}
+{'round': 3, 'implementation': 'tilelang_pbuffer', 'event_us': 53.51797103881836, 'wall_us': 53.853479912504554}
+{'round': 4, 'implementation': 'ascendc', 'event_us': 39.91158962249756, 'wall_us': 40.250270103570074}
+{'round': 4, 'implementation': 'tilelang_pbuffer', 'event_us': 53.42659950256348, 'wall_us': 53.78236994147301}
+{'round': 4, 'implementation': 'tilelang_kv2', 'event_us': 51.075148582458496, 'wall_us': 51.41051980899647}
+{'round': 4, 'implementation': 'tilelang_q128', 'event_us': 52.615580558776855, 'wall_us': 52.920169837307185}
+{'round': 5, 'implementation': 'tilelang_q128', 'event_us': 52.614898681640625, 'wall_us': 52.89903987431899}
+{'round': 5, 'implementation': 'ascendc', 'event_us': 40.0861120223999, 'wall_us': 40.37315025925636}
+{'round': 5, 'implementation': 'tilelang_pbuffer', 'event_us': 53.45550060272217, 'wall_us': 53.817229927517474}
+{'round': 5, 'implementation': 'tilelang_kv2', 'event_us': 51.01233959197998, 'wall_us': 51.33238999405876}
+{'round': 6, 'implementation': 'tilelang_kv2', 'event_us': 51.02219104766846, 'wall_us': 51.32447986397892}
+{'round': 6, 'implementation': 'tilelang_q128', 'event_us': 52.627692222595215, 'wall_us': 52.94971982948482}
+{'round': 6, 'implementation': 'ascendc', 'event_us': 40.031142234802246, 'wall_us': 40.36714002722874}
+{'round': 6, 'implementation': 'tilelang_pbuffer', 'event_us': 53.47200870513916, 'wall_us': 53.801900066901}
+{'round': 7, 'implementation': 'tilelang_pbuffer', 'event_us': 53.485450744628906, 'wall_us': 53.80520015023649}
+{'round': 7, 'implementation': 'tilelang_kv2', 'event_us': 51.05863094329834, 'wall_us': 51.37055006343871}
+{'round': 7, 'implementation': 'tilelang_q128', 'event_us': 52.610578536987305, 'wall_us': 52.9514197842218}
+{'round': 7, 'implementation': 'ascendc', 'event_us': 39.90122079849243, 'wall_us': 40.265200077556074}
+{'tilelang_q128': {'event_us': 52.621636390686035, 'wall_us': 52.93574999086559}, 'tilelang_kv2': {'event_us': 51.045870780944824, 'wall_us': 51.40290493727662}, 'tilelang_pbuffer': {'event_us': 53.46391439437866, 'wall_us': 53.80355010856874}, 'ascendc': {'event_us': 40.01957654953003, 'wall_us': 40.342755091842264}, 'ratios': {'matched_best_over_pbuffer': 0.9547724172308626, 'original_over_pbuffer': 0.984245859787229, 'ascendc_over_pbuffer': 0.7485343526163096}}
+CASE: suite=mha_pbuffer metadata=cached tag=rep3 output=results/mha-tuning/pbuffer-20261029-115035-bench-2216219/rep3
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 CODEGEN tilelang_kv2:126: for (int32_t kv = 0; kv < 40; ++kv) {
-CODEGEN tilelang_kv2:132: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[(((kv & 1) * 8192) + 24576)])), ((__cc__ float*)buf_dyn_l0c + (((kv & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_kv2:153: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((kv % 3) * 8192)])), ((__cc__ float*)buf_dyn_l0c + (((kv + 1) & 1) * 16384)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
+CODEGEN tilelang_kv2:163: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 65536), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_kv2:173: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a + 16384), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 81920), 0, 0, 8, 8, 8, 8);
 CODEGEN tilelang_kv2:231: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
-CODEGEN tilelang_firstpv:118: for (int32_t kv = 0; kv < 50; ++kv) {
-CODEGEN tilelang_firstpv:163: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[49280])), ((__cc__ float*)buf_dyn_l0c + (((kv & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:182: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((kv % 3) * 8192)])), ((__cc__ float*)buf_dyn_l0c + (((kv + 1) & 1) * 16384)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:193: asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[((((kv + 1) & 1) * 8192) + 24576)])), ((__cc__ float*)buf_dyn_l0c + ((((kv + 1) & 1) * 16384) + 32768)), 128, 128, 128, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(0), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
-CODEGEN tilelang_firstpv:232: for (int32_t kv_1 = 0; kv_1 < 34; ++kv_1) {
+CODEGEN tilelang_kv2:240: asc_copy_ub2l1((__cbuf__ void*)(((__cbuf__ bfloat16_t*)buf_dyn_l1 + ((sid * 1024) + 81920))), (__ubuf__ void*)((&(((__ubuf__ bfloat16_t*)buf_dyn_shmem)[((((kv_1 + 1) & 1) * 8320) + 81920)]))), 8, 64, 1, 64);
+CODEGEN tilelang_pbuffer:128: for (int32_t kv = 0; kv < 37; ++kv) {
+CODEGEN tilelang_pbuffer:140: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + 98304), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_pbuffer:188: asc_copy_l12l0a(((__ca__ bfloat16_t*)buf_dyn_l0a + 16384), ((__cbuf__ bfloat16_t*)buf_dyn_l1 + (((kv & 1) * 16384) + 65536)), 0, 0, 8, 8, 8, 8);
+CODEGEN tilelang_pbuffer:237: for (int32_t kv_1 = 0; kv_1 < 35; ++kv_1) {
+CODEGEN tilelang_pbuffer:246: asc_copy_ub2l1((__cbuf__ void*)(((__cbuf__ bfloat16_t*)buf_dyn_l1 + (((((kv_1 + 1) & 1) * 16384) + (sid * 1024)) + 65536))), (__ubuf__ void*)((&(((__ubuf__ bfloat16_t*)buf_dyn_shmem)[((((kv_1 + 1) & 1) * 8320) + 81920)]))), 8, 64, 1, 64);
+CODEGEN_IDENTICAL_PBUFFER: False
 {'implementation': 'tilelang_q128', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.44681148764122e-05, 'relative_l2': 0.0024260669693699313, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 6.385011693769341e-05, 'relative_l2': 0.002402810443424686, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_q128_vs_tilelang_kv2', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_q128_vs_tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_q128_vs_tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_q128_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_kv2_vs_tilelang_firstpv', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+{'implementation': 'tilelang_kv2_vs_tilelang_pbuffer', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
 {'implementation': 'tilelang_kv2_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-{'implementation': 'tilelang_firstpv_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
-Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_firstpv', 'ascendc']
-{'round': 0, 'implementation': 'tilelang_q128', 'event_us': 52.82884120941162, 'wall_us': 57.38368025049567}
-{'round': 0, 'implementation': 'tilelang_kv2', 'event_us': 51.22920036315918, 'wall_us': 51.69754003873095}
-{'round': 0, 'implementation': 'tilelang_firstpv', 'event_us': 52.050209045410156, 'wall_us': 52.37536010099575}
-{'round': 0, 'implementation': 'ascendc', 'event_us': 40.78798770904541, 'wall_us': 41.10486013814807}
-{'round': 1, 'implementation': 'tilelang_kv2', 'event_us': 51.14881992340088, 'wall_us': 51.43995978869498}
-{'round': 1, 'implementation': 'tilelang_firstpv', 'event_us': 52.03656196594238, 'wall_us': 52.511770045384765}
-{'round': 1, 'implementation': 'ascendc', 'event_us': 40.055060386657715, 'wall_us': 40.36525002447888}
-{'round': 1, 'implementation': 'tilelang_q128', 'event_us': 52.71533012390137, 'wall_us': 53.00521006574854}
-{'round': 2, 'implementation': 'tilelang_firstpv', 'event_us': 52.08721160888672, 'wall_us': 53.0044999322854}
-{'round': 2, 'implementation': 'ascendc', 'event_us': 40.17748832702637, 'wall_us': 40.70906026754528}
-{'round': 2, 'implementation': 'tilelang_q128', 'event_us': 52.65585899353027, 'wall_us': 53.008809918537736}
-{'round': 2, 'implementation': 'tilelang_kv2', 'event_us': 51.077961921691895, 'wall_us': 51.5699599054642}
-{'round': 3, 'implementation': 'ascendc', 'event_us': 40.08248805999756, 'wall_us': 40.91757000423968}
-{'round': 3, 'implementation': 'tilelang_q128', 'event_us': 52.74949073791504, 'wall_us': 53.090929868631065}
-{'round': 3, 'implementation': 'tilelang_kv2', 'event_us': 51.102871894836426, 'wall_us': 51.40750989085063}
-{'round': 3, 'implementation': 'tilelang_firstpv', 'event_us': 52.05014228820801, 'wall_us': 52.47219989541918}
-{'round': 4, 'implementation': 'ascendc', 'event_us': 40.44849872589111, 'wall_us': 40.82372994162142}
-{'round': 4, 'implementation': 'tilelang_firstpv', 'event_us': 52.08885192871094, 'wall_us': 52.4570801644586}
-{'round': 4, 'implementation': 'tilelang_kv2', 'event_us': 51.099019050598145, 'wall_us': 51.58457002835348}
-{'round': 4, 'implementation': 'tilelang_q128', 'event_us': 52.70497798919678, 'wall_us': 52.97304975101724}
-{'round': 5, 'implementation': 'tilelang_q128', 'event_us': 52.691688537597656, 'wall_us': 53.155130008235574}
-{'round': 5, 'implementation': 'ascendc', 'event_us': 40.1097297668457, 'wall_us': 40.43515014927834}
-{'round': 5, 'implementation': 'tilelang_firstpv', 'event_us': 52.07326889038086, 'wall_us': 52.43754974799231}
-{'round': 5, 'implementation': 'tilelang_kv2', 'event_us': 51.09766960144043, 'wall_us': 51.53940001036972}
-{'round': 6, 'implementation': 'tilelang_kv2', 'event_us': 51.10785961151123, 'wall_us': 51.47730989847332}
-{'round': 6, 'implementation': 'tilelang_q128', 'event_us': 52.6501989364624, 'wall_us': 52.988580137025565}
-{'round': 6, 'implementation': 'ascendc', 'event_us': 40.124478340148926, 'wall_us': 40.40019994135946}
-{'round': 6, 'implementation': 'tilelang_firstpv', 'event_us': 52.071847915649414, 'wall_us': 52.4001001031138}
-{'round': 7, 'implementation': 'tilelang_firstpv', 'event_us': 52.008819580078125, 'wall_us': 52.29433998465538}
-{'round': 7, 'implementation': 'tilelang_kv2', 'event_us': 51.06231212615967, 'wall_us': 51.36514984769747}
-{'round': 7, 'implementation': 'tilelang_q128', 'event_us': 52.71577835083008, 'wall_us': 53.02101984852925}
-{'round': 7, 'implementation': 'ascendc', 'event_us': 40.011839866638184, 'wall_us': 40.61001003719866}
-{'tilelang_q128': {'event_us': 52.71015405654907, 'wall_us': 53.01491488353349}, 'tilelang_kv2': {'event_us': 51.100945472717285, 'wall_us': 51.50835495442152}, 'tilelang_firstpv': {'event_us': 52.061028480529785, 'wall_us': 52.447314956225455}, 'ascendc': {'event_us': 40.117104053497314, 'wall_us': 40.65953515237197}, 'ratios': {'matched_best_over_firstpv': 0.9815585086227876, 'original_over_firstpv': 1.0124685507560045, 'ascendc_over_firstpv': 0.7705784004728343}}
+{'implementation': 'tilelang_pbuffer_vs_ascendc', 'output': 'O', 'shape': [4096, 128], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.00048828125, 'rmse': 4.5956851856342523e-05, 'relative_l2': 0.0017294516515767087, 'gate': {'relative_l2_max': 0.01, 'max_abs_max': 0.02}, 'passed': True}
+Correctness passed. Implementations: ['tilelang_q128', 'tilelang_kv2', 'tilelang_pbuffer', 'ascendc']
+{'round': 0, 'implementation': 'tilelang_q128', 'event_us': 52.85049915313721, 'wall_us': 57.507960009388626}
+{'round': 0, 'implementation': 'tilelang_kv2', 'event_us': 51.40231132507324, 'wall_us': 51.85968999285251}
+{'round': 0, 'implementation': 'tilelang_pbuffer', 'event_us': 53.459649085998535, 'wall_us': 53.923889936413616}
+{'round': 0, 'implementation': 'ascendc', 'event_us': 40.73279857635498, 'wall_us': 41.121779941022396}
+{'round': 1, 'implementation': 'tilelang_kv2', 'event_us': 51.179847717285156, 'wall_us': 51.68702016817406}
+{'round': 1, 'implementation': 'tilelang_pbuffer', 'event_us': 53.525729179382324, 'wall_us': 53.877409955020994}
+{'round': 1, 'implementation': 'ascendc', 'event_us': 40.12451171875, 'wall_us': 40.541009802836925}
+{'round': 1, 'implementation': 'tilelang_q128', 'event_us': 52.743210792541504, 'wall_us': 53.09633997967467}
+{'round': 2, 'implementation': 'tilelang_pbuffer', 'event_us': 53.496527671813965, 'wall_us': 55.15013006515801}
+{'round': 2, 'implementation': 'ascendc', 'event_us': 40.259342193603516, 'wall_us': 40.73759977472946}
+{'round': 2, 'implementation': 'tilelang_q128', 'event_us': 52.759361267089844, 'wall_us': 53.16524999216199}
+{'round': 2, 'implementation': 'tilelang_kv2', 'event_us': 51.14408016204834, 'wall_us': 51.60279979463667}
+{'round': 3, 'implementation': 'ascendc', 'event_us': 40.08622169494629, 'wall_us': 40.502950141672045}
+{'round': 3, 'implementation': 'tilelang_q128', 'event_us': 52.74683952331543, 'wall_us': 53.173160122241825}
+{'round': 3, 'implementation': 'tilelang_kv2', 'event_us': 51.17301940917969, 'wall_us': 51.808909920509905}
+{'round': 3, 'implementation': 'tilelang_pbuffer', 'event_us': 53.52198123931885, 'wall_us': 53.878219914622605}
+{'round': 4, 'implementation': 'ascendc', 'event_us': 40.15819072723389, 'wall_us': 41.12097987672314}
+{'round': 4, 'implementation': 'tilelang_pbuffer', 'event_us': 53.367037773132324, 'wall_us': 53.853279969189316}
+{'round': 4, 'implementation': 'tilelang_kv2', 'event_us': 51.175498962402344, 'wall_us': 51.57245002919808}
+{'round': 4, 'implementation': 'tilelang_q128', 'event_us': 52.74138927459717, 'wall_us': 53.11977001838386}
+{'round': 5, 'implementation': 'tilelang_q128', 'event_us': 52.67913818359375, 'wall_us': 53.066200052853674}
+{'round': 5, 'implementation': 'ascendc', 'event_us': 40.111331939697266, 'wall_us': 40.49454000778496}
+{'round': 5, 'implementation': 'tilelang_pbuffer', 'event_us': 53.38682174682617, 'wall_us': 53.837859886698425}
+{'round': 5, 'implementation': 'tilelang_kv2', 'event_us': 51.15748882293701, 'wall_us': 51.62493995158002}
+{'round': 6, 'implementation': 'tilelang_kv2', 'event_us': 51.150970458984375, 'wall_us': 51.58457002835348}
+{'round': 6, 'implementation': 'tilelang_q128', 'event_us': 52.69269943237305, 'wall_us': 53.063000086694956}
+{'round': 6, 'implementation': 'ascendc', 'event_us': 40.151190757751465, 'wall_us': 40.56173987919465}
+{'round': 6, 'implementation': 'tilelang_pbuffer', 'event_us': 53.54204177856445, 'wall_us': 53.99228015448898}
+{'round': 7, 'implementation': 'tilelang_pbuffer', 'event_us': 53.41400146484375, 'wall_us': 53.87882003560662}
+{'round': 7, 'implementation': 'tilelang_kv2', 'event_us': 51.14593029022217, 'wall_us': 51.57365987543017}
+{'round': 7, 'implementation': 'tilelang_q128', 'event_us': 52.73198127746582, 'wall_us': 53.17165981978178}
+{'round': 7, 'implementation': 'ascendc', 'event_us': 40.033979415893555, 'wall_us': 40.455379930790514}
+{'tilelang_q128': {'event_us': 52.742300033569336, 'wall_us': 53.142510005272925}, 'tilelang_kv2': {'event_us': 51.16525411605835, 'wall_us': 51.61386987310834}, 'tilelang_pbuffer': {'event_us': 53.47808837890625, 'wall_us': 53.878519975114614}, 'ascendc': {'event_us': 40.13785123825073, 'wall_us': 40.551374841015786}, 'ratios': {'matched_best_over_pbuffer': 0.9567517401433487, 'original_over_pbuffer': 0.9862413117663507, 'ascendc_over_pbuffer': 0.7505476065984923}}
 (zwh) root@ubuntu162:/home/z30086261/Q4#
