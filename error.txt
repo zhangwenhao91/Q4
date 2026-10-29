@@ -1,50 +1,53 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
-remote: Enumerating objects: 13, done.
-remote: Counting objects: 100% (13/13), done.
+remote: Enumerating objects: 17, done.
+remote: Counting objects: 100% (17/17), done.
 remote: Compressing objects: 100% (9/9), done.
-remote: Total 13 (delta 4), reused 11 (delta 4), pack-reused 0 (from 0)
-Unpacking objects: 100% (13/13), 13.19 KiB | 4.40 MiB/s, done.
+remote: Total 17 (delta 7), reused 15 (delta 7), pack-reused 0 (from 0)
+Unpacking objects: 100% (17/17), 10.74 KiB | 10.74 MiB/s, done.
 From https://github.com/zhangwenhao91/Q4
-   92e283e..f3051cf  main       -> origin/main
+   f3051cf..57e10f9  main       -> origin/main
 Merge made by the 'recursive' strategy.
- error.txt                                  | 566 +++++++++++++++++++++++++++++++++++++++---------------------------------
- operators/mha/tuning/TIMELINE.md           |  46 +++++-
- operators/mha/tuning/run_timeline.sh       |  40 +++++-
- operators/mha/tuning/test_timeline.py      |  53 +++++++
- operators/mha/tuning/timeline_inventory.py |  80 +++++++++++
- operators/mha/tuning/timeline_target.py    | 125 ++++++++++++++++
- 6 files changed, 651 insertions(+), 259 deletions(-)
- create mode 100644 operators/mha/tuning/test_timeline.py
- create mode 100644 operators/mha/tuning/timeline_inventory.py
- create mode 100644 operators/mha/tuning/timeline_target.py
+ error.txt                               | 478 +++++++++++++++++++++++++++------------------------------------------------
+ operators/mha/tuning/TIMELINE.md        |  17 +++
+ operators/mha/tuning/native_mstx.py     |  56 +++++++++
+ operators/mha/tuning/run_timeline.sh    |   9 +-
+ operators/mha/tuning/test_timeline.py   |  54 +++++++++
+ operators/mha/tuning/timeline_target.py |  11 +-
+ operators/mha/tuning/timeline_verify.py |  70 +++++++++++
+ reports/mha_timeline/attempt_01.md      |  32 +++++
+ 8 files changed, 411 insertions(+), 316 deletions(-)
+ create mode 100644 operators/mha/tuning/native_mstx.py
+ create mode 100644 operators/mha/tuning/timeline_verify.py
+ create mode 100644 reports/mha_timeline/attempt_01.md
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/tuning/run_timeline.sh load
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 TARGET CHECK: {"implementation": "tilelang_s2buf", "checks": [{"output": "O", "relative_l2": 0.0024260669693699313, "max_abs": 0.00048828125, "passed": true}]}
 Target validated and warmed; no profiling range opened.
-COLLECT: implementation=tilelang_s2buf metrics=Default,Occupancy output=results/mha-tuning/timeline-load-20261029-162745-2494197/tilelang_s2buf
+COLLECT: implementation=tilelang_s2buf metrics=Default,Occupancy output=results/mha-tuning/timeline-load-20261029-170940-2520119/tilelang_s2buf
 =================================================================
                    >>>>>   MindStudio   <<<<<
     THE END-TO-END TOOLCHAIN TO UNLEASH HUAWEI ASCEND COMPUTE
 =================================================================
 
-[W1029 16:27:52.018882175 FunctionLoader.cpp:44] Warning: LD_PRELOAD detected, FunctionLoader prefers RTLD_DEFAULT for symbol resolution. (function operator())
+[W1029 17:09:48.510965413 FunctionLoader.cpp:44] Warning: LD_PRELOAD detected, FunctionLoader prefers RTLD_DEFAULT for symbol resolution. (function operator())
 [WARN]  Currently, the root permission is used, which is unrecommended. Please ensure the security of the execution environment and programs.
 [INFO]  Op profiling analysis start.
 [INFO]  Running device task: DeviceProf
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 TARGET CHECK: {"implementation": "tilelang_s2buf", "checks": [{"output": "O", "relative_l2": 0.0024260669693699313, "max_abs": 0.00048828125, "passed": true}]}
+MSTX BACKEND: {"symbol_scope": "RTLD_DEFAULT", "library": "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libms_tools_ext.so"}
 TARGET RANGE START: tilelang_s2buf
 Traceback (most recent call last):
-  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 125, in <module>
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 126, in <module>
     main()
-  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 116, in main
-    capture_one(fn, mstx, torch.npu.synchronize, torch.npu.current_stream())
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 117, in main
+    capture_one(fn, mstx, torch.npu.synchronize, None)
   File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 19, in capture_one
     raise RuntimeError('MSTX range_start failed; refusing an unscoped collection')
 RuntimeError: MSTX range_start failed; refusing an unscoped collection
-[ERROR] 2026-10-29-16:28:02 (PID:2494574, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[ERROR] 2026-10-29-17:09:57 (PID:2520592, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
 [WARN]  Child process exited with return value 1
 [ERROR] Get profiling data failed.
 [WARN]  Profiling running finished. May cause generating performance files to fail.
@@ -53,116 +56,33 @@ RuntimeError: MSTX range_start failed; refusing an unscoped collection
 [WARN]  Profiling results are empty. No kernel profiling data was generated. Please check the dump output.
 [ERROR] Profiling data parse failed. Please check
 [INFO]  Op profiling finish. Welcome to next use.
-Collector completed: tilelang_s2buf
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-TARGET CHECK: {"implementation": "tilelang_kv2", "checks": [{"output": "O", "relative_l2": 0.0024260669693699313, "max_abs": 0.00048828125, "passed": true}]}
-Target validated and warmed; no profiling range opened.
-COLLECT: implementation=tilelang_kv2 metrics=Default,Occupancy output=results/mha-tuning/timeline-load-20261029-162745-2494197/tilelang_kv2
-=================================================================
-                   >>>>>   MindStudio   <<<<<
-    THE END-TO-END TOOLCHAIN TO UNLEASH HUAWEI ASCEND COMPUTE
-=================================================================
-
-[W1029 16:28:13.655017856 FunctionLoader.cpp:44] Warning: LD_PRELOAD detected, FunctionLoader prefers RTLD_DEFAULT for symbol resolution. (function operator())
-[WARN]  Currently, the root permission is used, which is unrecommended. Please ensure the security of the execution environment and programs.
-[INFO]  Op profiling analysis start.
-[INFO]  Running device task: DeviceProf
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-TARGET CHECK: {"implementation": "tilelang_kv2", "checks": [{"output": "O", "relative_l2": 0.0024260669693699313, "max_abs": 0.00048828125, "passed": true}]}
-TARGET RANGE START: tilelang_kv2
 Traceback (most recent call last):
-  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 125, in <module>
-    main()
-  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 116, in main
-    capture_one(fn, mstx, torch.npu.synchronize, torch.npu.current_stream())
-  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 19, in capture_one
-    raise RuntimeError('MSTX range_start failed; refusing an unscoped collection')
-RuntimeError: MSTX range_start failed; refusing an unscoped collection
-[ERROR] 2026-10-29-16:28:23 (PID:2495558, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
-[WARN]  Child process exited with return value 1
-[ERROR] Get profiling data failed.
-[WARN]  Profiling running finished. May cause generating performance files to fail.
-[WARN]  Running task failed, data parsing start
-[WARN]  No profiling data matched --kernel-name=main_kernel. All kernels were filtered out or no matching dump was generated. Please confirm the kernel name or wildcard pattern.
-[WARN]  Profiling results are empty. No kernel profiling data was generated. Please check the dump output.
-[ERROR] Profiling data parse failed. Please check
-[INFO]  Op profiling finish. Welcome to next use.
-Collector completed: tilelang_kv2
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-TARGET CHECK: {"implementation": "ascendc", "checks": [{"output": "O", "relative_l2": 0.002402810443424686, "max_abs": 0.00048828125, "passed": true}]}
-Target validated and warmed; no profiling range opened.
-COLLECT: implementation=ascendc metrics=Default,Occupancy output=results/mha-tuning/timeline-load-20261029-162745-2494197/ascendc
-=================================================================
-                   >>>>>   MindStudio   <<<<<
-    THE END-TO-END TOOLCHAIN TO UNLEASH HUAWEI ASCEND COMPUTE
-=================================================================
-
-[W1029 16:28:34.267198786 FunctionLoader.cpp:44] Warning: LD_PRELOAD detected, FunctionLoader prefers RTLD_DEFAULT for symbol resolution. (function operator())
-[WARN]  Currently, the root permission is used, which is unrecommended. Please ensure the security of the execution environment and programs.
-[INFO]  Op profiling analysis start.
-[INFO]  Running device task: DeviceProf
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-TARGET CHECK: {"implementation": "ascendc", "checks": [{"output": "O", "relative_l2": 0.002402810443424686, "max_abs": 0.00048828125, "passed": true}]}
-TARGET RANGE START: ascendc
-Traceback (most recent call last):
-  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 125, in <module>
-    main()
-  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 116, in main
-    capture_one(fn, mstx, torch.npu.synchronize, torch.npu.current_stream())
-  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 19, in capture_one
-    raise RuntimeError('MSTX range_start failed; refusing an unscoped collection')
-RuntimeError: MSTX range_start failed; refusing an unscoped collection
-[ERROR] 2026-10-29-16:28:43 (PID:2496558, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
-[WARN]  Child process exited with return value 1
-[ERROR] Get profiling data failed.
-[WARN]  Profiling running finished. May cause generating performance files to fail.
-[WARN]  Running task failed, data parsing start
-[WARN]  No profiling data matched --kernel-name=FlashAttn. All kernels were filtered out or no matching dump was generated. Please confirm the kernel name or wildcard pattern.
-[WARN]  Profiling results are empty. No kernel profiling data was generated. Please check the dump output.
-[ERROR] Profiling data parse failed. Please check
-[INFO]  Op profiling finish. Welcome to next use.
-Collector completed: ascendc
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_verify.py", line 70, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_verify.py", line 65, in main
+    report=verify_collection(a.input)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_verify.py", line 30, in verify_collection
+    raise RuntimeError('Target MSTX range did not complete; collector exit code is insufficient')
+RuntimeError: Target MSTX range did not complete; collector exit code is insufficient
 Raw previews only. No timing aggregation. A core ID may be logical; Block ID is not a physical-core count. Missing core/timeline data must not be reconstructed from aggregate metrics.
-Files: 35
-FILE 121 ascendc/app/correctness.json
-FILE 2819 ascendc/app/metadata.json
-FILE 2893 ascendc/collect.log
-FILE 535 ascendc/command.txt
-FILE 1052 ascendc/validate.log
-FILE 121 ascendc/validate/correctness.json
-FILE 2819 ascendc/validate/metadata.json
-FILE 27354 tilelang_kv2/app/__pycache__/selected_core.cpython-312.pyc
-FILE 122 tilelang_kv2/app/correctness.json
-FILE 2999 tilelang_kv2/app/metadata.json
-FILE 20047 tilelang_kv2/app/selected_core.py
-FILE 19144 tilelang_kv2/app/selected_kernel.cpp
-FILE 2906 tilelang_kv2/collect.log
-FILE 552 tilelang_kv2/command.txt
-FILE 1058 tilelang_kv2/validate.log
-FILE 27359 tilelang_kv2/validate/__pycache__/selected_core.cpython-312.pyc
-FILE 122 tilelang_kv2/validate/correctness.json
-FILE 3000 tilelang_kv2/validate/metadata.json
-FILE 20047 tilelang_kv2/validate/selected_core.py
-FILE 19144 tilelang_kv2/validate/selected_kernel.cpp
+Files: 15
 FILE 27356 tilelang_s2buf/app/__pycache__/selected_core.cpython-312.pyc
 FILE 122 tilelang_s2buf/app/correctness.json
-FILE 3000 tilelang_s2buf/app/metadata.json
+FILE 3148 tilelang_s2buf/app/metadata.json
 FILE 20047 tilelang_s2buf/app/selected_core.py
 FILE 19047 tilelang_s2buf/app/selected_kernel.cpp
-FILE 2910 tilelang_s2buf/collect.log
+FILE 3018 tilelang_s2buf/collect.log
 FILE 558 tilelang_s2buf/command.txt
 FILE 1060 tilelang_s2buf/validate.log
 FILE 27361 tilelang_s2buf/validate/__pycache__/selected_core.cpython-312.pyc
 FILE 122 tilelang_s2buf/validate/correctness.json
-FILE 3002 tilelang_s2buf/validate/metadata.json
+FILE 3001 tilelang_s2buf/validate/metadata.json
 FILE 20047 tilelang_s2buf/validate/selected_core.py
 FILE 19047 tilelang_s2buf/validate/selected_kernel.cpp
 FILE 2615 tool-help.txt
 FILE 528 tool-version.txt
 
-Retain full collection directory: /home/z30086261/Q4/results/mha-tuning/timeline-load-20261029-162745-2494197
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
+Collector returned zero but result validation failed for tilelang_s2buf. Stopping.
+(zwh) root@ubuntu162:/home/z30086261/Q4#
