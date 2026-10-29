@@ -1,0 +1,144 @@
+{
+  "source_revision": "d3009d7",
+  "correctness_passed": 126,
+  "api_process_summaries": [
+    {
+      "tilelang_q128": {
+        "event_us": 52.762694358825684,
+        "wall_us": 53.09583997586742
+      },
+      "tilelang_kv2": {
+        "event_us": 51.16158962249756,
+        "wall_us": 51.5104150690604
+      },
+      "tilelang_q_l2": {
+        "event_us": 51.47403001785278,
+        "wall_us": 51.853125041816384
+      },
+      "tilelang_o_l2": {
+        "event_us": 51.20921850204468,
+        "wall_us": 51.553324883570895
+      },
+      "tilelang_qo_l2": {
+        "event_us": 51.574389934539795,
+        "wall_us": 51.90329990000464
+      },
+      "ascendc": {
+        "event_us": 40.036325454711914,
+        "wall_us": 40.37596008856781
+      },
+      "ratios": {
+        "tilelang_q_l2": {
+          "matched_best_over_candidate": 0.9939301353469534,
+          "original_over_candidate": 1.0250352331170873,
+          "ascendc_over_candidate": 0.7777965984172228
+        },
+        "tilelang_o_l2": {
+          "matched_best_over_candidate": 0.9990699159069335,
+          "original_over_candidate": 1.0303358633898891,
+          "ascendc_over_candidate": 0.7818187159625049
+        },
+        "tilelang_qo_l2": {
+          "matched_best_over_candidate": 0.9919960214252427,
+          "original_over_candidate": 1.023040590994758,
+          "ascendc_over_candidate": 0.7762830642403635
+        }
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.70517587661743,
+        "wall_us": 53.06704522809014
+      },
+      "tilelang_kv2": {
+        "event_us": 51.07413053512573,
+        "wall_us": 51.42323498148471
+      },
+      "tilelang_q_l2": {
+        "event_us": 51.415324211120605,
+        "wall_us": 51.77615996217355
+      },
+      "tilelang_o_l2": {
+        "event_us": 51.13708972930908,
+        "wall_us": 51.49398508365266
+      },
+      "tilelang_qo_l2": {
+        "event_us": 51.47982597351074,
+        "wall_us": 51.84897003346123
+      },
+      "ascendc": {
+        "event_us": 40.122904777526855,
+        "wall_us": 40.4913850070443
+      },
+      "ratios": {
+        "tilelang_q_l2": {
+          "matched_best_over_candidate": 0.9933639691817585,
+          "original_over_candidate": 1.0250869110578873,
+          "ascendc_over_candidate": 0.7803686039744681
+        },
+        "tilelang_o_l2": {
+          "matched_best_over_candidate": 0.9987688154621895,
+          "original_over_candidate": 1.0306643603617045,
+          "ascendc_over_candidate": 0.7846145525667356
+        },
+        "tilelang_qo_l2": {
+          "matched_best_over_candidate": 0.9921193315883825,
+          "original_over_candidate": 1.0238025261339694,
+          "ascendc_over_candidate": 0.7793908393974047
+        }
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.72076606750488,
+        "wall_us": 53.078319906489924
+      },
+      "tilelang_kv2": {
+        "event_us": 51.14696502685547,
+        "wall_us": 51.552425138652325
+      },
+      "tilelang_q_l2": {
+        "event_us": 51.476991176605225,
+        "wall_us": 51.82588487514295
+      },
+      "tilelang_o_l2": {
+        "event_us": 51.19704008102417,
+        "wall_us": 51.55813996680081
+      },
+      "tilelang_qo_l2": {
+        "event_us": 51.568894386291504,
+        "wall_us": 51.9056549819652
+      },
+      "ascendc": {
+        "event_us": 40.020689964294434,
+        "wall_us": 40.349920018343255
+      },
+      "ratios": {
+        "tilelang_q_l2": {
+          "matched_best_over_candidate": 0.9935888609220085,
+          "original_over_candidate": 1.0241617635854545,
+          "ascendc_over_candidate": 0.7774481190439634
+        },
+        "tilelang_o_l2": {
+          "matched_best_over_candidate": 0.9990219150542795,
+          "original_over_candidate": 1.0297619937416163,
+          "ascendc_over_candidate": 0.7816992916183806
+        },
+        "tilelang_qo_l2": {
+          "matched_best_over_candidate": 0.9918181422259036,
+          "original_over_candidate": 1.0223365595660237,
+          "ascendc_over_candidate": 0.7760625943327008
+        }
+      }
+    }
+  ],
+  "median_event_us": {
+    "tilelang_q128": 52.72076606750488,
+    "tilelang_kv2": 51.14696502685547,
+    "tilelang_q_l2": 51.47403001785278,
+    "tilelang_o_l2": 51.19704008102417,
+    "tilelang_qo_l2": 51.568894386291504,
+    "ascendc": 40.036325454711914
+  },
+  "outcome": "not adopted: no improvement over default Q/O cache policies in reused-input benchmark"
+}
