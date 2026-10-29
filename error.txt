@@ -1,310 +1,168 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/tuning/run_timeline.sh probe
-PROBE: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof --version
-PROBE RESULT: {"name": "msprof-version", "argv": ["/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof", "--version"], "exit_code": 255, "output_file": "msprof-version.txt"}
-PROBE: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof --help
-PROBE RESULT: {"name": "msprof-help", "argv": ["/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof", "--help"], "exit_code": 0, "output_file": "msprof-help.txt"}
-PROBE: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof op --help
-PROBE RESULT: {"name": "msprof-op-help", "argv": ["/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof", "op", "--help"], "exit_code": 0, "output_file": "msprof-op-help.txt", "metric_names_mentioned_in_help": ["Default", "Occupancy", "TimelineDetail", "PipeTimeline", "PipeUtilization", "ResourceConflictRatio", "MemoryDetail"], "note": "Mentioned in help does not establish support on this device."}
-{
-  "q4_revision": "56671f3ee7dfbc4a0590386ed5e1e5e7bd3d00e4",
-  "python": "3.12.15 (main, Oct 13 2026, 16:52:04) [GCC 15.3.0]",
-  "python_executable": "/root/miniconda3/envs/zwh/bin/python",
-  "platform": "Linux-5.4.0-144-generic-x86_64-with-glibc2.31",
-  "environment": {
-    "CONDA_DEFAULT_ENV": "zwh",
-    "ASCEND_RT_VISIBLE_DEVICES": "4",
-    "ASCEND_HOME_PATH": "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0",
-    "ASCEND_NPU_ARCH": "dav-3510"
-  },
-  "packages": {
-    "torch": "2.13.0+cpu",
-    "torch-npu": "2.13.0",
-    "tilelang": "0.1.15+cpu.gita7cb753d"
-  },
-  "tools": {
-    "msprof": "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof",
-    "msopprof": "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msopprof"
-  },
-  "commands": [
-    {
-      "name": "msprof-version",
-      "argv": [
-        "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof",
-        "--version"
-      ],
-      "exit_code": 255,
-      "output_file": "msprof-version.txt"
-    },
-    {
-      "name": "msprof-help",
-      "argv": [
-        "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof",
-        "--help"
-      ],
-      "exit_code": 0,
-      "output_file": "msprof-help.txt"
-    },
-    {
-      "name": "msprof-op-help",
-      "argv": [
-        "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof",
-        "op",
-        "--help"
-      ],
-      "exit_code": 0,
-      "output_file": "msprof-op-help.txt",
-      "metric_names_mentioned_in_help": [
-        "Default",
-        "Occupancy",
-        "TimelineDetail",
-        "PipeTimeline",
-        "PipeUtilization",
-        "ResourceConflictRatio",
-        "MemoryDetail"
-      ],
-      "note": "Mentioned in help does not establish support on this device."
-    }
-  ],
-  "scope": "Read tool help/version and device properties only; no compilation, kernel execution or profiling.",
-  "device": {
-    "name": "Ascend950PR_9579",
-    "cube_core_num": 28,
-    "vector_core_num": 56,
-    "total_memory": 132338679808
-  }
-}
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
+remote: Enumerating objects: 13, done.
+remote: Counting objects: 100% (13/13), done.
+remote: Compressing objects: 100% (9/9), done.
+remote: Total 13 (delta 4), reused 11 (delta 4), pack-reused 0 (from 0)
+Unpacking objects: 100% (13/13), 13.19 KiB | 4.40 MiB/s, done.
+From https://github.com/zhangwenhao91/Q4
+   92e283e..f3051cf  main       -> origin/main
+Merge made by the 'recursive' strategy.
+ error.txt                                  | 566 +++++++++++++++++++++++++++++++++++++++---------------------------------
+ operators/mha/tuning/TIMELINE.md           |  46 +++++-
+ operators/mha/tuning/run_timeline.sh       |  40 +++++-
+ operators/mha/tuning/test_timeline.py      |  53 +++++++
+ operators/mha/tuning/timeline_inventory.py |  80 +++++++++++
+ operators/mha/tuning/timeline_target.py    | 125 ++++++++++++++++
+ 6 files changed, 651 insertions(+), 259 deletions(-)
+ create mode 100644 operators/mha/tuning/test_timeline.py
+ create mode 100644 operators/mha/tuning/timeline_inventory.py
+ create mode 100644 operators/mha/tuning/timeline_target.py
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/tuning/run_timeline.sh load
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+TARGET CHECK: {"implementation": "tilelang_s2buf", "checks": [{"output": "O", "relative_l2": 0.0024260669693699313, "max_abs": 0.00048828125, "passed": true}]}
+Target validated and warmed; no profiling range opened.
+COLLECT: implementation=tilelang_s2buf metrics=Default,Occupancy output=results/mha-tuning/timeline-load-20261029-162745-2494197/tilelang_s2buf
+=================================================================
+                   >>>>>   MindStudio   <<<<<
+    THE END-TO-END TOOLCHAIN TO UNLEASH HUAWEI ASCEND COMPUTE
+=================================================================
 
-===== msprof-version.txt =====
-/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof: unrecognized option '--version'
+[W1029 16:27:52.018882175 FunctionLoader.cpp:44] Warning: LD_PRELOAD detected, FunctionLoader prefers RTLD_DEFAULT for symbol resolution. (function operator())
+[WARN]  Currently, the root permission is used, which is unrecommended. Please ensure the security of the execution environment and programs.
+[INFO]  Op profiling analysis start.
+[INFO]  Running device task: DeviceProf
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+TARGET CHECK: {"implementation": "tilelang_s2buf", "checks": [{"output": "O", "relative_l2": 0.0024260669693699313, "max_abs": 0.00048828125, "passed": true}]}
+TARGET RANGE START: tilelang_s2buf
+Traceback (most recent call last):
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 125, in <module>
+    main()
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 116, in main
+    capture_one(fn, mstx, torch.npu.synchronize, torch.npu.current_stream())
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 19, in capture_one
+    raise RuntimeError('MSTX range_start failed; refusing an unscoped collection')
+RuntimeError: MSTX range_start failed; refusing an unscoped collection
+[ERROR] 2026-10-29-16:28:02 (PID:2494574, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[WARN]  Child process exited with return value 1
+[ERROR] Get profiling data failed.
+[WARN]  Profiling running finished. May cause generating performance files to fail.
+[WARN]  Running task failed, data parsing start
+[WARN]  No profiling data matched --kernel-name=main_kernel. All kernels were filtered out or no matching dump was generated. Please confirm the kernel name or wildcard pattern.
+[WARN]  Profiling results are empty. No kernel profiling data was generated. Please check the dump output.
+[ERROR] Profiling data parse failed. Please check
+[INFO]  Op profiling finish. Welcome to next use.
+Collector completed: tilelang_s2buf
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+TARGET CHECK: {"implementation": "tilelang_kv2", "checks": [{"output": "O", "relative_l2": 0.0024260669693699313, "max_abs": 0.00048828125, "passed": true}]}
+Target validated and warmed; no profiling range opened.
+COLLECT: implementation=tilelang_kv2 metrics=Default,Occupancy output=results/mha-tuning/timeline-load-20261029-162745-2494197/tilelang_kv2
+=================================================================
+                   >>>>>   MindStudio   <<<<<
+    THE END-TO-END TOOLCHAIN TO UNLEASH HUAWEI ASCEND COMPUTE
+=================================================================
 
-Usage:
-      msprof [--options]
+[W1029 16:28:13.655017856 FunctionLoader.cpp:44] Warning: LD_PRELOAD detected, FunctionLoader prefers RTLD_DEFAULT for symbol resolution. (function operator())
+[WARN]  Currently, the root permission is used, which is unrecommended. Please ensure the security of the execution environment and programs.
+[INFO]  Op profiling analysis start.
+[INFO]  Running device task: DeviceProf
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+TARGET CHECK: {"implementation": "tilelang_kv2", "checks": [{"output": "O", "relative_l2": 0.0024260669693699313, "max_abs": 0.00048828125, "passed": true}]}
+TARGET RANGE START: tilelang_kv2
+Traceback (most recent call last):
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 125, in <module>
+    main()
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 116, in main
+    capture_one(fn, mstx, torch.npu.synchronize, torch.npu.current_stream())
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 19, in capture_one
+    raise RuntimeError('MSTX range_start failed; refusing an unscoped collection')
+RuntimeError: MSTX range_start failed; refusing an unscoped collection
+[ERROR] 2026-10-29-16:28:23 (PID:2495558, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[WARN]  Child process exited with return value 1
+[ERROR] Get profiling data failed.
+[WARN]  Profiling running finished. May cause generating performance files to fail.
+[WARN]  Running task failed, data parsing start
+[WARN]  No profiling data matched --kernel-name=main_kernel. All kernels were filtered out or no matching dump was generated. Please confirm the kernel name or wildcard pattern.
+[WARN]  Profiling results are empty. No kernel profiling data was generated. Please check the dump output.
+[ERROR] Profiling data parse failed. Please check
+[INFO]  Op profiling finish. Welcome to next use.
+Collector completed: tilelang_kv2
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+TARGET CHECK: {"implementation": "ascendc", "checks": [{"output": "O", "relative_l2": 0.002402810443424686, "max_abs": 0.00048828125, "passed": true}]}
+Target validated and warmed; no profiling range opened.
+COLLECT: implementation=ascendc metrics=Default,Occupancy output=results/mha-tuning/timeline-load-20261029-162745-2494197/ascendc
+=================================================================
+                   >>>>>   MindStudio   <<<<<
+    THE END-TO-END TOOLCHAIN TO UNLEASH HUAWEI ASCEND COMPUTE
+=================================================================
 
-This is subcommand for operator optimization situation:
-      op                                Use binary msopprof to operator optimization (msprof op ...)
+[W1029 16:28:34.267198786 FunctionLoader.cpp:44] Warning: LD_PRELOAD detected, FunctionLoader prefers RTLD_DEFAULT for symbol resolution. (function operator())
+[WARN]  Currently, the root permission is used, which is unrecommended. Please ensure the security of the execution environment and programs.
+[INFO]  Op profiling analysis start.
+[INFO]  Running device task: DeviceProf
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+TARGET CHECK: {"implementation": "ascendc", "checks": [{"output": "O", "relative_l2": 0.002402810443424686, "max_abs": 0.00048828125, "passed": true}]}
+TARGET RANGE START: ascendc
+Traceback (most recent call last):
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 125, in <module>
+    main()
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 116, in main
+    capture_one(fn, mstx, torch.npu.synchronize, torch.npu.current_stream())
+  File "/home/z30086261/Q4/operators/mha/tuning/timeline_target.py", line 19, in capture_one
+    raise RuntimeError('MSTX range_start failed; refusing an unscoped collection')
+RuntimeError: MSTX range_start failed; refusing an unscoped collection
+[ERROR] 2026-10-29-16:28:43 (PID:2496558, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[WARN]  Child process exited with return value 1
+[ERROR] Get profiling data failed.
+[WARN]  Profiling running finished. May cause generating performance files to fail.
+[WARN]  Running task failed, data parsing start
+[WARN]  No profiling data matched --kernel-name=FlashAttn. All kernels were filtered out or no matching dump was generated. Please confirm the kernel name or wildcard pattern.
+[WARN]  Profiling results are empty. No kernel profiling data was generated. Please check the dump output.
+[ERROR] Profiling data parse failed. Please check
+[INFO]  Op profiling finish. Welcome to next use.
+Collector completed: ascendc
+Raw previews only. No timing aggregation. A core ID may be logical; Block ID is not a physical-core count. Missing core/timeline data must not be reconstructed from aggregate metrics.
+Files: 35
+FILE 121 ascendc/app/correctness.json
+FILE 2819 ascendc/app/metadata.json
+FILE 2893 ascendc/collect.log
+FILE 535 ascendc/command.txt
+FILE 1052 ascendc/validate.log
+FILE 121 ascendc/validate/correctness.json
+FILE 2819 ascendc/validate/metadata.json
+FILE 27354 tilelang_kv2/app/__pycache__/selected_core.cpython-312.pyc
+FILE 122 tilelang_kv2/app/correctness.json
+FILE 2999 tilelang_kv2/app/metadata.json
+FILE 20047 tilelang_kv2/app/selected_core.py
+FILE 19144 tilelang_kv2/app/selected_kernel.cpp
+FILE 2906 tilelang_kv2/collect.log
+FILE 552 tilelang_kv2/command.txt
+FILE 1058 tilelang_kv2/validate.log
+FILE 27359 tilelang_kv2/validate/__pycache__/selected_core.cpython-312.pyc
+FILE 122 tilelang_kv2/validate/correctness.json
+FILE 3000 tilelang_kv2/validate/metadata.json
+FILE 20047 tilelang_kv2/validate/selected_core.py
+FILE 19144 tilelang_kv2/validate/selected_kernel.cpp
+FILE 27356 tilelang_s2buf/app/__pycache__/selected_core.cpython-312.pyc
+FILE 122 tilelang_s2buf/app/correctness.json
+FILE 3000 tilelang_s2buf/app/metadata.json
+FILE 20047 tilelang_s2buf/app/selected_core.py
+FILE 19047 tilelang_s2buf/app/selected_kernel.cpp
+FILE 2910 tilelang_s2buf/collect.log
+FILE 558 tilelang_s2buf/command.txt
+FILE 1060 tilelang_s2buf/validate.log
+FILE 27361 tilelang_s2buf/validate/__pycache__/selected_core.cpython-312.pyc
+FILE 122 tilelang_s2buf/validate/correctness.json
+FILE 3002 tilelang_s2buf/validate/metadata.json
+FILE 20047 tilelang_s2buf/validate/selected_core.py
+FILE 19047 tilelang_s2buf/validate/selected_kernel.cpp
+FILE 2615 tool-help.txt
+FILE 528 tool-version.txt
 
-Options:
-      --output                          <Optional> Specify the directory that is used for storing data results.
-      --application                     <Optional> Specify application path, considering the risk of privilege escalation, please pay attention to
-                                                   the group of the application and confirm whether it is the same as the user currently.
-                                                   [Note] This option will be discarded in later versions.
-                                                   you can try to use: msprof [msprof arguments] <app> [app arguments]
-      --ascendcl                        <Optional> Show acl profiling data, the default value is on.
-      --ge-api                          <Optional> Specify if report GE event, the default value is off. The possible parameters are 'l0', 'l1' or 'off'.
-      --runtime-api                     <Optional> Show runtime api profiling data, the default value is off.
-      --task-time                       <Optional> Show task profiling data, the default value is on. The possible parameters are 'l0', 'l1', 'l2', 'l3', 'on' or 'off'.
-      --aicore-shape                    <Optional> Collect AI Core operator shape data. This option takes effect only when task-time is l0. The possible values are 'on' and 'off', and the default value is off.
-      --task-tsfw                       <Optional> Specify the start of collection of ts management data, the default value is off.
-      --task-memory                     <Optional> Show the memory usage of the operator, the default value is off. The possible parameters are 'on' or 'off'.
-      --ai-core                         <Optional> Turn on / off the ai core profiling, the default value is on when collecting app Profiling.
-      --aic-mode                        <Optional> Set the aic profiling mode to task-based or sample-based.
-                                                   In task-based mode, profiling data will be collected by tasks.
-                                                   In sample-based mode, profiling data will be collected in a specific interval.
-                                                   The default value is task-based in AI task mode, sample-based in system mode.
-      --aic-freq                        <Optional> The aic sampling frequency in hertz, the default value is 100 Hz, the range is 1 to 100 Hz.
-      --environment                     <Optional> User app custom environment variable configuration.
-      --sys-period                      <Optional> Set total sampling period of system profiling in seconds.
-      --sys-devices                     <Optional> Specify the profiling scope by device ID when collect sys profiling.The value is all or ID list (split with ',').
-      --msproftx                        <Optional> Show msproftx and mstx data, the default value is off.
-      --mstx-domain-include             <Optional> Choose to only include mstx events from a comma separated list of domains;
-                                                   `default` filters the mstx default domain;
-                                                   The switch is only applicable when parameter msproftx is set to on;
-                                                   The switch cannot be set with mstx-domain-exclude at the same time.
-      --mstx-domain-exclude             <Optional> Choose to exclude mstx events from a comma separated list of domains;
-                                                   `default` excludes the mstx default domain;
-                                                   The switch is only applicable when parameter msproftx is set to on;
-                                                   The switch cannot be set with mstx-domain-include at the same time.
-      --storage-limit                   <Optional> Specify the output directory volume. range 200MB ~ 4294967295MB.
-      --hccl                            <Optional> Show hccl profiling data, the default value is off. [Note] This option will be discarded in later versions.
-      --model-execution                 <Optional> Show ge model execution profiling data, the default value is off. [Note] This option will be discarded in later versions.
-      --aic-metrics                     <Optional> The aic metrics groups, include ArithmeticUtilization, PipeUtilization, Memory, MemoryL0, ResourceConflictRatio, MemoryUB, L2Cache.
-                                                   the default value is PipeUtilization.
-      --python-path                     <Optional> Specify the python interpreter path that is used for analysis, please ensure the python version is 3.7.5 or later.
-      --parse                           <Optional> Switch for using msprof to parse collecting data, the default value is off.
-      --query                           <Optional> Switch for using msprof to query collecting data, the default value is off.
-      --export                          <Optional> Switch for using msprof to export collecting data, the default value is off.
-      --clear                           <Optional> Switch for using msprof to analyze or export data in clear mode, the default value is off.
-      --analyze                         <Optional> Switch for using msprof to analyze collecting data, the default value is off.
-      --rule                            <Optional> Switch specified rule for using msprof to analyze collecting data, include communication, communication_matrix.
-                                                   the default value is communication,communication_matrix.
-      --iteration-id                    <Optional> The export iteration id, only used when argument export is on, the default value is 1.
-      --model-id                        <Optional> The export model id, only used when argument export is on, msprof will export minimum accessible model by default.
-      --summary-format                  <Optional> The export summary file format, only used when argument export is on, include csv, json, the default value is csv.
-      --type                            <Optional> The export type, only used when argument `export` is on 
-                                                   or when collecting data, include text, db.
-                                                   the default value is text(which will also export the database).
-      --reports                         <Optional> Specify the path that is used for controlling the export scope of collecting results
-      --aicpu                           <Optional> Show aicpu profiling data, the default value is off.
-      --sys-hardware-mem                <Optional> QOS, HBM, LLC, SOC and mem acquisition switch, optional on / off, the default value is off.
-      --sys-hardware-mem-freq           <Optional> QOS, HBM, LLC, SOC and mem acquisition frequency, range 1 ~ 10000 for QOS and SOC, 1 ~ 100 for HBM, LLC and mem, the default value is 50, unit Hz.
-      --sys-mem-serviceflow             <Optional> The qos serviceflow group, based on user customized.
-      --llc-profiling                   <Optional> The llc profiling groups, include read, write. the default value is read.
-      --sys-cpu-profiling               <Optional> The CPU acquisition switch, optional on / off,the default value is off.
-      --sys-cpu-freq                    <Optional> The cpu sampling frequency in hertz. the default value is 50 Hz, the range is 1 to 50 Hz.
-      --sys-profiling                   <Optional> The System CPU usage and system memory acquisition switch,the default value is off.
-      --sys-sampling-freq               <Optional> The sys sampling frequency in hertz. the default value is 10 Hz, the range is 1 to 10 Hz.
-      --sys-pid-profiling               <Optional> The CPU usage of the process and the memory acquisition switch of the process,the default value is off.
-      --sys-pid-sampling-freq           <Optional> The pid sampling frequency in hertz. the default value is 10 Hz, the range is 1 to 10 Hz.
-      --sys-io-profiling                <Optional> UB acquisition switch, the default value is off.
-      --sys-io-sampling-freq            <Optional> UB acquisition frequency, range 1 ~ 100, the default value is 100, unit Hz.
-      --instr-profiling                 <Optional> Show instr profiling data, the default value is off.
-      --sys-interconnection-profiling   <Optional> PCIE, CCU, SIO and UB acquisition switch, the default value is off.
-      --sys-interconnection-freq        <Optional> PCIE, CCU, SIO and UB acquisition frequency, range 1 ~ 50, the default value is 50, unit Hz.
-      --dvpp-profiling                  <Optional> DVPP acquisition switch, the default value is off.
-      --dvpp-freq                       <Optional> DVPP acquisition frequency, range 1 ~ 100, the default value is 50, unit Hz.
-      --l2                              <Optional> L2 Cache and SMMU acquisition switch. The default value is off.
-      --npu-events                      <Optional> Customize soc pmu parameters for collection. The input is hexadecimal number starting with 0x. Maximum of 8 parameters can be received for MATA and SMMU. 4 parameters for NOC.
-      --host-sys                        <Optional> The host-sys data type, include cpu, mem, disk, network, osrt, numa, threads-sync, cache
-      --host-sys-pid                    <Optional> Set the PID of the app process for which you want to collect performance data.
-      --host-sys-usage                  <Optional> The host-sys-usage data type, include cpu, mem.(full-platform)
-      --host-sys-usage-freq             <Optional> The sampling frequency in hertz. the default value is 50 Hz the range is 1 to 50 Hz.
-      --task-block                      <Optional> Show task block profiling data, the default value is off.The possible parameters are 'all', 'on', 'off'.
-      --sys-lp                          <Optional> Open low power profiling data config, the default value is on.
-      --sys-lp-freq                     <Optional> Config low power frequency, the default value is 100Hz, the range is 1 to 100Hz.
-      --dynamic                         <Optional> Dynamic profiling switch, the default value is off.
-      --pid                             <Optional> Dynamic profiling pids of the target processes
-      --delay                           <Optional> Collect start delay time in seconds, range 1 ~ 4294967295s.
-      --duration                        <Optional> Collection duration in seconds, range 1 ~ 4294967295s.
-      --help                            <Optional> help message.
-
-
-===== msprof-help.txt =====
-
-Usage:
-      msprof [--options]
-
-This is subcommand for operator optimization situation:
-      op                                Use binary msopprof to operator optimization (msprof op ...)
-
-Options:
-      --output                          <Optional> Specify the directory that is used for storing data results.
-      --application                     <Optional> Specify application path, considering the risk of privilege escalation, please pay attention to
-                                                   the group of the application and confirm whether it is the same as the user currently.
-                                                   [Note] This option will be discarded in later versions.
-                                                   you can try to use: msprof [msprof arguments] <app> [app arguments]
-      --ascendcl                        <Optional> Show acl profiling data, the default value is on.
-      --ge-api                          <Optional> Specify if report GE event, the default value is off. The possible parameters are 'l0', 'l1' or 'off'.
-      --runtime-api                     <Optional> Show runtime api profiling data, the default value is off.
-      --task-time                       <Optional> Show task profiling data, the default value is on. The possible parameters are 'l0', 'l1', 'l2', 'l3', 'on' or 'off'.
-      --aicore-shape                    <Optional> Collect AI Core operator shape data. This option takes effect only when task-time is l0. The possible values are 'on' and 'off', and the default value is off.
-      --task-tsfw                       <Optional> Specify the start of collection of ts management data, the default value is off.
-      --task-memory                     <Optional> Show the memory usage of the operator, the default value is off. The possible parameters are 'on' or 'off'.
-      --ai-core                         <Optional> Turn on / off the ai core profiling, the default value is on when collecting app Profiling.
-      --aic-mode                        <Optional> Set the aic profiling mode to task-based or sample-based.
-                                                   In task-based mode, profiling data will be collected by tasks.
-                                                   In sample-based mode, profiling data will be collected in a specific interval.
-                                                   The default value is task-based in AI task mode, sample-based in system mode.
-      --aic-freq                        <Optional> The aic sampling frequency in hertz, the default value is 100 Hz, the range is 1 to 100 Hz.
-      --environment                     <Optional> User app custom environment variable configuration.
-      --sys-period                      <Optional> Set total sampling period of system profiling in seconds.
-      --sys-devices                     <Optional> Specify the profiling scope by device ID when collect sys profiling.The value is all or ID list (split with ',').
-      --msproftx                        <Optional> Show msproftx and mstx data, the default value is off.
-      --mstx-domain-include             <Optional> Choose to only include mstx events from a comma separated list of domains;
-                                                   `default` filters the mstx default domain;
-                                                   The switch is only applicable when parameter msproftx is set to on;
-                                                   The switch cannot be set with mstx-domain-exclude at the same time.
-      --mstx-domain-exclude             <Optional> Choose to exclude mstx events from a comma separated list of domains;
-                                                   `default` excludes the mstx default domain;
-                                                   The switch is only applicable when parameter msproftx is set to on;
-                                                   The switch cannot be set with mstx-domain-include at the same time.
-      --storage-limit                   <Optional> Specify the output directory volume. range 200MB ~ 4294967295MB.
-      --hccl                            <Optional> Show hccl profiling data, the default value is off. [Note] This option will be discarded in later versions.
-      --model-execution                 <Optional> Show ge model execution profiling data, the default value is off. [Note] This option will be discarded in later versions.
-      --aic-metrics                     <Optional> The aic metrics groups, include ArithmeticUtilization, PipeUtilization, Memory, MemoryL0, ResourceConflictRatio, MemoryUB, L2Cache.
-                                                   the default value is PipeUtilization.
-      --python-path                     <Optional> Specify the python interpreter path that is used for analysis, please ensure the python version is 3.7.5 or later.
-      --parse                           <Optional> Switch for using msprof to parse collecting data, the default value is off.
-      --query                           <Optional> Switch for using msprof to query collecting data, the default value is off.
-      --export                          <Optional> Switch for using msprof to export collecting data, the default value is off.
-      --clear                           <Optional> Switch for using msprof to analyze or export data in clear mode, the default value is off.
-      --analyze                         <Optional> Switch for using msprof to analyze collecting data, the default value is off.
-      --rule                            <Optional> Switch specified rule for using msprof to analyze collecting data, include communication, communication_matrix.
-                                                   the default value is communication,communication_matrix.
-      --iteration-id                    <Optional> The export iteration id, only used when argument export is on, the default value is 1.
-      --model-id                        <Optional> The export model id, only used when argument export is on, msprof will export minimum accessible model by default.
-      --summary-format                  <Optional> The export summary file format, only used when argument export is on, include csv, json, the default value is csv.
-      --type                            <Optional> The export type, only used when argument `export` is on 
-                                                   or when collecting data, include text, db.
-                                                   the default value is text(which will also export the database).
-      --reports                         <Optional> Specify the path that is used for controlling the export scope of collecting results
-      --aicpu                           <Optional> Show aicpu profiling data, the default value is off.
-      --sys-hardware-mem                <Optional> QOS, HBM, LLC, SOC and mem acquisition switch, optional on / off, the default value is off.
-      --sys-hardware-mem-freq           <Optional> QOS, HBM, LLC, SOC and mem acquisition frequency, range 1 ~ 10000 for QOS and SOC, 1 ~ 100 for HBM, LLC and mem, the default value is 50, unit Hz.
-      --sys-mem-serviceflow             <Optional> The qos serviceflow group, based on user customized.
-      --llc-profiling                   <Optional> The llc profiling groups, include read, write. the default value is read.
-      --sys-cpu-profiling               <Optional> The CPU acquisition switch, optional on / off,the default value is off.
-      --sys-cpu-freq                    <Optional> The cpu sampling frequency in hertz. the default value is 50 Hz, the range is 1 to 50 Hz.
-      --sys-profiling                   <Optional> The System CPU usage and system memory acquisition switch,the default value is off.
-      --sys-sampling-freq               <Optional> The sys sampling frequency in hertz. the default value is 10 Hz, the range is 1 to 10 Hz.
-      --sys-pid-profiling               <Optional> The CPU usage of the process and the memory acquisition switch of the process,the default value is off.
-      --sys-pid-sampling-freq           <Optional> The pid sampling frequency in hertz. the default value is 10 Hz, the range is 1 to 10 Hz.
-      --sys-io-profiling                <Optional> UB acquisition switch, the default value is off.
-      --sys-io-sampling-freq            <Optional> UB acquisition frequency, range 1 ~ 100, the default value is 100, unit Hz.
-      --instr-profiling                 <Optional> Show instr profiling data, the default value is off.
-      --sys-interconnection-profiling   <Optional> PCIE, CCU, SIO and UB acquisition switch, the default value is off.
-      --sys-interconnection-freq        <Optional> PCIE, CCU, SIO and UB acquisition frequency, range 1 ~ 50, the default value is 50, unit Hz.
-      --dvpp-profiling                  <Optional> DVPP acquisition switch, the default value is off.
-      --dvpp-freq                       <Optional> DVPP acquisition frequency, range 1 ~ 100, the default value is 50, unit Hz.
-      --l2                              <Optional> L2 Cache and SMMU acquisition switch. The default value is off.
-      --npu-events                      <Optional> Customize soc pmu parameters for collection. The input is hexadecimal number starting with 0x. Maximum of 8 parameters can be received for MATA and SMMU. 4 parameters for NOC.
-      --host-sys                        <Optional> The host-sys data type, include cpu, mem, disk, network, osrt, numa, threads-sync, cache
-      --host-sys-pid                    <Optional> Set the PID of the app process for which you want to collect performance data.
-      --host-sys-usage                  <Optional> The host-sys-usage data type, include cpu, mem.(full-platform)
-      --host-sys-usage-freq             <Optional> The sampling frequency in hertz. the default value is 50 Hz the range is 1 to 50 Hz.
-      --task-block                      <Optional> Show task block profiling data, the default value is off.The possible parameters are 'all', 'on', 'off'.
-      --sys-lp                          <Optional> Open low power profiling data config, the default value is on.
-      --sys-lp-freq                     <Optional> Config low power frequency, the default value is 100Hz, the range is 1 to 100Hz.
-      --dynamic                         <Optional> Dynamic profiling switch, the default value is off.
-      --pid                             <Optional> Dynamic profiling pids of the target processes
-      --delay                           <Optional> Collect start delay time in seconds, range 1 ~ 4294967295s.
-      --duration                        <Optional> Collection duration in seconds, range 1 ~ 4294967295s.
-      --help                            <Optional> help message.
-
-
-===== msprof-op-help.txt =====
-Description:
-  Profile Ascend C operators by running the application on an Ascend device.
-
-Usage:
-  msopprof [options] (<application> [application-args] | --config <FILE>)
-
-Optional arguments:
-  Exactly one of <application> and --config must be specified.
-  -h, --help                                Show help message.
-  -V, --version                             Show version information.
-      --config <FILE>                       JSON operator configuration file.
-      --application <FILE>                  Application executable path.
-      --output <DIR>                        Output directory [default: ./].
-      --aic-metrics <NAME>[,<NAME>...]      Enable collection ability type:
-                                              Supported values: ArithmeticUtilization | MemoryUB | Memory | MemoryL0 | L2Cache |
-                                                | PipeUtilization | ResourceConflictRatio | Default | BasicInfo | Roofline |
-                                                | Occupancy | TimelineDetail | KernelScale | Source | MemoryDetail |
-                                                | PCSampling | PipeTimeline | InstrTimeline |
-      --instr-timeline-pipe <PIPE>          Specify the pipe for InstrTimeline.
-      --kernel-name <NAME>                  Specify the kernel name to profile.
-                                              Not effective in config mode.
-      --launch-count <N>                    Kernel launches to collect (1-5000) [default: 1].
-      --launch-skip-before-match <N>        Kernel launches to skip (0-1000) [default: 0].
-      --replay-mode {application,kernel,range}              Data collection replay mode [default: kernel].
-      --kill {true,false}                       Kill the process after launch-count [default: false].
-      --mstx {true,false}                       Enable mstx API [default: false].
-      --mstx-include <RANGE>                Specify the mstx range to collect.
-      --warm-up <N>                         Warm-up runs (0-500) [default: 5].
-      --core-id <ID>                        Specify the id of cores to be parsed.
-                                              Only effective when --aic-metrics=<TIMELINEDETAIL> and only
-                                              effective in simulation products.
-      --custom-input <FILE>                 JSON file for custom operator input.
-
-Examples:
-  msopprof ./my_operator
-  msopprof --config ./op_config.json
-
-Output:
-  Results are written to <output-dir>/OPPROF_{timestamp}_{random}.
-
-Troubleshooting:
-  Check that exactly one input is provided and option values are valid.
-
-
-Probe saved: /home/z30086261/Q4/results/mha-tuning/timeline-probe-20261029-154308-2467017/probe.txt
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+Retain full collection directory: /home/z30086261/Q4/results/mha-tuning/timeline-load-20261029-162745-2494197
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
