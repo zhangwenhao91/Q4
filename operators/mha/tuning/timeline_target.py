@@ -108,12 +108,13 @@ def main():
         metadata_file = a.output/'metadata.json'
         metadata_file.write_text(json.dumps(meta,indent=2)+'\n',encoding='utf-8')
         if a.mode=='capture':
-            try:
-                mstx = torch_npu.npu.mstx
-            except AttributeError as error:
-                raise RuntimeError('Installed torch_npu has no MSTX range API') from error
+            from native_mstx import load_native_mstx
+            mstx=load_native_mstx()
+            meta['mstx_backend']=mstx.description
+            metadata_file.write_text(json.dumps(meta,indent=2)+'\n',encoding='utf-8')
+            print('MSTX BACKEND:',json.dumps(mstx.description),flush=True)
             print('TARGET RANGE START:', a.implementation, flush=True)
-            capture_one(fn, mstx, torch.npu.synchronize, torch.npu.current_stream())
+            capture_one(fn, mstx, torch.npu.synchronize, None)
             meta['capture_succeeded'] = True
             metadata_file.write_text(json.dumps(meta,indent=2)+'\n',encoding='utf-8')
             print('TARGET RANGE END:', a.implementation, flush=True)

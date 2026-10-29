@@ -36,7 +36,14 @@ case "$ACTION" in
       printf '\n' >> "$OUT/$impl/command.txt"
       echo "COLLECT: implementation=$impl metrics=$METRICS output=$OUT/$impl"
       if "${command[@]}" 2>&1 | tee "$OUT/$impl/collect.log"; then
-        echo "Collector completed: $impl"
+        if "$PYTHON" operators/mha/tuning/timeline_verify.py --input "$OUT/$impl"; then
+          echo "Collector and result checks completed: $impl"
+        else
+          status=$?
+          "$PYTHON" operators/mha/tuning/timeline_inventory.py --input "$OUT"
+          echo "Collector returned zero but result validation failed for $impl. Stopping." >&2
+          exit "$status"
+        fi
       else
         status=$?
         "$PYTHON" operators/mha/tuning/timeline_inventory.py --input "$OUT"

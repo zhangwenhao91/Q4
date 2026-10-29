@@ -94,3 +94,20 @@ bash operators/mha/tuning/run_timeline.sh pipeline
 
 pipeline使用Default,PipeTimeline，其余范围及对照保持一致。
 首次先运行load并反馈，不要求立刻运行pipeline。
+
+## 首次采集失败后的修正
+
+首次日志7f57ca3显示PyTorch MSTX前端返回无效ID，三侧没有有效profiler数据。
+工具在子进程失败时仍返回0；旧脚本只检查退出码，错误报告完成，现已修正。
+具体记录见reports/mha_timeline/attempt_01.md。
+
+当前capture应用改用CANN原生MSTX C接口，而非依赖torch_npu的MSTX前端状态。
+采用空stream host范围，目标调用后同步设备，再关闭范围。
+RTLD_DEFAULT优先，保留工具预加载符号；必要时从ASCEND_HOME_PATH/lib64等已配置路径加载
+libms_tools_ext.so。没有安装新包、改变全局配置或取消采集范围。
+
+采集后timeline_verify.py要求capture完成、日志无明确错误、op目录有非空CSV/bin结果，
+否则即使msprof op返回0也停止。不把app源码或metadata当作profile数据。
+有效数据存在也不等于已有足够逐核字段，后续仍按inventory核对能力覆盖。
+
+服务器重试相同load命令，无需重建AscendC；先不运行pipeline。
