@@ -44,3 +44,15 @@ bash operators/mha/tuning/run_buffers.sh bench
 与生成Python源码的哈希均记录在各结果目录metadata.json。
 将包含CODEGEN的输出更新到error.txt。
 判断是否有收益需比较matched_best_over_candidate，而不仅仅比较原始TL。
+
+## API结果后设备复核
+
+126项精度通过。K/V双版本API耗时比此前最佳降低1.20%，相对原始TL降低3.12%。
+S/alpha双版本和全部双版本均明显退化，不采用。完整结果见reports/mha_buffers/report.md。
+设备复核只测原始、此前最佳、K/V双版本与AscendC：
+
+```bash
+bash operators/mha/tuning/run_buffers.sh profile_best
+```
+
+自动打印设备CSV，将输出更新到error.txt。无需重复check/bench。

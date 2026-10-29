@@ -1,0 +1,144 @@
+{
+  "source_revision": "67119d6",
+  "correctness_passed": 126,
+  "api_process_summaries": [
+    {
+      "tilelang_q128": {
+        "event_us": 52.70162105560303,
+        "wall_us": 53.106910054339096
+      },
+      "tilelang_finalize": {
+        "event_us": 51.70406103134155,
+        "wall_us": 52.087575022596866
+      },
+      "tilelang_kv2": {
+        "event_us": 51.06703042984009,
+        "wall_us": 51.4615849533584
+      },
+      "tilelang_stats2": {
+        "event_us": 64.76767539978027,
+        "wall_us": 65.15738001326099
+      },
+      "tilelang_buffers2": {
+        "event_us": 64.13862466812134,
+        "wall_us": 64.55483002355322
+      },
+      "ascendc": {
+        "event_us": 40.10521411895752,
+        "wall_us": 40.546564996475354
+      },
+      "ratios": {
+        "tilelang_kv2": {
+          "matched_best_over_candidate": 1.0124744007266424,
+          "original_over_candidate": 1.0320087268048348,
+          "ascendc_over_candidate": 0.7853445516879471
+        },
+        "tilelang_stats2": {
+          "matched_best_over_candidate": 0.7983003977245872,
+          "original_over_candidate": 0.8137025256858581,
+          "ascendc_over_candidate": 0.6192165130430723
+        },
+        "tilelang_buffers2": {
+          "matched_best_over_candidate": 0.80612986790532,
+          "original_over_candidate": 0.8216830549189681,
+          "ascendc_over_candidate": 0.6252895868359789
+        }
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.70770072937012,
+        "wall_us": 53.10835491400212
+      },
+      "tilelang_finalize": {
+        "event_us": 51.661717891693115,
+        "wall_us": 52.01271997066215
+      },
+      "tilelang_kv2": {
+        "event_us": 51.05655908584595,
+        "wall_us": 51.38247011927888
+      },
+      "tilelang_stats2": {
+        "event_us": 64.74321126937866,
+        "wall_us": 65.08723003207706
+      },
+      "tilelang_buffers2": {
+        "event_us": 64.14413928985596,
+        "wall_us": 64.4805199408438
+      },
+      "ascendc": {
+        "event_us": 40.05935192108154,
+        "wall_us": 40.42768996441737
+      },
+      "ratios": {
+        "tilelang_kv2": {
+          "matched_best_over_candidate": 1.0118527142581164,
+          "original_over_candidate": 1.0323394618260107,
+          "ascendc_over_candidate": 0.7846073577681995
+        },
+        "tilelang_stats2": {
+          "matched_best_over_candidate": 0.7979480300528027,
+          "original_over_candidate": 0.8141038990183527,
+          "ascendc_over_candidate": 0.6187421219254265
+        },
+        "tilelang_buffers2": {
+          "matched_best_over_candidate": 0.8054004381950314,
+          "original_over_candidate": 0.8217071943423139,
+          "ascendc_over_candidate": 0.6245208426612516
+        }
+      }
+    },
+    {
+      "tilelang_q128": {
+        "event_us": 52.699904441833496,
+        "wall_us": 53.0351500492543
+      },
+      "tilelang_finalize": {
+        "event_us": 51.67773485183716,
+        "wall_us": 51.998544950038195
+      },
+      "tilelang_kv2": {
+        "event_us": 51.05201482772827,
+        "wall_us": 51.36344509082846
+      },
+      "tilelang_stats2": {
+        "event_us": 64.73120927810669,
+        "wall_us": 65.08742517326027
+      },
+      "tilelang_buffers2": {
+        "event_us": 64.16200637817383,
+        "wall_us": 64.50389992096461
+      },
+      "ascendc": {
+        "event_us": 40.107383728027344,
+        "wall_us": 40.43674998683855
+      },
+      "ratios": {
+        "tilelang_kv2": {
+          "matched_best_over_candidate": 1.01225651967352,
+          "original_over_candidate": 1.0322786401215687,
+          "ascendc_over_candidate": 0.785618038061125
+        },
+        "tilelang_stats2": {
+          "matched_best_over_candidate": 0.7983434177756902,
+          "original_over_candidate": 0.8141344033203098,
+          "ascendc_over_candidate": 0.6195988639067865
+        },
+        "tilelang_buffers2": {
+          "matched_best_over_candidate": 0.8054257927541449,
+          "original_over_candidate": 0.8213568654823202,
+          "ascendc_over_candidate": 0.6250955353801215
+        }
+      }
+    }
+  ],
+  "median_event_us": {
+    "tilelang_q128": 52.70162105560303,
+    "tilelang_finalize": 51.67773485183716,
+    "tilelang_kv2": 51.05655908584595,
+    "tilelang_stats2": 64.74321126937866,
+    "tilelang_buffers2": 64.14413928985596,
+    "ascendc": 40.10521411895752
+  },
+  "outcome": "K/V versions2 improves API; S/alpha versions2 regresses strongly; device confirmation pending"
+}

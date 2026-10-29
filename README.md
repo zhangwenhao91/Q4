@@ -51,3 +51,11 @@ Post、Sinkhorn、Pre 与 Pre+Sinkhorn 的反向校验、独立反向及前向+�
 ## MHA Q64 优化实验
 
 [Q64 候选实验说明](operators/mha/tuning/README.md)：同进程比较原始Q128、独立Q64候选和复用metadata的原生AscendC。Q64对行统计数组做必要的SIMD存储补齐；结果尚待NPU验证。
+
+
+## MHA后续优化与DSA文档分析
+
+[DSA方法对当前MHA的适用性分析](reports/mha_dsa_analysis.md)逐项对照两份新增文档和固定DSA源码，
+区分已具备、可以迁移及当前规格不适用的方法。
+[buffer版本数实验结果](reports/mha_buffers/report.md)：K/V双版本API有收益，S/alpha双版本明显退化；
+设备复核操作见[运行说明](operators/mha/tuning/BUFFERS.md)。
