@@ -6,13 +6,24 @@ from pathlib import Path
 from types import SimpleNamespace
 import unittest
 
-from timeline_target import capture_one,RANGE_NAME
+from timeline_target import capture_one,capture_kernel,RANGE_NAME
 from timeline_inventory import inspect_csv
 from timeline_verify import verify_collection
 from native_mstx import NativeMstx
 
 
 class TimelineTest(unittest.TestCase):
+    def test_kernel_selection_calls_once_then_synchronizes(self):
+        events=[]
+        result=capture_kernel(lambda:events.append('kernel') or 'out',lambda:events.append('sync'))
+        self.assertEqual(result,'out')
+        self.assertEqual(events,['kernel','sync'])
+
+    def test_kernel_failure_propagates(self):
+        def fail():raise RuntimeError('launch failed')
+        with self.assertRaisesRegex(RuntimeError,'launch failed'):
+            capture_kernel(fail,lambda:self.fail('must not report completion'))
+
     def test_exactly_one_call_inside_range(self):
         events=[]
         def start(name,stream):

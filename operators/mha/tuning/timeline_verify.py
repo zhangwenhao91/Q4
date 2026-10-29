@@ -27,7 +27,7 @@ def verify_collection(folder):
     except (ValueError,OSError) as error:
         raise RuntimeError('Cannot read capture-app metadata') from error
     if state.get('mode')!='capture' or state.get('capture_succeeded') is not True:
-        raise RuntimeError('Target MSTX range did not complete; collector exit code is insufficient')
+        raise RuntimeError('Target capture did not complete; collector exit code is insufficient')
     if state.get('implementation')!=folder.name:
         raise RuntimeError('Capture implementation does not match result directory')
     log=folder/'collect.log'

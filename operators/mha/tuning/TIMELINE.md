@@ -51,7 +51,24 @@ bash operators/mha/tuning/run_timeline.sh probe
 
 以上网页描述多种版本与芯片，不作为当前设备支持所有功能的依据。
 
-## 已探测环境与正式负载采集
+## 当前重试方式（第二次 MSTX 失败后）
+
+日志 a7a50a0 中 CANN 原生接口仍返回无效 range ID。当前 load/pipeline 改为
+`--mstx=false --kernel-name=main_kernel --launch-count=1 --warm-up=50 --replay-mode=kernel`。
+先运行独立 validate 进程检查精度；capture 进程使用 `--selection kernel`，
+只调用一次所选 TileLang attention，不执行应用内精度检查和 100 次预热。
+工具执行 50 次预热与重放。CPU 参考、输入准备和 metadata 初始化仍在 setup 中，
+由名称过滤排除；没有运行其他同名 TileLang baseline。
+
+目前仅依次采集 tilelang_s2buf、tilelang_kv2。AscendC 暂缓：必须先确认名称过滤
+不会把 FlashAttnMetadata 误当成 FlashAttn，不能无依据采用前缀匹配。
+本轮目的仍是诊断 TileLang 逐核负载；不是新的双方速度比较。
+命令仍为 `bash operators/mha/tuning/run_timeline.sh load`，无需重新编译 AscendC。
+target 完成、日志和实际数据三项校验保持启用；缺少数据继续失败退出。
+
+以下记录保留此前 MSTX 方案的设计与失败处理，当前执行方式以上述内容和脚本为准。
+
+## 已探测环境与原始负载采集方案
 
 探测日志固定于Q4提交c4dd807。设备确认Ascend950PR_9579、28 AIC/56 AIV；
 安装的msprof op帮助提供Default、Occupancy、PipeTimeline、InstrTimeline等选项。

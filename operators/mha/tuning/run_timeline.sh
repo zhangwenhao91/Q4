@@ -21,7 +21,7 @@ case "$ACTION" in
     else
       METRICS="Default,PipeTimeline"
     fi
-    for impl in tilelang_s2buf tilelang_kv2 ascendc; do
+    for impl in tilelang_s2buf tilelang_kv2; do
       mkdir -p "$OUT/$impl"
       if [[ "$impl" == ascendc ]]; then KERNEL="FlashAttn"; else KERNEL="main_kernel"; fi
       # Validate once outside the collector. Capture app repeats validation/warmup outside MSTX.
@@ -29,9 +29,9 @@ case "$ACTION" in
         --mode validate --output "$OUT/$impl/validate" 2>&1 | tee "$OUT/$impl/validate.log"
       command=("$MSPROF" op "--output=$ROOT/$OUT/$impl/op" "--aic-metrics=$METRICS"
         "--kernel-name=$KERNEL" --launch-count=1 --warm-up=50 --replay-mode=kernel
-        --mstx=true --mstx-include=Q4_TIMELINE
+        --mstx=false
         "$PYTHON" "$ROOT/operators/mha/tuning/timeline_target.py"
-        --implementation "$impl" --mode capture --output "$ROOT/$OUT/$impl/app")
+        --implementation "$impl" --mode capture --selection kernel --output "$ROOT/$OUT/$impl/app")
       printf '%q ' "${command[@]}" > "$OUT/$impl/command.txt"
       printf '\n' >> "$OUT/$impl/command.txt"
       echo "COLLECT: implementation=$impl metrics=$METRICS output=$OUT/$impl"
@@ -52,6 +52,7 @@ case "$ACTION" in
       fi
     done
     "$PYTHON" operators/mha/tuning/timeline_inventory.py --input "$OUT"
+    echo "AscendC collection deferred: resolve FlashAttn versus FlashAttnMetadata name matching first."
     echo "Retain full collection directory: $ROOT/$OUT"
     ;;
   *) echo 'Usage: bash operators/mha/tuning/run_timeline.sh [probe|load|pipeline]' >&2; exit 2 ;;
