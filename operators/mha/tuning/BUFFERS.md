@@ -56,3 +56,5 @@ bash operators/mha/tuning/run_buffers.sh profile_best
 ```
 
 自动打印设备CSV，将输出更新到error.txt。无需重复check/bench。
+
+设备复核确认：K/V双版本约51.071us，较此前最佳降低1.30%，较原始降低3.00%。

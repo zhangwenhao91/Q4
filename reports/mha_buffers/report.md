@@ -23,3 +23,18 @@ CODEGEN显示这些配置的流水线循环边界也发生变化，不能只按�
 下一步只profile原始、此前最佳、K/V版本2和AscendC；不额外profile两个明显较慢候选。
 
 原始证据：https://github.com/zhangwenhao91/Q4/blob/67119d6/error.txt
+
+## 设备复核
+
+每侧30次，全部纳入；Duration不含Wait Time。
+
+| 实现 | 平均 us | 中位数 us |
+|---|---:|---:|
+| tilelang_q128 | 52.653333 | 52.753000 |
+| tilelang_finalize | 51.744433 | 51.662000 |
+| tilelang_kv2 | 51.071200 | 51.074000 |
+| ascendc | 39.727567 | 39.708000 |
+
+K/V双版本相对此前最佳设备平均耗时降低1.30%，相对原始TL降低3.00%。
+当前最佳已测组合为nostore+stages2+finalize融合+K/V版本2，S/alpha仍3版本。
+证据：https://github.com/zhangwenhao91/Q4/blob/ca81464/error.txt

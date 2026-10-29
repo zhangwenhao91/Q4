@@ -140,5 +140,34 @@
     "tilelang_buffers2": 64.14413928985596,
     "ascendc": 40.10521411895752
   },
-  "outcome": "K/V versions2 improves API; S/alpha versions2 regresses strongly; device confirmation pending"
+  "outcome": "K/V versions2 API and device gain confirmed; current best",
+  "device_profile": {
+    "source_revision": "ca81464",
+    "statistics": {
+      "ascendc": {
+        "count": 30,
+        "mean_us": 39.72756666666667,
+        "median_us": 39.708
+      },
+      "tilelang_kv2": {
+        "count": 30,
+        "mean_us": 51.0712,
+        "median_us": 51.074
+      },
+      "tilelang_q128": {
+        "count": 30,
+        "mean_us": 52.653333333333336,
+        "median_us": 52.753
+      },
+      "tilelang_finalize": {
+        "count": 30,
+        "mean_us": 51.74443333333333,
+        "median_us": 51.662
+      }
+    },
+    "ratios": {
+      "reduction_vs_best_percent": 1.301073931946306,
+      "reduction_vs_original_percent": 3.0048113446442204
+    }
+  }
 }
