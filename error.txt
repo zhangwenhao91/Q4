@@ -1,97 +1,10 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
-remote: Enumerating objects: 5, done.
-remote: Counting objects: 100% (5/5), done.
-remote: Compressing objects: 100% (3/3), done.
-remote: Total 3 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
-Unpacking objects: 100% (3/3), 2.07 KiB | 2.07 MiB/s, done.
-From https://github.com/zhangwenhao91/Q4
-   d498a7f..6be381a  main       -> origin/main
-Merge made by the 'recursive' strategy.
- error.txt | 83 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 73 insertions(+), 10 deletions(-)
-(zwh) root@ubuntu162:/home/z30086261/Q4# git -c http.version=HTTP/1.1 push origin main
-Enumerating objects: 203, done.
-Counting objects: 100% (200/200), done.
-Delta compression using up to 256 threads
-Compressing objects: 100% (173/173), done.
-Writing objects: 100% (177/177), 404.35 KiB | 8.25 MiB/s, done.
-Total 177 (delta 71), reused 0 (delta 0)
-error: RPC failed; HTTP 403 curl 22 The requested URL returned error: 403
-fatal: the remote end hung up unexpectedly
-fatal: the remote end hung up unexpectedly
-Everything up-to-date
-(zwh) root@ubuntu162:/home/z30086261/Q4# git pull
-Already up to date.
-(zwh) root@ubuntu162:/home/z30086261/Q4# git push
-Enumerating objects: 203, done.
-Counting objects: 100% (200/200), done.
-Delta compression using up to 256 threads
-Compressing objects: 100% (173/173), done.
-Writing objects: 100% (177/177), 404.35 KiB | 8.09 MiB/s, done.
-Total 177 (delta 71), reused 0 (delta 0)
-error: RPC failed; HTTP 403 curl 22 The requested URL returned error: 403
-fatal: the remote end hung up unexpectedly
-fatal: the remote end hung up unexpectedly
-Everything up-to-date
-(zwh) root@ubuntu162:/home/z30086261/Q4# git bundle create /tmp/Q4-pipeline.bundle origin.main..HEAD
-fatal: ambiguous argument 'origin.main..HEAD': unknown revision or path not in the working tree.
-Use '--' to separate paths from revisions, like this:
-'git <command> [<revision>...] -- [<file>...]'
-error: rev-list died
-(zwh) root@ubuntu162:/home/z30086261/Q4# git bundle create /tmp/Q4-pipeline.bundle origin/main..HEAD
-Enumerating objects: 203, done.
-Counting objects: 100% (200/200), done.
-Compressing objects: 100% (173/173), done.
-Total 177 (delta 71), reused 0 (delta 0)
-(zwh) root@ubuntu162:/home/z30086261/Q4# git bundle verify /tmp/Q4-pipeline
-error: could not open '/tmp/Q4-pipeline'
-(zwh) root@ubuntu162:/home/z30086261/Q4# git bundle verify /tmp/Q4-pipeline.bundle
-The bundle contains this ref:
-541b7e992b286641b61df65b0fa2ef5e07ed820b HEAD
-The bundle requires these 44 refs:
-dea5dd52459398e30d62e471ef60ce8a34b53897 
-75d0edcbbbf892f58730a8ef996c0fafdb28fc5c 
-928d68c748e4f049f5bf744318a3f9e76d5c6e3b 
-f7555b465cbce5ec74aa024c085acd6b1fbc7f50 
-c6b29c5c3f4f7ef4ebb1d94c9d9c16e8e12f2459 
-e8a4b7b5cfb36e2634b38f670e0188a6de702260 
-b6bd0b0436f78ea33480d375c32b4164526ce204 
-d4a2081a49b783c1232e7232a7b4f7244c619243 
-9d3b884ed23e2fc571076003c1a3bb68edc381e9 
-99d9996c6a573f4c1e54871853eadfe28b31f7b0 
-3bad67f2e71fbe63b5db0262b8f27401a64c8d3f 
-dd45e9616d127e1058367742aebe44a6dd0a9915 
-5de122ed33cd3ce3eb14986187c32d3561927c12 
-c91254e5f67baffefd2ce94ab0aa773c17b132d0 
-25889a2042f1289e5e47b09f901f158217319ee8 
-cb9fda57048617736c736ee0d1024750dfcc8573 
-e5629403a0b797624bcff8b7fb2b4e602cf342d3 
-3ce0b1c88bccd12ab0ae37f91238398b5385ddb4 
-11fc009da2155b2f85510c214f43b52aa7e2d87d 
-1c2fe15660627389e3ed766a6f6a68a8595c27f4 
-1196aefa7c31f46da856f06acfc874b31c760a00 
-4d3358b668827741ccd78e3b7173a1503fc4ee24 
-17c728b189489c06b38d6c8939ce251e93aaadb2 
-e8168a27f61f4eee55498f4d4a03e500b337d583 
-ca5f44bedd26ec220cb7d3d233290eb8ad9fc099 
-976adb0244ce764f61beff617a796dd70feb4d47 
-c017e64a5e3931ea81c559def469459908a97dd3 
-ff33a43befa839faadbee0d7d74c3cccf508e0c7 
-16181b3aefea0ad7bb02490043c45579b1113849 
-cbcbbe4f7c8fc21cf7f8a50bc9afa45ca8c0e6a8 
-4ad729b2c483f229a5cd092e181675584fec6640 
-302e16a33cf040ef7bcc5757e0e08c2544f44559 
-e75fcfe6a738444bce0f85585091ad5c3b767c47 
-6bd90bb8b80be1767f7e039b2ffc1650d579d2bd 
-614676e3563306f7fdac98b34ef42508647c22d0 
-9b76f0558a2c4f2609d45336608d9429d62e9970 
-92e283e9ec5ab7f23b68e010942ee7e134f5b621 
-f3051cffa3815be0be38c68c87217a02395f0990 
-57e10f93b216a882186257fefe41a5610a10e5ed 
-2cc6dd974bfac2e800ea5110432e1c753f2b6cba 
-985fc56a0f1cdbe008fa3a354beb688b1dea9ae5 
-d5189719859b142c8c3b2db627523bc6c4079a16 
-6be381aad0a8a10ef9834bfd396358a8fea57960 
-d498a7f282fcfe59d37dce06b3922766d9276173 
-/tmp/Q4-pipeline.bundle is okay
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+cd /home/z30086261/Q4
+git pull --no-rebase
+
+python operators/mha/tuning/export_timeline.py \
+  --input results/mha-tuning/timeline-pipeline-20261030-091704-3140527 \
+  --output reports/mha_timeline/captures/20261030_pipeline
+
+git add reports/mha_timeline/captures/20261030_pipeline
+git commit -m "Add MHA pipeline traces for offline analysis"
+git push origin main
