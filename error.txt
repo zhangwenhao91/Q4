@@ -1,9 +1,4 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# export http_proxy=http://141.1.71.72:4128
-(zwh) root@ubuntu162:/home/z30086261/Q4# export https_proxy="$http_proxy"
-(zwh) root@ubuntu162:/home/z30086261/Q4# export no_proxy=127.0.0.1,*.huawei.com,localhost,local,.local,inhuawei.com
-(zwh) root@ubuntu162:/home/z30086261/Q4# unset GIT_SSL_NO_VERIFY
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
-(zwh) root@ubuntu162:/home/z30086261/Q4# git -c http.proxy="$https_proxy" -c http.sslVerify=true \
->     ls-remote https://github.com/zhangwenhao91/Q4.git HEAD
-fatal: unable to access 'https://github.com/zhangwenhao91/Q4.git/': server certificate verification failed. CAfile: none CRLfile: none
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+find /usr/local/share/ca-certificates /etc/ssl/certs /home/g00946757 \
+  -maxdepth 3 -type f \
+  \( -iname '*.crt' -o -iname '*.pem' -o -iname '*.cer' \) \
+  -print 2>/dev/null
