@@ -1,5 +1,8 @@
 # mHC TileLang / AscendC 核查与性能验证
 
+按当前 hidden=5120 的规格采集 Post / shifted Pre 基线，见 [BASELINE.md](BASELINE.md)。
+使用 `bash operators/mhc/run_baseline.sh all` 完成精度检查、计时、profiler 和结果打包。
+
 核查日期：2026-10-26。本机无 NPU，已完成源码与接口核查、测试脚本准备及 Python 语法检查；未执行设备编译、正确性测试或性能测量。
 
 ## 1. 版本锁定与存在性
