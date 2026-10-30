@@ -36,6 +36,20 @@ bash operators/mhc/run_baseline.sh preflight
 恢复脚本采用固定提交和 `--no-deps --no-build-isolation`，不升级框架；
 已有源码存在修改时停止并保留。其他缺失项以 preflight.log 的完整清单为准。
 
+若预检显示 mHC vendor library `exists=False`，恢复原生算子包：
+
+```bash
+bash operators/mhc/restore_vendor.sh
+export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4mhc-opp/vendors/q4mhc_transformer"
+export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
+bash operators/mhc/run_baseline.sh preflight
+```
+
+仅在恢复脚本成功后继续。脚本使用独立固定提交 worktree、q4mhc vendor，
+不修改 q4fa 构建目录或重装 Python wrapper。复用仓库内校验哈希的依赖缓存，
+清理仅本次构建的跨架构全局编译 flags；完整日志位于 results/mhc-recovery/。
+本机仅检查脚本语法，实际构建及运行待 NPU 服务器验证。
+
 ## 执行
 
 环境检查通过后，可一次完成全部流程，任一步失败即停止：
