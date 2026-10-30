@@ -24,6 +24,22 @@ python - <<'PY' 2>&1 | tee "$OUT/preflight.log"
 import importlib
 import os
 from pathlib import Path
+failures = []
+for name in ['torch', 'torch_npu', 'tilelang', 'deep_gemm', 'tile_kernels',
+             'cann_ops_transformer.ops.mhc.mhc_post.mhc_post']:
+    try:
+        module = importlib.import_module(name)
+        print('IMPORT OK:', name, getattr(module, '__file__', None), flush=True)
+    except Exception as exc:
+        failures.append(name)
+        print('IMPORT FAILED:', name, type(exc).__name__, str(exc), flush=True)
+vendor = Path(os.environ.get('ASCEND_CUSTOM_OPP_PATH', '/__q4_missing_vendor__'))
+library = vendor / 'op_api/lib/libcust_opapi.so'
+print('mHC vendor library:', library, 'exists=', library.is_file(), flush=True)
+if not library.is_file():
+    failures.append('mHC vendor library')
+if failures:
+    raise RuntimeError('Missing/broken dependencies: ' + ', '.join(failures))
 import torch
 import torch_npu
 import tilelang

@@ -26,6 +26,16 @@ vendor 必须使用实际已安装的 mHC 包，不能沿用仅含 MHA 的 q4fa 
 本脚本不自动重装框架，不会用替代实现跳过依赖问题。
 DeepGEMM 及其两项兼容补丁见 extended/FUSED_PROJECTION.md。
 
+若预检报 `No module named 'tile_kernels'`，可单独恢复锁定的 TileKernels：
+
+```bash
+bash operators/mhc/restore_tilekernels.sh
+bash operators/mhc/run_baseline.sh preflight
+```
+
+恢复脚本采用固定提交和 `--no-deps --no-build-isolation`，不升级框架；
+已有源码存在修改时停止并保留。其他缺失项以 preflight.log 的完整清单为准。
+
 ## 执行
 
 环境检查通过后，可一次完成全部流程，任一步失败即停止：
