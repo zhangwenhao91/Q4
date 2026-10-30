@@ -1,3 +1,6 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# ssh -T -p 443 -o ConnectTimeout=15 git@ssh.github.com
-ssh: Could not resolve hostname ssh.github.com: Temporary failure in name resolution
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
+getent ahostsv4 github.com
+getent ahostsv4 ssh.github.com
+getent ahostsv4 baidu.com
+cat /etc/resolv.conf
+ls -l /etc/resolv.conf
+ip route
