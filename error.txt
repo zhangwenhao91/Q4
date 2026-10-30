@@ -1,13 +1,5 @@
-conda activate zwh
-cd /home/z30086261/Q4
-git pull --ff-only
-
-source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
-export ASCEND_RT_VISIBLE_DEVICES=4
-export ASCEND_NPU_ARCH=dav-3510
-
-export CC="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-gcc"
-export CXX="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-g++"
+(zwh) root@ubuntu162:/home/z30086261/Q4# conda activate zwh
+port CXX="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-g++"
 export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
 
 export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4mhc-opp/vendors/q4mhc_transformer"
@@ -24,4 +16,32 @@ echo "结果目录：$MHC_OUT"
   git status --short
   npu-smi info
   python -m pip freeze
-} > "$MHC_OUT/environment.txt" 2>&1
+} > "$MHC_OUT/environment.txt" 2>&1(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --ff-only
+Already up to date.
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_RT_VISIBLE_DEVICES=4
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_NPU_ARCH=dav-3510
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# export CC="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-gcc"
+(zwh) root@ubuntu162:/home/z30086261/Q4# export CXX="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-g++"
+(zwh) root@ubuntu162:/home/z30086261/Q4# export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4mhc-opp/vendors/q4mhc_transformer"
+(zwh) root@ubuntu162:/home/z30086261/Q4# export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# export MHC_OUT="$PWD/results/mhc-baseline-$(date +%Y%m%d-%H%M%S)-$$"
+(zwh) root@ubuntu162:/home/z30086261/Q4# mkdir -p "$MHC_OUT"
+(zwh) root@ubuntu162:/home/z30086261/Q4# echo "结果目录：$MHC_OUT"
+结果目录：/home/z30086261/Q4/results/mhc-baseline-20261030-164022-3646258
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# {
+>   git rev-parse HEAD
+>   git status --short
+>   npu-smi info
+>   python -m pip freeze
+> } > "$MHC_OUT/environment.txt" 2>&1
+(zwh) root@ubuntu162:/home/z30086261/Q4#
