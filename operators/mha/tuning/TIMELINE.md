@@ -53,6 +53,10 @@ bash operators/mha/tuning/run_timeline.sh probe
 
 ## 当前重试方式（第二次 MSTX 失败后）
 
+最新进展：load 已成功，完整分布分析见 `reports/mha_timeline/load_analysis.md`。
+现在可执行 `bash operators/mha/tuning/run_timeline.sh pipeline`，采集两侧 TileLang
+流水线信息。现有 block 耗时表不含启动时间，尚不能确定调度尾部或关键路径。
+
 日志 a7a50a0 中 CANN 原生接口仍返回无效 range ID。当前 load/pipeline 改为
 `--mstx=false --kernel-name=main_kernel --launch-count=1 --warm-up=50 --replay-mode=kernel`。
 先运行独立 validate 进程检查精度；capture 进程使用 `--selection kernel`，
