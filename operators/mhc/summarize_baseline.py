@@ -3,6 +3,7 @@ import argparse
 import csv
 import json
 from pathlib import Path
+import re
 import statistics
 
 
@@ -25,6 +26,13 @@ def main():
         for record in bad:
             print('FAILED:', json.dumps(record))
     print('CHECK TOTAL:', checked, 'failed:', failed)
+    raw_checks = []
+    for file in sorted(root.glob('*/metadata.json')):
+        data = json.loads(file.read_text())
+        raw_checks.extend(data.get('projection_checks') or [])
+    if raw_checks:
+        print('RAW PROJECTION CHECKS:', len(raw_checks), 'failed=',
+              sum(not r.get('passed', False) for r in raw_checks))
     groups = {}
     for file in sorted(root.glob('bench-*/summary.json')):
         data = json.loads(file.read_text())
@@ -75,8 +83,13 @@ def main():
                 print('NOTE: summed durations are device work, not elapsed latency when kernels overlap.')
     print('FILES: correctness=', len(checks), 'API summaries=', len(list(root.glob('bench-*/summary.json'))),
           'profile directories=', len(profiles))
-    expected_checks = 41 if (root / 'native-source.json').exists() else 26
-    print(f'Expected for all mode: {expected_checks} correctness files, 12 API summaries, 8 profile directories.')
+    matched = (root / 'native-source.json').exists()
+    mode_match = re.search(r'-(check|bench|profile|all)-\d+$', root.name)
+    mode = mode_match.group(1) if mode_match else 'all'
+    expected = dict(check=(21 if matched else 6, 0, 0), bench=(12, 12, 0),
+                    profile=(8, 0, 8), all=(41 if matched else 26, 12, 8))[mode]
+    print(f'Expected for {mode} mode: {expected[0]} correctness files, '
+          f'{expected[1]} API summaries, {expected[2]} profile directories.')
 
 
 if __name__ == '__main__':
