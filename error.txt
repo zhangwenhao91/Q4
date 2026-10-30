@@ -1,10 +1,27 @@
+conda activate zwh
 cd /home/z30086261/Q4
-git pull --no-rebase
+git pull --ff-only
 
-python operators/mha/tuning/export_timeline.py \
-  --input results/mha-tuning/timeline-pipeline-20261030-143525-3487443 \
-  --output reports/mha_timeline/captures/20261030_pipeline_recovered
+source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+export ASCEND_RT_VISIBLE_DEVICES=4
+export ASCEND_NPU_ARCH=dav-3510
 
-git add reports/mha_timeline/captures/20261030_pipeline_recovered
-git commit -m "Add recovered MHA pipeline capture"
-git push origin main
+export CC="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-gcc"
+export CXX="${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-g++"
+export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
+
+export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4mhc-opp/vendors/q4mhc_transformer"
+export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
+
+set -o pipefail
+
+export MHC_OUT="$PWD/results/mhc-baseline-$(date +%Y%m%d-%H%M%S)-$$"
+mkdir -p "$MHC_OUT"
+echo "结果目录：$MHC_OUT"
+
+{
+  git rev-parse HEAD
+  git status --short
+  npu-smi info
+  python -m pip freeze
+} > "$MHC_OUT/environment.txt" 2>&1
