@@ -1,4 +1,6 @@
-find /usr/local/share/ca-certificates /etc/ssl/certs /home/g00946757 \
-  -maxdepth 3 -type f \
-  \( -iname '*.crt' -o -iname '*.pem' -o -iname '*.cer' \) \
-  -print 2>/dev/null
+(zwh) root@ubuntu162:/home/z30086261/Q4# find /usr/local/share/ca-certificates /etc/ssl/certs /home/g00946757 \
+>   -maxdepth 3 -type f \
+>   \( -iname '*.crt' -o -iname '*.pem' -o -iname '*.cer' \) \
+>   -print 2>/dev/null
+/etc/ssl/certs/ca-certificates.crt
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
