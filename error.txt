@@ -1,3 +1,17 @@
-git remote -v
-git status -sb
-git config --show-origin --get-regexp 'remote\..*\.url|url\..*\.insteadof|core\.sshCommand'
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull
+ssh: connect to host github.com port 22: Connection timed out
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+(zwh) root@ubuntu162:/home/z30086261/Q4# git remote -v
+origin  git@github.com:zhangwenhao91/Q4.git (fetch)
+origin  git@github.com:zhangwenhao91/Q4.git (push)
+(zwh) root@ubuntu162:/home/z30086261/Q4# git status -sb
+## main...origin/main [ahead 1]
+?? "# \344\270\200\347\233\264\346\214\211\345\233\236\350\275\246\357\274\214\344\275\277\347\224\250\351\273\230\350\256\244\350\267\257\345\276\204\345\222\214\347\251\272\345\257\206\347\240\201\rssh-keygen -t ed25519 -C \"zhangwenhao91@h-partners.com\""
+?? "# \344\270\200\347\233\264\346\214\211\345\233\236\350\275\246\357\274\214\344\275\277\347\224\250\351\273\230\350\256\244\350\267\257\345\276\204\345\222\214\347\251\272\345\257\206\347\240\201\rssh-keygen -t ed25519 -C \"zhangwenhao91@h-partners.com\".pub"
+(zwh) root@ubuntu162:/home/z30086261/Q4# git config --show-origin --get-regexp 'remote\..*\.url|url\..*\.insteadof|core\.sshCommand'
+file:/root/.gitconfig   url.https://gitcode.com/.insteadof git@gitcode.com:
+file:.git/config        remote.origin.url git@github.com:zhangwenhao91/Q4.git
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
