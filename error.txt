@@ -1,6 +1,42 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4/results/mhc-baseline/20261030-165210-all-3685260# cat preflight.log 
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/restore_tilekernels.sh 
+Cloning into '/home/z30086261/Q4/third_party/TileKernels'...
+remote: Enumerating objects: 375, done.
+remote: Counting objects: 100% (206/206), done.
+remote: Compressing objects: 100% (191/191), done.
+remote: Total 375 (delta 45), reused 15 (delta 15), pack-reused 169 (from 1)
+Receiving objects: 100% (375/375), 423.19 KiB | 3.07 MiB/s, done.
+Resolving deltas: 100% (79/79), done.
+HEAD is now at c1cf914 Merge pull request #38 from deepseek-ai/v2.1.0-release
+Obtaining file:///home/z30086261/Q4/third_party/TileKernels
+  Checking if build backend supports build_editable ... done
+  Preparing editable metadata (pyproject.toml) ... done
+Building wheels for collected packages: tile_kernels
+  Building editable for tile_kernels (pyproject.toml) ... done
+  Created wheel for tile_kernels: filename=tile_kernels-0.1.dev7+gc1cf914a8-0.editable-py3-none-any.whl size=6425 sha256=7ae0ba0a28bb217e049ea30b0d86ac9fc83719e69ceda520adf9cc1f915ebd0b
+  Stored in directory: /tmp/pip-ephem-wheel-cache-fgtjy98z/wheels/2b/a0/6c/fcc14fbcbbb3e948646f8cd6d6da52d4f65ec47b6082cc99ec
+Successfully built tile_kernels
+Installing collected packages: tile_kernels
+  Attempting uninstall: tile_kernels
+    Found existing installation: tile_kernels 0.1.dev7+gc1cf914a8
+    Uninstalling tile_kernels-0.1.dev7+gc1cf914a8:
+      Successfully uninstalled tile_kernels-0.1.dev7+gc1cf914a8
+Successfully installed tile_kernels-0.1.dev7+gc1cf914a8
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+TileKernels restored: /home/z30086261/Q4/third_party/TileKernels/tile_kernels/__init__.py
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/run_baseline.sh preflight
+Results: /home/z30086261/Q4/results/mhc-baseline/20261030-165819-preflight-3700378
+IMPORT OK: torch /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/__init__.py
+IMPORT OK: torch_npu /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/__init__.py
+IMPORT OK: tilelang /root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/__init__.py
+IMPORT OK: deep_gemm /root/miniconda3/envs/zwh/lib/python3.12/site-packages/deep_gemm/__init__.py
+IMPORT OK: tile_kernels /home/z30086261/Q4/third_party/TileKernels/tile_kernels/__init__.py
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+IMPORT OK: cann_ops_transformer.ops.mhc.mhc_post.mhc_post /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/mhc/mhc_post/mhc_post.py
+mHC vendor library: /home/z30086261/Q4/third_party/q4mhc-opp/vendors/q4mhc_transformer/op_api/lib/libcust_opapi.so exists= False
 Traceback (most recent call last):
-  File "<stdin>", line 8, in <module>
-ModuleNotFoundError: No module named 'tile_kernels'
-[ERROR] 2026-10-30-16:52:13 (PID:3685355, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception
-(zwh) root@ubuntu162:/home/z30086261/Q4/results/mhc-baseline/20261030-165210-all-3685260# 
+  File "<stdin>", line 19, in <module>
+RuntimeError: Missing/broken dependencies: mHC vendor library
+[ERROR] 2026-10-30-16:58:24 (PID:3700552, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+Stopped (exit 1). Logs: /home/z30086261/Q4/results/mhc-baseline/20261030-165819-preflight-3700378
+(zwh) root@ubuntu162:/home/z30086261/Q4#
