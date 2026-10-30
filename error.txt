@@ -1,7 +1,126 @@
-cd /home/z30086261/Q4
-git pull --ff-only
-set -o pipefail
-
-python operators/mhc/summarize_baseline.py \
-  --input results/mhc-baseline/20261030-170916-all-3754372 \
-  2>&1 | tee results/mhc-baseline-summary.txt
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mhc/summarize_baseline.py \
+>   --input results/mhc-baseline/20261030-170916-all-3754372 \
+>   2>&1 | tee results/mhc-baseline-summary.txt
+BASELINE: /home/z30086261/Q4/results/mhc-baseline/20261030-170916-all-3754372
+CHECK bench-mhc_post-N512-rep1 3/3 passed
+CHECK bench-mhc_post-N512-rep2 3/3 passed
+CHECK bench-mhc_post-N512-rep3 3/3 passed
+CHECK bench-mhc_post-N8192-rep1 3/3 passed
+CHECK bench-mhc_post-N8192-rep2 3/3 passed
+CHECK bench-mhc_post-N8192-rep3 3/3 passed
+CHECK bench-mhc_shifted-N512-rep1 12/12 passed
+CHECK bench-mhc_shifted-N512-rep2 12/12 passed
+CHECK bench-mhc_shifted-N512-rep3 12/12 passed
+CHECK bench-mhc_shifted-N8192-rep1 12/12 passed
+CHECK bench-mhc_shifted-N8192-rep2 12/12 passed
+CHECK bench-mhc_shifted-N8192-rep3 12/12 passed
+CHECK check-mhc_post-seed42 3/3 passed
+CHECK check-mhc_post-seed43 3/3 passed
+CHECK check-mhc_post-seed44 3/3 passed
+CHECK check-mhc_shifted-seed42 12/12 passed
+CHECK check-mhc_shifted-seed43 12/12 passed
+CHECK check-mhc_shifted-seed44 12/12 passed
+CHECK profile-post-N512-ascendc 3/3 passed
+CHECK profile-post-N512-tilelang 3/3 passed
+CHECK profile-post-N8192-ascendc 3/3 passed
+CHECK profile-post-N8192-tilelang 3/3 passed
+CHECK profile-shifted-N512-ascendc_pre_plus_torch_apply 12/12 passed
+CHECK profile-shifted-N512-deepgemm_tilelang 12/12 passed
+CHECK profile-shifted-N8192-ascendc_pre_plus_torch_apply 12/12 passed
+CHECK profile-shifted-N8192-deepgemm_tilelang 12/12 passed
+CHECK TOTAL: 195 failed: 0
+API PROCESS bench-mhc_post-N512-rep1 {"ascendc": {"event_us": 20.669031143188477, "wall_us": 21.099550067447126}, "ratio": {"denominator": "tilelang", "event_ratio": 1.0593646454056556, "numerator": "ascendc"}, "tilelang": {"event_us": 19.510780572891235, "wall_us": 20.00240026973188}}
+API PROCESS bench-mhc_post-N512-rep2 {"ascendc": {"event_us": 20.723578929901123, "wall_us": 21.156229777261615}, "ratio": {"denominator": "tilelang", "event_ratio": 1.0488718390832685, "numerator": "ascendc"}, "tilelang": {"event_us": 19.757970571517944, "wall_us": 20.348720136098564}}
+API PROCESS bench-mhc_post-N512-rep3 {"ascendc": {"event_us": 20.65666913986206, "wall_us": 20.955830113962293}, "ratio": {"denominator": "tilelang", "event_ratio": 1.0616121601153163, "numerator": "ascendc"}, "tilelang": {"event_us": 19.45783019065857, "wall_us": 19.776460248976946}}
+API PROCESS bench-mhc_post-N8192-rep1 {"ascendc": {"event_us": 524.5027160644531, "wall_us": 525.0004696426913}, "ratio": {"denominator": "tilelang", "event_ratio": 1.0474343445424115, "numerator": "ascendc"}, "tilelang": {"event_us": 500.7499694824219, "wall_us": 501.3114301254973}}
+API PROCESS bench-mhc_post-N8192-rep2 {"ascendc": {"event_us": 524.8884963989258, "wall_us": 525.3558000549674}, "ratio": {"denominator": "tilelang", "event_ratio": 1.0490619415751623, "numerator": "ascendc"}, "tilelang": {"event_us": 500.34080505371094, "wall_us": 500.8185998303816}}
+API PROCESS bench-mhc_post-N8192-rep3 {"ascendc": {"event_us": 525.2339553833008, "wall_us": 525.8239101385698}, "ratio": {"denominator": "tilelang", "event_ratio": 1.0478157550438434, "numerator": "ascendc"}, "tilelang": {"event_us": 501.26556396484375, "wall_us": 501.93306989967823}}
+API PROCESS bench-mhc_shifted-N512-rep1 {"ascendc_pre_plus_torch_apply": {"event_us": 95.77259063720703, "wall_us": 96.39578987844288}, "deepgemm_tilelang": {"event_us": 85.37053108215332, "wall_us": 86.23624977190048}, "ratio": {"denominator": "deepgemm_tilelang", "event_ratio": 1.1218460213752641, "numerator": "ascendc_pre_plus_torch_apply"}}
+API PROCESS bench-mhc_shifted-N512-rep2 {"ascendc_pre_plus_torch_apply": {"event_us": 94.12690162658691, "wall_us": 94.57976033445448}, "deepgemm_tilelang": {"event_us": 83.98617744445801, "wall_us": 84.71226959954947}, "ratio": {"denominator": "deepgemm_tilelang", "event_ratio": 1.1207427756649027, "numerator": "ascendc_pre_plus_torch_apply"}}
+API PROCESS bench-mhc_shifted-N512-rep3 {"ascendc_pre_plus_torch_apply": {"event_us": 92.04385757446289, "wall_us": 92.49143011402339}, "deepgemm_tilelang": {"event_us": 83.87445449829102, "wall_us": 84.42684018518776}, "ratio": {"denominator": "deepgemm_tilelang", "event_ratio": 1.097400372080373, "numerator": "ascendc_pre_plus_torch_apply"}}
+API PROCESS bench-mhc_shifted-N8192-rep1 {"ascendc_pre_plus_torch_apply": {"event_us": 3117.0330810546875, "wall_us": 3117.8671098314226}, "deepgemm_tilelang": {"event_us": 646.4600372314453, "wall_us": 647.1942504867911}, "ratio": {"denominator": "deepgemm_tilelang", "event_ratio": 4.821694925495803, "numerator": "ascendc_pre_plus_torch_apply"}}
+API PROCESS bench-mhc_shifted-N8192-rep2 {"ascendc_pre_plus_torch_apply": {"event_us": 3120.4843139648438, "wall_us": 3121.467010350898}, "deepgemm_tilelang": {"event_us": 648.4766387939453, "wall_us": 649.3741204030812}, "ratio": {"denominator": "deepgemm_tilelang", "event_ratio": 4.812022711825682, "numerator": "ascendc_pre_plus_torch_apply"}}
+API PROCESS bench-mhc_shifted-N8192-rep3 {"ascendc_pre_plus_torch_apply": {"event_us": 3120.9881591796875, "wall_us": 3122.1930001629516}, "deepgemm_tilelang": {"event_us": 647.0231628417969, "wall_us": 647.8896900080144}, "ratio": {"denominator": "deepgemm_tilelang", "event_ratio": 4.823611175636996, "numerator": "ascendc_pre_plus_torch_apply"}}
+API MEDIAN bench-mhc_post-N512 ascendc processes= 3 event_us= 20.669031 wall_us= 21.09955
+API MEDIAN bench-mhc_post-N512 tilelang processes= 3 event_us= 19.510781 wall_us= 20.0024
+API MEDIAN bench-mhc_post-N8192 ascendc processes= 3 event_us= 524.888496 wall_us= 525.3558
+API MEDIAN bench-mhc_post-N8192 tilelang processes= 3 event_us= 500.749969 wall_us= 501.31143
+API MEDIAN bench-mhc_shifted-N512 ascendc_pre_plus_torch_apply processes= 3 event_us= 94.126902 wall_us= 94.57976
+API MEDIAN bench-mhc_shifted-N512 deepgemm_tilelang processes= 3 event_us= 83.986177 wall_us= 84.71227
+API MEDIAN bench-mhc_shifted-N8192 ascendc_pre_plus_torch_apply processes= 3 event_us= 3120.484314 wall_us= 3121.46701
+API MEDIAN bench-mhc_shifted-N8192 deepgemm_tilelang processes= 3 event_us= 647.023163 wall_us= 647.88969
+PROFILE profile-post-N512-ascendc kernel CSV files= 1
+CSV profile-post-N512-ascendc/profile/ubuntu162_3765990_20261030171350406_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 30 invalid durations= 0 expected API calls=30
+KERNEL aclnnMhcPost_MhcPostAICore_MhcPost count= 30 mean_us= 20.6317 median_us= 20.5465 sum_us= 618.951
+DEVICE summed_duration_us= 618.951
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-post-N512-tilelang kernel CSV files= 1
+CSV profile-post-N512-tilelang/profile/ubuntu162_3764878_20261030171338093_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 30 invalid durations= 0 expected API calls=30
+KERNEL mhc_post_fwd_asc_kernel count= 30 mean_us= 12.666067 median_us= 12.594 sum_us= 379.982
+DEVICE summed_duration_us= 379.982
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-post-N8192-ascendc kernel CSV files= 1
+CSV profile-post-N8192-ascendc/profile/ubuntu162_3770934_20261030171447341_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 30 invalid durations= 0 expected API calls=30
+KERNEL aclnnMhcPost_MhcPostAICore_MhcPost count= 30 mean_us= 525.0371 median_us= 525.0605 sum_us= 15751.113
+DEVICE summed_duration_us= 15751.113
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-post-N8192-tilelang kernel CSV files= 1
+CSV profile-post-N8192-tilelang/profile/ubuntu162_3770109_20261030171431439_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 30 invalid durations= 0 expected API calls=30
+KERNEL mhc_post_fwd_asc_kernel count= 30 mean_us= 499.855 median_us= 499.945 sum_us= 14995.65
+DEVICE summed_duration_us= 14995.65
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-shifted-N512-ascendc_pre_plus_torch_apply kernel CSV files= 1
+CSV profile-shifted-N512-ascendc_pre_plus_torch_apply/profile/ubuntu162_3769402_20261030171415580_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 180 invalid durations= 0 expected API calls=30
+KERNEL aclnnInplaceCopy_CastAiCore_Cast count= 60 mean_us= 8.621767 median_us= 8.6435 sum_us= 517.306
+KERNEL aclnnMhcPreV2_MhcPre_MhcPre count= 30 mean_us= 33.766933 median_us= 33.726 sum_us= 1013.008
+KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 9.4822 median_us= 9.3435 sum_us= 284.466
+KERNEL aclnnMul_MulAiCore_Mul count= 30 mean_us= 21.0374 median_us= 21.062 sum_us= 631.122
+KERNEL aclnnReduceSum_ReduceSumOpAiCore_ReduceSum count= 30 mean_us= 13.738367 median_us= 13.787 sum_us= 412.151
+DEVICE summed_duration_us= 2858.053
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-shifted-N512-deepgemm_tilelang kernel CSV files= 1
+CSV profile-shifted-N512-deepgemm_tilelang/profile/ubuntu162_3767984_20261030171403334_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 150 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 6.978533 median_us= 6.8755 sum_us= 209.356
+KERNEL mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel count= 30 mean_us= 3.0098 median_us= 2.906 sum_us= 90.294
+KERNEL mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel count= 30 mean_us= 2.788233 median_us= 2.6925 sum_us= 83.647
+KERNEL mhc_sinkhorn_fwd_asc_kernel count= 30 mean_us= 8.659867 median_us= 8.628 sum_us= 259.796
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.336133 median_us= 16.2445 sum_us= 490.084
+DEVICE summed_duration_us= 1133.177
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-shifted-N8192-ascendc_pre_plus_torch_apply kernel CSV files= 1
+CSV profile-shifted-N8192-ascendc_pre_plus_torch_apply/profile/ubuntu162_3772358_20261030171516427_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 180 invalid durations= 0 expected API calls=30
+KERNEL aclnnInplaceCopy_CastAiCore_Cast count= 60 mean_us= 426.145183 median_us= 426.029 sum_us= 25568.711
+KERNEL aclnnMhcPreV2_MhcPre_MhcPre count= 30 mean_us= 667.0443 median_us= 666.673 sum_us= 20011.329
+KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 46.385867 median_us= 46.2305 sum_us= 1391.576
+KERNEL aclnnMul_MulAiCore_Mul count= 30 mean_us= 947.593067 median_us= 947.459 sum_us= 28427.792
+KERNEL aclnnReduceSum_ReduceSumOpAiCore_ReduceSum count= 30 mean_us= 611.3354 median_us= 611.198 sum_us= 18340.062
+DEVICE summed_duration_us= 93739.47
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-shifted-N8192-deepgemm_tilelang kernel CSV files= 1
+CSV profile-shifted-N8192-deepgemm_tilelang/profile/ubuntu162_3771662_20261030171502173_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 150 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 280.807733 median_us= 280.7115 sum_us= 8424.232
+KERNEL mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel count= 30 mean_us= 4.5544 median_us= 4.504 sum_us= 136.632
+KERNEL mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel count= 30 mean_us= 8.2138 median_us= 8.19 sum_us= 246.414
+KERNEL mhc_sinkhorn_fwd_asc_kernel count= 30 mean_us= 83.681267 median_us= 83.6535 sum_us= 2510.438
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 270.1395 median_us= 271.1495 sum_us= 8104.185
+DEVICE summed_duration_us= 19421.901
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+FILES: correctness= 26 API summaries= 12 profile directories= 8
+Expected for all mode: 26 correctness files, 12 API summaries, 8 profile directories.
+(zwh) root@ubuntu162:/home/z30086261/Q4#
