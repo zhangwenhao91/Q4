@@ -16,7 +16,10 @@ std::tuple<at::Tensor, at::Tensor, at::Tensor, at::Tensor> shifted(
     at::Tensor absent;
     auto prev2d = prev.view({t, 4});
     int64_t mode = 1;
-    ACLNN_CMD(aclnnMhcShiftedPreV2, x, phi, alpha, bias, prev2d, 1e-20, 1e-6, mode,
+    // ACLNN_CMD forwards through Ts& helpers, so scalar arguments must be lvalues.
+    double norm_eps = 1e-20;
+    double pre_eps = 1e-6;
+    ACLNN_CMD(aclnnMhcShiftedPreV2, x, phi, alpha, bias, prev2d, norm_eps, pre_eps, mode,
               hi, post, logits, absent, absent, pre);
     auto comb = at::empty_like(logits);
     float eps = 1e-6f;
