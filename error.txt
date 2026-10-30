@@ -1,27 +1,67 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# git pull
-remote: Enumerating objects: 5, done.
-remote: Counting objects: 100% (5/5), done.
-remote: Compressing objects: 100% (3/3), done.
-remote: Total 3 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
-Unpacking objects: 100% (3/3), 1.09 KiB | 1.09 MiB/s, done.
-From https://github.com/zhangwenhao91/Q4
-   b4eafa1..e25c59e  main       -> origin/main
-Updating b4eafa1..e25c59e
-Fast-forward
- error.txt | 107 ++++++++++-----------------------------------------------------------------------------------------------
- 1 file changed, 10 insertions(+), 97 deletions(-)
-(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mha/tuning/export_timeline.py \
->   --input results/mha-tuning/timeline-pipeline-20261030-091704-3140527 \
->   --output reports/mha_timeline/captures/20261030_pipeline
-Traceback (most recent call last):
-  File "/home/z30086261/Q4/operators/mha/tuning/export_timeline.py", line 64, in <module>
-    if __name__=='__main__':main()
-                            ^^^^^^
-  File "/home/z30086261/Q4/operators/mha/tuning/export_timeline.py", line 59, in main
-    result=export_capture(a.input,a.output)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/z30086261/Q4/operators/mha/tuning/export_timeline.py", line 12, in export_capture
-    if not source.is_dir():raise ValueError('Capture directory does not exist')
-                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-ValueError: Capture directory does not exist
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mha/tuning/check_reclone.py 
+{
+  "root": "/home/z30086261/Q4",
+  "python": "/root/miniconda3/envs/zwh/bin/python",
+  "conda_env": "zwh",
+  "paths": {
+    "results/mha-tuning/timeline-pipeline-20261030-091704-3140527": {
+      "exists": false
+    },
+    "reports/mha_timeline/captures/20261030_pipeline": {
+      "exists": false
+    },
+    "third_party/tilelang-mha-spec-v1/source.json": {
+      "exists": false
+    },
+    "third_party/ops-transformer-q4fa": {
+      "exists": false
+    },
+    "third_party/q4fa-opp/vendors/q4fa_transformer/op_api/lib": {
+      "exists": false
+    },
+    "third_party/torch-extensions-gcc13": {
+      "exists": false
+    }
+  },
+  "packages": {
+    "torch": {
+      "version": "2.13.0+cpu",
+      "location": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages"
+    },
+    "torch-npu": {
+      "version": "2.13.0",
+      "location": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages"
+    },
+    "tilelang": {
+      "version": "0.1.15+cpu.gita7cb753d",
+      "location": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages",
+      "local_install_source": "file:///home/z30086261/Q4/third_party/tilelang-950",
+      "editable": false
+    },
+    "cann-ops-transformer": {
+      "version": "1.0.0",
+      "location": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages",
+      "local_install_source": "file:///home/z30086261/Q4/third_party/ops-transformer/build_out/cann_ops_transformer-1.0.0-py3-none-any.whl",
+      "editable": false
+    }
+  },
+  "tools": {
+    "python": "/root/miniconda3/envs/zwh/bin/python",
+    "msprof": "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof",
+    "gcc": "/usr/bin/gcc",
+    "g++": "/usr/bin/g++",
+    "cmake": "/root/miniconda3/envs/zwh/bin/cmake",
+    "ninja": "/root/miniconda3/envs/zwh/bin/ninja"
+  },
+  "environment": {
+    "ASCEND_HOME_PATH": "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0",
+    "ASCEND_CUSTOM_OPP_PATH": null,
+    "TORCH_EXTENSIONS_DIR": null,
+    "ASCEND_RT_VISIBLE_DEVICES": null,
+    "ASCEND_NPU_ARCH": null,
+    "CC": "/root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-cc",
+    "CXX": "/root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-c++"
+  },
+  "possible_capture_directories": []
+}
+Read-only inventory complete. No installations, compilation or device execution.
