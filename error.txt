@@ -1,26 +1,7 @@
-[2026-10-30 17:15:03] [ERROR] [3772058] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mhc-baseline/20261030-170916-all-3754372/profile-shifted-N8192-deepgemm_tilelang/profile/ubuntu162_3771662_20261030171502173_ascend_pt/logs
-[2026-10-30 17:15:04] [INFO] [3772074] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011936
-[2026-10-30 17:15:05] [INFO] [3772058] profiler.py: All profiling data parsed in a total time of 0:00:02.914947
-Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-ninja: no work to do.
-{'implementation': 'deepgemm_tilelang', 'output': 'layer_input', 'shape': [8192, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.2371844980177424e-05, 'relative_l2': 1.0709145169783435e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
-{'implementation': 'deepgemm_tilelang', 'output': 'next_pre_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.2993812561035156e-05, 'rmse': 2.833617944616138e-06, 'relative_l2': 5.778263561537967e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-{'implementation': 'deepgemm_tilelang', 'output': 'post_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.5391578674316406e-05, 'rmse': 5.702594899207515e-06, 'relative_l2': 5.695732834920376e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-{'implementation': 'deepgemm_tilelang', 'output': 'comb_mix', 'shape': [8192, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 9.47713851928711e-06, 'rmse': 2.1271871588790037e-06, 'relative_l2': 8.466172945571113e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-{'implementation': 'ascendc_pre_plus_torch_apply', 'output': 'layer_input', 'shape': [8192, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.3918409743229656e-05, 'relative_l2': 1.204786114856711e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
-{'implementation': 'ascendc_pre_plus_torch_apply', 'output': 'next_pre_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.2993812561035156e-05, 'rmse': 2.833983678141787e-06, 'relative_l2': 5.7790093588704936e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-{'implementation': 'ascendc_pre_plus_torch_apply', 'output': 'post_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.5391578674316406e-05, 'rmse': 5.702823129421383e-06, 'relative_l2': 5.69596079049955e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-{'implementation': 'ascendc_pre_plus_torch_apply', 'output': 'comb_mix', 'shape': [8192, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 9.47713851928711e-06, 'rmse': 2.126884106956751e-06, 'relative_l2': 8.464966803471876e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-{'implementation': 'pairwise', 'output': 'layer_input', 'shape': [8192, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.4868866782814514e-05, 'relative_l2': 1.287058256732149e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
-{'implementation': 'pairwise', 'output': 'next_pre_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.384185791015625e-07, 'rmse': 3.556368997043143e-08, 'relative_l2': 7.25208471770546e-08, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-{'implementation': 'pairwise', 'output': 'post_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 7.152557373046875e-07, 'rmse': 1.4657646015029155e-07, 'relative_l2': 1.464000814336996e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-{'implementation': 'pairwise', 'output': 'comb_mix', 'shape': [8192, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 3.8743019104003906e-07, 'rmse': 6.186127163794632e-08, 'relative_l2': 2.4620693493181467e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-Correctness passed. Implementations: ['deepgemm_tilelang', 'ascendc_pre_plus_torch_apply']
-Profiler metrics: default
-[2026-10-30 17:15:16] [WARNING] [3772358] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-30 17:15:16] [WARNING] [3772358] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
-[2026-10-30 17:15:17] [INFO] [3772756] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc-baseline/20261030-170916-all-3754372/profile-shifted-N8192-ascendc_pre_plus_torch_apply/profile/ubuntu162_3772358_20261030171516427_ascend_pt
-[2026-10-30 17:15:19] [INFO] [3772769] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011817
-[2026-10-30 17:15:19] [INFO] [3772756] profiler.py: All profiling data parsed in a total time of 0:00:02.863840
-Completed. Archive: /home/z30086261/Q4/results/mhc-baseline/20261030-170916-all-3754372.tar.gz
+cd /home/z30086261/Q4
+git pull --ff-only
+set -o pipefail
+
+python operators/mhc/summarize_baseline.py \
+  --input results/mhc-baseline/20261030-170916-all-3754372 \
+  2>&1 | tee results/mhc-baseline-summary.txt
