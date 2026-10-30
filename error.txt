@@ -1,67 +1,329 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mha/tuning/check_reclone.py 
-{
-  "root": "/home/z30086261/Q4",
-  "python": "/root/miniconda3/envs/zwh/bin/python",
-  "conda_env": "zwh",
-  "paths": {
-    "results/mha-tuning/timeline-pipeline-20261030-091704-3140527": {
-      "exists": false
-    },
-    "reports/mha_timeline/captures/20261030_pipeline": {
-      "exists": false
-    },
-    "third_party/tilelang-mha-spec-v1/source.json": {
-      "exists": false
-    },
-    "third_party/ops-transformer-q4fa": {
-      "exists": false
-    },
-    "third_party/q4fa-opp/vendors/q4fa_transformer/op_api/lib": {
-      "exists": false
-    },
-    "third_party/torch-extensions-gcc13": {
-      "exists": false
-    }
-  },
-  "packages": {
-    "torch": {
-      "version": "2.13.0+cpu",
-      "location": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages"
-    },
-    "torch-npu": {
-      "version": "2.13.0",
-      "location": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages"
-    },
-    "tilelang": {
-      "version": "0.1.15+cpu.gita7cb753d",
-      "location": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages",
-      "local_install_source": "file:///home/z30086261/Q4/third_party/tilelang-950",
-      "editable": false
-    },
-    "cann-ops-transformer": {
-      "version": "1.0.0",
-      "location": "/root/miniconda3/envs/zwh/lib/python3.12/site-packages",
-      "local_install_source": "file:///home/z30086261/Q4/third_party/ops-transformer/build_out/cann_ops_transformer-1.0.0-py3-none-any.whl",
-      "editable": false
-    }
-  },
-  "tools": {
-    "python": "/root/miniconda3/envs/zwh/bin/python",
-    "msprof": "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/bin/msprof",
-    "gcc": "/usr/bin/gcc",
-    "g++": "/usr/bin/g++",
-    "cmake": "/root/miniconda3/envs/zwh/bin/cmake",
-    "ninja": "/root/miniconda3/envs/zwh/bin/ninja"
-  },
-  "environment": {
-    "ASCEND_HOME_PATH": "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0",
-    "ASCEND_CUSTOM_OPP_PATH": null,
-    "TORCH_EXTENSIONS_DIR": null,
-    "ASCEND_RT_VISIBLE_DEVICES": null,
-    "ASCEND_NPU_ARCH": null,
-    "CC": "/root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-cc",
-    "CXX": "/root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-c++"
-  },
-  "possible_capture_directories": []
-}
-Read-only inventory complete. No installations, compilation or device execution.
+(zwh) root@ubuntu162:/home/z30086261/Q4# source operators/mha/env_recovered.sh 
+MHA environment ready; physical devices=4, logical target=0
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mha/tuning/run_timeline.sh pipeline
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+[1/2] /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ -MMD -MF inplace_partial_rotary_mul.o.d -DTORCH_EXTENSION_NAME=inplace_partial_rotary_mul -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/csrc/posembedding/inplace_partial_rotary_mul.cpp -o inplace_partial_rotary_mul.o 
+[2/2] /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ inplace_partial_rotary_mul.o -shared -L/home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer/op_api/lib -L/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/lib -L/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64 -lascendcl -L/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/lib -ltorch_npu -L/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/lib -lc10 -ltorch_cpu -ltorch -ltorch_python -o inplace_partial_rotary_mul.so
+[1/2] /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ -MMD -MF partial_rotary_mul_quant.o.d -DTORCH_EXTENSION_NAME=partial_rotary_mul_quant -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/csrc/posembedding/partial_rotary_mul_quant.cpp -o partial_rotary_mul_quant.o 
+[2/2] /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ partial_rotary_mul_quant.o -shared -L/home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer/op_api/lib -L/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/lib -L/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64 -lascendcl -L/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/lib -ltorch_npu -L/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/lib -lc10 -ltorch_cpu -ltorch -ltorch_python -o partial_rotary_mul_quant.so
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+[1/2] /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ -MMD -MF flash_attn.o.d -DTORCH_EXTENSION_NAME=flash_attn -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/csrc/attention/flash_attn.cpp -o flash_attn.o 
+[2/2] /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ flash_attn.o -shared -L/home/z30086261/Q4/third_party/q4fa-opp/vendors/q4fa_transformer/op_api/lib -L/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/lib -L/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64 -lascendcl -L/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/lib -ltorch_npu -L/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/lib -lc10 -ltorch_cpu -ltorch -ltorch_python -o flash_attn.so
+TARGET CHECK: {"implementation": "tilelang_s2buf", "checks": [{"output": "O", "relative_l2": 0.0024260669693699313, "max_abs": 0.00048828125, "passed": true}]}
+Target validated and warmed; no profiling range opened.
+COLLECT: implementation=tilelang_s2buf metrics=Default,PipeTimeline output=results/mha-tuning/timeline-pipeline-20261030-143525-3487443/tilelang_s2buf
+=================================================================
+                   >>>>>   MindStudio   <<<<<
+    THE END-TO-END TOOLCHAIN TO UNLEASH HUAWEI ASCEND COMPUTE
+=================================================================
+
+[W1030 14:36:30.384189138 FunctionLoader.cpp:44] Warning: LD_PRELOAD detected, FunctionLoader prefers RTLD_DEFAULT for symbol resolution. (function operator())
+[WARN]  Currently, the root permission is used, which is unrecommended. Please ensure the security of the execution environment and programs.
+[INFO]  Op profiling analysis start.
+[INFO]  Running device task: DeviceProf
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+TARGET KERNEL START: tilelang_s2buf
+[2026-10-30 14:36:34] [3491797] [ProfDataCollect.cpp:1307] [INFO] Warm Up enabled. times:50
+[2026-10-30 14:37:34] [3491797] [ProfDataCollect.cpp:1270] [INFO] Start profiling on device 4, kernel: main_kernel
+[2026-10-30 14:37:34] [3491797] [ProfDataCollect.cpp:1307] [INFO] Warm Up enabled. times:50
+TARGET KERNEL END: tilelang_s2buf
+[INFO]  Profiling running finished. All task success.
+[INFO]  Start analyze kernel on device: device4, kernel: main_kernel, name is: 0
+[INFO]  Save profiling data with metric [PipeUtilization] success.
+[INFO]  Save profiling data with metric [ArithmeticUtilization] success.
+[INFO]  Save profiling data with metric [L2Cache] success.
+[INFO]  Save profiling data with metric [Memory] success.
+[INFO]  Save profiling data with metric [ResourceConflictRatio] success.
+[INFO]  Save profiling data with metric [MemoryL0] success.
+[INFO]  Save profiling data with metric [MemoryUB] success.
+[INFO]  Performance Summary Report:
+
+        1) aicore MTE1 bandwidth utilization lower than 80% when active.
+        2) aicore MTE2 bandwidth utilization lower than 80% when active.
+        3) aivector MTE2 bandwidth utilization lower than 80% when active.
+
+[INFO]  Operator Basic Information:
+
+        Op Name: main_kernel
+        Op Type: mix
+        Task Duration(us): 53.164001
+        Block Dim: 32
+        Mix Block Dim: 64
+        Device Id: 4
+        Pid: 3491797
+        Current Freq: 1650
+        Rated Freq: 1650
+
+[INFO]  Profiling results saved in /home/z30086261/Q4/results/mha-tuning/timeline-pipeline-20261030-143525-3487443/tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS
+[INFO]  Profiling data parse finished.
+[INFO]  Op profiling finish. Welcome to next use.
+COLLECTION VERIFIED: {"implementation": "tilelang_s2buf", "target_completed": true, "result_files": ["op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/ArithmeticUtilization.csv", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/L2Cache.csv", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/Memory.csv", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/MemoryL0.csv", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/MemoryUB.csv", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/OpBasicInfo.csv", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/PipeUtilization.csv", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/ResourceConflictRatio.csv", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/DeviceProf1.bin", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/DeviceProf2.bin", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/DeviceProf3.bin", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/DeviceProf4.bin", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/DeviceProf5.bin", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/DeviceProf6.bin", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/duration.bin", "op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/visualize_data.bin"], "note": "Collection artifacts exist. Metric coverage/core identifiers still require review."}
+Collector and result checks completed: tilelang_s2buf
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+TARGET CHECK: {"implementation": "tilelang_kv2", "checks": [{"output": "O", "relative_l2": 0.0024260669693699313, "max_abs": 0.00048828125, "passed": true}]}
+Target validated and warmed; no profiling range opened.
+COLLECT: implementation=tilelang_kv2 metrics=Default,PipeTimeline output=results/mha-tuning/timeline-pipeline-20261030-143525-3487443/tilelang_kv2
+=================================================================
+                   >>>>>   MindStudio   <<<<<
+    THE END-TO-END TOOLCHAIN TO UNLEASH HUAWEI ASCEND COMPUTE
+=================================================================
+
+[W1030 14:37:53.850545627 FunctionLoader.cpp:44] Warning: LD_PRELOAD detected, FunctionLoader prefers RTLD_DEFAULT for symbol resolution. (function operator())
+[WARN]  Currently, the root permission is used, which is unrecommended. Please ensure the security of the execution environment and programs.
+[INFO]  Op profiling analysis start.
+[INFO]  Running device task: DeviceProf
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+TARGET KERNEL START: tilelang_kv2
+[2026-10-30 14:37:57] [3498265] [ProfDataCollect.cpp:1307] [INFO] Warm Up enabled. times:50
+[2026-10-30 14:38:59] [3498265] [ProfDataCollect.cpp:1270] [INFO] Start profiling on device 4, kernel: main_kernel
+[2026-10-30 14:38:59] [3498265] [ProfDataCollect.cpp:1307] [INFO] Warm Up enabled. times:50
+TARGET KERNEL END: tilelang_kv2
+[INFO]  Profiling running finished. All task success.
+[INFO]  Start analyze kernel on device: device4, kernel: main_kernel, name is: 0
+[INFO]  Save profiling data with metric [PipeUtilization] success.
+[INFO]  Save profiling data with metric [ArithmeticUtilization] success.
+[INFO]  Save profiling data with metric [L2Cache] success.
+[INFO]  Save profiling data with metric [Memory] success.
+[INFO]  Save profiling data with metric [ResourceConflictRatio] success.
+[INFO]  Save profiling data with metric [MemoryL0] success.
+[INFO]  Save profiling data with metric [MemoryUB] success.
+[INFO]  Performance Summary Report:
+
+        1) aicore MTE1 bandwidth utilization lower than 80% when active.
+        2) aicore MTE2 bandwidth utilization lower than 80% when active.
+        3) aivector MTE2 bandwidth utilization lower than 80% when active.
+
+[INFO]  Operator Basic Information:
+
+        Op Name: main_kernel
+        Op Type: mix
+        Task Duration(us): 52.669998
+        Block Dim: 32
+        Mix Block Dim: 64
+        Device Id: 4
+        Pid: 3498265
+        Current Freq: 1650
+        Rated Freq: 1650
+
+[INFO]  Profiling results saved in /home/z30086261/Q4/results/mha-tuning/timeline-pipeline-20261030-143525-3487443/tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI
+[INFO]  Profiling data parse finished.
+[INFO]  Op profiling finish. Welcome to next use.
+COLLECTION VERIFIED: {"implementation": "tilelang_kv2", "target_completed": true, "result_files": ["op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/ArithmeticUtilization.csv", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/L2Cache.csv", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/Memory.csv", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/MemoryL0.csv", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/MemoryUB.csv", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/OpBasicInfo.csv", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/PipeUtilization.csv", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/ResourceConflictRatio.csv", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/DeviceProf1.bin", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/DeviceProf2.bin", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/DeviceProf3.bin", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/DeviceProf4.bin", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/DeviceProf5.bin", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/DeviceProf6.bin", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/duration.bin", "op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/visualize_data.bin"], "note": "Collection artifacts exist. Metric coverage/core identifiers still require review."}
+Collector and result checks completed: tilelang_kv2
+Raw previews only. No timing aggregation. A core ID may be logical; Block ID is not a physical-core count. Missing core/timeline data must not be reconstructed from aggregate metrics.
+Files: 70
+FILE 27358 tilelang_kv2/app/__pycache__/selected_core.cpython-312.pyc
+FILE 3054 tilelang_kv2/app/metadata.json
+FILE 20047 tilelang_kv2/app/selected_core.py
+FILE 19144 tilelang_kv2/app/selected_kernel.cpp
+FILE 3115 tilelang_kv2/collect.log
+FILE 556 tilelang_kv2/command.txt
+FILE 8447 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/ArithmeticUtilization.csv
+FILE 12619 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/L2Cache.csv
+FILE 19247 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/Memory.csv
+FILE 6438 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/MemoryL0.csv
+FILE 5791 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/MemoryUB.csv
+FILE 150 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/OpBasicInfo.csv
+FILE 19603 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/PipeUtilization.csv
+FILE 9413 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/ResourceConflictRatio.csv
+FILE 12544 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/DeviceProf1.bin
+FILE 12544 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/DeviceProf2.bin
+FILE 12544 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/DeviceProf3.bin
+FILE 12544 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/DeviceProf4.bin
+FILE 12544 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/DeviceProf5.bin
+FILE 12544 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/DeviceProf6.bin
+FILE 7872 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/aicore_binary.o
+FILE 64 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/duration.bin
+FILE 154 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/op_basic_info.txt
+FILE 14 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/pc_start_addr.txt
+FILE 37748880 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/dump/timeline.bin.0
+FILE 359944 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/trace.json
+FILE 693496 tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/visualize_data.bin
+FILE 1058 tilelang_kv2/validate.log
+FILE 27363 tilelang_kv2/validate/__pycache__/selected_core.cpython-312.pyc
+FILE 122 tilelang_kv2/validate/correctness.json
+FILE 3023 tilelang_kv2/validate/metadata.json
+FILE 20047 tilelang_kv2/validate/selected_core.py
+FILE 19144 tilelang_kv2/validate/selected_kernel.cpp
+FILE 1271 tilelang_kv2/verified.json
+FILE 27360 tilelang_s2buf/app/__pycache__/selected_core.cpython-312.pyc
+FILE 3056 tilelang_s2buf/app/metadata.json
+FILE 20047 tilelang_s2buf/app/selected_core.py
+FILE 19047 tilelang_s2buf/app/selected_kernel.cpp
+FILE 3121 tilelang_s2buf/collect.log
+FILE 562 tilelang_s2buf/command.txt
+FILE 8447 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/ArithmeticUtilization.csv
+FILE 12555 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/L2Cache.csv
+FILE 19247 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/Memory.csv
+FILE 6438 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/MemoryL0.csv
+FILE 5791 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/MemoryUB.csv
+FILE 150 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/OpBasicInfo.csv
+FILE 19546 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/PipeUtilization.csv
+FILE 9413 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/ResourceConflictRatio.csv
+FILE 12544 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/DeviceProf1.bin
+FILE 12544 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/DeviceProf2.bin
+FILE 12544 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/DeviceProf3.bin
+FILE 12544 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/DeviceProf4.bin
+FILE 12544 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/DeviceProf5.bin
+FILE 12544 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/DeviceProf6.bin
+FILE 7624 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/aicore_binary.o
+FILE 64 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/duration.bin
+FILE 154 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/op_basic_info.txt
+FILE 14 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/pc_start_addr.txt
+FILE 37748880 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/dump/timeline.bin.0
+FILE 304729 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/trace.json
+FILE 638268 tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/visualize_data.bin
+FILE 7279 tilelang_s2buf/validate.log
+FILE 27365 tilelang_s2buf/validate/__pycache__/selected_core.cpython-312.pyc
+FILE 122 tilelang_s2buf/validate/correctness.json
+FILE 3025 tilelang_s2buf/validate/metadata.json
+FILE 20047 tilelang_s2buf/validate/selected_core.py
+FILE 19047 tilelang_s2buf/validate/selected_kernel.cpp
+FILE 1273 tilelang_s2buf/verified.json
+FILE 2615 tool-help.txt
+FILE 528 tool-version.txt
+
+===== CSV tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/ArithmeticUtilization.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aic_cube_ratio", "aic_cube_fp_ratio", "aic_cube_int_ratio", "aic_cube_total_instr_number", "aic_cube_fp_instr_number", "aic_cube_int_instr_number", "aiv_time(us)", "aiv_total_cycles", "aiv_vec_ratio", "aiv_vec_vf_ratio", "aiv_vec_sfu_ratio", "aiv_vec_simt_vf_ratio", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aiv_time(us),aiv_total_cycles
+0,cube0,25.697577,42401,NA,NA
+0,vector0,NA,NA,26.057575,42995
+0,vector1,NA,NA,26.076969,43027
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+===== CSV tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/L2Cache.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aic_read_close_hit", "aic_read_close_miss", "aic_read_close_victim", "aic_read_far_hit", "aic_read_far_miss", "aic_read_far_victim", "aic_read_hit_rate(%)", "aic_write_close_hit", "aic_write_close_miss", "aic_write_close_victim", "aic_write_far_hit", "aic_write_far_miss", "aic_write_far_victim", "aic_write_hit_rate(%)", "aiv_time(us)", "aiv_total_cycles", "aiv_read_close_hit", "aiv_read_close_miss", "aiv_read_close_victim", "aiv_read_far_hit", "aiv_read_far_miss", "aiv_read_far_victim", "aiv_read_hit_rate(%)", "aiv_write_close_hit", "aiv_write_close_miss", "aiv_write_close_victim", "aiv_write_far_hit", "aiv_write_far_miss", "aiv_write_far_victim", "aiv_write_hit_rate(%)", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aiv_time(us),aiv_total_cycles
+0,cube0,25.697577,42401,NA,NA
+0,vector0,NA,NA,26.057575,42995
+0,vector1,NA,NA,26.076969,43027
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+===== CSV tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/Memory.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aic_l1_read_bw(GB/s)", "aic_l1_write_bw(GB/s)", "aic_main_mem_read_bw(GB/s)", "aic_main_mem_write_bw(GB/s)", "aic_mte1_instructions", "aic_mte1_ratio", "aic_mte2_instructions", "aic_mte2_ratio", "aic_mte3_instructions", "aic_mte3_ratio", "aiv_time(us)", "aiv_total_cycles", "aiv_ub_to_gm_bw(GB/s)", "aiv_gm_to_ub_bw(GB/s)", "aiv_main_mem_read_bw(GB/s)", "aiv_main_mem_write_bw(GB/s)", "aiv_mte2_instructions", "aiv_mte2_ratio", "aiv_mte3_instructions", "aiv_mte3_ratio", "read_main_memory_datas(KB)", "write_main_memory_datas(KB)", "GM_to_L1_datas(KB)", "GM_to_L1_bw_usage_rate(%)", "L0C_to_L1_datas(KB)", "L0C_to_L1_bw_usage_rate(%)", "L0C_to_GM_datas(KB)", "L0C_to_GM_bw_usage_rate(%)", "GM_to_UB_datas(KB)", "GM_to_UB_bw_usage_rate(%)", "UB_to_GM_datas(KB)", "UB_to_GM_bw_usage_rate(%)", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aiv_time(us),aiv_total_cycles
+0,cube0,25.697577,42401,NA,NA
+0,vector0,NA,NA,26.057575,42995
+0,vector1,NA,NA,26.076969,43027
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+===== CSV tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/MemoryL0.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aic_l0a_read_bw(GB/s)", "aic_l0a_write_bw(GB/s)", "aic_l0b_read_bw(GB/s)", "aic_l0b_write_bw(GB/s)", "aic_l0c_read_bw_cube(GB/s)", "aic_l0c_write_bw_cube(GB/s)", "aiv_time(us)", "aiv_total_cycles", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aiv_time(us),aiv_total_cycles
+0,cube0,25.697577,42401,NA,NA
+0,vector0,NA,NA,26.057575,42995
+0,vector1,NA,NA,26.076969,43027
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+===== CSV tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/MemoryUB.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aiv_time(us)", "aiv_total_cycles", "aiv_ub_read_bw_vector(GB/s)", "aiv_ub_write_bw_vector(GB/s)", "aiv_ub_read_bw_gm(GB/s)", "aiv_ub_write_bw_gm(GB/s)", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aiv_time(us),aiv_total_cycles
+0,cube0,25.697577,42401,NA,NA
+0,vector0,NA,NA,26.057575,42995
+0,vector1,NA,NA,26.076969,43027
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+===== CSV tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/OpBasicInfo.csv =====
+ALL HEADERS: ["Op Name", "Op Type", "Task Duration(us)", "Block Dim", "Mix Block Dim", "Device Id", "Pid", "Current Freq", "Rated Freq", ""]
+Task Duration(us)
+52.669998
+
+
+===== CSV tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/PipeUtilization.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aic_cube_time(us)", "aic_cube_ratio", "aic_scalar_time(us)", "aic_scalar_ratio", "aic_mte1_time(us)", "aic_mte1_ratio", "aic_mte1_active_bw(GB/s)", "aic_mte2_time(us)", "aic_mte2_ratio", "aic_mte2_active_bw(GB/s)", "aic_mte3_time(us)", "aic_mte3_ratio", "aic_mte3_active_bw(GB/s)", "aic_fixpipe_time(us)", "aic_fixpipe_ratio", "aic_fixpipe_active_bw(GB/s)", "aic_icache_miss_rate", "aiv_time(us)", "aiv_total_cycles", "aiv_vec_time(us)", "aiv_vec_ratio", "aiv_scalar_time(us)", "aiv_scalar_ratio", "aiv_mte2_time(us)", "aiv_mte2_ratio", "aiv_mte2_active_bw(GB/s)", "aiv_mte3_time(us)", "aiv_mte3_ratio", "aiv_mte3_active_bw(GB/s)", "aiv_icache_miss_rate", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aic_cube_time(us),aic_scalar_time(us),aic_mte1_time(us),aic_mte2_time(us),aic_mte3_time(us),aic_fixpipe_time(us),aiv_time(us),aiv_total_cycles,aiv_vec_time(us),aiv_scalar_time(us)
+0,cube0,25.697577,42401,19.859394,3.074545,15.296969,22.547274,0.001212,18.004242,NA,NA,NA,NA
+0,vector0,NA,NA,NA,NA,NA,NA,NA,NA,26.057575,42995,21.365454,1.767273
+0,vector1,NA,NA,NA,NA,NA,NA,NA,NA,26.076969,43027,21.133940,1.750909
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+===== CSV tilelang_kv2/op/OPPROF_20261030143752_QUFIYGMKUDXUXCBI/ResourceConflictRatio.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aic_cube_wait_ratio", "aic_mte1_wait_ratio", "aic_mte2_wait_ratio", "aic_mte3_wait_ratio", "aiv_time(us)", "aiv_total_cycles", "aiv_vec_stu_cflt_ratio", "aiv_vec_ldu_cflt_ratio", "aiv_vec_sfu_cflt_ratio", "aiv_vec_wait_ratio", "aiv_mte2_wait_ratio", "aiv_mte3_wait_ratio", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aiv_time(us),aiv_total_cycles
+0,cube0,25.697577,42401,NA,NA
+0,vector0,NA,NA,26.057575,42995
+0,vector1,NA,NA,26.076969,43027
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+===== CSV tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/ArithmeticUtilization.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aic_cube_ratio", "aic_cube_fp_ratio", "aic_cube_int_ratio", "aic_cube_total_instr_number", "aic_cube_fp_instr_number", "aic_cube_int_instr_number", "aiv_time(us)", "aiv_total_cycles", "aiv_vec_ratio", "aiv_vec_vf_ratio", "aiv_vec_sfu_ratio", "aiv_vec_simt_vf_ratio", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aiv_time(us),aiv_total_cycles
+0,cube0,25.843031,42641,NA,NA
+0,vector0,NA,NA,26.203030,43235
+0,vector1,NA,NA,26.228485,43277
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+===== CSV tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/L2Cache.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aic_read_close_hit", "aic_read_close_miss", "aic_read_close_victim", "aic_read_far_hit", "aic_read_far_miss", "aic_read_far_victim", "aic_read_hit_rate(%)", "aic_write_close_hit", "aic_write_close_miss", "aic_write_close_victim", "aic_write_far_hit", "aic_write_far_miss", "aic_write_far_victim", "aic_write_hit_rate(%)", "aiv_time(us)", "aiv_total_cycles", "aiv_read_close_hit", "aiv_read_close_miss", "aiv_read_close_victim", "aiv_read_far_hit", "aiv_read_far_miss", "aiv_read_far_victim", "aiv_read_hit_rate(%)", "aiv_write_close_hit", "aiv_write_close_miss", "aiv_write_close_victim", "aiv_write_far_hit", "aiv_write_far_miss", "aiv_write_far_victim", "aiv_write_hit_rate(%)", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aiv_time(us),aiv_total_cycles
+0,cube0,25.843031,42641,NA,NA
+0,vector0,NA,NA,26.203030,43235
+0,vector1,NA,NA,26.228485,43277
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+===== CSV tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/Memory.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aic_l1_read_bw(GB/s)", "aic_l1_write_bw(GB/s)", "aic_main_mem_read_bw(GB/s)", "aic_main_mem_write_bw(GB/s)", "aic_mte1_instructions", "aic_mte1_ratio", "aic_mte2_instructions", "aic_mte2_ratio", "aic_mte3_instructions", "aic_mte3_ratio", "aiv_time(us)", "aiv_total_cycles", "aiv_ub_to_gm_bw(GB/s)", "aiv_gm_to_ub_bw(GB/s)", "aiv_main_mem_read_bw(GB/s)", "aiv_main_mem_write_bw(GB/s)", "aiv_mte2_instructions", "aiv_mte2_ratio", "aiv_mte3_instructions", "aiv_mte3_ratio", "read_main_memory_datas(KB)", "write_main_memory_datas(KB)", "GM_to_L1_datas(KB)", "GM_to_L1_bw_usage_rate(%)", "L0C_to_L1_datas(KB)", "L0C_to_L1_bw_usage_rate(%)", "L0C_to_GM_datas(KB)", "L0C_to_GM_bw_usage_rate(%)", "GM_to_UB_datas(KB)", "GM_to_UB_bw_usage_rate(%)", "UB_to_GM_datas(KB)", "UB_to_GM_bw_usage_rate(%)", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aiv_time(us),aiv_total_cycles
+0,cube0,25.843031,42641,NA,NA
+0,vector0,NA,NA,26.203030,43235
+0,vector1,NA,NA,26.228485,43277
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+===== CSV tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/MemoryL0.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aic_l0a_read_bw(GB/s)", "aic_l0a_write_bw(GB/s)", "aic_l0b_read_bw(GB/s)", "aic_l0b_write_bw(GB/s)", "aic_l0c_read_bw_cube(GB/s)", "aic_l0c_write_bw_cube(GB/s)", "aiv_time(us)", "aiv_total_cycles", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aiv_time(us),aiv_total_cycles
+0,cube0,25.843031,42641,NA,NA
+0,vector0,NA,NA,26.203030,43235
+0,vector1,NA,NA,26.228485,43277
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+===== CSV tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/MemoryUB.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aiv_time(us)", "aiv_total_cycles", "aiv_ub_read_bw_vector(GB/s)", "aiv_ub_write_bw_vector(GB/s)", "aiv_ub_read_bw_gm(GB/s)", "aiv_ub_write_bw_gm(GB/s)", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aiv_time(us),aiv_total_cycles
+0,cube0,25.843031,42641,NA,NA
+0,vector0,NA,NA,26.203030,43235
+0,vector1,NA,NA,26.228485,43277
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+===== CSV tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/OpBasicInfo.csv =====
+ALL HEADERS: ["Op Name", "Op Type", "Task Duration(us)", "Block Dim", "Mix Block Dim", "Device Id", "Pid", "Current Freq", "Rated Freq", ""]
+Task Duration(us)
+53.164001
+
+
+===== CSV tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/PipeUtilization.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aic_cube_time(us)", "aic_cube_ratio", "aic_scalar_time(us)", "aic_scalar_ratio", "aic_mte1_time(us)", "aic_mte1_ratio", "aic_mte1_active_bw(GB/s)", "aic_mte2_time(us)", "aic_mte2_ratio", "aic_mte2_active_bw(GB/s)", "aic_mte3_time(us)", "aic_mte3_ratio", "aic_mte3_active_bw(GB/s)", "aic_fixpipe_time(us)", "aic_fixpipe_ratio", "aic_fixpipe_active_bw(GB/s)", "aic_icache_miss_rate", "aiv_time(us)", "aiv_total_cycles", "aiv_vec_time(us)", "aiv_vec_ratio", "aiv_scalar_time(us)", "aiv_scalar_ratio", "aiv_mte2_time(us)", "aiv_mte2_ratio", "aiv_mte2_active_bw(GB/s)", "aiv_mte3_time(us)", "aiv_mte3_ratio", "aiv_mte3_active_bw(GB/s)", "aiv_icache_miss_rate", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aic_cube_time(us),aic_scalar_time(us),aic_mte1_time(us),aic_mte2_time(us),aic_mte3_time(us),aic_fixpipe_time(us),aiv_time(us),aiv_total_cycles,aiv_vec_time(us),aiv_scalar_time(us)
+0,cube0,25.843031,42641,19.859394,2.147273,15.900606,23.422424,0.001212,17.700001,NA,NA,NA,NA
+0,vector0,NA,NA,NA,NA,NA,NA,NA,NA,26.203030,43235,21.400606,1.226667
+0,vector1,NA,NA,NA,NA,NA,NA,NA,NA,26.228485,43277,21.264242,1.220000
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+===== CSV tilelang_s2buf/op/OPPROF_20261030143629_HEMRJNCBFFWAUIBS/ResourceConflictRatio.csv =====
+ALL HEADERS: ["block_id", "sub_block_id", "aic_time(us)", "aic_total_cycles", "aic_cube_wait_ratio", "aic_mte1_wait_ratio", "aic_mte2_wait_ratio", "aic_mte3_wait_ratio", "aiv_time(us)", "aiv_total_cycles", "aiv_vec_stu_cflt_ratio", "aiv_vec_ldu_cflt_ratio", "aiv_vec_sfu_cflt_ratio", "aiv_vec_wait_ratio", "aiv_mte2_wait_ratio", "aiv_mte3_wait_ratio", ""]
+block_id,sub_block_id,aic_time(us),aic_total_cycles,aiv_time(us),aiv_total_cycles
+0,cube0,25.843031,42641,NA,NA
+0,vector0,NA,NA,26.203030,43235
+0,vector1,NA,NA,26.228485,43277
+
+Preview truncated; retain original CSV for subsequent analysis.
+
+AscendC collection deferred: resolve FlashAttn versus FlashAttnMetadata name matching first.
+Retain full collection directory: /home/z30086261/Q4/results/mha-tuning/timeline-pipeline-20261030-143525-3487443
+(zwh) root@ubuntu162:/home/z30086261/Q4#
