@@ -1,14 +1,7 @@
-(zwh) root@ubuntu162:~# cat /home/g00946757/set_proxy.sh 
 export http_proxy=http://141.1.71.72:4128
-export https_proxy=${http_proxy}
+export https_proxy="$http_proxy"
 export no_proxy=127.0.0.1,*.huawei.com,localhost,local,.local,inhuawei.com
-export GIT_SSL_NO_VERIFY=true
+unset GIT_SSL_NO_VERIFY
 
-git config --global --unset http.proxy
-git config --global --unset https.proxy
-
-git config --global --unset user.email
-git config --global --unset user.name
-git config --global --unset remote.origin.proxy
-git config --global --unset 'http.https://gitcode.com.proxy'
-git config --global --unset core.editor
+git -c http.proxy="$https_proxy" -c http.sslVerify=true \
+    ls-remote https://github.com/zhangwenhao91/Q4.git HEAD
