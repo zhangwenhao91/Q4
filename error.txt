@@ -1,10 +1,73 @@
-cd /home/z30086261/Q4
-git pull --no-rebase
-
-python operators/mha/tuning/export_timeline.py \
-  --input results/mha-tuning/timeline-pipeline-20261030-091704-3140527 \
-  --output reports/mha_timeline/captures/20261030_pipeline
-
-git add reports/mha_timeline/captures/20261030_pipeline
-git commit -m "Add MHA pipeline traces for offline analysis"
-git push origin main
+(zwh) root@ubuntu162:/home/z30086261/Q4# git pull --no-rebase
+remote: Enumerating objects: 22, done.
+remote: Counting objects: 100% (22/22), done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 15 (delta 7), reused 9 (delta 5), pack-reused 0 (from 0)
+Unpacking objects: 100% (15/15), 8.90 KiB | 2.97 MiB/s, done.
+From https://github.com/zhangwenhao91/Q4
+   d518971..d498a7f  main       -> origin/main
+Merge made by the 'recursive' strategy.
+ error.txt                                   | 332 ++---------------------------------------------------------------------
+ operators/mha/tuning/export_timeline.py     |  64 ++++++++++++++
+ reports/mha_timeline/pipeline_collection.md |  34 ++++++++
+ 3 files changed, 106 insertions(+), 324 deletions(-)
+ create mode 100644 operators/mha/tuning/export_timeline.py
+ create mode 100644 reports/mha_timeline/pipeline_collection.md
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mha/tuning/export_timeline.py \
+>   --input results/mha-tuning/timeline-pipeline-20261030-091704-3140527 \
+>   --output reports/mha_timeline/captures/20261030_pipeline
+Exported 36 files, 2379416 bytes to reports/mha_timeline/captures/20261030_pipeline
+No kernel execution or new profiling. Commit this output directory for local analysis.
+(zwh) root@ubuntu162:/home/z30086261/Q4# git add reports/mha_timeline/captures/20261030_pipeline
+(zwh) root@ubuntu162:/home/z30086261/Q4# git commit -m "Add MHA pipeline traces for offline analysis"
+[main 495f70b] Add MHA pipeline traces for offline analysis
+ 37 files changed, 3459 insertions(+)
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/manifest.json
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/app/metadata.json
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/app/selected_core.py
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/app/selected_kernel.cpp
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/collect.log
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/command.txt
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/op/OPPROF_20261030091843_IRKDJDDYTCUYWFOS/ArithmeticUtilization.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/op/OPPROF_20261030091843_IRKDJDDYTCUYWFOS/L2Cache.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/op/OPPROF_20261030091843_IRKDJDDYTCUYWFOS/Memory.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/op/OPPROF_20261030091843_IRKDJDDYTCUYWFOS/MemoryL0.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/op/OPPROF_20261030091843_IRKDJDDYTCUYWFOS/MemoryUB.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/op/OPPROF_20261030091843_IRKDJDDYTCUYWFOS/OpBasicInfo.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/op/OPPROF_20261030091843_IRKDJDDYTCUYWFOS/PipeUtilization.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/op/OPPROF_20261030091843_IRKDJDDYTCUYWFOS/ResourceConflictRatio.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/op/OPPROF_20261030091843_IRKDJDDYTCUYWFOS/trace.json
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/op/OPPROF_20261030091843_IRKDJDDYTCUYWFOS/visualize_data.bin
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/validate/correctness.json
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_kv2/verified.json
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/app/metadata.json
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/app/selected_core.py
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/app/selected_kernel.cpp
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/collect.log
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/command.txt
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/op/OPPROF_20261030091716_PWSYLIWEFYWJXAVR/ArithmeticUtilization.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/op/OPPROF_20261030091716_PWSYLIWEFYWJXAVR/L2Cache.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/op/OPPROF_20261030091716_PWSYLIWEFYWJXAVR/Memory.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/op/OPPROF_20261030091716_PWSYLIWEFYWJXAVR/MemoryL0.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/op/OPPROF_20261030091716_PWSYLIWEFYWJXAVR/MemoryUB.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/op/OPPROF_20261030091716_PWSYLIWEFYWJXAVR/OpBasicInfo.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/op/OPPROF_20261030091716_PWSYLIWEFYWJXAVR/PipeUtilization.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/op/OPPROF_20261030091716_PWSYLIWEFYWJXAVR/ResourceConflictRatio.csv
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/op/OPPROF_20261030091716_PWSYLIWEFYWJXAVR/trace.json
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/op/OPPROF_20261030091716_PWSYLIWEFYWJXAVR/visualize_data.bin
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/validate/correctness.json
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tilelang_s2buf/verified.json
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tool-help.txt
+ create mode 100644 reports/mha_timeline/captures/20261030_pipeline/tool-version.txt
+(zwh) root@ubuntu162:/home/z30086261/Q4# git push origin main
+Enumerating objects: 200, done.
+Counting objects: 100% (199/199), done.
+Delta compression using up to 256 threads
+Compressing objects: 100% (171/171), done.
+Writing objects: 100% (175/175), 404.09 KiB | 5.94 MiB/s, done.
+Total 175 (delta 70), reused 0 (delta 0)
+error: RPC failed; HTTP 403 curl 22 The requested URL returned error: 403
+fatal: the remote end hung up unexpectedly
+fatal: the remote end hung up unexpectedly
+Everything up-to-date
+(zwh) root@ubuntu162:/home/z30086261/Q4#
