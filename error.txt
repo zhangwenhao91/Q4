@@ -1,90 +1,222 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/matched/run.sh check
-Results: /home/z30086261/Q4/results/mhc-matched/20261030-174829-check-3846824
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/matched/run.sh profile
+Results: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 {'implementation': 'tilelang', 'output': 'new_residual', 'shape': [512, 4, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.03125, 'rmse': 2.2479170680954792e-05, 'relative_l2': 1.7424741631949644e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
 {'implementation': 'ascendc', 'output': 'new_residual', 'shape': [512, 4, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.03125, 'rmse': 2.2479170680954792e-05, 'relative_l2': 1.7424741631949644e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
 {'implementation': 'pairwise', 'output': 'new_residual', 'shape': [512, 4, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
 Correctness passed. Implementations: ['tilelang', 'ascendc']
+Profiler metrics: default
+[2026-10-30 17:57:42] [WARNING] [3862862] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:57:42] [WARNING] [3862862] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:57:43] [INFO] [3863215] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789/profile-post-N512-tilelang/profile/ubuntu162_3862862_20261030175742775_ascend_pt
+[2026-10-30 17:57:44] [ERROR] [3863215] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789/profile-post-N512-tilelang/profile/ubuntu162_3862862_20261030175742775_ascend_pt/logs
+[2026-10-30 17:57:45] [INFO] [3863231] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011427
+[2026-10-30 17:57:46] [INFO] [3863215] profiler.py: All profiling data parsed in a total time of 0:00:02.878704
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-[1/2] /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ -MMD -MF bridge.o.d -DTORCH_EXTENSION_NAME=q4_mhc_shifted_native -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/q4mhcmatch-opp/vendors/q4mhcmatch_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /home/z30086261/Q4/operators/mhc/matched/bridge.cpp -o bridge.o 
-FAILED: [code=1] bridge.o 
-/root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ -MMD -MF bridge.o.d -DTORCH_EXTENSION_NAME=q4_mhc_shifted_native -DTORCH_API_INCLUDE_EXTENSION_H -I/home/z30086261/Q4/third_party/q4mhcmatch-opp/vendors/q4mhcmatch_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/opp/vendors/custom_transformer/op_api/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include -I/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/aclnnop -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/hccl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/acl/inc -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/include/third_party/op-plugin -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common -I/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include -isystem /root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /root/miniconda3/envs/zwh/include/python3.12 -fPIC -std=c++20 -O3 -w -fPIC -fstack-protector-all -Wl,-z,relro,-z,now,-z,noexecstack -pie -s -fvisibility=hidden -D_FORTIFY_SOURCE=2 -D_GLIBCXX_USE_CXX11_ABI=1 -c /home/z30086261/Q4/operators/mhc/matched/bridge.cpp -o bridge.o 
-In file included from /home/z30086261/Q4/operators/mhc/matched/bridge.cpp:2:
-/home/z30086261/Q4/operators/mhc/matched/bridge.cpp: In function 'std::tuple<at::Tensor, at::Tensor, at::Tensor, at::Tensor> shifted(const at::Tensor&, const at::Tensor&, const at::Tensor&, const at::Tensor&, const at::Tensor&)':
-/home/z30086261/Q4/operators/mhc/matched/bridge.cpp:19:66: error: cannot bind non-const lvalue reference of type 'double&' to an rvalue of type 'double'
-   19 |     ACLNN_CMD(aclnnMhcShiftedPreV2, x, phi, alpha, bias, prev2d, 1e-20, 1e-6, mode,
-      |                                                                  ^~~~~
-/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common/aclnn_common.h:1051:36: note: in definition of macro 'ACLNN_CMD'
- 1051 |         auto device = DecodeDevice(__VA_ARGS__); \
-      |                                    ^~~~~~~~~~~
-/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common/aclnn_common.h:995:22: note:   initializing argument 6 of 'c10::Device DecodeDevice(Ts& ...) [with Ts = {const at::Tensor, const at::Tensor, const at::Tensor, const at::Tensor, at::Tensor, double, double, long int, at::Tensor, at::Tensor, at::Tensor, at::Tensor, at::Tensor, at::Tensor}]'
-  995 | auto DecodeDevice(Ts&... args) -> at::Device
-      |                   ~~~^~~~~~~~
-/home/z30086261/Q4/operators/mhc/matched/bridge.cpp:19:66: error: cannot bind non-const lvalue reference of type 'double&' to an rvalue of type 'double'
-   19 |     ACLNN_CMD(aclnnMhcShiftedPreV2, x, phi, alpha, bias, prev2d, 1e-20, 1e-6, mode,
-      |                                                                  ^~~~~
-/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common/aclnn_common.h:1075:46: note: in definition of macro 'ACLNN_CMD'
- 1075 |         auto converted_params = ConvertTypes(__VA_ARGS__, workspace_size_addr, executor_addr); \
-      |                                              ^~~~~~~~~~~
-/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common/aclnn_common.h:887:32: note:   initializing argument 6 of 'constexpr auto ConvertTypes(Ts& ...) [with Ts = {const at::Tensor, const at::Tensor, const at::Tensor, const at::Tensor, at::Tensor, double, double, long int, at::Tensor, at::Tensor, at::Tensor, at::Tensor, at::Tensor, at::Tensor, long unsigned int*, aclOpExecutor**}]'
-  887 | constexpr auto ConvertTypes(Ts&... args)
-      |                             ~~~^~~~~~~~
-/home/z30086261/Q4/operators/mhc/matched/bridge.cpp: In lambda function:
-/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common/aclnn_common.h:1099:33: error: 'converted_params' is not captured
- 1099 |             ReleaseConvertTypes(converted_params); \
-      |                                 ^~~~~~~~~~~~~~~~
-/home/z30086261/Q4/operators/mhc/matched/bridge.cpp:19:5: note: in expansion of macro 'ACLNN_CMD'
-   19 |     ACLNN_CMD(aclnnMhcShiftedPreV2, x, phi, alpha, bias, prev2d, 1e-20, 1e-6, mode,
-      |     ^~~~~~~~~
-/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common/aclnn_common.h:1092:96: note: the lambda has no capture-default
- 1092 |         auto acl_call = [converted_params, workspace_addr, workspace_size, acl_stream, executor]() -> int { \
-      |                                                                                                ^
-/home/z30086261/Q4/operators/mhc/matched/bridge.cpp:19:5: note: in expansion of macro 'ACLNN_CMD'
-   19 |     ACLNN_CMD(aclnnMhcShiftedPreV2, x, phi, alpha, bias, prev2d, 1e-20, 1e-6, mode,
-      |     ^~~~~~~~~
-/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/common/aclnn_common.h:1075:14: note: '<typeprefixerror>converted_params' declared here
- 1075 |         auto converted_params = ConvertTypes(__VA_ARGS__, workspace_size_addr, executor_addr); \
-      |              ^~~~~~~~~~~~~~~~
-/home/z30086261/Q4/operators/mhc/matched/bridge.cpp:19:5: note: in expansion of macro 'ACLNN_CMD'
-   19 |     ACLNN_CMD(aclnnMhcShiftedPreV2, x, phi, alpha, bias, prev2d, 1e-20, 1e-6, mode,
-      |     ^~~~~~~~~
-ninja: build stopped: subcommand failed.
-Traceback (most recent call last):
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 2893, in _run_ninja_build
-    subprocess.run(
-  File "/root/miniconda3/envs/zwh/lib/python3.12/subprocess.py", line 571, in run
-    raise CalledProcessError(retcode, process.args,
-subprocess.CalledProcessError: Command '['ninja', '-v']' returned non-zero exit status 1.
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 284, in <module>
-    if __name__=='__main__': main()
-                             ^^^^^^
-  File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 103, in main
-    functions,refs,names,meta={'mha':mha_case,'mhc_post':post_case,'mhc_shifted':shifted_case,
-                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/z30086261/Q4/operators/spec_v1/cases.py", line 163, in shifted_native_case
-    return shifted_case(a,native_shifted=True)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/z30086261/Q4/operators/spec_v1/cases.py", line 111, in shifted_case
-    bridge=load_matched_bridge()
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/z30086261/Q4/operators/spec_v1/matched_case.py", line 41, in load_matched_bridge
-    return load(name='q4_mhc_shifted_native', sources=[str(ROOT / 'operators/mhc/matched/bridge.cpp')],
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 1927, in load
-    return _jit_compile(
-           ^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 2382, in _jit_compile
-    _write_ninja_file_and_build_library(
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 2543, in _write_ninja_file_and_build_library
-    _run_ninja_build(
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/utils/cpp_extension.py", line 2910, in _run_ninja_build
-    raise RuntimeError(message) from e
-RuntimeError: Error building extension 'q4_mhc_shifted_native'
-[ERROR] 2026-10-30-17:48:55 (PID:3847259, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+{'implementation': 'tilelang', 'output': 'new_residual', 'shape': [512, 4, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.03125, 'rmse': 2.2479170680954792e-05, 'relative_l2': 1.7424741631949644e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'ascendc', 'output': 'new_residual', 'shape': [512, 4, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.03125, 'rmse': 2.2479170680954792e-05, 'relative_l2': 1.7424741631949644e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'new_residual', 'shape': [512, 4, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+Correctness passed. Implementations: ['tilelang', 'ascendc']
+Profiler metrics: default
+[2026-10-30 17:57:54] [WARNING] [3863494] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:57:54] [WARNING] [3863494] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:57:55] [INFO] [3863858] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789/profile-post-N512-ascendc/profile/ubuntu162_3863494_20261030175754791_ascend_pt
+[2026-10-30 17:57:57] [INFO] [3863881] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011752
+[2026-10-30 17:57:58] [INFO] [3863858] profiler.py: All profiling data parsed in a total time of 0:00:02.866762
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+{'implementation': 'deepgemm_tilelang', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.650393846869457e-05, 'relative_l2': 1.4213531521271786e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.004338264465332e-05, 'rmse': 2.909445388071144e-06, 'relative_l2': 5.892496827548562e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.104043960571289e-05, 'rmse': 5.8072033466655885e-06, 'relative_l2': 5.956338595144621e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.344650268554688e-06, 'rmse': 2.1320577978907475e-06, 'relative_l2': 8.500494063924875e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 9.864568710327148e-06, 'rmse': 2.9100186149598345e-06, 'relative_l2': 5.893657783391529e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.104043960571289e-05, 'rmse': 5.805560457073478e-06, 'relative_l2': 5.954653514374947e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.434057235717773e-06, 'rmse': 2.1303350368129735e-06, 'relative_l2': 8.493625431972371e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.650393846869457e-05, 'relative_l2': 1.4213531521271786e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.980232238769531e-07, 'rmse': 5.795191670247929e-08, 'relative_l2': 1.173699640418223e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 7.152557373046875e-07, 'rmse': 1.582810046722507e-07, 'relative_l2': 1.6234586857364874e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.980232238769531e-07, 'rmse': 5.480825438925202e-08, 'relative_l2': 2.1851999120209737e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+Correctness passed. Implementations: ['deepgemm_tilelang', 'ascendc_shifted_native']
+Profiler metrics: default
+[2026-10-30 17:58:06] [WARNING] [3864145] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:58:06] [WARNING] [3864145] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:58:07] [INFO] [3864507] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789/profile-shifted-N512-deepgemm_tilelang/profile/ubuntu162_3864145_20261030175806846_ascend_pt
+[2026-10-30 17:58:08] [ERROR] [3864507] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789/profile-shifted-N512-deepgemm_tilelang/profile/ubuntu162_3864145_20261030175806846_ascend_pt/logs
+[2026-10-30 17:58:09] [INFO] [3864522] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011639
+[2026-10-30 17:58:10] [INFO] [3864507] profiler.py: All profiling data parsed in a total time of 0:00:02.822648
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+{'implementation': 'deepgemm_tilelang', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.650393846869457e-05, 'relative_l2': 1.4213531521271786e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.004338264465332e-05, 'rmse': 2.909418259091005e-06, 'relative_l2': 5.8924418832522855e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.104043960571289e-05, 'rmse': 5.806975270033117e-06, 'relative_l2': 5.956104661258111e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.344650268554688e-06, 'rmse': 2.1321546376961473e-06, 'relative_l2': 8.500880163303497e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 9.864568710327148e-06, 'rmse': 2.9100186149598345e-06, 'relative_l2': 5.893657783391529e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.104043960571289e-05, 'rmse': 5.805560457073478e-06, 'relative_l2': 5.954653514374947e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.434057235717773e-06, 'rmse': 2.1303350368129735e-06, 'relative_l2': 8.493625431972371e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.650393846869457e-05, 'relative_l2': 1.4213531521271786e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.980232238769531e-07, 'rmse': 5.794443275892094e-08, 'relative_l2': 1.1735480681775939e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 7.152557373046875e-07, 'rmse': 1.5852740771385874e-07, 'relative_l2': 1.6259859956870325e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.980232238769531e-07, 'rmse': 5.471594433013594e-08, 'relative_l2': 2.1815195187060089e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+Correctness passed. Implementations: ['deepgemm_tilelang', 'ascendc_shifted_native']
+Profiler metrics: default
+[2026-10-30 17:58:18] [WARNING] [3864787] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:58:18] [WARNING] [3864787] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:58:19] [INFO] [3865149] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789/profile-shifted-N512-ascendc_shifted_native/profile/ubuntu162_3864787_20261030175818786_ascend_pt
+[2026-10-30 17:58:21] [INFO] [3865168] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011501
+[2026-10-30 17:58:22] [INFO] [3865149] profiler.py: All profiling data parsed in a total time of 0:00:02.861999
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+{'implementation': 'tilelang', 'output': 'new_residual', 'shape': [8192, 4, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.03125, 'rmse': 1.7604219196745146e-05, 'relative_l2': 1.3951695164624926e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'ascendc', 'output': 'new_residual', 'shape': [8192, 4, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.03125, 'rmse': 1.7604219196745146e-05, 'relative_l2': 1.3951695164624926e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'new_residual', 'shape': [8192, 4, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+Correctness passed. Implementations: ['tilelang', 'ascendc']
+Profiler metrics: default
+[2026-10-30 17:58:33] [WARNING] [3865440] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:58:33] [WARNING] [3865440] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:58:33] [INFO] [3865836] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789/profile-post-N8192-tilelang/profile/ubuntu162_3865440_20261030175833517_ascend_pt
+[2026-10-30 17:58:35] [ERROR] [3865836] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789/profile-post-N8192-tilelang/profile/ubuntu162_3865440_20261030175833517_ascend_pt/logs
+[2026-10-30 17:58:35] [INFO] [3865849] profiler.py: CANN profiling data parsed in a total time of 0:00:02.044142
+[2026-10-30 17:58:36] [INFO] [3865836] profiler.py: All profiling data parsed in a total time of 0:00:02.899234
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+{'implementation': 'tilelang', 'output': 'new_residual', 'shape': [8192, 4, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.03125, 'rmse': 1.7604219196745146e-05, 'relative_l2': 1.3951695164624926e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'ascendc', 'output': 'new_residual', 'shape': [8192, 4, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.03125, 'rmse': 1.7604219196745146e-05, 'relative_l2': 1.3951695164624926e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'new_residual', 'shape': [8192, 4, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+Correctness passed. Implementations: ['tilelang', 'ascendc']
+Profiler metrics: default
+[2026-10-30 17:58:48] [WARNING] [3866131] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:58:48] [WARNING] [3866131] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:58:49] [INFO] [3866532] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789/profile-post-N8192-ascendc/profile/ubuntu162_3866131_20261030175848593_ascend_pt
+[2026-10-30 17:58:51] [INFO] [3866547] profiler.py: CANN profiling data parsed in a total time of 0:00:02.071724
+[2026-10-30 17:58:52] [INFO] [3866532] profiler.py: All profiling data parsed in a total time of 0:00:03.025558
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+{'implementation': 'deepgemm_tilelang', 'output': 'layer_input', 'shape': [8192, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.2371844980177424e-05, 'relative_l2': 1.0709145169783435e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'next_pre_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.2993812561035156e-05, 'rmse': 2.833592978475751e-06, 'relative_l2': 5.7782126510263565e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'post_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.5391578674316406e-05, 'rmse': 5.702546521860387e-06, 'relative_l2': 5.695684515786827e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'comb_mix', 'shape': [8192, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 9.47713851928711e-06, 'rmse': 2.12718074874397e-06, 'relative_l2': 8.466147433329949e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'layer_input', 'shape': [8192, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'next_pre_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.2993812561035156e-05, 'rmse': 2.833983678141787e-06, 'relative_l2': 5.7790093588704936e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'post_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.5391578674316406e-05, 'rmse': 5.702823129421383e-06, 'relative_l2': 5.69596079049955e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'comb_mix', 'shape': [8192, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 9.47713851928711e-06, 'rmse': 2.126884106956751e-06, 'relative_l2': 8.464966803471876e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'layer_input', 'shape': [8192, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.2371844980177424e-05, 'relative_l2': 1.0709145169783435e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'next_pre_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.384185791015625e-07, 'rmse': 3.556140343106684e-08, 'relative_l2': 7.251618450644979e-08, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'post_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 7.152557373046875e-07, 'rmse': 1.4668552291987893e-07, 'relative_l2': 1.4650901296562915e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'comb_mix', 'shape': [8192, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 3.5762786865234375e-07, 'rmse': 6.182911338474356e-08, 'relative_l2': 2.460789455655412e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+Correctness passed. Implementations: ['deepgemm_tilelang', 'ascendc_shifted_native']
+Profiler metrics: default
+[2026-10-30 17:59:02] [WARNING] [3866825] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:59:02] [WARNING] [3866825] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:59:02] [INFO] [3867225] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789/profile-shifted-N8192-deepgemm_tilelang/profile/ubuntu162_3866825_20261030175902371_ascend_pt
+[2026-10-30 17:59:04] [ERROR] [3867225] profiler.py: Failed to get acl to npu flow events. For details, please check the logs at: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789/profile-shifted-N8192-deepgemm_tilelang/profile/ubuntu162_3866825_20261030175902371_ascend_pt/logs
+[2026-10-30 17:59:04] [INFO] [3867241] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011922
+[2026-10-30 17:59:05] [INFO] [3867225] profiler.py: All profiling data parsed in a total time of 0:00:02.890433
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+{'implementation': 'deepgemm_tilelang', 'output': 'layer_input', 'shape': [8192, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.2371844980177424e-05, 'relative_l2': 1.0709145169783435e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'next_pre_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.2993812561035156e-05, 'rmse': 2.833643742730117e-06, 'relative_l2': 5.778316168595404e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'post_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.5391578674316406e-05, 'rmse': 5.702542833415432e-06, 'relative_l2': 5.695680831780263e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'comb_mix', 'shape': [8192, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 9.47713851928711e-06, 'rmse': 2.127206325457757e-06, 'relative_l2': 8.466249228266702e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'layer_input', 'shape': [8192, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'next_pre_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.2993812561035156e-05, 'rmse': 2.833983678141787e-06, 'relative_l2': 5.7790093588704936e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'post_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.5391578674316406e-05, 'rmse': 5.702823129421383e-06, 'relative_l2': 5.69596079049955e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'comb_mix', 'shape': [8192, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 9.47713851928711e-06, 'rmse': 2.126884106956751e-06, 'relative_l2': 8.464966803471876e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'layer_input', 'shape': [8192, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.2371844980177424e-05, 'relative_l2': 1.0709145169783435e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'next_pre_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.384185791015625e-07, 'rmse': 3.557664425096299e-08, 'relative_l2': 7.254726331664807e-08, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'post_mix', 'shape': [8192, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 7.152557373046875e-07, 'rmse': 1.4664190754570469e-07, 'relative_l2': 1.464654500748053e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'pairwise', 'output': 'comb_mix', 'shape': [8192, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 3.5762786865234375e-07, 'rmse': 6.18535759971165e-08, 'relative_l2': 2.461763063965312e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+Correctness passed. Implementations: ['deepgemm_tilelang', 'ascendc_shifted_native']
+Profiler metrics: default
+[2026-10-30 17:59:16] [WARNING] [3867506] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:59:16] [WARNING] [3867506] profiler.py: Please use level1 or level2 if you want to collect aic metrics, reset aic metrics to None!
+[2026-10-30 17:59:16] [INFO] [3867893] profiler.py: Start parsing profiling data in sync mode at: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789/profile-shifted-N8192-ascendc_shifted_native/profile/ubuntu162_3867506_20261030175916378_ascend_pt
+[2026-10-30 17:59:18] [INFO] [3867906] profiler.py: CANN profiling data parsed in a total time of 0:00:02.011704
+[2026-10-30 17:59:19] [INFO] [3867893] profiler.py: All profiling data parsed in a total time of 0:00:02.843737
+BASELINE: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789
+CHECK profile-post-N512-ascendc 3/3 passed
+CHECK profile-post-N512-tilelang 3/3 passed
+CHECK profile-post-N8192-ascendc 3/3 passed
+CHECK profile-post-N8192-tilelang 3/3 passed
+CHECK profile-shifted-N512-ascendc_shifted_native 12/12 passed
+CHECK profile-shifted-N512-deepgemm_tilelang 12/12 passed
+CHECK profile-shifted-N8192-ascendc_shifted_native 12/12 passed
+CHECK profile-shifted-N8192-deepgemm_tilelang 12/12 passed
+CHECK TOTAL: 60 failed: 0
+PROFILE profile-post-N512-ascendc kernel CSV files= 1
+CSV profile-post-N512-ascendc/profile/ubuntu162_3863494_20261030175754791_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 30 invalid durations= 0 expected API calls=30
+KERNEL aclnnMhcPost_MhcPostAICore_MhcPost count= 30 mean_us= 20.6694 median_us= 20.5835 sum_us= 620.082
+DEVICE summed_duration_us= 620.082
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-post-N512-tilelang kernel CSV files= 1
+CSV profile-post-N512-tilelang/profile/ubuntu162_3862862_20261030175742775_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 30 invalid durations= 0 expected API calls=30
+KERNEL mhc_post_fwd_asc_kernel count= 30 mean_us= 12.7984 median_us= 12.614 sum_us= 383.952
+DEVICE summed_duration_us= 383.952
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-post-N8192-ascendc kernel CSV files= 1
+CSV profile-post-N8192-ascendc/profile/ubuntu162_3866131_20261030175848593_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 30 invalid durations= 0 expected API calls=30
+KERNEL aclnnMhcPost_MhcPostAICore_MhcPost count= 30 mean_us= 525.132133 median_us= 524.685 sum_us= 15753.964
+DEVICE summed_duration_us= 15753.964
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-post-N8192-tilelang kernel CSV files= 1
+CSV profile-post-N8192-tilelang/profile/ubuntu162_3865440_20261030175833517_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 30 invalid durations= 0 expected API calls=30
+KERNEL mhc_post_fwd_asc_kernel count= 30 mean_us= 499.617167 median_us= 499.5805 sum_us= 14988.515
+DEVICE summed_duration_us= 14988.515
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-shifted-N512-ascendc_shifted_native kernel CSV files= 1
+CSV profile-shifted-N512-ascendc_shifted_native/profile/ubuntu162_3864787_20261030175818786_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 60 invalid durations= 0 expected API calls=30
+KERNEL aclnnMhcShiftedPreV2_MhcShiftedPre_MhcShiftedPre count= 30 mean_us= 32.175667 median_us= 32.1795 sum_us= 965.27
+KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 8.689733 median_us= 8.654 sum_us= 260.692
+DEVICE summed_duration_us= 1225.962
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-shifted-N512-deepgemm_tilelang kernel CSV files= 1
+CSV profile-shifted-N512-deepgemm_tilelang/profile/ubuntu162_3864145_20261030175806846_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 150 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 6.946767 median_us= 6.854 sum_us= 208.403
+KERNEL mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel count= 30 mean_us= 2.9141 median_us= 2.861 sum_us= 87.423
+KERNEL mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel count= 30 mean_us= 2.7766 median_us= 2.593 sum_us= 83.298
+KERNEL mhc_sinkhorn_fwd_asc_kernel count= 30 mean_us= 8.6124 median_us= 8.5695 sum_us= 258.372
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.329367 median_us= 16.271 sum_us= 489.881
+DEVICE summed_duration_us= 1127.377
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-shifted-N8192-ascendc_shifted_native kernel CSV files= 1
+CSV profile-shifted-N8192-ascendc_shifted_native/profile/ubuntu162_3867506_20261030175916378_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 60 invalid durations= 0 expected API calls=30
+KERNEL aclnnMhcShiftedPreV2_MhcShiftedPre_MhcShiftedPre count= 30 mean_us= 656.316233 median_us= 655.4345 sum_us= 19689.487
+KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 46.739833 median_us= 46.709 sum_us= 1402.195
+DEVICE summed_duration_us= 21091.682
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-shifted-N8192-deepgemm_tilelang kernel CSV files= 1
+CSV profile-shifted-N8192-deepgemm_tilelang/profile/ubuntu162_3866825_20261030175902371_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 150 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 280.686067 median_us= 280.5275 sum_us= 8420.582
+KERNEL mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel count= 30 mean_us= 4.5331 median_us= 4.507 sum_us= 135.993
+KERNEL mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel count= 30 mean_us= 8.213933 median_us= 8.1625 sum_us= 246.418
+KERNEL mhc_sinkhorn_fwd_asc_kernel count= 30 mean_us= 83.508733 median_us= 83.4905 sum_us= 2505.262
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 272.0423 median_us= 272.4595 sum_us= 8161.269
+DEVICE summed_duration_us= 19469.524
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+FILES: correctness= 8 API summaries= 0 profile directories= 8
+Expected for all mode: 41 correctness files, 12 API summaries, 8 profile directories.
+Completed. Copy /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789/summary.txt into error.txt; no server push needed.
 (zwh) root@ubuntu162:/home/z30086261/Q4#
