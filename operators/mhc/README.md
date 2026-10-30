@@ -3,6 +3,9 @@
 按当前 hidden=5120 的规格采集 Post / shifted Pre 基线，见 [BASELINE.md](BASELINE.md)。
 使用 `bash operators/mhc/run_baseline.sh all` 完成精度检查、计时、profiler 和结果打包。
 
+严格对齐 shifted 语义、移除 PyTorch apply 的原生 AscendC 适配实验见
+[matched/README.md](matched/README.md)：独立构建 MhcShiftedPre，先验精度及动态 N，再比较性能。
+
 核查日期：2026-10-26。本机无 NPU，已完成源码与接口核查、测试脚本准备及 Python 语法检查；未执行设备编译、正确性测试或性能测量。
 
 ## 1. 版本锁定与存在性

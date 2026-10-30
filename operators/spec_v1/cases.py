@@ -79,7 +79,7 @@ def post_case(a):
                 'comparison_available':True}
 
 
-def shifted_case(a):
+def shifted_case(a, native_shifted=False):
     import torch
     from fused_projection import HCProjection
     from tile_kernels.mhc import (mhc_reduce_partials_and_rmsnorm_fwd,mhc_pre_split_mixes_fwd,
@@ -89,9 +89,32 @@ def shifted_case(a):
     prev0=torch.rand(t,4,1)+1e-6
     phi0=torch.empty(24,4*d).uniform_(-1,1)/(4*d)**.5
     alpha0=torch.tensor([.1,.1,.1]);bias0=torch.randn(24)*.1
+    if native_shifted:
+        if a.mhc_pattern == 'zero':
+            x0.zero_()
+        elif a.mhc_pattern == 'prev_zero':
+            prev0.zero_()
+        elif a.mhc_pattern == 'prev_basis':
+            prev0.zero_();prev0[:,2,0]=1.
+        if a.mhc_weights:
+            weights=torch.load(a.mhc_weights,map_location='cpu',weights_only=True)
+            phi0,alpha0,bias0=[weights[k] for k in ('fn','scale','base')]
+            for value,shape in zip((phi0,alpha0,bias0),((24,20480),(3,),(24,))):
+                if value.dtype!=torch.float32 or tuple(value.shape)!=shape or not torch.isfinite(value).all():
+                    raise ValueError('Weights must be finite FP32 fn[24,20480], scale[3], base[24]')
+            phi0,alpha0,bias0=[v.contiguous() for v in (phi0,alpha0,bias0)]
     refs=shifted_reference(x0,prev0,phi0,alpha0,bias0)
     x,prev,phi,alpha,bias=[z.npu() for z in [x0,prev0,phi0,alpha0,bias0]]
-    projector=HCProjection(x,phi);bridge=load_bridge()
+    if native_shifted:
+        from matched_case import load_matched_bridge, DynamicHCProjection, native_metadata
+        projector=DynamicHCProjection(x,phi)
+        bridge=load_matched_bridge()
+        from fused_projection import check_projection
+        projection_checks=check_projection(projector,x0,phi0,t,d)
+        if not all(item['passed'] for item in projection_checks):
+            raise AssertionError('Raw projection check failed: '+str(projection_checks))
+    else:
+        projector=HCProjection(x,phi);bridge=load_bridge()
     def tl():
         hi=torch.empty(t,d,device=x.device,dtype=x.dtype)
         mhc_pre_apply_mix_fwd(x,prev.view(t,4),hi)
@@ -107,17 +130,34 @@ def shifted_case(a):
         mhc_sinkhorn_fwd(logits.view(t,4,4),comb,20,1e-6)
         return hi,pre.unsqueeze(-1),post.unsqueeze(-1),comb
     def ac():
+        if native_shifted:
+            return bridge.shifted(x,prev,phi,alpha,bias)
         # All casts, elementwise/reduction kernels and redundant native work count.
         hi=(x.float()*prev).sum(1).bfloat16()
         pre,post,logits=bridge.pre_coefficients(x,phi,alpha,bias,1e-20,1e-6)
         comb=bridge.sinkhorn(logits,1e-6,20)
         return hi,pre.unsqueeze(-1),post.unsqueeze(-1),comb
-    return {'deepgemm_tilelang':tl,'ascendc_pre_plus_torch_apply':ac},refs,[
+    functions={'deepgemm_tilelang':tl,
+               ('ascendc_shifted_native' if native_shifted else 'ascendc_pre_plus_torch_apply'):ac}
+    meta={
+        'native_adaptation':native_metadata() if native_shifted else None,
+        'projection_checks':projection_checks if native_shifted else None,
+        'pattern':getattr(a,'mhc_pattern','random'),
+        'weight_file':str(a.mhc_weights) if getattr(a,'mhc_weights',None) else None,
+    }
+    return functions,refs,[
         'layer_input','next_pre_mix','post_mix','comb_mix'],{
-        'contract':dict(N=t,hidden=5120,hc_mult=4,flattened=20480,channels=24,hc_shifted=True,
+        **meta,'contract':dict(N=t,hidden=5120,hc_mult=4,flattened=20480,channels=24,hc_shifted=True,
                         norm_eps=1e-20,pre_eps=1e-6,sinkhorn_eps=1e-6,repeat=20,post_mult=2.),
         'excluded':['trailing layer RMSNorm','FP8 cast','previous Post'],
-        'weights':'synthetic FP32 fn already in effective folded-weight layout; not checkpoint weights',
-        'ascendc_extra_work':'PreV2 also computes unused current-pre h_in and invRms/hMix caches; included',
-        'ascendc_label':'native PreV2+native Sinkhorn+PyTorch shifted apply; NOT pure fused AscendC',
+        'weights':('provided FP32 effective folded weights' if getattr(a,'mhc_weights',None) else
+                   'synthetic FP32 fn already in effective folded-weight layout; not checkpoint weights'),
+        'ascendc_extra_work':('no unused new-pre h_in or backward cache stores; inherited internal workspace included'
+                             if native_shifted else 'PreV2 also computes unused current-pre h_in and invRms/hMix caches; included'),
+        'ascendc_label':('adapted native MhcShiftedPreV2 + native Sinkhorn; no PyTorch numerical apply'
+                         if native_shifted else 'native PreV2+native Sinkhorn+PyTorch shifted apply; NOT pure fused AscendC'),
         'comparison_available':True}
+
+
+def shifted_native_case(a):
+    return shifted_case(a,native_shifted=True)

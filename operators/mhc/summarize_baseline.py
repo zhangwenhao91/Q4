@@ -75,7 +75,8 @@ def main():
                 print('NOTE: summed durations are device work, not elapsed latency when kernels overlap.')
     print('FILES: correctness=', len(checks), 'API summaries=', len(list(root.glob('bench-*/summary.json'))),
           'profile directories=', len(profiles))
-    print('Expected for all mode: 26 correctness files, 12 API summaries, 8 profile directories.')
+    expected_checks = 41 if (root / 'native-source.json').exists() else 26
+    print(f'Expected for all mode: {expected_checks} correctness files, 12 API summaries, 8 profile directories.')
 
 
 if __name__ == '__main__':
