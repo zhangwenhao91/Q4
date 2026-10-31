@@ -1,155 +1,154 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mhc/matched/collect_results.py \
->   2>&1 | tee results/mhc-matched-collected.txt
-SELECTED check /home/z30086261/Q4/results/mhc-matched/20261030-175049-check-3849101
-IDENTITY q4/native_library/hc_source/weights: ('b8083b14a7721bbf561109be1c2cffd5fef95a33', '4307e7ad6acadc9c2bc2746a50fd2dd4eb469235ec428a53e4cb0700018e53af', '984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830', None)
-IDENTITY q4/native_library/hc_source/weights: ('b8083b14a7721bbf561109be1c2cffd5fef95a33', None, None, None)
-BASELINE: /home/z30086261/Q4/results/mhc-matched/20261030-175049-check-3849101
-CHECK check-mhc_post-seed42 3/3 passed
-CHECK check-mhc_post-seed43 3/3 passed
-CHECK check-mhc_post-seed44 3/3 passed
-CHECK check-mhc_shifted_native-seed42 12/12 passed
-CHECK check-mhc_shifted_native-seed43 12/12 passed
-CHECK check-mhc_shifted_native-seed44 12/12 passed
-CHECK edge-prev_basis 12/12 passed
-CHECK edge-prev_zero 12/12 passed
-CHECK edge-zero 12/12 passed
-CHECK tail-mhc_post-N1 3/3 passed
-CHECK tail-mhc_post-N127 3/3 passed
-CHECK tail-mhc_post-N128 3/3 passed
-CHECK tail-mhc_post-N129 3/3 passed
-CHECK tail-mhc_post-N17 3/3 passed
-CHECK tail-mhc_post-N513 3/3 passed
-CHECK tail-mhc_shifted_native-N1 12/12 passed
-CHECK tail-mhc_shifted_native-N127 12/12 passed
-CHECK tail-mhc_shifted_native-N128 12/12 passed
-CHECK tail-mhc_shifted_native-N129 12/12 passed
-CHECK tail-mhc_shifted_native-N17 12/12 passed
-CHECK tail-mhc_shifted_native-N513 12/12 passed
-CHECK TOTAL: 171 failed: 0
-RAW PROJECTION CHECKS: 24 failed= 0
-FILES: correctness= 21 API summaries= 0 profile directories= 0
-Expected for check mode: 21 correctness files, 0 API summaries, 0 profile directories.
-SELECTED bench /home/z30086261/Q4/results/mhc-matched/20261030-175456-bench-3857828
-IDENTITY q4/native_library/hc_source/weights: ('b8083b14a7721bbf561109be1c2cffd5fef95a33', '4307e7ad6acadc9c2bc2746a50fd2dd4eb469235ec428a53e4cb0700018e53af', '984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830', None)
-IDENTITY q4/native_library/hc_source/weights: ('b8083b14a7721bbf561109be1c2cffd5fef95a33', None, None, None)
-BASELINE: /home/z30086261/Q4/results/mhc-matched/20261030-175456-bench-3857828
-CHECK bench-mhc_post-N512-rep1 3/3 passed
-CHECK bench-mhc_post-N512-rep2 3/3 passed
-CHECK bench-mhc_post-N512-rep3 3/3 passed
-CHECK bench-mhc_post-N8192-rep1 3/3 passed
-CHECK bench-mhc_post-N8192-rep2 3/3 passed
-CHECK bench-mhc_post-N8192-rep3 3/3 passed
-CHECK bench-mhc_shifted_native-N512-rep1 12/12 passed
-CHECK bench-mhc_shifted_native-N512-rep2 12/12 passed
-CHECK bench-mhc_shifted_native-N512-rep3 12/12 passed
-CHECK bench-mhc_shifted_native-N8192-rep1 12/12 passed
-CHECK bench-mhc_shifted_native-N8192-rep2 12/12 passed
-CHECK bench-mhc_shifted_native-N8192-rep3 12/12 passed
-CHECK TOTAL: 90 failed: 0
-RAW PROJECTION CHECKS: 12 failed= 0
-API PROCESS bench-mhc_post-N512-rep1 {"ascendc": {"event_us": 20.740129947662354, "wall_us": 21.12979011144489}, "ratio": {"denominator": "tilelang", "event_ratio": 1.050913238575208, "numerator": "ascendc"}, "tilelang": {"event_us": 19.735339879989624, "wall_us": 20.210420479997993}}
-API PROCESS bench-mhc_post-N512-rep2 {"ascendc": {"event_us": 20.697619915008545, "wall_us": 21.06698986608535}, "ratio": {"denominator": "tilelang", "event_ratio": 1.0533343574003646, "numerator": "ascendc"}, "tilelang": {"event_us": 19.649620056152344, "wall_us": 20.113870268687606}}
-API PROCESS bench-mhc_post-N512-rep3 {"ascendc": {"event_us": 20.73431968688965, "wall_us": 21.062190062366426}, "ratio": {"denominator": "tilelang", "event_ratio": 1.0664244569963794, "numerator": "ascendc"}, "tilelang": {"event_us": 19.44283962249756, "wall_us": 19.87821946386248}}
-API PROCESS bench-mhc_post-N8192-rep1 {"ascendc": {"event_us": 524.5574188232422, "wall_us": 525.1351703191176}, "ratio": {"denominator": "tilelang", "event_ratio": 1.0482877850353203, "numerator": "ascendc"}, "tilelang": {"event_us": 500.3944778442383, "wall_us": 500.96431048586965}}
-API PROCESS bench-mhc_post-N8192-rep2 {"ascendc": {"event_us": 524.603157043457, "wall_us": 525.1457903068513}, "ratio": {"denominator": "tilelang", "event_ratio": 1.048189728711595, "numerator": "ascendc"}, "tilelang": {"event_us": 500.48492431640625, "wall_us": 501.0402301559225}}
-API PROCESS bench-mhc_post-N8192-rep3 {"ascendc": {"event_us": 524.9696731567383, "wall_us": 525.4804895957932}, "ratio": {"denominator": "tilelang", "event_ratio": 1.0494672653963641, "numerator": "ascendc"}, "tilelang": {"event_us": 500.22491455078125, "wall_us": 500.58524997439235}}
-API PROCESS bench-mhc_shifted_native-N512-rep1 {"ascendc_shifted_native": {"event_us": 40.80348014831543, "wall_us": 41.15513002034277}, "deepgemm_tilelang": {"event_us": 78.0350399017334, "wall_us": 78.35071999579668}, "ratio": {"denominator": "deepgemm_tilelang", "event_ratio": 0.5228866442523477, "numerator": "ascendc_shifted_native"}}
-API PROCESS bench-mhc_shifted_native-N512-rep2 {"ascendc_shifted_native": {"event_us": 40.92878818511963, "wall_us": 41.516569908708334}, "deepgemm_tilelang": {"event_us": 81.3267993927002, "wall_us": 82.27240992709994}, "ratio": {"denominator": "deepgemm_tilelang", "event_ratio": 0.5032632353756854, "numerator": "ascendc_shifted_native"}}
-API PROCESS bench-mhc_shifted_native-N512-rep3 {"ascendc_shifted_native": {"event_us": 40.87014198303223, "wall_us": 41.345609934069216}, "deepgemm_tilelang": {"event_us": 79.53567028045654, "wall_us": 80.18706983420998}, "ratio": {"denominator": "deepgemm_tilelang", "event_ratio": 0.5138592764594431, "numerator": "ascendc_shifted_native"}}
-API PROCESS bench-mhc_shifted_native-N8192-rep1 {"ascendc_shifted_native": {"event_us": 708.0821228027344, "wall_us": 708.9400599943474}, "deepgemm_tilelang": {"event_us": 647.6428985595703, "wall_us": 648.5913501819596}, "ratio": {"denominator": "deepgemm_tilelang", "event_ratio": 1.093321835810425, "numerator": "ascendc_shifted_native"}}
-API PROCESS bench-mhc_shifted_native-N8192-rep2 {"ascendc_shifted_native": {"event_us": 703.7675476074219, "wall_us": 704.2563398135826}, "deepgemm_tilelang": {"event_us": 647.0428466796875, "wall_us": 647.7041100151837}, "ratio": {"denominator": "deepgemm_tilelang", "event_ratio": 1.087667611532711, "numerator": "ascendc_shifted_native"}}
-API PROCESS bench-mhc_shifted_native-N8192-rep3 {"ascendc_shifted_native": {"event_us": 705.2780151367188, "wall_us": 705.9045101050287}, "deepgemm_tilelang": {"event_us": 647.6335144042969, "wall_us": 648.5224398784339}, "ratio": {"denominator": "deepgemm_tilelang", "event_ratio": 1.0890079025410602, "numerator": "ascendc_shifted_native"}}
-API MEDIAN bench-mhc_post-N512 ascendc processes= 3 event_us= 20.73432 wall_us= 21.06699
-API MEDIAN bench-mhc_post-N512 tilelang processes= 3 event_us= 19.64962 wall_us= 20.11387
-API MEDIAN bench-mhc_post-N8192 ascendc processes= 3 event_us= 524.603157 wall_us= 525.14579
-API MEDIAN bench-mhc_post-N8192 tilelang processes= 3 event_us= 500.394478 wall_us= 500.96431
-API MEDIAN bench-mhc_shifted_native-N512 ascendc_shifted_native processes= 3 event_us= 40.870142 wall_us= 41.34561
-API MEDIAN bench-mhc_shifted_native-N512 deepgemm_tilelang processes= 3 event_us= 79.53567 wall_us= 80.18707
-API MEDIAN bench-mhc_shifted_native-N8192 ascendc_shifted_native processes= 3 event_us= 705.278015 wall_us= 705.90451
-API MEDIAN bench-mhc_shifted_native-N8192 deepgemm_tilelang processes= 3 event_us= 647.633514 wall_us= 648.52244
-FILES: correctness= 12 API summaries= 12 profile directories= 0
-Expected for bench mode: 12 correctness files, 12 API summaries, 0 profile directories.
-SELECTED profile /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789
-IDENTITY q4/native_library/hc_source/weights: ('b8083b14a7721bbf561109be1c2cffd5fef95a33', '4307e7ad6acadc9c2bc2746a50fd2dd4eb469235ec428a53e4cb0700018e53af', '984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830', None)
-IDENTITY q4/native_library/hc_source/weights: ('b8083b14a7721bbf561109be1c2cffd5fef95a33', None, None, None)
-BASELINE: /home/z30086261/Q4/results/mhc-matched/20261030-175736-profile-3862789
-CHECK profile-post-N512-ascendc 3/3 passed
-CHECK profile-post-N512-tilelang 3/3 passed
-CHECK profile-post-N8192-ascendc 3/3 passed
-CHECK profile-post-N8192-tilelang 3/3 passed
-CHECK profile-shifted-N512-ascendc_shifted_native 12/12 passed
-CHECK profile-shifted-N512-deepgemm_tilelang 12/12 passed
-CHECK profile-shifted-N8192-ascendc_shifted_native 12/12 passed
-CHECK profile-shifted-N8192-deepgemm_tilelang 12/12 passed
-CHECK TOTAL: 60 failed: 0
-RAW PROJECTION CHECKS: 8 failed= 0
-PROFILE profile-post-N512-ascendc kernel CSV files= 1
-CSV profile-post-N512-ascendc/profile/ubuntu162_3863494_20261030175754791_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
-ROWS 30 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcPost_MhcPostAICore_MhcPost count= 30 mean_us= 20.6694 median_us= 20.5835 sum_us= 620.082
-DEVICE summed_duration_us= 620.082
-NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-post-N512-tilelang kernel CSV files= 1
-CSV profile-post-N512-tilelang/profile/ubuntu162_3862862_20261030175742775_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
-ROWS 30 invalid durations= 0 expected API calls=30
-KERNEL mhc_post_fwd_asc_kernel count= 30 mean_us= 12.7984 median_us= 12.614 sum_us= 383.952
-DEVICE summed_duration_us= 383.952
-NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-post-N8192-ascendc kernel CSV files= 1
-CSV profile-post-N8192-ascendc/profile/ubuntu162_3866131_20261030175848593_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
-ROWS 30 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcPost_MhcPostAICore_MhcPost count= 30 mean_us= 525.132133 median_us= 524.685 sum_us= 15753.964
-DEVICE summed_duration_us= 15753.964
-NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-post-N8192-tilelang kernel CSV files= 1
-CSV profile-post-N8192-tilelang/profile/ubuntu162_3865440_20261030175833517_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
-ROWS 30 invalid durations= 0 expected API calls=30
-KERNEL mhc_post_fwd_asc_kernel count= 30 mean_us= 499.617167 median_us= 499.5805 sum_us= 14988.515
-DEVICE summed_duration_us= 14988.515
-NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-shifted-N512-ascendc_shifted_native kernel CSV files= 1
-CSV profile-shifted-N512-ascendc_shifted_native/profile/ubuntu162_3864787_20261030175818786_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
-ROWS 60 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcShiftedPreV2_MhcShiftedPre_MhcShiftedPre count= 30 mean_us= 32.175667 median_us= 32.1795 sum_us= 965.27
-KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 8.689733 median_us= 8.654 sum_us= 260.692
-DEVICE summed_duration_us= 1225.962
-NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-shifted-N512-deepgemm_tilelang kernel CSV files= 1
-CSV profile-shifted-N512-deepgemm_tilelang/profile/ubuntu162_3864145_20261030175806846_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
-ROWS 150 invalid durations= 0 expected API calls=30
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 6.946767 median_us= 6.854 sum_us= 208.403
-KERNEL mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel count= 30 mean_us= 2.9141 median_us= 2.861 sum_us= 87.423
-KERNEL mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel count= 30 mean_us= 2.7766 median_us= 2.593 sum_us= 83.298
-KERNEL mhc_sinkhorn_fwd_asc_kernel count= 30 mean_us= 8.6124 median_us= 8.5695 sum_us= 258.372
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.329367 median_us= 16.271 sum_us= 489.881
-DEVICE summed_duration_us= 1127.377
-NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-shifted-N8192-ascendc_shifted_native kernel CSV files= 1
-CSV profile-shifted-N8192-ascendc_shifted_native/profile/ubuntu162_3867506_20261030175916378_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
-ROWS 60 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcShiftedPreV2_MhcShiftedPre_MhcShiftedPre count= 30 mean_us= 656.316233 median_us= 655.4345 sum_us= 19689.487
-KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 46.739833 median_us= 46.709 sum_us= 1402.195
-DEVICE summed_duration_us= 21091.682
-NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-shifted-N8192-deepgemm_tilelang kernel CSV files= 1
-CSV profile-shifted-N8192-deepgemm_tilelang/profile/ubuntu162_3866825_20261030175902371_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
-ROWS 150 invalid durations= 0 expected API calls=30
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 280.686067 median_us= 280.5275 sum_us= 8420.582
-KERNEL mhc_pre_split_mixes_fwd_simd_mhc4_asc_kernel count= 30 mean_us= 4.5331 median_us= 4.507 sum_us= 135.993
-KERNEL mhc_reduce_partials_and_rmsnorm_fwd_asc_kernel count= 30 mean_us= 8.213933 median_us= 8.1625 sum_us= 246.418
-KERNEL mhc_sinkhorn_fwd_asc_kernel count= 30 mean_us= 83.508733 median_us= 83.4905 sum_us= 2505.262
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 272.0423 median_us= 272.4595 sum_us= 8161.269
-DEVICE summed_duration_us= 19469.524
-NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-FILES: correctness= 8 API summaries= 0 profile directories= 8
-Expected for profile mode: 8 correctness files, 0 API summaries, 8 profile directories.
-Offline collection complete. No kernels executed.
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_fusion.sh smoke
+Results: /home/z30086261/Q4/results/mhc-fusion/20261031-101902-smoke-219948
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+{'implementation': 'deepgemm_tilelang', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.650393846869457e-05, 'relative_l2': 1.4213531521271786e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.004338264465332e-05, 'rmse': 2.9094861555958277e-06, 'relative_l2': 5.8925793939754315e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.104043960571289e-05, 'rmse': 5.806925829843674e-06, 'relative_l2': 5.956053951391252e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.344650268554688e-06, 'rmse': 2.132164680561753e-06, 'relative_l2': 8.500920204112687e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+2026-10-31 10:19:19  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_coeff_tail_fwd_asc` with `out_idx=None`
+Traceback (most recent call last):
+  File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 290, in <module>
+    if __name__=='__main__': main()
+                             ^^^^^^
+  File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 151, in main
+    outputs=tuple(fn());torch.npu.synchronize()
+                  ^^^^
+  File "/home/z30086261/Q4/operators/spec_v1/mhc_fusion.py", line 41, in coeff_fused
+    mhc_coeff_tail_fwd_asc(raw, sq, alpha, bias, pre, post, comb,
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 555, in __call__
+    kernel = self.compile(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 470, in compile
+    kernel_result = compile(
+                    ^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 166, in compile
+    return cached(
+           ^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/__init__.py", line 91, in cached
+    return cache.cached(
+           ^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/kernel_cache.py", line 427, in cached
+    kernel = JITKernel(
+             ^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 140, in __init__
+    adapter = self._compile_and_create_adapter(func, out_idx)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 280, in _compile_and_create_adapter
+    self.artifact = self._compile_artifact(tilelang_func, pass_configs, compile_metadata)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 321, in _compile_artifact
+    artifact = lower_with_context(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/engine/lower.py", line 165, in lower_with_context
+    return _lower_with_context_impl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/engine/lower.py", line 184, in _lower_with_context_impl
+    host_mod, device_mod, params, target, target_host = lower_to_host_device_ir(
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/engine/lower.py", line 136, in lower_to_host_device_ir
+    mod = context.lower(mod)
+          ^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/backend/module.py", line 214, in lower
+    return self.module.lower(mod, self.target)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/backend/module.py", line 115, in lower
+    return self.get_pipeline(target).lower(mod, target)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/backend/pass_pipeline/pipeline.py", line 31, in lower
+    return self._lower(mod, target)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/ascend/pipeline.py", line 122, in AscendPassPipelineBody
+    mod = ascend_transform.AscendLowerTileOp()(mod)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm/ir/transform.py", line 171, in __call__
+    return _ffi_transform_api.RunPass(self, mod)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
+  File "<unknown>", line 0, in tvm::transform::Pass::operator()(tvm::IRModule) const
+  File "<unknown>", line 0, in tvm::transform::Pass::operator()(tvm::IRModule, tvm::transform::PassContext const&) const
+  File "<unknown>", line 0, in tvm::tirx::transform::PrimFuncPassNode::operator()(tvm::IRModule, tvm::transform::PassContext const&) const
+  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::Substitute(tvm::tirx::PrimFunc)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::SBlockNode const*)
+  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::SBlockNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::SBlockNode const*)
+  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::SBlockNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::SBlockNode const*)
+  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::SBlockNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#9}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in non-virtual thunk to tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::SeqStmtNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SeqStmtNode const*)
+  File "<unknown>", line 0, in tvm::ffi::ObjectPtr<tvm::ffi::Object> tvm::ffi::Array<tvm::tirx::Stmt, void>::MapHelper<tvm::tirx::StmtMutator::Internal::Mutate(tvm::tirx::StmtMutator*, tvm::ffi::Array<tvm::tirx::Stmt, void> const&)::{lambda(tvm::tirx::Stmt const&)#1}, tvm::tirx::Stmt>(tvm::ffi::ObjectPtr<tvm::ffi::Object>, tvm::tirx::StmtMutator::Internal::Mutate(tvm::tirx::StmtMutator*, tvm::ffi::Array<tvm::tirx::Stmt, void> const&)::{lambda(tvm::tirx::Stmt const&)#1})
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#4}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::ForNode const*)
+  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::ForNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::ForNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#9}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in non-virtual thunk to tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::SeqStmtNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SeqStmtNode const*)
+  File "<unknown>", line 0, in tvm::ffi::ObjectPtr<tvm::ffi::Object> tvm::ffi::Array<tvm::tirx::Stmt, void>::MapHelper<tvm::tirx::StmtMutator::Internal::Mutate(tvm::tirx::StmtMutator*, tvm::ffi::Array<tvm::tirx::Stmt, void> const&)::{lambda(tvm::tirx::Stmt const&)#1}, tvm::tirx::Stmt>(tvm::ffi::ObjectPtr<tvm::ffi::Object>, tvm::tirx::StmtMutator::Internal::Mutate(tvm::tirx::StmtMutator*, tvm::ffi::Array<tvm::tirx::Stmt, void> const&)::{lambda(tvm::tirx::Stmt const&)#1})
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#3}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in non-virtual thunk to tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::IfThenElseNode const*)
+  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#10}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::EvaluateNode const*)
+  File "<unknown>", line 0, in tvm::tl::AscendCopyNode::Lower(tvm::tl::LowerArgs const&, tvm::arith::Analyzer*) const
+  File "<unknown>", line 0, in tvm::tl::ascend::AscendCopyImpl::Lower(tvm::tl::AscendCopyNode const&, tvm::tl::LowerArgs const&, tvm::arith::Analyzer*)
+  File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/op/copy.cc", line 487, in tvm::tirx::Stmt tvm::tl::ascend::{anonymous}::LowerDMACopy(const tvm::tl::AscendCopyNode&, const tvm::tl::LowerArgs&, tvm::arith::Analyzer*, tvm::tl::ascend::DMAPath)
+tvm.error.InternalError: Check failed: (!data_select || rb_plan > 0) is false: Ascend padded GM->UB copy (pad_value / data_select) requires a statically-known row byte length, got a symbolic row extent.
+[ERROR] 2026-10-31-10:19:22 (PID:220445, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
 (zwh) root@ubuntu162:/home/z30086261/Q4#
