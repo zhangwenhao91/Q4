@@ -1,0 +1,998 @@
+{
+  "evidence": "bc29f5b:error.txt",
+  "run_revision": "4c1ccfc4c18cbf065c7b42e76e484e2f4b936bee",
+  "output_checks": 1467,
+  "raw_projection_checks": 96,
+  "failed": 0,
+  "median_api": {
+    "128": {
+      "ascendc_original_fused_h4096": {
+        "event_us": 24.621989727020264,
+        "wall_us": 25.124285311903805
+      },
+      "tilelang_current_pre_h4096": {
+        "event_us": 24.46292519569397,
+        "wall_us": 24.95542954420671
+      },
+      "tilelang_upstream_big_fuse_bound_h4096": {
+        "event_us": 24.16370987892151,
+        "wall_us": 24.60866526234895
+      },
+      "tilelang_upstream_big_fuse_h4096": {
+        "event_us": 41.02543592453003,
+        "wall_us": 41.70370491920039
+      },
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 37.8048050403595,
+        "wall_us": 38.46480016363785
+      }
+    },
+    "256": {
+      "ascendc_original_fused_h4096": {
+        "event_us": 21.333730220794678,
+        "wall_us": 21.86940488172695
+      },
+      "tilelang_current_pre_h4096": {
+        "event_us": 24.78569507598877,
+        "wall_us": 25.184130063280463
+      },
+      "tilelang_upstream_big_fuse_bound_h4096": {
+        "event_us": 24.740424156188965,
+        "wall_us": 25.18206980312243
+      },
+      "tilelang_upstream_big_fuse_h4096": {
+        "event_us": 41.65273904800415,
+        "wall_us": 42.24546515615657
+      },
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 31.268579959869385,
+        "wall_us": 31.762745056767017
+      }
+    },
+    "512": {
+      "ascendc_original_fused_h4096": {
+        "event_us": 27.563940286636353,
+        "wall_us": 27.945170004386455
+      },
+      "tilelang_current_pre_h4096": {
+        "event_us": 26.101415157318115,
+        "wall_us": 26.480370142962784
+      },
+      "tilelang_upstream_big_fuse_bound_h4096": {
+        "event_us": 25.570430755615234,
+        "wall_us": 25.915024743881077
+      },
+      "tilelang_upstream_big_fuse_h4096": {
+        "event_us": 42.21472501754761,
+        "wall_us": 42.65172523446381
+      },
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 40.35898447036743,
+        "wall_us": 40.79323465703055
+      }
+    },
+    "64": {
+      "ascendc_original_fused_h4096": {
+        "event_us": 21.140635013580322,
+        "wall_us": 21.74236491555348
+      },
+      "tilelang_current_pre_h4096": {
+        "event_us": 24.53945517539978,
+        "wall_us": 24.903955054469407
+      },
+      "tilelang_upstream_big_fuse_bound_h4096": {
+        "event_us": 21.900634765625,
+        "wall_us": 22.201400133781135
+      },
+      "tilelang_upstream_big_fuse_h4096": {
+        "event_us": 41.10003471374512,
+        "wall_us": 41.48061474552378
+      },
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 29.15848970413208,
+        "wall_us": 29.651425138581544
+      }
+    },
+    "8192": {
+      "ascendc_original_fused_h4096": {
+        "event_us": 617.1806716918945,
+        "wall_us": 617.7396702696569
+      },
+      "tilelang_current_pre_h4096": {
+        "event_us": 521.9955062866211,
+        "wall_us": 522.8103851550259
+      },
+      "tilelang_upstream_big_fuse_bound_h4096": {
+        "event_us": 487.68850326538086,
+        "wall_us": 488.2951598847285
+      },
+      "tilelang_upstream_big_fuse_h4096": {
+        "event_us": 487.8341293334961,
+        "wall_us": 488.49281010916457
+      },
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 706.0416793823242,
+        "wall_us": 706.8859349237755
+      }
+    }
+  },
+  "processes": [
+    {
+      "tag": "bench-original-N128-H4096-fused-rep1",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 0.8279128262287944,
+          "tilelang_upstream_big_fuse_bound_h4096": 0.8381647370405578,
+          "tilelang_upstream_big_fuse_h4096": 0.4910853288142758
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 20.253169536590576,
+          "wall_us": 20.756635058205575
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 24.46292519569397,
+          "wall_us": 24.95542954420671
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 24.16370987892151,
+          "wall_us": 24.570554960519075
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 41.24165058135986,
+          "wall_us": 41.70370491920039
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N128-H4096-fused-rep2",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 1.0211442159285313,
+          "tilelang_upstream_big_fuse_bound_h4096": 1.0428717810219728,
+          "tilelang_upstream_big_fuse_h4096": 0.6135324133951171
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 25.170434713363647,
+          "wall_us": 25.88282513897866
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 24.649245738983154,
+          "wall_us": 25.208415172528476
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 24.13569450378418,
+          "wall_us": 24.680569767951965
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 41.02543592453003,
+          "wall_us": 41.764844791032374
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N128-H4096-fused-rep3",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 1.0199429487551113,
+          "tilelang_upstream_big_fuse_bound_h4096": 1.0186705264945346,
+          "tilelang_upstream_big_fuse_h4096": 0.6077511612623899
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 24.621989727020264,
+          "wall_us": 25.124285311903805
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 24.14055585861206,
+          "wall_us": 24.64481513015926
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 24.17070984840393,
+          "wall_us": 24.60866526234895
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 40.51327466964722,
+          "wall_us": 40.956485318019986
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N128-H5120-rep1",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 21.746845245361328,
+          "wall_us": 22.114170133136213
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N128-H5120-rep2",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 37.8048050403595,
+          "wall_us": 38.46480016363785
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N128-H5120-rep3",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 38.345489501953125,
+          "wall_us": 38.88181992806494
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N256-H4096-fused-rep1",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 0.7980933734680511,
+          "tilelang_upstream_big_fuse_bound_h4096": 0.8623025250542408,
+          "tilelang_upstream_big_fuse_h4096": 0.49893316135743493
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 21.333730220794678,
+          "wall_us": 21.86940488172695
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 26.730870008468628,
+          "wall_us": 27.352880279067904
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 24.740424156188965,
+          "wall_us": 25.18206980312243
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 42.75869369506836,
+          "wall_us": 43.31126488978043
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N256-H4096-fused-rep2",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 0.9879452655928689,
+          "tilelang_upstream_big_fuse_bound_h4096": 0.978051406825278,
+          "tilelang_upstream_big_fuse_h4096": 0.5878823497424934
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 24.486910104751587,
+          "wall_us": 24.95733497198671
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 24.78569507598877,
+          "wall_us": 25.184130063280463
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 25.03642439842224,
+          "wall_us": 25.497995084151626
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 41.65273904800415,
+          "wall_us": 42.24546515615657
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N256-H4096-fused-rep3",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 0.8611902169929389,
+          "tilelang_upstream_big_fuse_bound_h4096": 0.8418094260387865,
+          "tilelang_upstream_big_fuse_h4096": 0.511908334449247
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 20.79869508743286,
+          "wall_us": 21.241455106064677
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 24.15110468864441,
+          "wall_us": 24.682270013727248
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 24.707130193710327,
+          "wall_us": 25.126990221906453
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 40.62972545623779,
+          "wall_us": 41.173005010932684
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N256-H5120-rep1",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 31.268579959869385,
+          "wall_us": 31.762745056767017
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N256-H5120-rep2",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 27.13078498840332,
+          "wall_us": 27.441309939604253
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N256-H5120-rep3",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 38.09003949165344,
+          "wall_us": 38.56750001432374
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N512-H4096-fused-rep1",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 1.0882776619427958,
+          "tilelang_upstream_big_fuse_bound_h4096": 1.0774853630168926,
+          "tilelang_upstream_big_fuse_h4096": 0.6689393579078037
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 27.563940286636353,
+          "wall_us": 27.991140086669475
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 25.32804012298584,
+          "wall_us": 25.773005036171526
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 25.581730604171753,
+          "wall_us": 25.949825067073107
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 41.20543956756592,
+          "wall_us": 41.682220180518925
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N512-H4096-fused-rep2",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 1.0404176192148296,
+          "tilelang_upstream_big_fuse_bound_h4096": 1.078754674123751,
+          "tilelang_upstream_big_fuse_h4096": 0.642341722199639
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 27.53638982772827,
+          "wall_us": 27.92864019284025
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 26.466670036315918,
+          "wall_us": 26.860034849960357
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 25.52609086036682,
+          "wall_us": 25.909864925779402
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 42.868754863739014,
+          "wall_us": 43.30800496973097
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N512-H4096-fused-rep3",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 1.0560408110286272,
+          "tilelang_upstream_big_fuse_bound_h4096": 1.0779700934711893,
+          "tilelang_upstream_big_fuse_h4096": 0.652951301240773
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 27.564159631729126,
+          "wall_us": 27.945170004386455
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 26.101415157318115,
+          "wall_us": 26.480370142962784
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 25.570430755615234,
+          "wall_us": 25.915024743881077
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 42.21472501754761,
+          "wall_us": 42.65172523446381
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N512-H5120-rep1",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 40.33177852630615,
+          "wall_us": 40.74821976246312
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N512-H5120-rep2",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 40.35898447036743,
+          "wall_us": 40.79323465703055
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N512-H5120-rep3",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 40.435991287231445,
+          "wall_us": 40.86324479430914
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N64-H4096-fused-rep1",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 0.7830537473436122,
+          "tilelang_upstream_big_fuse_bound_h4096": 0.9599799798130865,
+          "tilelang_upstream_big_fuse_h4096": 0.48388261249379527
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 21.140635013580322,
+          "wall_us": 21.74236491555348
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 26.9976806640625,
+          "wall_us": 27.52522996161133
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 22.02195405960083,
+          "wall_us": 22.461990301962942
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 43.68959426879883,
+          "wall_us": 44.172560155857354
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N64-H4096-fused-rep2",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 1.0226535713574234,
+          "tilelang_upstream_big_fuse_bound_h4096": 1.144725297289182,
+          "tilelang_upstream_big_fuse_h4096": 0.6059527669080383
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 24.72285509109497,
+          "wall_us": 25.159589713439345
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 24.17520046234131,
+          "wall_us": 24.64276010869071
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 21.59719467163086,
+          "wall_us": 22.01151510234922
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 40.799970626831055,
+          "wall_us": 41.33154492592439
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N64-H4096-fused-rep3",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 0.6029591812792373,
+          "tilelang_upstream_big_fuse_bound_h4096": 0.675610088928641,
+          "tilelang_upstream_big_fuse_h4096": 0.3600067470660617
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 14.796289801597595,
+          "wall_us": 15.180019836407155
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 24.53945517539978,
+          "wall_us": 24.903955054469407
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 21.900634765625,
+          "wall_us": 22.201400133781135
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 41.10003471374512,
+          "wall_us": 41.48061474552378
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N64-H5120-rep1",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 19.4251149892807,
+          "wall_us": 19.82443471206352
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N64-H5120-rep2",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 29.15848970413208,
+          "wall_us": 29.651425138581544
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N64-H5120-rep3",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 29.4521701335907,
+          "wall_us": 29.95077462401241
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N8192-H4096-fused-rep1",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 1.19010917867665,
+          "tilelang_upstream_big_fuse_bound_h4096": 1.285832926346236,
+          "tilelang_upstream_big_fuse_h4096": 1.2860571785686588
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 616.4666938781738,
+          "wall_us": 617.3769297311082
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 517.9917144775391,
+          "wall_us": 518.7723750714213
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 479.4298553466797,
+          "wall_us": 480.33903003670275
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 479.3462562561035,
+          "wall_us": 480.0754296593368
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N8192-H4096-fused-rep2",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 1.182734231331093,
+          "tilelang_upstream_big_fuse_bound_h4096": 1.268350450271214,
+          "tilelang_upstream_big_fuse_h4096": 1.2677675600401381
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 618.5599327087402,
+          "wall_us": 619.2440798622556
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 522.9914855957031,
+          "wall_us": 523.6793347285129
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 487.68850326538086,
+          "wall_us": 488.2951598847285
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 487.9127311706543,
+          "wall_us": 488.5638697305694
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N8192-H4096-fused-rep3",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_current_pre_h4096": 1.182348629938221,
+          "tilelang_upstream_big_fuse_bound_h4096": 1.2654104426846424,
+          "tilelang_upstream_big_fuse_h4096": 1.2651445124085892
+        },
+        "ascendc_original_fused_h4096": {
+          "event_us": 617.1806716918945,
+          "wall_us": 617.7396702696569
+        },
+        "tilelang_current_pre_h4096": {
+          "event_us": 521.9955062866211,
+          "wall_us": 522.8103851550259
+        },
+        "tilelang_upstream_big_fuse_bound_h4096": {
+          "event_us": 487.7316093444824,
+          "wall_us": 488.4694251813926
+        },
+        "tilelang_upstream_big_fuse_h4096": {
+          "event_us": 487.8341293334961,
+          "wall_us": 488.49281010916457
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N8192-H5120-rep1",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 713.5388565063477,
+          "wall_us": 714.1015597153455
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N8192-H5120-rep2",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 705.5801010131836,
+          "wall_us": 706.095999921672
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N8192-H5120-rep3",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 706.0416793823242,
+          "wall_us": 706.8859349237755
+        }
+      }
+    }
+  ],
+  "profiles": {
+    "profile-N128-H4096-fused": [
+      {
+        "name": "aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn",
+        "count": 30,
+        "mean_us": 13.7749,
+        "median_us": 13.8255
+      }
+    ],
+    "profile-N128-H4096-tilelang": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 5.5,
+        "median_us": 5.3975
+      },
+      {
+        "name": "mhc_pre_apply_mix_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 2.827833,
+        "median_us": 2.6725
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 13.480133,
+        "median_us": 13.456
+      }
+    ],
+    "profile-N128-H4096-upstream": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 10.8677,
+        "median_us": 10.6995
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 13.442433,
+        "median_us": 13.4415
+      }
+    ],
+    "profile-N128-H4096-upstream-bound": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 10.8301,
+        "median_us": 10.7895
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 13.444633,
+        "median_us": 13.44
+      }
+    ],
+    "profile-N128-H5120": [
+      {
+        "name": "aclnnMhcPreV2_MhcPre_MhcPre",
+        "count": 30,
+        "mean_us": 15.311733,
+        "median_us": 15.2655
+      },
+      {
+        "name": "aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn",
+        "count": 30,
+        "mean_us": 6.386433,
+        "median_us": 6.351
+      }
+    ],
+    "profile-N256-H4096-fused": [
+      {
+        "name": "aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn",
+        "count": 30,
+        "mean_us": 18.852,
+        "median_us": 18.8875
+      }
+    ],
+    "profile-N256-H4096-tilelang": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 5.6652,
+        "median_us": 5.4355
+      },
+      {
+        "name": "mhc_pre_apply_mix_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 3.757633,
+        "median_us": 3.5135
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 14.019933,
+        "median_us": 14.0495
+      }
+    ],
+    "profile-N256-H4096-upstream": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 10.991333,
+        "median_us": 10.826
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 13.751767,
+        "median_us": 13.7455
+      }
+    ],
+    "profile-N256-H4096-upstream-bound": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 11.1003,
+        "median_us": 11.026
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 13.9477,
+        "median_us": 13.963
+      }
+    ],
+    "profile-N256-H5120": [
+      {
+        "name": "aclnnMhcPreV2_MhcPre_MhcPre",
+        "count": 30,
+        "mean_us": 20.4337,
+        "median_us": 20.365
+      },
+      {
+        "name": "aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn",
+        "count": 30,
+        "mean_us": 7.0862,
+        "median_us": 7.017
+      }
+    ],
+    "profile-N512-H4096-fused": [
+      {
+        "name": "aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn",
+        "count": 30,
+        "mean_us": 27.6002,
+        "median_us": 27.555
+      }
+    ],
+    "profile-N512-H4096-tilelang": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 5.880767,
+        "median_us": 5.769
+      },
+      {
+        "name": "mhc_pre_apply_mix_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 5.642633,
+        "median_us": 5.492
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 13.969567,
+        "median_us": 13.9155
+      }
+    ],
+    "profile-N512-H4096-upstream": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 11.665433,
+        "median_us": 11.6595
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 14.0564,
+        "median_us": 13.9825
+      }
+    ],
+    "profile-N512-H4096-upstream-bound": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 11.625967,
+        "median_us": 11.509
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 14.111533,
+        "median_us": 14.119
+      }
+    ],
+    "profile-N512-H5120": [
+      {
+        "name": "aclnnMhcPreV2_MhcPre_MhcPre",
+        "count": 30,
+        "mean_us": 31.2478,
+        "median_us": 31.231
+      },
+      {
+        "name": "aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn",
+        "count": 30,
+        "mean_us": 9.175367,
+        "median_us": 9.0815
+      }
+    ],
+    "profile-N64-H4096-fused": [
+      {
+        "name": "aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn",
+        "count": 30,
+        "mean_us": 11.186033,
+        "median_us": 11.09
+      }
+    ],
+    "profile-N64-H4096-tilelang": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 5.691133,
+        "median_us": 5.5575
+      },
+      {
+        "name": "mhc_pre_apply_mix_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 2.616767,
+        "median_us": 2.4775
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 10.944633,
+        "median_us": 10.9555
+      }
+    ],
+    "profile-N64-H4096-upstream": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 10.828133,
+        "median_us": 10.6395
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 10.917367,
+        "median_us": 10.932
+      }
+    ],
+    "profile-N64-H4096-upstream-bound": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 10.765767,
+        "median_us": 10.6345
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 10.928767,
+        "median_us": 10.932
+      }
+    ],
+    "profile-N64-H5120": [
+      {
+        "name": "aclnnMhcPreV2_MhcPre_MhcPre",
+        "count": 30,
+        "mean_us": 13.807233,
+        "median_us": 13.8425
+      },
+      {
+        "name": "aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn",
+        "count": 30,
+        "mean_us": 6.036767,
+        "median_us": 5.991
+      }
+    ],
+    "profile-N8192-H4096-fused": [
+      {
+        "name": "aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn",
+        "count": 30,
+        "mean_us": 611.494333,
+        "median_us": 612.217
+      }
+    ],
+    "profile-N8192-H4096-tilelang": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 34.622133,
+        "median_us": 34.551
+      },
+      {
+        "name": "mhc_pre_apply_mix_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 223.8542,
+        "median_us": 223.759
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 261.351467,
+        "median_us": 261.5155
+      }
+    ],
+    "profile-N8192-H4096-upstream": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 231.938333,
+        "median_us": 231.515
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 247.3723,
+        "median_us": 246.3395
+      }
+    ],
+    "profile-N8192-H4096-upstream-bound": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 231.6778,
+        "median_us": 231.275
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 244.970667,
+        "median_us": 246.2695
+      }
+    ],
+    "profile-N8192-H5120": [
+      {
+        "name": "aclnnMhcPreV2_MhcPre_MhcPre",
+        "count": 30,
+        "mean_us": 646.2991,
+        "median_us": 646.154
+      },
+      {
+        "name": "aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn",
+        "count": 30,
+        "mean_us": 45.946367,
+        "median_us": 45.9355
+      }
+    ]
+  }
+}
