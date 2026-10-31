@@ -52,12 +52,20 @@ def make_case(a):
         'current_pre_layer_input', 'next_pre_mix', 'post_mix', 'comb_mix']
     functions = {label: original_fused if fused else original}
     tl_meta = None
+    upstream_meta = None
     if fused:
         from mhc_current_pre import make_candidate
         tl, tl_meta = make_candidate(x, phi, alpha, bias, x0, phi0)
         functions = {'tilelang_current_pre_h4096': tl, **functions}
+        if a.tokens % 16 == 0:
+            from mhc_upstream_big_fuse import make_candidates
+            upstream, upstream_meta = make_candidates(x, phi, alpha, bias)
+            functions = {**functions, **upstream}
+        else:
+            upstream_meta = dict(skipped='Pinned upstream requires complete 16-token tiles; no padding adaptor added')
     return functions, refs, names, dict(
         tilelang_current_pre=tl_meta,
+        tilelang_upstream_big_fuse=upstream_meta,
         projection_checks=tl_meta['projection_checks'] if tl_meta else None,
         hc_source_sha256=tl_meta['hc_source_sha256'] if tl_meta else None,
         comparison_available=True, original_source_revision=revision,

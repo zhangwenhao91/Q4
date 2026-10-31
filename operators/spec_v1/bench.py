@@ -212,6 +212,9 @@ def main():
             first,second=list(functions)
             summary['ratio']=dict(numerator=second,denominator=first,
                                   event_ratio=summary[second]['event_us']/summary[first]['event_us'])
+        if a.suite=='mhc_original_fused':
+            summary['ac_over_tl']={label:summary['ascendc_original_fused_h4096']['event_us']/summary[label]['event_us']
+                                   for label in functions if label.startswith('tilelang_')}
         if a.suite=='mhc_shifted_fusion':
             summary['ratios']={label:dict(
                 original_over_candidate=summary['deepgemm_tilelang']['event_us']/summary[label]['event_us'],
