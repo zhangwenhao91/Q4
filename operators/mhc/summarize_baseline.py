@@ -84,10 +84,15 @@ def main():
     print('FILES: correctness=', len(checks), 'API summaries=', len(list(root.glob('bench-*/summary.json'))),
           'profile directories=', len(profiles))
     matched = (root / 'native-source.json').exists()
-    mode_match = re.search(r'-(check|bench|profile|all)-\d+$', root.name)
+    fusion = (root / 'fusion-source.json').exists()
+    mode_match = re.search(r'-(smoke|check|bench|profile|all)-\d+$', root.name)
     mode = mode_match.group(1) if mode_match else 'all'
-    expected = dict(check=(21 if matched else 6, 0, 0), bench=(12, 12, 0),
-                    profile=(8, 0, 8), all=(41 if matched else 26, 12, 8))[mode]
+    if fusion:
+        expected = dict(smoke=(1, 0, 0), check=(12, 0, 0), bench=(9, 9, 0),
+                        profile=(8, 0, 8), all=(29, 9, 8))[mode]
+    else:
+        expected = dict(smoke=(1, 0, 0), check=(21 if matched else 6, 0, 0), bench=(12, 12, 0),
+                        profile=(8, 0, 8), all=(41 if matched else 26, 12, 8))[mode]
     print(f'Expected for {mode} mode: {expected[0]} correctness files, '
           f'{expected[1]} API summaries, {expected[2]} profile directories.')
 

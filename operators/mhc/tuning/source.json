@@ -1,0 +1,17 @@
+{
+  "upstream": "https://github.com/deepseek-ai/TileKernels",
+  "revision": "c1cf914a82e6901c679445f872051ce44ac2cc63",
+  "source": "tile_kernels/mhc/pre_big_fuse_asc.py",
+  "source_sha256": "6b2a575cdce922bddabe35bf7f981073d302d889a7d578f81e2e9d01f4693929",
+  "adaptations": [
+    "emit next_pre",
+    "coeff-only kernel",
+    "old pre input with separate UB for apply",
+    "explicit zero padding for tail loads"
+  ],
+  "files": {
+    "coeff_tail.py": "4f74a7e734baa9046846ff19e77c403abbceff929539320f5c1a238ef0b71ee4",
+    "apply_tail.py": "5069e7919c05edf5d1f562a561b9e6168987a0aec608edd5c90e6bf8040c1637"
+  },
+  "coefficient_arithmetic_ast_sha256": "adb5cdb011eafc45ca3c7572afab76e2ea644e320f36a34579e665704ef37620"
+}

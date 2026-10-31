@@ -79,7 +79,7 @@ def post_case(a):
                 'comparison_available':True}
 
 
-def shifted_case(a, native_shifted=False):
+def shifted_case(a, native_shifted=False, fusion=False):
     import torch
     from fused_projection import HCProjection
     from tile_kernels.mhc import (mhc_reduce_partials_and_rmsnorm_fwd,mhc_pre_split_mixes_fwd,
@@ -139,7 +139,13 @@ def shifted_case(a, native_shifted=False):
         return hi,pre.unsqueeze(-1),post.unsqueeze(-1),comb
     functions={'deepgemm_tilelang':tl,
                ('ascendc_shifted_native' if native_shifted else 'ascendc_pre_plus_torch_apply'):ac}
+    fusion_meta=None
+    if fusion:
+        from mhc_fusion import make_candidates
+        candidates,fusion_meta=make_candidates(projector,x,prev,alpha,bias)
+        functions={'deepgemm_tilelang':tl,**candidates,'ascendc_shifted_native':ac}
     meta={
+        'fusion':fusion_meta,
         'native_adaptation':native_metadata() if native_shifted else None,
         'projection_checks':projection_checks if native_shifted else None,
         'pattern':getattr(a,'mhc_pattern','random'),
@@ -161,3 +167,7 @@ def shifted_case(a, native_shifted=False):
 
 def shifted_native_case(a):
     return shifted_case(a,native_shifted=True)
+
+
+def shifted_fusion_case(a):
+    return shifted_case(a,native_shifted=True,fusion=True)

@@ -23,12 +23,12 @@ def implementation_order(labels,round_index):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--suite',choices=['mha','mha_bf16','mha_q64','mha_fma','mha_nostore','mha_rowfused','mha_rowbatch','mha_stages','mha_finalize','mha_qresident','mha_buffers','mha_firstpv','mha_pbuffer','mha_l2','mha_stats_split','mha_manual','mhc_post','mhc_shifted','mhc_shifted_native'],required=True)
+    p.add_argument('--suite',choices=['mha','mha_bf16','mha_q64','mha_fma','mha_nostore','mha_rowfused','mha_rowbatch','mha_stages','mha_finalize','mha_qresident','mha_buffers','mha_firstpv','mha_pbuffer','mha_l2','mha_stats_split','mha_manual','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_fusion'],required=True)
     p.add_argument('--tokens',type=int,default=512,help='mHC only; MHA is fixed at 4096')
     p.add_argument('--seed',type=int,default=42)
     p.add_argument('--mhc-pattern',choices=['random','zero','prev_zero','prev_basis'],default='random',
-                   help='mhc_shifted_native correctness inputs; no device work is precomputed')
-    p.add_argument('--mhc-weights',type=Path,help='mhc_shifted_native: CPU torch file containing FP32 fn/scale/base')
+                   help='native/fusion shifted mHC correctness inputs; no device work is precomputed')
+    p.add_argument('--mhc-weights',type=Path,help='native/fusion shifted mHC: CPU torch file containing FP32 fn/scale/base')
     p.add_argument('--ac-metadata',choices=['cached','per_call'],default='cached',
                    help='mha_bf16: reuse fixed-shape metadata or include native metadata generation each call')
     p.add_argument('--warmup',type=int,default=100)
@@ -45,12 +45,12 @@ def main():
         p.error('tokens/iters/rounds > 0; warmup >= 0')
     if a.suite=='mhc_shifted' and a.tokens%128:
         p.error('current tested mHC paths require N divisible by 128')
-    if a.suite!='mhc_shifted_native' and (a.mhc_weights or a.mhc_pattern!='random'):
-        p.error('--mhc-weights/--mhc-pattern require mhc_shifted_native')
+    if a.suite not in ('mhc_shifted_native','mhc_shifted_fusion') and (a.mhc_weights or a.mhc_pattern!='random'):
+        p.error('--mhc-weights/--mhc-pattern require mhc_shifted_native or mhc_shifted_fusion')
     a.output.mkdir(parents=True,exist_ok=False)
     import torch
     import torch_npu
-    from cases import mha_case,post_case,shifted_case,shifted_native_case,ROOT
+    from cases import mha_case,post_case,shifted_case,shifted_native_case,shifted_fusion_case,ROOT
     torch.manual_seed(a.seed);torch.npu.set_device(0)
     torch.npu.matmul.allow_hf32=True
     with torch.no_grad():
@@ -101,7 +101,8 @@ def main():
             functions,refs,names,meta=make_case(a)
         else:
             functions,refs,names,meta={'mha':mha_case,'mhc_post':post_case,'mhc_shifted':shifted_case,
-                                     'mhc_shifted_native':shifted_native_case}[a.suite](a)
+                                     'mhc_shifted_native':shifted_native_case,
+                                     'mhc_shifted_fusion':shifted_fusion_case}[a.suite](a)
     meta.update(arguments={k:str(v) if isinstance(v,Path) else v for k,v in vars(a).items()},
                 torch=torch.__version__,torch_npu=torch_npu.__version__,device=torch.npu.get_device_name(0),
                 q4_revision=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
@@ -120,7 +121,7 @@ def main():
             meta['source_revisions'][name]=dict(
                 revision=subprocess.check_output(['git','-C',str(folder),'rev-parse','HEAD'],text=True).strip(),
                 status=subprocess.check_output(['git','-C',str(folder),'status','--short'],text=True).strip())
-    if a.suite in ('mhc_shifted','mhc_shifted_native'):
+    if a.suite in ('mhc_shifted','mhc_shifted_native','mhc_shifted_fusion'):
         import deep_gemm
         file=Path(deep_gemm.__file__).parent/'tilelang_ops'/'hc_prenorm.py'
         meta['hc_source_sha256']=hashlib.sha256(file.read_bytes()).hexdigest()
@@ -206,6 +207,11 @@ def main():
             first,second=list(functions)
             summary['ratio']=dict(numerator=second,denominator=first,
                                   event_ratio=summary[second]['event_us']/summary[first]['event_us'])
+        if a.suite=='mhc_shifted_fusion':
+            summary['ratios']={label:dict(
+                original_over_candidate=summary['deepgemm_tilelang']['event_us']/summary[label]['event_us'],
+                ascendc_over_candidate=summary['ascendc_shifted_native']['event_us']/summary[label]['event_us'])
+                for label in ('tilelang_coeff_fused','tilelang_apply_fused')}
         if a.suite=='mha_q64':
             summary['ratios']=dict(
                 q128_over_q64=summary['tilelang_q128']['event_us']/summary['tilelang_q64']['event_us'],

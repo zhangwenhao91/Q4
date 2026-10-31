@@ -6,6 +6,9 @@
 严格对齐 shifted 语义、移除 PyTorch apply 的原生 AscendC 适配实验见
 [matched/README.md](matched/README.md)：独立构建 MhcShiftedPre，先验精度及动态 N，再比较性能。
 
+小 N 的三 kernel / 两 kernel TileLang 融合候选及四侧同进程实验见
+[tuning/README.md](tuning/README.md)。候选设备编译、精度与收益以 NPU 实测为准。
+
 核查日期：2026-10-26。本机无 NPU，已完成源码与接口核查、测试脚本准备及 Python 语法检查；未执行设备编译、正确性测试或性能测量。
 
 ## 1. 版本锁定与存在性
