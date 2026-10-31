@@ -53,3 +53,7 @@ python operators/mhc/matched/collect_results.py --root results/mhc-split
 待多形状实测后再决定是否有合适的分派阈值。
 MHC_WEIGHTS仍可指定有效FP32 fn/scale/base；默认合成权重。
 本机只有CPU调用合约与语法验证，设备精度和性能待服务器确认。
+
+已完成服务器验证：1104项输出检查与92项原始投影检查通过；三kernel版在全部五个
+已测N上超过AC。N=128/256/512三kernel稳定更快，N=8192两kernel稳定更快；
+N=64两/三kernel胜负有波动。详见 [结果报告](../../../reports/mhc_split/report.md)。
