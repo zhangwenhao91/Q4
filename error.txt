@@ -1,64 +1,74 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mhc/matched/collect_results.py --root results/mhc-original
-SELECTED check results/mhc-original/20261031-151644-all-752313
-IDENTITY q4/native_library/hc_source/weights: ('5f947ea6f1ed648f9a1a9d852dc34cf43305ba8f', 'b1c49b3b13d73058690b9fead1704dd97964a2261a98f70abcc0fdb22d6bf063', '984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830', None)
-IDENTITY q4/native_library/hc_source/weights: ('5f947ea6f1ed648f9a1a9d852dc34cf43305ba8f', 'b1c49b3b13d73058690b9fead1704dd97964a2261a98f70abcc0fdb22d6bf063', None, None)
-BASELINE: /home/z30086261/Q4/results/mhc-original/20261031-151644-all-752313
-CHECK bench-original-N128-H4096-fused-rep1 9/9 passed
-CHECK bench-original-N128-H4096-fused-rep2 9/9 passed
-CHECK bench-original-N128-H4096-fused-rep3 9/9 passed
+SELECTED check results/mhc-original/20261031-155758-all-916634
+IDENTITY q4/native_library/hc_source/weights: ('4c1ccfc4c18cbf065c7b42e76e484e2f4b936bee', 'b1c49b3b13d73058690b9fead1704dd97964a2261a98f70abcc0fdb22d6bf063', '984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830', None)
+IDENTITY q4/native_library/hc_source/weights: ('4c1ccfc4c18cbf065c7b42e76e484e2f4b936bee', 'b1c49b3b13d73058690b9fead1704dd97964a2261a98f70abcc0fdb22d6bf063', None, None)
+BASELINE: /home/z30086261/Q4/results/mhc-original/20261031-155758-all-916634
+CHECK bench-original-N128-H4096-fused-rep1 30/30 passed
+CHECK bench-original-N128-H4096-fused-rep2 30/30 passed
+CHECK bench-original-N128-H4096-fused-rep3 30/30 passed
 CHECK bench-original-N128-H5120-rep1 4/4 passed
 CHECK bench-original-N128-H5120-rep2 4/4 passed
 CHECK bench-original-N128-H5120-rep3 4/4 passed
-CHECK bench-original-N256-H4096-fused-rep1 9/9 passed
-CHECK bench-original-N256-H4096-fused-rep2 9/9 passed
-CHECK bench-original-N256-H4096-fused-rep3 9/9 passed
+CHECK bench-original-N256-H4096-fused-rep1 30/30 passed
+CHECK bench-original-N256-H4096-fused-rep2 30/30 passed
+CHECK bench-original-N256-H4096-fused-rep3 30/30 passed
 CHECK bench-original-N256-H5120-rep1 4/4 passed
 CHECK bench-original-N256-H5120-rep2 4/4 passed
 CHECK bench-original-N256-H5120-rep3 4/4 passed
-CHECK bench-original-N512-H4096-fused-rep1 9/9 passed
-CHECK bench-original-N512-H4096-fused-rep2 9/9 passed
-CHECK bench-original-N512-H4096-fused-rep3 9/9 passed
+CHECK bench-original-N512-H4096-fused-rep1 30/30 passed
+CHECK bench-original-N512-H4096-fused-rep2 30/30 passed
+CHECK bench-original-N512-H4096-fused-rep3 30/30 passed
 CHECK bench-original-N512-H5120-rep1 4/4 passed
 CHECK bench-original-N512-H5120-rep2 4/4 passed
 CHECK bench-original-N512-H5120-rep3 4/4 passed
-CHECK bench-original-N64-H4096-fused-rep1 9/9 passed
-CHECK bench-original-N64-H4096-fused-rep2 9/9 passed
-CHECK bench-original-N64-H4096-fused-rep3 9/9 passed
+CHECK bench-original-N64-H4096-fused-rep1 30/30 passed
+CHECK bench-original-N64-H4096-fused-rep2 30/30 passed
+CHECK bench-original-N64-H4096-fused-rep3 30/30 passed
 CHECK bench-original-N64-H5120-rep1 4/4 passed
 CHECK bench-original-N64-H5120-rep2 4/4 passed
 CHECK bench-original-N64-H5120-rep3 4/4 passed
-CHECK bench-original-N8192-H4096-fused-rep1 9/9 passed
-CHECK bench-original-N8192-H4096-fused-rep2 9/9 passed
-CHECK bench-original-N8192-H4096-fused-rep3 9/9 passed
+CHECK bench-original-N8192-H4096-fused-rep1 30/30 passed
+CHECK bench-original-N8192-H4096-fused-rep2 30/30 passed
+CHECK bench-original-N8192-H4096-fused-rep3 30/30 passed
 CHECK bench-original-N8192-H5120-rep1 4/4 passed
 CHECK bench-original-N8192-H5120-rep2 4/4 passed
 CHECK bench-original-N8192-H5120-rep3 4/4 passed
-CHECK check-N128-seed42-H4096-fused-rep0 9/9 passed
+CHECK check-N128-seed42-H4096-fused-rep0 30/30 passed
 CHECK check-N128-seed42-H5120-rep0 4/4 passed
-CHECK check-N128-seed43-H4096-fused-rep0 9/9 passed
+CHECK check-N128-seed43-H4096-fused-rep0 30/30 passed
 CHECK check-N128-seed43-H5120-rep0 4/4 passed
-CHECK check-N128-seed44-H4096-fused-rep0 9/9 passed
+CHECK check-N128-seed44-H4096-fused-rep0 30/30 passed
 CHECK check-N128-seed44-H5120-rep0 4/4 passed
-CHECK check-N512-seed42-H4096-fused-rep0 9/9 passed
+CHECK check-N512-seed42-H4096-fused-rep0 30/30 passed
 CHECK check-N512-seed42-H5120-rep0 4/4 passed
-CHECK check-N512-seed43-H4096-fused-rep0 9/9 passed
+CHECK check-N512-seed43-H4096-fused-rep0 30/30 passed
 CHECK check-N512-seed43-H5120-rep0 4/4 passed
-CHECK check-N512-seed44-H4096-fused-rep0 9/9 passed
+CHECK check-N512-seed44-H4096-fused-rep0 30/30 passed
 CHECK check-N512-seed44-H5120-rep0 4/4 passed
-CHECK profile-N128-H4096-fused 9/9 passed
-CHECK profile-N128-H4096-tilelang 9/9 passed
+CHECK profile-N128-H4096-fused 30/30 passed
+CHECK profile-N128-H4096-tilelang 30/30 passed
+CHECK profile-N128-H4096-upstream 30/30 passed
+CHECK profile-N128-H4096-upstream-bound 30/30 passed
 CHECK profile-N128-H5120 4/4 passed
-CHECK profile-N256-H4096-fused 9/9 passed
-CHECK profile-N256-H4096-tilelang 9/9 passed
+CHECK profile-N256-H4096-fused 30/30 passed
+CHECK profile-N256-H4096-tilelang 30/30 passed
+CHECK profile-N256-H4096-upstream 30/30 passed
+CHECK profile-N256-H4096-upstream-bound 30/30 passed
 CHECK profile-N256-H5120 4/4 passed
-CHECK profile-N512-H4096-fused 9/9 passed
-CHECK profile-N512-H4096-tilelang 9/9 passed
+CHECK profile-N512-H4096-fused 30/30 passed
+CHECK profile-N512-H4096-tilelang 30/30 passed
+CHECK profile-N512-H4096-upstream 30/30 passed
+CHECK profile-N512-H4096-upstream-bound 30/30 passed
 CHECK profile-N512-H5120 4/4 passed
-CHECK profile-N64-H4096-fused 9/9 passed
-CHECK profile-N64-H4096-tilelang 9/9 passed
+CHECK profile-N64-H4096-fused 30/30 passed
+CHECK profile-N64-H4096-tilelang 30/30 passed
+CHECK profile-N64-H4096-upstream 30/30 passed
+CHECK profile-N64-H4096-upstream-bound 30/30 passed
 CHECK profile-N64-H5120 4/4 passed
-CHECK profile-N8192-H4096-fused 9/9 passed
-CHECK profile-N8192-H4096-tilelang 9/9 passed
+CHECK profile-N8192-H4096-fused 30/30 passed
+CHECK profile-N8192-H4096-tilelang 30/30 passed
+CHECK profile-N8192-H4096-upstream 30/30 passed
+CHECK profile-N8192-H4096-upstream-bound 30/30 passed
 CHECK profile-N8192-H5120 4/4 passed
 CHECK tail-N1-H4096-fused-rep0 9/9 passed
 CHECK tail-N1-H5120-rep0 4/4 passed
@@ -68,182 +78,272 @@ CHECK tail-N129-H4096-fused-rep0 9/9 passed
 CHECK tail-N129-H5120-rep0 4/4 passed
 CHECK tail-N17-H4096-fused-rep0 9/9 passed
 CHECK tail-N17-H5120-rep0 4/4 passed
-CHECK tail-N256-H4096-fused-rep0 9/9 passed
+CHECK tail-N256-H4096-fused-rep0 30/30 passed
 CHECK tail-N256-H5120-rep0 4/4 passed
 CHECK tail-N513-H4096-fused-rep0 9/9 passed
 CHECK tail-N513-H5120-rep0 4/4 passed
-CHECK tail-N64-H4096-fused-rep0 9/9 passed
+CHECK tail-N64-H4096-fused-rep0 30/30 passed
 CHECK tail-N64-H5120-rep0 4/4 passed
-CHECK TOTAL: 474 failed: 0
-RAW PROJECTION CHECKS: 76 failed= 0
-API PROCESS bench-original-N128-H4096-fused-rep1 {"ascendc_original_fused_h4096": {"event_us": 77.50325441360474, "wall_us": 78.06459499988705}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 0.8024412146132914, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 96.5843391418457, "wall_us": 98.17825979553163}}
-API PROCESS bench-original-N128-H4096-fused-rep2 {"ascendc_original_fused_h4096": {"event_us": 41.699068546295166, "wall_us": 42.89484000764787}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 0.8562641004448596, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 48.69884014129639, "wall_us": 49.808514886535704}}
-API PROCESS bench-original-N128-H4096-fused-rep3 {"ascendc_original_fused_h4096": {"event_us": 21.593960523605347, "wall_us": 22.126185067463666}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 0.8023926852378933, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 26.91196084022522, "wall_us": 27.51646999968216}}
-API PROCESS bench-original-N128-H5120-rep1 {"ascendc_original_pre_sinkhorn": {"event_us": 4416.633148193359, "wall_us": 4417.743295198306}}
-API PROCESS bench-original-N128-H5120-rep2 {"ascendc_original_pre_sinkhorn": {"event_us": 31.03201985359192, "wall_us": 31.598045316059142}}
-API PROCESS bench-original-N128-H5120-rep3 {"ascendc_original_pre_sinkhorn": {"event_us": 37.3365843296051, "wall_us": 37.81776991672814}}
-API PROCESS bench-original-N256-H4096-fused-rep1 {"ascendc_original_fused_h4096": {"event_us": 79.51374053955078, "wall_us": 79.92803992237896}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 0.7670050271568768, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 103.66782188415527, "wall_us": 104.14511489216238}}
-API PROCESS bench-original-N256-H4096-fused-rep2 {"ascendc_original_fused_h4096": {"event_us": 20.24841547012329, "wall_us": 20.684979972429574}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 0.829924517412455, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 24.397900104522705, "wall_us": 24.820679682306945}}
-API PROCESS bench-original-N256-H4096-fused-rep3 {"ascendc_original_fused_h4096": {"event_us": 20.88642954826355, "wall_us": 21.272254816722125}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 0.7879093769668721, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 26.50866985321045, "wall_us": 27.170150133315474}}
-API PROCESS bench-original-N256-H5120-rep1 {"ascendc_original_pre_sinkhorn": {"event_us": 3505.521469116211, "wall_us": 3506.9675848353654}}
-API PROCESS bench-original-N256-H5120-rep2 {"ascendc_original_pre_sinkhorn": {"event_us": 79.9511194229126, "wall_us": 81.86989987734705}}
-API PROCESS bench-original-N256-H5120-rep3 {"ascendc_original_pre_sinkhorn": {"event_us": 38.186155557632446, "wall_us": 38.69313484756276}}
-API PROCESS bench-original-N512-H4096-fused-rep1 {"ascendc_original_fused_h4096": {"event_us": 69.74750518798828, "wall_us": 70.21626981440932}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 0.5963389950246213, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 116.95949077606201, "wall_us": 117.93023528298363}}
-API PROCESS bench-original-N512-H4096-fused-rep2 {"ascendc_original_fused_h4096": {"event_us": 27.51890540122986, "wall_us": 27.972259849775583}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 1.0290362622182987, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 26.742405891418457, "wall_us": 27.24796999245882}}
-API PROCESS bench-original-N512-H4096-fused-rep3 {"ascendc_original_fused_h4096": {"event_us": 27.564059495925903, "wall_us": 27.96984976157546}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 1.0900107014511047, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 25.287879705429077, "wall_us": 25.635854981373996}}
-API PROCESS bench-original-N512-H5120-rep1 {"ascendc_original_pre_sinkhorn": {"event_us": 2393.0221557617188, "wall_us": 2393.670160090551}}
-API PROCESS bench-original-N512-H5120-rep2 {"ascendc_original_pre_sinkhorn": {"event_us": 40.42612314224243, "wall_us": 40.84992513526231}}
-API PROCESS bench-original-N512-H5120-rep3 {"ascendc_original_pre_sinkhorn": {"event_us": 40.27526140213013, "wall_us": 40.69970018463209}}
-API PROCESS bench-original-N64-H4096-fused-rep1 {"ascendc_original_fused_h4096": {"event_us": 20.14075994491577, "wall_us": 20.660989976022393}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 0.804773799859978, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 25.026609897613525, "wall_us": 25.73805977590382}}
-API PROCESS bench-original-N64-H4096-fused-rep2 {"ascendc_original_fused_h4096": {"event_us": 20.711840391159058, "wall_us": 21.158790041226894}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 0.8212443694800864, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 25.220069885253906, "wall_us": 28.553580050356686}}
-API PROCESS bench-original-N64-H4096-fused-rep3 {"ascendc_original_fused_h4096": {"event_us": 24.116419553756714, "wall_us": 24.573405098635703}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 0.9789335657187226, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 24.63539958000183, "wall_us": 25.092084833886474}}
-API PROCESS bench-original-N64-H5120-rep1 {"ascendc_original_pre_sinkhorn": {"event_us": 99.67428684234619, "wall_us": 101.81426507188007}}
-API PROCESS bench-original-N64-H5120-rep2 {"ascendc_original_pre_sinkhorn": {"event_us": 29.95273470878601, "wall_us": 30.518629937432706}}
-API PROCESS bench-original-N64-H5120-rep3 {"ascendc_original_pre_sinkhorn": {"event_us": 29.89590048789978, "wall_us": 30.414574721362442}}
-API PROCESS bench-original-N8192-H4096-fused-rep1 {"ascendc_original_fused_h4096": {"event_us": 657.575798034668, "wall_us": 658.0574900726788}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 1.2427221569006783, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 529.1414451599121, "wall_us": 529.892610211391}}
-API PROCESS bench-original-N8192-H4096-fused-rep2 {"ascendc_original_fused_h4096": {"event_us": 619.3937683105469, "wall_us": 620.0162350432947}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 1.1931200545643446, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 519.1378402709961, "wall_us": 519.8798901983537}}
-API PROCESS bench-original-N8192-H4096-fused-rep3 {"ascendc_original_fused_h4096": {"event_us": 619.0017127990723, "wall_us": 619.8577501345426}, "ratio": {"denominator": "tilelang_current_pre_h4096", "event_ratio": 1.191187132139246, "numerator": "ascendc_original_fused_h4096"}, "tilelang_current_pre_h4096": {"event_us": 519.6511077880859, "wall_us": 520.4992147628218}}
-API PROCESS bench-original-N8192-H5120-rep1 {"ascendc_original_pre_sinkhorn": {"event_us": 1076.7351150512695, "wall_us": 1080.7048951392062}}
-API PROCESS bench-original-N8192-H5120-rep2 {"ascendc_original_pre_sinkhorn": {"event_us": 725.5625534057617, "wall_us": 726.2908399570733}}
-API PROCESS bench-original-N8192-H5120-rep3 {"ascendc_original_pre_sinkhorn": {"event_us": 707.3898696899414, "wall_us": 708.1590002053417}}
-API MEDIAN bench-original-N128-H4096-fused ascendc_original_fused_h4096 processes= 3 event_us= 41.699069 wall_us= 42.89484
-API MEDIAN bench-original-N128-H4096-fused tilelang_current_pre_h4096 processes= 3 event_us= 48.69884 wall_us= 49.808515
-API MEDIAN bench-original-N128-H5120 ascendc_original_pre_sinkhorn processes= 3 event_us= 37.336584 wall_us= 37.81777
-API MEDIAN bench-original-N256-H4096-fused ascendc_original_fused_h4096 processes= 3 event_us= 20.88643 wall_us= 21.272255
-API MEDIAN bench-original-N256-H4096-fused tilelang_current_pre_h4096 processes= 3 event_us= 26.50867 wall_us= 27.17015
-API MEDIAN bench-original-N256-H5120 ascendc_original_pre_sinkhorn processes= 3 event_us= 79.951119 wall_us= 81.8699
-API MEDIAN bench-original-N512-H4096-fused ascendc_original_fused_h4096 processes= 3 event_us= 27.564059 wall_us= 27.97226
-API MEDIAN bench-original-N512-H4096-fused tilelang_current_pre_h4096 processes= 3 event_us= 26.742406 wall_us= 27.24797
-API MEDIAN bench-original-N512-H5120 ascendc_original_pre_sinkhorn processes= 3 event_us= 40.426123 wall_us= 40.849925
-API MEDIAN bench-original-N64-H4096-fused ascendc_original_fused_h4096 processes= 3 event_us= 20.71184 wall_us= 21.15879
-API MEDIAN bench-original-N64-H4096-fused tilelang_current_pre_h4096 processes= 3 event_us= 25.02661 wall_us= 25.73806
-API MEDIAN bench-original-N64-H5120 ascendc_original_pre_sinkhorn processes= 3 event_us= 29.952735 wall_us= 30.51863
-API MEDIAN bench-original-N8192-H4096-fused ascendc_original_fused_h4096 processes= 3 event_us= 619.393768 wall_us= 620.016235
-API MEDIAN bench-original-N8192-H4096-fused tilelang_current_pre_h4096 processes= 3 event_us= 519.651108 wall_us= 520.499215
-API MEDIAN bench-original-N8192-H5120 ascendc_original_pre_sinkhorn processes= 3 event_us= 725.562553 wall_us= 726.29084
+CHECK TOTAL: 1467 failed: 0
+RAW PROJECTION CHECKS: 96 failed= 0
+API PROCESS bench-original-N128-H4096-fused-rep1 {"ac_over_tl": {"tilelang_current_pre_h4096": 0.8279128262287944, "tilelang_upstream_big_fuse_bound_h4096": 0.8381647370405578, "tilelang_upstream_big_fuse_h4096": 0.4910853288142758}, "ascendc_original_fused_h4096": {"event_us": 20.253169536590576, "wall_us": 20.756635058205575}, "tilelang_current_pre_h4096": {"event_us": 24.46292519569397, "wall_us": 24.95542954420671}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 24.16370987892151, "wall_us": 24.570554960519075}, "tilelang_upstream_big_fuse_h4096": {"event_us": 41.24165058135986, "wall_us": 41.70370491920039}}
+API PROCESS bench-original-N128-H4096-fused-rep2 {"ac_over_tl": {"tilelang_current_pre_h4096": 1.0211442159285313, "tilelang_upstream_big_fuse_bound_h4096": 1.0428717810219728, "tilelang_upstream_big_fuse_h4096": 0.6135324133951171}, "ascendc_original_fused_h4096": {"event_us": 25.170434713363647, "wall_us": 25.88282513897866}, "tilelang_current_pre_h4096": {"event_us": 24.649245738983154, "wall_us": 25.208415172528476}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 24.13569450378418, "wall_us": 24.680569767951965}, "tilelang_upstream_big_fuse_h4096": {"event_us": 41.02543592453003, "wall_us": 41.764844791032374}}
+API PROCESS bench-original-N128-H4096-fused-rep3 {"ac_over_tl": {"tilelang_current_pre_h4096": 1.0199429487551113, "tilelang_upstream_big_fuse_bound_h4096": 1.0186705264945346, "tilelang_upstream_big_fuse_h4096": 0.6077511612623899}, "ascendc_original_fused_h4096": {"event_us": 24.621989727020264, "wall_us": 25.124285311903805}, "tilelang_current_pre_h4096": {"event_us": 24.14055585861206, "wall_us": 24.64481513015926}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 24.17070984840393, "wall_us": 24.60866526234895}, "tilelang_upstream_big_fuse_h4096": {"event_us": 40.51327466964722, "wall_us": 40.956485318019986}}
+API PROCESS bench-original-N128-H5120-rep1 {"ascendc_original_pre_sinkhorn": {"event_us": 21.746845245361328, "wall_us": 22.114170133136213}}
+API PROCESS bench-original-N128-H5120-rep2 {"ascendc_original_pre_sinkhorn": {"event_us": 37.8048050403595, "wall_us": 38.46480016363785}}
+API PROCESS bench-original-N128-H5120-rep3 {"ascendc_original_pre_sinkhorn": {"event_us": 38.345489501953125, "wall_us": 38.88181992806494}}
+API PROCESS bench-original-N256-H4096-fused-rep1 {"ac_over_tl": {"tilelang_current_pre_h4096": 0.7980933734680511, "tilelang_upstream_big_fuse_bound_h4096": 0.8623025250542408, "tilelang_upstream_big_fuse_h4096": 0.49893316135743493}, "ascendc_original_fused_h4096": {"event_us": 21.333730220794678, "wall_us": 21.86940488172695}, "tilelang_current_pre_h4096": {"event_us": 26.730870008468628, "wall_us": 27.352880279067904}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 24.740424156188965, "wall_us": 25.18206980312243}, "tilelang_upstream_big_fuse_h4096": {"event_us": 42.75869369506836, "wall_us": 43.31126488978043}}
+API PROCESS bench-original-N256-H4096-fused-rep2 {"ac_over_tl": {"tilelang_current_pre_h4096": 0.9879452655928689, "tilelang_upstream_big_fuse_bound_h4096": 0.978051406825278, "tilelang_upstream_big_fuse_h4096": 0.5878823497424934}, "ascendc_original_fused_h4096": {"event_us": 24.486910104751587, "wall_us": 24.95733497198671}, "tilelang_current_pre_h4096": {"event_us": 24.78569507598877, "wall_us": 25.184130063280463}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 25.03642439842224, "wall_us": 25.497995084151626}, "tilelang_upstream_big_fuse_h4096": {"event_us": 41.65273904800415, "wall_us": 42.24546515615657}}
+API PROCESS bench-original-N256-H4096-fused-rep3 {"ac_over_tl": {"tilelang_current_pre_h4096": 0.8611902169929389, "tilelang_upstream_big_fuse_bound_h4096": 0.8418094260387865, "tilelang_upstream_big_fuse_h4096": 0.511908334449247}, "ascendc_original_fused_h4096": {"event_us": 20.79869508743286, "wall_us": 21.241455106064677}, "tilelang_current_pre_h4096": {"event_us": 24.15110468864441, "wall_us": 24.682270013727248}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 24.707130193710327, "wall_us": 25.126990221906453}, "tilelang_upstream_big_fuse_h4096": {"event_us": 40.62972545623779, "wall_us": 41.173005010932684}}
+API PROCESS bench-original-N256-H5120-rep1 {"ascendc_original_pre_sinkhorn": {"event_us": 31.268579959869385, "wall_us": 31.762745056767017}}
+API PROCESS bench-original-N256-H5120-rep2 {"ascendc_original_pre_sinkhorn": {"event_us": 27.13078498840332, "wall_us": 27.441309939604253}}
+API PROCESS bench-original-N256-H5120-rep3 {"ascendc_original_pre_sinkhorn": {"event_us": 38.09003949165344, "wall_us": 38.56750001432374}}
+API PROCESS bench-original-N512-H4096-fused-rep1 {"ac_over_tl": {"tilelang_current_pre_h4096": 1.0882776619427958, "tilelang_upstream_big_fuse_bound_h4096": 1.0774853630168926, "tilelang_upstream_big_fuse_h4096": 0.6689393579078037}, "ascendc_original_fused_h4096": {"event_us": 27.563940286636353, "wall_us": 27.991140086669475}, "tilelang_current_pre_h4096": {"event_us": 25.32804012298584, "wall_us": 25.773005036171526}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 25.581730604171753, "wall_us": 25.949825067073107}, "tilelang_upstream_big_fuse_h4096": {"event_us": 41.20543956756592, "wall_us": 41.682220180518925}}
+API PROCESS bench-original-N512-H4096-fused-rep2 {"ac_over_tl": {"tilelang_current_pre_h4096": 1.0404176192148296, "tilelang_upstream_big_fuse_bound_h4096": 1.078754674123751, "tilelang_upstream_big_fuse_h4096": 0.642341722199639}, "ascendc_original_fused_h4096": {"event_us": 27.53638982772827, "wall_us": 27.92864019284025}, "tilelang_current_pre_h4096": {"event_us": 26.466670036315918, "wall_us": 26.860034849960357}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 25.52609086036682, "wall_us": 25.909864925779402}, "tilelang_upstream_big_fuse_h4096": {"event_us": 42.868754863739014, "wall_us": 43.30800496973097}}
+API PROCESS bench-original-N512-H4096-fused-rep3 {"ac_over_tl": {"tilelang_current_pre_h4096": 1.0560408110286272, "tilelang_upstream_big_fuse_bound_h4096": 1.0779700934711893, "tilelang_upstream_big_fuse_h4096": 0.652951301240773}, "ascendc_original_fused_h4096": {"event_us": 27.564159631729126, "wall_us": 27.945170004386455}, "tilelang_current_pre_h4096": {"event_us": 26.101415157318115, "wall_us": 26.480370142962784}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 25.570430755615234, "wall_us": 25.915024743881077}, "tilelang_upstream_big_fuse_h4096": {"event_us": 42.21472501754761, "wall_us": 42.65172523446381}}
+API PROCESS bench-original-N512-H5120-rep1 {"ascendc_original_pre_sinkhorn": {"event_us": 40.33177852630615, "wall_us": 40.74821976246312}}
+API PROCESS bench-original-N512-H5120-rep2 {"ascendc_original_pre_sinkhorn": {"event_us": 40.35898447036743, "wall_us": 40.79323465703055}}
+API PROCESS bench-original-N512-H5120-rep3 {"ascendc_original_pre_sinkhorn": {"event_us": 40.435991287231445, "wall_us": 40.86324479430914}}
+API PROCESS bench-original-N64-H4096-fused-rep1 {"ac_over_tl": {"tilelang_current_pre_h4096": 0.7830537473436122, "tilelang_upstream_big_fuse_bound_h4096": 0.9599799798130865, "tilelang_upstream_big_fuse_h4096": 0.48388261249379527}, "ascendc_original_fused_h4096": {"event_us": 21.140635013580322, "wall_us": 21.74236491555348}, "tilelang_current_pre_h4096": {"event_us": 26.9976806640625, "wall_us": 27.52522996161133}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 22.02195405960083, "wall_us": 22.461990301962942}, "tilelang_upstream_big_fuse_h4096": {"event_us": 43.68959426879883, "wall_us": 44.172560155857354}}
+API PROCESS bench-original-N64-H4096-fused-rep2 {"ac_over_tl": {"tilelang_current_pre_h4096": 1.0226535713574234, "tilelang_upstream_big_fuse_bound_h4096": 1.144725297289182, "tilelang_upstream_big_fuse_h4096": 0.6059527669080383}, "ascendc_original_fused_h4096": {"event_us": 24.72285509109497, "wall_us": 25.159589713439345}, "tilelang_current_pre_h4096": {"event_us": 24.17520046234131, "wall_us": 24.64276010869071}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 21.59719467163086, "wall_us": 22.01151510234922}, "tilelang_upstream_big_fuse_h4096": {"event_us": 40.799970626831055, "wall_us": 41.33154492592439}}
+API PROCESS bench-original-N64-H4096-fused-rep3 {"ac_over_tl": {"tilelang_current_pre_h4096": 0.6029591812792373, "tilelang_upstream_big_fuse_bound_h4096": 0.675610088928641, "tilelang_upstream_big_fuse_h4096": 0.3600067470660617}, "ascendc_original_fused_h4096": {"event_us": 14.796289801597595, "wall_us": 15.180019836407155}, "tilelang_current_pre_h4096": {"event_us": 24.53945517539978, "wall_us": 24.903955054469407}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 21.900634765625, "wall_us": 22.201400133781135}, "tilelang_upstream_big_fuse_h4096": {"event_us": 41.10003471374512, "wall_us": 41.48061474552378}}
+API PROCESS bench-original-N64-H5120-rep1 {"ascendc_original_pre_sinkhorn": {"event_us": 19.4251149892807, "wall_us": 19.82443471206352}}
+API PROCESS bench-original-N64-H5120-rep2 {"ascendc_original_pre_sinkhorn": {"event_us": 29.15848970413208, "wall_us": 29.651425138581544}}
+API PROCESS bench-original-N64-H5120-rep3 {"ascendc_original_pre_sinkhorn": {"event_us": 29.4521701335907, "wall_us": 29.95077462401241}}
+API PROCESS bench-original-N8192-H4096-fused-rep1 {"ac_over_tl": {"tilelang_current_pre_h4096": 1.19010917867665, "tilelang_upstream_big_fuse_bound_h4096": 1.285832926346236, "tilelang_upstream_big_fuse_h4096": 1.2860571785686588}, "ascendc_original_fused_h4096": {"event_us": 616.4666938781738, "wall_us": 617.3769297311082}, "tilelang_current_pre_h4096": {"event_us": 517.9917144775391, "wall_us": 518.7723750714213}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 479.4298553466797, "wall_us": 480.33903003670275}, "tilelang_upstream_big_fuse_h4096": {"event_us": 479.3462562561035, "wall_us": 480.0754296593368}}
+API PROCESS bench-original-N8192-H4096-fused-rep2 {"ac_over_tl": {"tilelang_current_pre_h4096": 1.182734231331093, "tilelang_upstream_big_fuse_bound_h4096": 1.268350450271214, "tilelang_upstream_big_fuse_h4096": 1.2677675600401381}, "ascendc_original_fused_h4096": {"event_us": 618.5599327087402, "wall_us": 619.2440798622556}, "tilelang_current_pre_h4096": {"event_us": 522.9914855957031, "wall_us": 523.6793347285129}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 487.68850326538086, "wall_us": 488.2951598847285}, "tilelang_upstream_big_fuse_h4096": {"event_us": 487.9127311706543, "wall_us": 488.5638697305694}}
+API PROCESS bench-original-N8192-H4096-fused-rep3 {"ac_over_tl": {"tilelang_current_pre_h4096": 1.182348629938221, "tilelang_upstream_big_fuse_bound_h4096": 1.2654104426846424, "tilelang_upstream_big_fuse_h4096": 1.2651445124085892}, "ascendc_original_fused_h4096": {"event_us": 617.1806716918945, "wall_us": 617.7396702696569}, "tilelang_current_pre_h4096": {"event_us": 521.9955062866211, "wall_us": 522.8103851550259}, "tilelang_upstream_big_fuse_bound_h4096": {"event_us": 487.7316093444824, "wall_us": 488.4694251813926}, "tilelang_upstream_big_fuse_h4096": {"event_us": 487.8341293334961, "wall_us": 488.49281010916457}}
+API PROCESS bench-original-N8192-H5120-rep1 {"ascendc_original_pre_sinkhorn": {"event_us": 713.5388565063477, "wall_us": 714.1015597153455}}
+API PROCESS bench-original-N8192-H5120-rep2 {"ascendc_original_pre_sinkhorn": {"event_us": 705.5801010131836, "wall_us": 706.095999921672}}
+API PROCESS bench-original-N8192-H5120-rep3 {"ascendc_original_pre_sinkhorn": {"event_us": 706.0416793823242, "wall_us": 706.8859349237755}}
+API MEDIAN bench-original-N128-H4096-fused ascendc_original_fused_h4096 processes= 3 event_us= 24.62199 wall_us= 25.124285
+API MEDIAN bench-original-N128-H4096-fused tilelang_current_pre_h4096 processes= 3 event_us= 24.462925 wall_us= 24.95543
+API MEDIAN bench-original-N128-H4096-fused tilelang_upstream_big_fuse_bound_h4096 processes= 3 event_us= 24.16371 wall_us= 24.608665
+API MEDIAN bench-original-N128-H4096-fused tilelang_upstream_big_fuse_h4096 processes= 3 event_us= 41.025436 wall_us= 41.703705
+API MEDIAN bench-original-N128-H5120 ascendc_original_pre_sinkhorn processes= 3 event_us= 37.804805 wall_us= 38.4648
+API MEDIAN bench-original-N256-H4096-fused ascendc_original_fused_h4096 processes= 3 event_us= 21.33373 wall_us= 21.869405
+API MEDIAN bench-original-N256-H4096-fused tilelang_current_pre_h4096 processes= 3 event_us= 24.785695 wall_us= 25.18413
+API MEDIAN bench-original-N256-H4096-fused tilelang_upstream_big_fuse_bound_h4096 processes= 3 event_us= 24.740424 wall_us= 25.18207
+API MEDIAN bench-original-N256-H4096-fused tilelang_upstream_big_fuse_h4096 processes= 3 event_us= 41.652739 wall_us= 42.245465
+API MEDIAN bench-original-N256-H5120 ascendc_original_pre_sinkhorn processes= 3 event_us= 31.26858 wall_us= 31.762745
+API MEDIAN bench-original-N512-H4096-fused ascendc_original_fused_h4096 processes= 3 event_us= 27.56394 wall_us= 27.94517
+API MEDIAN bench-original-N512-H4096-fused tilelang_current_pre_h4096 processes= 3 event_us= 26.101415 wall_us= 26.48037
+API MEDIAN bench-original-N512-H4096-fused tilelang_upstream_big_fuse_bound_h4096 processes= 3 event_us= 25.570431 wall_us= 25.915025
+API MEDIAN bench-original-N512-H4096-fused tilelang_upstream_big_fuse_h4096 processes= 3 event_us= 42.214725 wall_us= 42.651725
+API MEDIAN bench-original-N512-H5120 ascendc_original_pre_sinkhorn processes= 3 event_us= 40.358984 wall_us= 40.793235
+API MEDIAN bench-original-N64-H4096-fused ascendc_original_fused_h4096 processes= 3 event_us= 21.140635 wall_us= 21.742365
+API MEDIAN bench-original-N64-H4096-fused tilelang_current_pre_h4096 processes= 3 event_us= 24.539455 wall_us= 24.903955
+API MEDIAN bench-original-N64-H4096-fused tilelang_upstream_big_fuse_bound_h4096 processes= 3 event_us= 21.900635 wall_us= 22.2014
+API MEDIAN bench-original-N64-H4096-fused tilelang_upstream_big_fuse_h4096 processes= 3 event_us= 41.100035 wall_us= 41.480615
+API MEDIAN bench-original-N64-H5120 ascendc_original_pre_sinkhorn processes= 3 event_us= 29.15849 wall_us= 29.651425
+API MEDIAN bench-original-N8192-H4096-fused ascendc_original_fused_h4096 processes= 3 event_us= 617.180672 wall_us= 617.73967
+API MEDIAN bench-original-N8192-H4096-fused tilelang_current_pre_h4096 processes= 3 event_us= 521.995506 wall_us= 522.810385
+API MEDIAN bench-original-N8192-H4096-fused tilelang_upstream_big_fuse_bound_h4096 processes= 3 event_us= 487.688503 wall_us= 488.29516
+API MEDIAN bench-original-N8192-H4096-fused tilelang_upstream_big_fuse_h4096 processes= 3 event_us= 487.834129 wall_us= 488.49281
+API MEDIAN bench-original-N8192-H5120 ascendc_original_pre_sinkhorn processes= 3 event_us= 706.041679 wall_us= 706.885935
 PROFILE profile-N128-H4096-fused kernel CSV files= 1
-CSV profile-N128-H4096-fused/profile/ubuntu162_810078_20261031152540622_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N128-H4096-fused/profile/ubuntu162_956569_20261031160629042_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 30 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn count= 30 mean_us= 13.840267 median_us= 13.7975 sum_us= 415.208
-DEVICE summed_duration_us= 415.208
+KERNEL aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn count= 30 mean_us= 13.7749 median_us= 13.8255 sum_us= 413.247
+DEVICE summed_duration_us= 413.247
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N128-H4096-tilelang kernel CSV files= 1
-CSV profile-N128-H4096-tilelang/profile/ubuntu162_811198_20261031152552704_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N128-H4096-tilelang/profile/ubuntu162_957298_20261031160641268_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.416333 median_us= 5.203 sum_us= 162.49
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 2.947567 median_us= 2.8945 sum_us= 88.427
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.310033 median_us= 13.291 sum_us= 399.301
-DEVICE summed_duration_us= 650.218
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.5 median_us= 5.3975 sum_us= 165.0
+KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 2.827833 median_us= 2.6725 sum_us= 84.835
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.480133 median_us= 13.456 sum_us= 404.404
+DEVICE summed_duration_us= 654.239
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-N128-H4096-upstream kernel CSV files= 1
+CSV profile-N128-H4096-upstream/profile/ubuntu162_958408_20261031160653110_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 60 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_big_fuse_fwd_asc_kernel count= 30 mean_us= 10.8677 median_us= 10.6995 sum_us= 326.031
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.442433 median_us= 13.4415 sum_us= 403.273
+DEVICE summed_duration_us= 729.304
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-N128-H4096-upstream-bound kernel CSV files= 1
+CSV profile-N128-H4096-upstream-bound/profile/ubuntu162_960008_20261031160705261_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 60 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_big_fuse_fwd_asc_kernel count= 30 mean_us= 10.8301 median_us= 10.7895 sum_us= 324.903
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.444633 median_us= 13.44 sum_us= 403.339
+DEVICE summed_duration_us= 728.242
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N128-H5120 kernel CSV files= 1
-CSV profile-N128-H5120/profile/ubuntu162_809123_20261031152528214_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N128-H5120/profile/ubuntu162_955898_20261031160617465_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 60 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcPreV2_MhcPre_MhcPre count= 30 mean_us= 15.213267 median_us= 15.1845 sum_us= 456.398
-KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 6.368333 median_us= 6.2735 sum_us= 191.05
-DEVICE summed_duration_us= 647.448
+KERNEL aclnnMhcPreV2_MhcPre_MhcPre count= 30 mean_us= 15.311733 median_us= 15.2655 sum_us= 459.352
+KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 6.386433 median_us= 6.351 sum_us= 191.593
+DEVICE summed_duration_us= 650.945
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N256-H4096-fused kernel CSV files= 1
-CSV profile-N256-H4096-fused/profile/ubuntu162_813585_20261031152613809_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N256-H4096-fused/profile/ubuntu162_962097_20261031160726063_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 30 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn count= 30 mean_us= 18.9105 median_us= 18.814 sum_us= 567.315
-DEVICE summed_duration_us= 567.315
+KERNEL aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn count= 30 mean_us= 18.852 median_us= 18.8875 sum_us= 565.56
+DEVICE summed_duration_us= 565.56
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N256-H4096-tilelang kernel CSV files= 1
-CSV profile-N256-H4096-tilelang/profile/ubuntu162_814735_20261031152624934_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N256-H4096-tilelang/profile/ubuntu162_963542_20261031160738173_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.397167 median_us= 5.288 sum_us= 161.915
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 3.663367 median_us= 3.504 sum_us= 109.901
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.907133 median_us= 13.84 sum_us= 417.214
-DEVICE summed_duration_us= 689.03
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.6652 median_us= 5.4355 sum_us= 169.956
+KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 3.757633 median_us= 3.5135 sum_us= 112.729
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 14.019933 median_us= 14.0495 sum_us= 420.598
+DEVICE summed_duration_us= 703.283
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-N256-H4096-upstream kernel CSV files= 1
+CSV profile-N256-H4096-upstream/profile/ubuntu162_965663_20261031160750373_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 60 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_big_fuse_fwd_asc_kernel count= 30 mean_us= 10.991333 median_us= 10.826 sum_us= 329.74
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.751767 median_us= 13.7455 sum_us= 412.553
+DEVICE summed_duration_us= 742.293
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-N256-H4096-upstream-bound kernel CSV files= 1
+CSV profile-N256-H4096-upstream-bound/profile/ubuntu162_967011_20261031160802205_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 60 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_big_fuse_fwd_asc_kernel count= 30 mean_us= 11.1003 median_us= 11.026 sum_us= 333.009
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.9477 median_us= 13.963 sum_us= 418.431
+DEVICE summed_duration_us= 751.44
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N256-H5120 kernel CSV files= 1
-CSV profile-N256-H5120/profile/ubuntu162_812254_20261031152601683_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N256-H5120/profile/ubuntu162_961145_20261031160714563_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 60 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcPreV2_MhcPre_MhcPre count= 30 mean_us= 20.142367 median_us= 20.197 sum_us= 604.271
-KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 6.989267 median_us= 6.906 sum_us= 209.678
-DEVICE summed_duration_us= 813.949
+KERNEL aclnnMhcPreV2_MhcPre_MhcPre count= 30 mean_us= 20.4337 median_us= 20.365 sum_us= 613.011
+KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 7.0862 median_us= 7.017 sum_us= 212.586
+DEVICE summed_duration_us= 825.597
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N512-H4096-fused kernel CSV files= 1
-CSV profile-N512-H4096-fused/profile/ubuntu162_818006_20261031152646229_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N512-H4096-fused/profile/ubuntu162_969605_20261031160823460_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 30 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn count= 30 mean_us= 27.5808 median_us= 27.574 sum_us= 827.424
-DEVICE summed_duration_us= 827.424
+KERNEL aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn count= 30 mean_us= 27.6002 median_us= 27.555 sum_us= 828.006
+DEVICE summed_duration_us= 828.006
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N512-H4096-tilelang kernel CSV files= 1
-CSV profile-N512-H4096-tilelang/profile/ubuntu162_819715_20261031152658576_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N512-H4096-tilelang/profile/ubuntu162_970336_20261031160835383_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.776033 median_us= 5.708 sum_us= 173.281
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 5.592233 median_us= 5.4585 sum_us= 167.767
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 14.092167 median_us= 13.9645 sum_us= 422.765
-DEVICE summed_duration_us= 763.813
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.880767 median_us= 5.769 sum_us= 176.423
+KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 5.642633 median_us= 5.492 sum_us= 169.279
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.969567 median_us= 13.9155 sum_us= 419.087
+DEVICE summed_duration_us= 764.789
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-N512-H4096-upstream kernel CSV files= 1
+CSV profile-N512-H4096-upstream/profile/ubuntu162_971048_20261031160847227_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 60 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_big_fuse_fwd_asc_kernel count= 30 mean_us= 11.665433 median_us= 11.6595 sum_us= 349.963
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 14.0564 median_us= 13.9825 sum_us= 421.692
+DEVICE summed_duration_us= 771.655
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-N512-H4096-upstream-bound kernel CSV files= 1
+CSV profile-N512-H4096-upstream-bound/profile/ubuntu162_971764_20261031160859154_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 60 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_big_fuse_fwd_asc_kernel count= 30 mean_us= 11.625967 median_us= 11.509 sum_us= 348.779
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 14.111533 median_us= 14.119 sum_us= 423.346
+DEVICE summed_duration_us= 772.125
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N512-H5120 kernel CSV files= 1
-CSV profile-N512-H5120/profile/ubuntu162_816526_20261031152634029_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N512-H5120/profile/ubuntu162_968679_20261031160811779_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 60 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcPreV2_MhcPre_MhcPre count= 30 mean_us= 31.240767 median_us= 31.1265 sum_us= 937.223
-KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 9.197167 median_us= 9.067 sum_us= 275.915
-DEVICE summed_duration_us= 1213.138
+KERNEL aclnnMhcPreV2_MhcPre_MhcPre count= 30 mean_us= 31.2478 median_us= 31.231 sum_us= 937.434
+KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 9.175367 median_us= 9.0815 sum_us= 275.261
+DEVICE summed_duration_us= 1212.695
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N64-H4096-fused kernel CSV files= 1
-CSV profile-N64-H4096-fused/profile/ubuntu162_807065_20261031152506645_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N64-H4096-fused/profile/ubuntu162_951956_20261031160532267_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 30 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn count= 30 mean_us= 11.2111 median_us= 11.171 sum_us= 336.333
-DEVICE summed_duration_us= 336.333
+KERNEL aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn count= 30 mean_us= 11.186033 median_us= 11.09 sum_us= 335.581
+DEVICE summed_duration_us= 335.581
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N64-H4096-tilelang kernel CSV files= 1
-CSV profile-N64-H4096-tilelang/profile/ubuntu162_808099_20261031152518630_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N64-H4096-tilelang/profile/ubuntu162_953414_20261031160544380_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.3374 median_us= 5.0955 sum_us= 160.122
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 2.466433 median_us= 2.339 sum_us= 73.993
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 11.249967 median_us= 11.2365 sum_us= 337.499
-DEVICE summed_duration_us= 571.614
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.691133 median_us= 5.5575 sum_us= 170.734
+KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 2.616767 median_us= 2.4775 sum_us= 78.503
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 10.944633 median_us= 10.9555 sum_us= 328.339
+DEVICE summed_duration_us= 577.576
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-N64-H4096-upstream kernel CSV files= 1
+CSV profile-N64-H4096-upstream/profile/ubuntu162_954334_20261031160556183_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 60 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_big_fuse_fwd_asc_kernel count= 30 mean_us= 10.828133 median_us= 10.6395 sum_us= 324.844
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 10.917367 median_us= 10.932 sum_us= 327.521
+DEVICE summed_duration_us= 652.365
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-N64-H4096-upstream-bound kernel CSV files= 1
+CSV profile-N64-H4096-upstream-bound/profile/ubuntu162_955184_20261031160607979_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 60 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_big_fuse_fwd_asc_kernel count= 30 mean_us= 10.765767 median_us= 10.6345 sum_us= 322.973
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 10.928767 median_us= 10.932 sum_us= 327.863
+DEVICE summed_duration_us= 650.836
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N64-H5120 kernel CSV files= 1
-CSV profile-N64-H5120/profile/ubuntu162_806114_20261031152454319_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N64-H5120/profile/ubuntu162_950568_20261031160519811_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 60 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcPreV2_MhcPre_MhcPre count= 30 mean_us= 13.711433 median_us= 13.62 sum_us= 411.343
-KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 6.052667 median_us= 6.075 sum_us= 181.58
-DEVICE summed_duration_us= 592.923
+KERNEL aclnnMhcPreV2_MhcPre_MhcPre count= 30 mean_us= 13.807233 median_us= 13.8425 sum_us= 414.217
+KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 6.036767 median_us= 5.991 sum_us= 181.103
+DEVICE summed_duration_us= 595.32
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N8192-H4096-fused kernel CSV files= 1
-CSV profile-N8192-H4096-fused/profile/ubuntu162_822612_20261031152724353_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N8192-H4096-fused/profile/ubuntu162_973174_20261031160925543_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 30 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn count= 30 mean_us= 613.962533 median_us= 614.1945 sum_us= 18418.876
-DEVICE summed_duration_us= 18418.876
+KERNEL aclnnMhcPreSinkhorn_MhcPreSinkhornAiCore_MhcPreSinkhorn count= 30 mean_us= 611.494333 median_us= 612.217 sum_us= 18344.83
+DEVICE summed_duration_us= 18344.83
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N8192-H4096-tilelang kernel CSV files= 1
-CSV profile-N8192-H4096-tilelang/profile/ubuntu162_823851_20261031152738283_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N8192-H4096-tilelang/profile/ubuntu162_974235_20261031160941007_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 34.4831 median_us= 34.4655 sum_us= 1034.493
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 224.2126 median_us= 223.965 sum_us= 6726.378
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 261.366867 median_us= 262.9285 sum_us= 7841.006
-DEVICE summed_duration_us= 15601.877
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 34.622133 median_us= 34.551 sum_us= 1038.664
+KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 223.8542 median_us= 223.759 sum_us= 6715.626
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 261.351467 median_us= 261.5155 sum_us= 7840.544
+DEVICE summed_duration_us= 15594.834
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-N8192-H4096-upstream kernel CSV files= 1
+CSV profile-N8192-H4096-upstream/profile/ubuntu162_975017_20261031160956208_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 60 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_big_fuse_fwd_asc_kernel count= 30 mean_us= 231.938333 median_us= 231.515 sum_us= 6958.15
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 247.3723 median_us= 246.3395 sum_us= 7421.169
+DEVICE summed_duration_us= 14379.319
+NOTE: summed durations are device work, not elapsed latency when kernels overlap.
+PROFILE profile-N8192-H4096-upstream-bound kernel CSV files= 1
+CSV profile-N8192-H4096-upstream-bound/profile/ubuntu162_975816_20261031161012585_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
+ROWS 60 invalid durations= 0 expected API calls=30
+KERNEL mhc_pre_big_fuse_fwd_asc_kernel count= 30 mean_us= 231.6778 median_us= 231.275 sum_us= 6950.334
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 244.970667 median_us= 246.2695 sum_us= 7349.12
+DEVICE summed_duration_us= 14299.454
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 PROFILE profile-N8192-H5120 kernel CSV files= 1
-CSV profile-N8192-H5120/profile/ubuntu162_821397_20261031152709719_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+CSV profile-N8192-H5120/profile/ubuntu162_972484_20261031160909898_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Step Id", "Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 60 invalid durations= 0 expected API calls=30
-KERNEL aclnnMhcPreV2_MhcPre_MhcPre count= 30 mean_us= 647.6812 median_us= 646.8825 sum_us= 19430.436
-KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 45.915867 median_us= 45.9395 sum_us= 1377.476
-DEVICE summed_duration_us= 20807.912
+KERNEL aclnnMhcPreV2_MhcPre_MhcPre count= 30 mean_us= 646.2991 median_us= 646.154 sum_us= 19388.973
+KERNEL aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn count= 30 mean_us= 45.946367 median_us= 45.9355 sum_us= 1378.391
+DEVICE summed_duration_us= 20767.364
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-FILES: correctness= 71 API summaries= 30 profile directories= 15
-Expected for all mode: 71 correctness files, 30 API summaries, 15 profile directories.
-SELECTED bench results/mhc-original/20261031-151644-all-752313
-SELECTED profile results/mhc-original/20261031-151644-all-752313
+FILES: correctness= 81 API summaries= 30 profile directories= 25
+Expected for all mode: 81 correctness files, 30 API summaries, 25 profile directories.
+SELECTED bench results/mhc-original/20261031-155758-all-916634
+SELECTED profile results/mhc-original/20261031-155758-all-916634
 Offline collection complete. No kernels executed.
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
