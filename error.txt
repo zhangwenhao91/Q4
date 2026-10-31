@@ -1,154 +1,58 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_fusion.sh smoke
-Results: /home/z30086261/Q4/results/mhc-fusion/20261031-101902-smoke-219948
+Results: /home/z30086261/Q4/results/mhc-fusion/20261031-103420-smoke-247642
 Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
 ninja: no work to do.
 {'implementation': 'deepgemm_tilelang', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.650393846869457e-05, 'relative_l2': 1.4213531521271786e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
-{'implementation': 'deepgemm_tilelang', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.004338264465332e-05, 'rmse': 2.9094861555958277e-06, 'relative_l2': 5.8925793939754315e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-{'implementation': 'deepgemm_tilelang', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.104043960571289e-05, 'rmse': 5.806925829843674e-06, 'relative_l2': 5.956053951391252e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-{'implementation': 'deepgemm_tilelang', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.344650268554688e-06, 'rmse': 2.132164680561753e-06, 'relative_l2': 8.500920204112687e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-2026-10-31 10:19:19  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_coeff_tail_fwd_asc` with `out_idx=None`
-Traceback (most recent call last):
-  File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 290, in <module>
-    if __name__=='__main__': main()
-                             ^^^^^^
-  File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 151, in main
-    outputs=tuple(fn());torch.npu.synchronize()
-                  ^^^^
-  File "/home/z30086261/Q4/operators/spec_v1/mhc_fusion.py", line 41, in coeff_fused
-    mhc_coeff_tail_fwd_asc(raw, sq, alpha, bias, pre, post, comb,
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 555, in __call__
-    kernel = self.compile(*args, **kwargs)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 470, in compile
-    kernel_result = compile(
-                    ^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 166, in compile
-    return cached(
-           ^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/__init__.py", line 91, in cached
-    return cache.cached(
-           ^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/kernel_cache.py", line 427, in cached
-    kernel = JITKernel(
-             ^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 140, in __init__
-    adapter = self._compile_and_create_adapter(func, out_idx)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 280, in _compile_and_create_adapter
-    self.artifact = self._compile_artifact(tilelang_func, pass_configs, compile_metadata)
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 321, in _compile_artifact
-    artifact = lower_with_context(
-               ^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/engine/lower.py", line 165, in lower_with_context
-    return _lower_with_context_impl(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/engine/lower.py", line 184, in _lower_with_context_impl
-    host_mod, device_mod, params, target, target_host = lower_to_host_device_ir(
-                                                        ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/engine/lower.py", line 136, in lower_to_host_device_ir
-    mod = context.lower(mod)
-          ^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/backend/module.py", line 214, in lower
-    return self.module.lower(mod, self.target)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/backend/module.py", line 115, in lower
-    return self.get_pipeline(target).lower(mod, target)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/backend/pass_pipeline/pipeline.py", line 31, in lower
-    return self._lower(mod, target)
-           ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/ascend/pipeline.py", line 122, in AscendPassPipelineBody
-    mod = ascend_transform.AscendLowerTileOp()(mod)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm/ir/transform.py", line 171, in __call__
-    return _ffi_transform_api.RunPass(self, mod)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
-  File "<unknown>", line 0, in tvm::transform::Pass::operator()(tvm::IRModule) const
-  File "<unknown>", line 0, in tvm::transform::Pass::operator()(tvm::IRModule, tvm::transform::PassContext const&) const
-  File "<unknown>", line 0, in tvm::tirx::transform::PrimFuncPassNode::operator()(tvm::IRModule, tvm::transform::PassContext const&) const
-  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::Substitute(tvm::tirx::PrimFunc)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::SBlockNode const*)
-  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::SBlockNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::SBlockNode const*)
-  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::SBlockNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::SBlockNode const*)
-  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::SBlockNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#9}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in non-virtual thunk to tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::SeqStmtNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SeqStmtNode const*)
-  File "<unknown>", line 0, in tvm::ffi::ObjectPtr<tvm::ffi::Object> tvm::ffi::Array<tvm::tirx::Stmt, void>::MapHelper<tvm::tirx::StmtMutator::Internal::Mutate(tvm::tirx::StmtMutator*, tvm::ffi::Array<tvm::tirx::Stmt, void> const&)::{lambda(tvm::tirx::Stmt const&)#1}, tvm::tirx::Stmt>(tvm::ffi::ObjectPtr<tvm::ffi::Object>, tvm::tirx::StmtMutator::Internal::Mutate(tvm::tirx::StmtMutator*, tvm::ffi::Array<tvm::tirx::Stmt, void> const&)::{lambda(tvm::tirx::Stmt const&)#1})
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#4}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::ForNode const*)
-  File "<unknown>", line 0, in tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::ForNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::ForNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#9}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in non-virtual thunk to tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::SeqStmtNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SeqStmtNode const*)
-  File "<unknown>", line 0, in tvm::ffi::ObjectPtr<tvm::ffi::Object> tvm::ffi::Array<tvm::tirx::Stmt, void>::MapHelper<tvm::tirx::StmtMutator::Internal::Mutate(tvm::tirx::StmtMutator*, tvm::ffi::Array<tvm::tirx::Stmt, void> const&)::{lambda(tvm::tirx::Stmt const&)#1}, tvm::tirx::Stmt>(tvm::ffi::ObjectPtr<tvm::ffi::Object>, tvm::tirx::StmtMutator::Internal::Mutate(tvm::tirx::StmtMutator*, tvm::ffi::Array<tvm::tirx::Stmt, void> const&)::{lambda(tvm::tirx::Stmt const&)#1})
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#3}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in non-virtual thunk to tvm::arith::IRMutatorWithAnalyzer::VisitStmt_(tvm::tirx::IfThenElseNode const*)
-  File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-  File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-  File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#10}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-  File "<unknown>", line 0, in tvm::tl::ascend::LowerTileOpPass::VisitStmt_(tvm::tirx::EvaluateNode const*)
-  File "<unknown>", line 0, in tvm::tl::AscendCopyNode::Lower(tvm::tl::LowerArgs const&, tvm::arith::Analyzer*) const
-  File "<unknown>", line 0, in tvm::tl::ascend::AscendCopyImpl::Lower(tvm::tl::AscendCopyNode const&, tvm::tl::LowerArgs const&, tvm::arith::Analyzer*)
-  File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/op/copy.cc", line 487, in tvm::tirx::Stmt tvm::tl::ascend::{anonymous}::LowerDMACopy(const tvm::tl::AscendCopyNode&, const tvm::tl::LowerArgs&, tvm::arith::Analyzer*, tvm::tl::ascend::DMAPath)
-tvm.error.InternalError: Check failed: (!data_select || rb_plan > 0) is false: Ascend padded GM->UB copy (pad_value / data_select) requires a statically-known row byte length, got a symbolic row extent.
-[ERROR] 2026-10-31-10:19:22 (PID:220445, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+{'implementation': 'deepgemm_tilelang', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.004338264465332e-05, 'rmse': 2.9095567334882346e-06, 'relative_l2': 5.8927223353101646e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.104043960571289e-05, 'rmse': 5.80701813777207e-06, 'relative_l2': 5.9561486298868585e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.344650268554688e-06, 'rmse': 2.132017331723875e-06, 'relative_l2': 8.500332725704293e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+2026-10-31 10:34:27  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_coeff_tail_fwd_asc` with `out_idx=None`
+2026-10-31 10:34:31  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_coeff_tail_fwd_asc`
+{'implementation': 'tilelang_coeff_fused', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.650393846869457e-05, 'relative_l2': 1.4213531521271786e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'tilelang_coeff_fused', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.004338264465332e-05, 'rmse': 2.909385838137342e-06, 'relative_l2': 5.892376221127335e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_coeff_fused', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.104043960571289e-05, 'rmse': 5.806863692936114e-06, 'relative_l2': 5.955990218740853e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_coeff_fused', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.344650268554688e-06, 'rmse': 2.1320977357060784e-06, 'relative_l2': 8.500653295612909e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+2026-10-31 10:34:31  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_shifted_tail_apply_fwd_asc` with `out_idx=None`
+2026-10-31 10:34:38  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_shifted_tail_apply_fwd_asc`
+{'implementation': 'tilelang_apply_fused', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.650393846869457e-05, 'relative_l2': 1.4213531521271786e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'tilelang_apply_fused', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.004338264465332e-05, 'rmse': 2.9093923223569773e-06, 'relative_l2': 5.892389353610862e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_apply_fused', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.104043960571289e-05, 'rmse': 5.807077883221836e-06, 'relative_l2': 5.956209909664244e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_apply_fused', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.344650268554688e-06, 'rmse': 2.1320847113439703e-06, 'relative_l2': 8.50060136760566e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 9.864568710327148e-06, 'rmse': 2.9100186149598345e-06, 'relative_l2': 5.893657783391529e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.104043960571289e-05, 'rmse': 5.805560457073478e-06, 'relative_l2': 5.954653514374947e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'ascendc_shifted_native', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.434057235717773e-06, 'rmse': 2.1303350368129735e-06, 'relative_l2': 8.493625431972371e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang_vs_tilelang_coeff_fused', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'deepgemm_tilelang_vs_tilelang_coeff_fused', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 5.960464477539063e-08, 'rmse': 4.702948470768555e-09, 'relative_l2': 9.524877232839485e-09, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang_vs_tilelang_coeff_fused', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.1920928955078125e-07, 'rmse': 8.11908197317398e-09, 'relative_l2': 8.327590658798966e-09, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang_vs_tilelang_coeff_fused', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 5.960464477539063e-08, 'rmse': 7.880208082855888e-09, 'relative_l2': 3.141831465381507e-08, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang_vs_tilelang_apply_fused', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'deepgemm_tilelang_vs_tilelang_apply_fused', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 5.960464477539063e-08, 'rmse': 4.3682900814557725e-09, 'relative_l2': 8.847093902022746e-09, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang_vs_tilelang_apply_fused', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.1920928955078125e-07, 'rmse': 7.90253409579263e-09, 'relative_l2': 8.105481547958516e-09, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang_vs_tilelang_apply_fused', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 5.960464477539063e-08, 'rmse': 7.138452360758507e-09, 'relative_l2': 2.8460941632030737e-08, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang_vs_ascendc_shifted_native', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.650393846869457e-05, 'relative_l2': 1.4213531521271786e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'deepgemm_tilelang_vs_ascendc_shifted_native', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.980232238769531e-07, 'rmse': 5.789950878310782e-08, 'relative_l2': 1.172638223305185e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang_vs_ascendc_shifted_native', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 7.152557373046875e-07, 'rmse': 1.5832483768463135e-07, 'relative_l2': 1.623908272753064e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'deepgemm_tilelang_vs_ascendc_shifted_native', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.980232238769531e-07, 'rmse': 5.47434308841452e-08, 'relative_l2': 2.1826154050113127e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_coeff_fused_vs_tilelang_apply_fused', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'tilelang_coeff_fused_vs_tilelang_apply_fused', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 5.960464477539063e-08, 'rmse': 3.783050181640294e-09, 'relative_l2': 7.661808068818093e-09, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_coeff_fused_vs_tilelang_apply_fused', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.1920928955078125e-07, 'rmse': 7.213993642865526e-09, 'relative_l2': 7.399258472097952e-09, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_coeff_fused_vs_tilelang_apply_fused', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 5.960464477539063e-08, 'rmse': 6.982978784697514e-09, 'relative_l2': 2.784106996377954e-08, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_coeff_fused_vs_ascendc_shifted_native', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.650393846869457e-05, 'relative_l2': 1.4213531521271786e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'tilelang_coeff_fused_vs_ascendc_shifted_native', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.980232238769531e-07, 'rmse': 5.7888272341798185e-08, 'relative_l2': 1.1724106517618244e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_coeff_fused_vs_ascendc_shifted_native', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 7.152557373046875e-07, 'rmse': 1.58445315943187e-07, 'relative_l2': 1.6251439957363722e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_coeff_fused_vs_ascendc_shifted_native', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.8312206268310547e-07, 'rmse': 5.472634627142256e-08, 'relative_l2': 2.1819342431200162e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_apply_fused_vs_ascendc_shifted_native', 'output': 'layer_input', 'shape': [512, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 1.650393846869457e-05, 'relative_l2': 1.4213531521271786e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'tilelang_apply_fused_vs_ascendc_shifted_native', 'output': 'next_pre_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.980232238769531e-07, 'rmse': 5.790699853267451e-08, 'relative_l2': 1.1727899131348481e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_apply_fused_vs_ascendc_shifted_native', 'output': 'post_mix', 'shape': [512, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 7.152557373046875e-07, 'rmse': 1.582810046722507e-07, 'relative_l2': 1.6234586857364874e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_apply_fused_vs_ascendc_shifted_native', 'output': 'comb_mix', 'shape': [512, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.980232238769531e-07, 'rmse': 5.4737984195367625e-08, 'relative_l2': 2.1823982460455656e-07, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+Correctness passed. Implementations: ['deepgemm_tilelang', 'tilelang_coeff_fused', 'tilelang_apply_fused', 'ascendc_shifted_native']
+BASELINE: /home/z30086261/Q4/results/mhc-fusion/20261031-103420-smoke-247642
+CHECK smoke-N512 40/40 passed
+CHECK TOTAL: 40 failed: 0
+RAW PROJECTION CHECKS: 2 failed= 0
+FILES: correctness= 1 API summaries= 0 profile directories= 0
+Expected for smoke mode: 1 correctness files, 0 API summaries, 0 profile directories.
+Completed. Copy /home/z30086261/Q4/results/mhc-fusion/20261031-103420-smoke-247642/summary.txt to error.txt; no server push needed.
 (zwh) root@ubuntu162:/home/z30086261/Q4#
