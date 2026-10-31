@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Benchmark unmodified upstream PreV2 + Sinkhorn (current-pre semantics).
+# Benchmark original fused H4096 and PreV2 + Sinkhorn H5120.
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"
@@ -25,11 +25,18 @@ git status --short >> "$OUT/revision.txt"
 python -m pip freeze > "$OUT/pip-freeze.txt"
 npu-smi info > "$OUT/npu-smi.txt"
 
+run_one() {
+  local suite="$1" tag="$2" tokens="$3"
+  shift 3
+  python operators/spec_v1/bench.py --suite "$suite" --tokens "$tokens" \
+    --output "$OUT/$tag" "$@" 2>&1 | tee "$OUT/$tag.log"
+}
 run_case() {
   local tag="$1" tokens="$2"
   shift 2
-  python operators/spec_v1/bench.py --suite mhc_original --tokens "$tokens" \
-    --output "$OUT/$tag" "$@" 2>&1 | tee "$OUT/$tag.log"
+  if [[ "$tag" != *-rep* ]]; then tag="$tag-rep0"; fi
+  run_one mhc_original "${tag/-rep/-H5120-rep}" "$tokens" "$@"
+  run_one mhc_original_fused "${tag/-rep/-H4096-fused-rep}" "$tokens" "$@"
 }
 if [[ "$MODE" == smoke ]]; then
   run_case smoke-N128 128 --check-only
@@ -53,9 +60,8 @@ if [[ "$MODE" == bench || "$MODE" == all ]]; then
 fi
 if [[ "$MODE" == profile || "$MODE" == all ]]; then
   for tokens in 64 128 256 512 8192; do
-    for impl in ascendc_original_pre_sinkhorn; do
-      run_case "profile-N$tokens-$impl" "$tokens" --profile "$impl"
-    done
+    run_one mhc_original "profile-N$tokens-H5120" "$tokens" --profile ascendc_original_pre_sinkhorn
+    run_one mhc_original_fused "profile-N$tokens-H4096-fused" "$tokens" --profile ascendc_original_fused_h4096
   done
 fi
 python operators/mhc/summarize_baseline.py --input "$OUT" | tee "$OUT/summary.txt"
