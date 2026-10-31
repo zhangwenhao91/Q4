@@ -89,7 +89,12 @@ def main():
     split = (root / 'split-source.json').exists()
     mode_match = re.search(r'-(smoke|check|bench|profile|all)-\d+$', root.name)
     mode = mode_match.group(1) if mode_match else 'all'
-    if split:
+    original = any(json.loads(p.read_text()).get('arguments', {}).get('suite') in
+                   ('mhc_original', 'mhc_original_fused') for p in root.glob('*/metadata.json'))
+    if original:
+        expected = dict(smoke=(2, 0, 0), check=(26, 0, 0), bench=(30, 30, 0),
+                        profile=(10, 0, 10), all=(66, 30, 10))[mode]
+    elif split:
         expected = dict(smoke=(1, 0, 0), check=(16, 0, 0), bench=(15, 15, 0),
                         profile=(15, 0, 15), all=(46, 15, 15))[mode]
     elif bound:

@@ -1,0 +1,331 @@
+{
+  "evidence": "e1bf457:error.txt",
+  "run_revision": "a320f79ae99eae329f715a291948a91262eca14c",
+  "library_sha256": "b1c49b3b13d73058690b9fead1704dd97964a2261a98f70abcc0fdb22d6bf063",
+  "checks": 231,
+  "failed": 0,
+  "median_api": {
+    "128": {
+      "ascendc_original_fused_h4096": {
+        "event_us": 25.232679843902588,
+        "wall_us": 25.815520202741027
+      },
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 37.81548023223877,
+        "wall_us": 38.402199861593544
+      }
+    },
+    "256": {
+      "ascendc_original_fused_h4096": {
+        "event_us": 24.029860496520996,
+        "wall_us": 24.746020208112895
+      },
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 38.564350605010986,
+        "wall_us": 39.054580265656114
+      }
+    },
+    "512": {
+      "ascendc_original_fused_h4096": {
+        "event_us": 27.39382028579712,
+        "wall_us": 27.83876028843224
+      },
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 40.19038200378418,
+        "wall_us": 40.74851982295513
+      }
+    },
+    "64": {
+      "ascendc_original_fused_h4096": {
+        "event_us": 21.458721160888672,
+        "wall_us": 22.24516007117927
+      },
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 29.31838035583496,
+        "wall_us": 29.939409578219056
+      }
+    },
+    "8192": {
+      "ascendc_original_fused_h4096": {
+        "event_us": 615.3475189208984,
+        "wall_us": 616.0875904606655
+      },
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 715.5735015869141,
+        "wall_us": 716.065859887749
+      }
+    }
+  },
+  "processes": [
+    {
+      "tag": "bench-original-N128-H4096-fused-rep1",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 20.229690074920654,
+          "wall_us": 20.662900060415268
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N128-H4096-fused-rep2",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 25.232679843902588,
+          "wall_us": 25.8434604620561
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N128-H4096-fused-rep3",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 25.32494068145752,
+          "wall_us": 25.815520202741027
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N128-H5120-rep1",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 37.81548023223877,
+          "wall_us": 38.402199861593544
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N128-H5120-rep2",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 38.71783971786499,
+          "wall_us": 39.23004027456045
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N128-H5120-rep3",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 30.686988830566406,
+          "wall_us": 31.32408019155264
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N256-H4096-fused-rep1",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 20.712409019470215,
+          "wall_us": 21.07880951371044
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N256-H4096-fused-rep2",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 24.941279888153076,
+          "wall_us": 25.414020055904984
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N256-H4096-fused-rep3",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 24.029860496520996,
+          "wall_us": 24.746020208112895
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N256-H5120-rep1",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 38.564350605010986,
+          "wall_us": 39.054580265656114
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N256-H5120-rep2",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 30.977048873901367,
+          "wall_us": 31.54862963128835
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N256-H5120-rep3",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 43.301639556884766,
+          "wall_us": 44.029849814251065
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N512-H4096-fused-rep1",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 27.41797924041748,
+          "wall_us": 27.83876028843224
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N512-H4096-fused-rep2",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 27.39082098007202,
+          "wall_us": 27.78867958113551
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N512-H4096-fused-rep3",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 27.39382028579712,
+          "wall_us": 27.844670112244785
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N512-H5120-rep1",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 40.19038200378418,
+          "wall_us": 40.86028959136456
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N512-H5120-rep2",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 40.154829025268555,
+          "wall_us": 40.668200235813856
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N512-H5120-rep3",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 40.30379772186279,
+          "wall_us": 40.74851982295513
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N64-H4096-fused-rep1",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 25.02635955810547,
+          "wall_us": 25.502550415694714
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N64-H4096-fused-rep2",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 21.458721160888672,
+          "wall_us": 22.24516007117927
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N64-H4096-fused-rep3",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 20.969181060791016,
+          "wall_us": 21.55171998310834
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N64-H5120-rep1",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 29.73655939102173,
+          "wall_us": 30.365849961526692
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N64-H5120-rep2",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 26.61565065383911,
+          "wall_us": 27.01340999919921
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N64-H5120-rep3",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 29.31838035583496,
+          "wall_us": 29.939409578219056
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N8192-H4096-fused-rep1",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 616.2810897827148,
+          "wall_us": 616.9508903985843
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N8192-H4096-fused-rep2",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 615.1202392578125,
+          "wall_us": 615.6231003114954
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N8192-H4096-fused-rep3",
+      "data": {
+        "ascendc_original_fused_h4096": {
+          "event_us": 615.3475189208984,
+          "wall_us": 616.0875904606655
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N8192-H5120-rep1",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 711.5815734863281,
+          "wall_us": 712.0254897745326
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N8192-H5120-rep2",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 720.0741577148438,
+          "wall_us": 720.6453295657411
+        }
+      }
+    },
+    {
+      "tag": "bench-original-N8192-H5120-rep3",
+      "data": {
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 715.5735015869141,
+          "wall_us": 716.065859887749
+        }
+      }
+    }
+  ]
+}
