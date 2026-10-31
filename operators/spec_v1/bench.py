@@ -23,7 +23,7 @@ def implementation_order(labels,round_index):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--suite',choices=['mha','mha_bf16','mha_q64','mha_fma','mha_nostore','mha_rowfused','mha_rowbatch','mha_stages','mha_finalize','mha_qresident','mha_buffers','mha_firstpv','mha_pbuffer','mha_l2','mha_stats_split','mha_manual','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_fusion','mhc_shifted_bound','mhc_shifted_split','mhc_original','mhc_original_fused'],required=True)
+    p.add_argument('--suite',choices=['mha','mha_bf16','mha_q64','mha_fma','mha_nostore','mha_rowfused','mha_rowbatch','mha_stages','mha_finalize','mha_qresident','mha_buffers','mha_firstpv','mha_pbuffer','mha_l2','mha_stats_split','mha_manual','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_fusion','mhc_shifted_bound','mhc_shifted_split','mhc_original','mhc_original_fused','mhc_original_big5120'],required=True)
     p.add_argument('--tokens',type=int,default=512,help='mHC only; MHA is fixed at 4096')
     p.add_argument('--seed',type=int,default=42)
     p.add_argument('--mhc-pattern',choices=['random','zero','prev_zero','prev_basis'],default='random',
@@ -54,7 +54,7 @@ def main():
     torch.manual_seed(a.seed);torch.npu.set_device(0)
     torch.npu.matmul.allow_hf32=True
     with torch.no_grad():
-        if a.suite in ('mhc_original','mhc_original_fused'):
+        if a.suite in ('mhc_original','mhc_original_fused','mhc_original_big5120'):
             from mhc_original import make_case
             functions,refs,names,meta=make_case(a)
         elif a.suite=='mha_stats_split':
@@ -212,6 +212,9 @@ def main():
             first,second=list(functions)
             summary['ratio']=dict(numerator=second,denominator=first,
                                   event_ratio=summary[second]['event_us']/summary[first]['event_us'])
+        if a.suite=='mhc_original_big5120':
+            summary['ac_over_tl']={label:summary['ascendc_original_pre_sinkhorn']['event_us']/summary[label]['event_us']
+                                   for label in functions if label.startswith('tilelang_')}
         if a.suite=='mhc_original_fused':
             summary['ac_over_tl']={label:summary['ascendc_original_fused_h4096']['event_us']/summary[label]['event_us']
                                    for label in functions if label.startswith('tilelang_')}

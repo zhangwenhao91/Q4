@@ -4,7 +4,7 @@ import importlib
 from pathlib import Path
 
 
-def make_candidates(x, phi, alpha, bias):
+def make_candidates(x, phi, alpha, bias, x_cpu=None, phi_cpu=None):
     import torch
     from matched_case import DynamicHCProjection
     from tile_kernels.config import get_num_vec_cores
@@ -21,6 +21,12 @@ def make_candidates(x, phi, alpha, bias):
         if hashlib.sha256(path.read_text(encoding='utf-8').encode()).hexdigest() != expected:
             raise RuntimeError('Pinned upstream source mismatch: ' + str(path))
     projector = DynamicHCProjection(x, phi)
+    checks = None
+    if x_cpu is not None:
+        from fused_projection import check_projection
+        checks = check_projection(projector, x_cpu, phi_cpu, t, hidden)
+        if not all(item['passed'] for item in checks):
+            raise AssertionError('Raw projection check failed: ' + str(checks))
     padded = projector.padded
     settings = dict(rms_eps=1e-20, mhc_pre_eps=1e-6, mhc_sinkhorn_eps=1e-6,
         mhc_post_mult_value=2., sinkhorn_repeat=20, n_splits=1)
@@ -53,8 +59,9 @@ def make_candidates(x, phi, alpha, bias):
         tail(raw, sq.view(1,padded)[:,:t], alpha, bias, x, post, comb, hi)
         return hi, post.unsqueeze(-1), comb.view(t,4,4)
 
-    return dict(tilelang_upstream_big_fuse_h4096=public_wrapper,
-                tilelang_upstream_big_fuse_bound_h4096=bound), dict(
+    return {f'tilelang_upstream_big_fuse_h{hidden}':public_wrapper,
+            f'tilelang_upstream_big_fuse_bound_h{hidden}':bound}, dict(
+        projection_checks=checks, hc_source_sha256=projector.source_sha256,
         revision='c1cf914a82e6901c679445f872051ce44ac2cc63', source_sha256=hashes,
         kernel_changes=False, expected_kernels_per_call=2, per_call_allocations=4,
         semantics='original NEW-pre semantics, three main outputs; complete token tiles only',

@@ -10,6 +10,7 @@ from cases import ROOT, load_bridge, shifted_reference
 def make_case(a):
     import torch
     fused = a.suite == 'mhc_original_fused'
+    big5120 = a.suite == 'mhc_original_big5120'
     hidden = 4096 if fused else 5120
     vendor = ROOT / 'third_party/q4mhc-opp/vendors/q4mhc_transformer'
     if Path(os.environ.get('ASCEND_CUSTOM_OPP_PATH', '/missing')).resolve() != vendor.resolve():
@@ -40,6 +41,9 @@ def make_case(a):
     def original():
         hi, pre, post, logits = bridge.original_pre(x, phi, alpha, bias, 1e-20, 1e-6)
         comb = bridge.sinkhorn(logits, 1e-6, 20)
+        if big5120:
+            # Discard next_pre only at the return boundary; all native cache work remains timed.
+            return hi, post.unsqueeze(-1), comb
         return hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb
 
     def original_fused():
@@ -47,8 +51,8 @@ def make_case(a):
         return hi, post.unsqueeze(-1), comb.reshape(a.tokens, 4, 4)
 
     label = 'ascendc_original_fused_h4096' if fused else 'ascendc_original_pre_sinkhorn'
-    refs = (hi_ref, post_ref, comb_ref) if fused else (hi_ref, pre_ref, post_ref, comb_ref)
-    names = ['current_pre_layer_input', 'post_mix', 'comb_mix'] if fused else [
+    refs = (hi_ref, post_ref, comb_ref) if fused or big5120 else (hi_ref, pre_ref, post_ref, comb_ref)
+    names = ['current_pre_layer_input', 'post_mix', 'comb_mix'] if fused or big5120 else [
         'current_pre_layer_input', 'next_pre_mix', 'post_mix', 'comb_mix']
     functions = {label: original_fused if fused else original}
     tl_meta = None
@@ -63,16 +67,24 @@ def make_case(a):
             functions = {**functions, **upstream}
         else:
             upstream_meta = dict(skipped='Pinned upstream requires complete 16-token tiles; no padding adaptor added')
+    if big5120:
+        if a.tokens % 16:
+            raise ValueError('5120 upstream comparison requires N divisible by 16')
+        from mhc_upstream_big_fuse import make_candidates
+        upstream, upstream_meta = make_candidates(x, phi, alpha, bias, x0, phi0)
+        functions = {**upstream, **functions}
     return functions, refs, names, dict(
         tilelang_current_pre=tl_meta,
         tilelang_upstream_big_fuse=upstream_meta,
-        projection_checks=tl_meta['projection_checks'] if tl_meta else None,
-        hc_source_sha256=tl_meta['hc_source_sha256'] if tl_meta else None,
+        projection_checks=(tl_meta or upstream_meta or {}).get('projection_checks'),
+        hc_source_sha256=(tl_meta or upstream_meta or {}).get('hc_source_sha256'),
         comparison_available=True, original_source_revision=revision,
         original_library_sha256=hashlib.sha256(lib.read_bytes()).hexdigest(),
         contract=dict(N=a.tokens, hidden=hidden, hc_mult=4, norm_eps=1e-20,
                       pre_eps=1e-6, sinkhorn_eps=1e-6, repeat=20, post_mult=2),
         semantics='Unmodified upstream uses NEW pre for layer_input; not shifted semantics',
+        output_boundary_note=('Three main outputs compared; AC still computes next_pre and PreV2 caches, fully timed'
+                              if big5120 else None),
         timing_boundary=('Fused PreSinkhorn, needBackward=False; three main outputs, no next_pre output' if fused else
                          'PreV2 + Sinkhorn, four outputs plus PreV2 caches') +
                         '; all allocation/workspace included; no PyTorch apply; extension bound before timing',

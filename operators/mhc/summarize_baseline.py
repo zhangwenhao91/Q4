@@ -91,7 +91,12 @@ def main():
     mode = mode_match.group(1) if mode_match else 'all'
     original = any(json.loads(p.read_text()).get('arguments', {}).get('suite') in
                    ('mhc_original', 'mhc_original_fused') for p in root.glob('*/metadata.json'))
-    if original:
+    big5120 = any(json.loads(p.read_text()).get('arguments', {}).get('suite') == 'mhc_original_big5120'
+                  for p in root.glob('*/metadata.json'))
+    if big5120:
+        expected = dict(smoke=(1, 0, 0), check=(13, 0, 0), bench=(15, 15, 0),
+                        profile=(15, 0, 15), all=(43, 15, 15))[mode]
+    elif original:
         has_upstream = any('tilelang_upstream_big_fuse_h4096' in json.loads(p.read_text()).get('implementation_labels', [])
                            for p in root.glob('*/metadata.json'))
         has_tl = any('tilelang_current_pre_h4096' in json.loads(p.read_text()).get('implementation_labels', [])
