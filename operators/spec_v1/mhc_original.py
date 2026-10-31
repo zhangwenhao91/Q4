@@ -50,7 +50,16 @@ def make_case(a):
     refs = (hi_ref, post_ref, comb_ref) if fused else (hi_ref, pre_ref, post_ref, comb_ref)
     names = ['current_pre_layer_input', 'post_mix', 'comb_mix'] if fused else [
         'current_pre_layer_input', 'next_pre_mix', 'post_mix', 'comb_mix']
-    return {label: original_fused if fused else original}, refs, names, dict(
+    functions = {label: original_fused if fused else original}
+    tl_meta = None
+    if fused:
+        from mhc_current_pre import make_candidate
+        tl, tl_meta = make_candidate(x, phi, alpha, bias, x0, phi0)
+        functions = {'tilelang_current_pre_h4096': tl, **functions}
+    return functions, refs, names, dict(
+        tilelang_current_pre=tl_meta,
+        projection_checks=tl_meta['projection_checks'] if tl_meta else None,
+        hc_source_sha256=tl_meta['hc_source_sha256'] if tl_meta else None,
         comparison_available=True, original_source_revision=revision,
         original_library_sha256=hashlib.sha256(lib.read_bytes()).hexdigest(),
         contract=dict(N=a.tokens, hidden=hidden, hc_mult=4, norm_eps=1e-20,

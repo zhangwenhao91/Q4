@@ -92,8 +92,11 @@ def main():
     original = any(json.loads(p.read_text()).get('arguments', {}).get('suite') in
                    ('mhc_original', 'mhc_original_fused') for p in root.glob('*/metadata.json'))
     if original:
+        has_tl = any('tilelang_current_pre_h4096' in json.loads(p.read_text()).get('implementation_labels', [])
+                     for p in root.glob('*/metadata.json'))
         expected = dict(smoke=(2, 0, 0), check=(26, 0, 0), bench=(30, 30, 0),
-                        profile=(10, 0, 10), all=(66, 30, 10))[mode]
+                        profile=(15 if has_tl else 10, 0, 15 if has_tl else 10),
+                        all=(71 if has_tl else 66, 30, 15 if has_tl else 10))[mode]
     elif split:
         expected = dict(smoke=(1, 0, 0), check=(16, 0, 0), bench=(15, 15, 0),
                         profile=(15, 0, 15), all=(46, 15, 15))[mode]

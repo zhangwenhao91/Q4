@@ -54,7 +54,7 @@ fi
 if [[ "$MODE" == bench || "$MODE" == all ]]; then
   for rep in 1 2 3; do
     for tokens in 64 128 256 512 8192; do
-      run_case "bench-original-N$tokens-rep$rep" "$tokens" --warmup 100 --rounds 9 --iters 100
+      run_case "bench-original-N$tokens-rep$rep" "$tokens" --warmup 100 --rounds 12 --iters 100
     done
   done
 fi
@@ -62,6 +62,7 @@ if [[ "$MODE" == profile || "$MODE" == all ]]; then
   for tokens in 64 128 256 512 8192; do
     run_one mhc_original "profile-N$tokens-H5120" "$tokens" --profile ascendc_original_pre_sinkhorn
     run_one mhc_original_fused "profile-N$tokens-H4096-fused" "$tokens" --profile ascendc_original_fused_h4096
+    run_one mhc_original_fused "profile-N$tokens-H4096-tilelang" "$tokens" --profile tilelang_current_pre_h4096
   done
 fi
 python operators/mhc/summarize_baseline.py --input "$OUT" | tee "$OUT/summary.txt"

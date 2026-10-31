@@ -8,10 +8,10 @@ class DynamicHCProjection:
         import torch
         import deep_gemm
         from deep_gemm.tilelang_ops import hc_prenorm
-        if x.ndim != 3 or tuple(x.shape[1:]) != (4, 5120) or x.dtype != torch.bfloat16:
-            raise ValueError('Expected BF16 residual[N,4,5120]')
-        if phi.shape != (24, 20480) or phi.dtype != torch.float32:
-            raise ValueError('Expected FP32 fn[24,20480]')
+        if x.ndim != 3 or x.shape[1] != 4 or x.shape[2] not in (4096, 5120) or x.dtype != torch.bfloat16:
+            raise ValueError('Expected BF16 residual[N,4,H], H=4096 or 5120')
+        if phi.shape != (24, 4 * x.shape[2]) or phi.dtype != torch.float32:
+            raise ValueError('Expected FP32 fn[24,4*H]')
         if not x.is_contiguous() or not phi.is_contiguous() or phi.device != x.device:
             raise ValueError('Expected contiguous tensors on the same NPU')
         source = Path(hc_prenorm.__file__).read_text()
@@ -24,7 +24,7 @@ class DynamicHCProjection:
         self.x, self.phi, self.torch = x.flatten(1), phi, torch
         deep_gemm.use_deterministic_algorithms(False)
         self.kernel = hc_prenorm.tf32_hc_prenorm_gemm_kernel
-        self.config = hc_prenorm.get_config(20480, 24, self.t, deterministic=False)
+        self.config = hc_prenorm.get_config(4 * x.shape[2], 24, self.t, deterministic=False)
 
     def __call__(self):
         torch = self.torch

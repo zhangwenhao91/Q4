@@ -1,5 +1,14 @@
 # 原版 AscendC 两条路径计时
 
+新增 TileLang hidden=4096：在 mhc_original_fused 测试内，与原版融合4096共享
+同一组设备输入，逐项CPU校验和两侧互验通过后交替计时。标签为
+tilelang_current_pre_h4096，采用预绑定三kernel路径：投影、系数/Sinkhorn、新pre混合。
+三个主输出与原版一致；内部pre为每次重新计算的工作区，不是预先给定或缓存的数值。
+此路径使用新pre，与已有shifted TL5120的旧pre语义不同。
+原版4096的profile和TL4096的profile分别采集，TL预期每次三个kernel。
+当前API改为每进程12轮，使双侧交替顺序平衡；all包含71份正确性文件、
+30份API汇总、15份profile。既有5120 shifted设备路径不变。
+
 同一脚本同时运行原版融合 `PreSinkhorn`（hidden=4096）和原版
 `PreV2 + Sinkhorn`（hidden=5120），N 均为64/128/256/512/8192。
 smoke 先检查两条路径的 N=128；all 在每个 N 上先后测试两条路径，
@@ -28,7 +37,7 @@ PreV2 的 layer_input 使用本次新 pre；按此语义独立校验四项输出
 不能将它标为与 shifted 版本完全等价。权重、输入种子和随机生成顺序与 split 测试一致。
 融合 PreSinkhorn 原版不支持 hidden=5120，其4096结果单独标记。
 
-all 包含正确性、三进程 API 基准和五个形状的 profiler；每进程九轮重复采样，
+all 包含正确性、三进程 API 基准和五个形状的 profiler；每进程12轮采样，
 每轮100次、预热100次。
 若需同一设备会话的最新 TL/适配 AC 对照，另运行：
 
