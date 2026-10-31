@@ -1,0 +1,608 @@
+{
+  "evidence": "4365259:error.txt",
+  "run_revision": "75978486e091c1cdf5aac0eea319c7a5c6c5638e",
+  "output_checks": 774,
+  "raw_projection_checks": 86,
+  "failed": 0,
+  "median_api": {
+    "128": {
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 37.508134841918945,
+        "wall_us": 38.09459012700245
+      },
+      "tilelang_upstream_big_fuse_bound_h5120": {
+        "event_us": 28.23140025138855,
+        "wall_us": 28.71517004678026
+      },
+      "tilelang_upstream_big_fuse_h5120": {
+        "event_us": 41.45559549331665,
+        "wall_us": 42.07816004054621
+      }
+    },
+    "256": {
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 30.02310037612915,
+        "wall_us": 30.54195491131395
+      },
+      "tilelang_upstream_big_fuse_bound_h5120": {
+        "event_us": 28.748844861984253,
+        "wall_us": 29.231795051600784
+      },
+      "tilelang_upstream_big_fuse_h5120": {
+        "event_us": 41.400368213653564,
+        "wall_us": 42.11416497128084
+      }
+    },
+    "512": {
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 40.240018367767334,
+        "wall_us": 40.625590190757066
+      },
+      "tilelang_upstream_big_fuse_bound_h5120": {
+        "event_us": 29.16730523109436,
+        "wall_us": 29.59374018246308
+      },
+      "tilelang_upstream_big_fuse_h5120": {
+        "event_us": 41.46317481994629,
+        "wall_us": 41.94662004010752
+      }
+    },
+    "64": {
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 29.610899686813354,
+        "wall_us": 30.171355174388736
+      },
+      "tilelang_upstream_big_fuse_bound_h5120": {
+        "event_us": 25.819945335388184,
+        "wall_us": 26.22728527057916
+      },
+      "tilelang_upstream_big_fuse_h5120": {
+        "event_us": 41.04490518569946,
+        "wall_us": 41.535504860803485
+      }
+    },
+    "8192": {
+      "ascendc_original_pre_sinkhorn": {
+        "event_us": 706.4288330078125,
+        "wall_us": 707.0410699816421
+      },
+      "tilelang_upstream_big_fuse_bound_h5120": {
+        "event_us": 536.065616607666,
+        "wall_us": 536.5679200622253
+      },
+      "tilelang_upstream_big_fuse_h5120": {
+        "event_us": 536.6196823120117,
+        "wall_us": 536.9852951844223
+      }
+    }
+  },
+  "processes": [
+    {
+      "tag": "bench-big5120-N128-rep1",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.3334735369981228,
+          "tilelang_upstream_big_fuse_h5120": 0.908099972986709
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 37.645825147628784,
+          "wall_us": 38.27711479971185
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 28.23140025138855,
+          "wall_us": 28.76298996852711
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 41.45559549331665,
+          "wall_us": 42.08297003060579
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N128-rep2",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.0503929355059778,
+          "tilelang_upstream_big_fuse_h5120": 0.7220424775144962
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 29.70956563949585,
+          "wall_us": 30.27170489076525
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 28.284239768981934,
+          "wall_us": 28.71517004678026
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 41.14656209945679,
+          "wall_us": 41.62212979281321
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N128-rep3",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.3298399087509,
+          "tilelang_upstream_big_fuse_h5120": 0.9014953932316555
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 37.508134841918945,
+          "wall_us": 38.09459012700245
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 28.205000162124634,
+          "wall_us": 28.610814770217985
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 41.606574058532715,
+          "wall_us": 42.07816004054621
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N256-rep1",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.0443237117965005,
+          "tilelang_upstream_big_fuse_h5120": 0.7251892113903405
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 30.02310037612915,
+          "wall_us": 30.54195491131395
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 28.748844861984253,
+          "wall_us": 29.231795051600784
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 41.400368213653564,
+          "wall_us": 42.11416497128084
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N256-rep2",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 0.9346166187711209,
+          "tilelang_upstream_big_fuse_h5120": 0.6599300158746583
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 27.006494998931885,
+          "wall_us": 27.358790102880448
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 28.89580011367798,
+          "wall_us": 29.230095096863806
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 40.92327117919922,
+          "wall_us": 41.310109954793006
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N256-rep3",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.069621641611546,
+          "tilelang_upstream_big_fuse_h5120": 0.726404553535529
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 30.74167013168335,
+          "wall_us": 31.241959950421005
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 28.74069571495056,
+          "wall_us": 29.242114978842437
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 42.32031583786011,
+          "wall_us": 42.77370491763577
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N512-rep1",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.3804216413752857,
+          "tilelang_upstream_big_fuse_h5120": 0.9785027695157664
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 40.28928995132446,
+          "wall_us": 40.79122998518869
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 29.186220169067383,
+          "wall_us": 29.610765050165355
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 41.17442607879639,
+          "wall_us": 41.56183509621769
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N512-rep2",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.3797335824358528,
+          "tilelang_upstream_big_fuse_h5120": 0.9705001737688803
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 40.240018367767334,
+          "wall_us": 40.625590190757066
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 29.165064096450806,
+          "wall_us": 29.59374018246308
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 41.46317481994629,
+          "wall_us": 41.94662004010752
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N512-rep3",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.375403155287735,
+          "tilelang_upstream_big_fuse_h5120": 0.9445302179151366
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 40.11680364608765,
+          "wall_us": 40.570650016888976
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 29.16730523109436,
+          "wall_us": 29.580219998024404
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 42.472758293151855,
+          "wall_us": 42.96659986721352
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N64-rep1",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.1860749683516556,
+          "tilelang_upstream_big_fuse_h5120": 0.71380887795032
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 30.65533995628357,
+          "wall_us": 31.243920093402267
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 25.846039056777954,
+          "wall_us": 26.30646020406857
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 42.94614553451538,
+          "wall_us": 43.38967992225662
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N64-rep2",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.1356364515895976,
+          "tilelang_upstream_big_fuse_h5120": 0.7179922147369066
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 29.306540489196777,
+          "wall_us": 29.756730364169925
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 25.806269645690918,
+          "wall_us": 26.22728527057916
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 40.81735134124756,
+          "wall_us": 41.32117988774553
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N64-rep3",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.1468227102026194,
+          "tilelang_upstream_big_fuse_h5120": 0.7214269238251316
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 29.610899686813354,
+          "wall_us": 30.171355174388736
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 25.819945335388184,
+          "wall_us": 26.21432504383847
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 41.04490518569946,
+          "wall_us": 41.535504860803485
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N8192-rep1",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.2965602143221637,
+          "tilelang_upstream_big_fuse_h5120": 1.2957730856213598
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 697.8586578369141,
+          "wall_us": 698.3099249191582
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 538.238525390625,
+          "wall_us": 538.7032203725539
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 538.5654830932617,
+          "wall_us": 539.2492449027486
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N8192-rep2",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.324271457246604,
+          "tilelang_upstream_big_fuse_h5120": 1.3238108678540403
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 708.692626953125,
+          "wall_us": 709.3631997122429
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 535.1566123962402,
+          "wall_us": 535.5627601966262
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 535.3428077697754,
+          "wall_us": 535.8554501435719
+        }
+      }
+    },
+    {
+      "tag": "bench-big5120-N8192-rep3",
+      "data": {
+        "ac_over_tl": {
+          "tilelang_upstream_big_fuse_bound_h5120": 1.3178029165127958,
+          "tilelang_upstream_big_fuse_h5120": 1.3164422705559038
+        },
+        "ascendc_original_pre_sinkhorn": {
+          "event_us": 706.4288330078125,
+          "wall_us": 707.0410699816421
+        },
+        "tilelang_upstream_big_fuse_bound_h5120": {
+          "event_us": 536.065616607666,
+          "wall_us": 536.5679200622253
+        },
+        "tilelang_upstream_big_fuse_h5120": {
+          "event_us": 536.6196823120117,
+          "wall_us": 536.9852951844223
+        }
+      }
+    }
+  ],
+  "profiles": {
+    "profile-N128-ascendc_original_pre_sinkhorn": [
+      {
+        "name": "aclnnMhcPreV2_MhcPre_MhcPre",
+        "count": 30,
+        "mean_us": 15.491267,
+        "median_us": 15.4585
+      },
+      {
+        "name": "aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn",
+        "count": 30,
+        "mean_us": 6.459467,
+        "median_us": 6.3855
+      }
+    ],
+    "profile-N128-tilelang_upstream_big_fuse_bound_h5120": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 12.4563,
+        "median_us": 12.341
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 15.707767,
+        "median_us": 15.704
+      }
+    ],
+    "profile-N128-tilelang_upstream_big_fuse_h5120": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 12.350333,
+        "median_us": 12.2755
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 15.874,
+        "median_us": 15.879
+      }
+    ],
+    "profile-N256-ascendc_original_pre_sinkhorn": [
+      {
+        "name": "aclnnMhcPreV2_MhcPre_MhcPre",
+        "count": 30,
+        "mean_us": 20.498567,
+        "median_us": 20.442
+      },
+      {
+        "name": "aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn",
+        "count": 30,
+        "mean_us": 6.7903,
+        "median_us": 6.661
+      }
+    ],
+    "profile-N256-tilelang_upstream_big_fuse_bound_h5120": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 12.511767,
+        "median_us": 12.4095
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 16.1244,
+        "median_us": 16.0735
+      }
+    ],
+    "profile-N256-tilelang_upstream_big_fuse_h5120": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 12.490267,
+        "median_us": 12.3995
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 16.3052,
+        "median_us": 16.2075
+      }
+    ],
+    "profile-N512-ascendc_original_pre_sinkhorn": [
+      {
+        "name": "aclnnMhcPreV2_MhcPre_MhcPre",
+        "count": 30,
+        "mean_us": 31.5316,
+        "median_us": 31.585
+      },
+      {
+        "name": "aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn",
+        "count": 30,
+        "mean_us": 8.930633,
+        "median_us": 8.7975
+      }
+    ],
+    "profile-N512-tilelang_upstream_big_fuse_bound_h5120": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 12.9041,
+        "median_us": 12.876
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 16.540567,
+        "median_us": 16.4055
+      }
+    ],
+    "profile-N512-tilelang_upstream_big_fuse_h5120": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 12.869867,
+        "median_us": 12.84
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 16.521567,
+        "median_us": 16.391
+      }
+    ],
+    "profile-N64-ascendc_original_pre_sinkhorn": [
+      {
+        "name": "aclnnMhcPreV2_MhcPre_MhcPre",
+        "count": 30,
+        "mean_us": 13.640633,
+        "median_us": 13.662
+      },
+      {
+        "name": "aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn",
+        "count": 30,
+        "mean_us": 6.0763,
+        "median_us": 6.0275
+      }
+    ],
+    "profile-N64-tilelang_upstream_big_fuse_bound_h5120": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 12.279633,
+        "median_us": 12.2245
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 13.4746,
+        "median_us": 13.4765
+      }
+    ],
+    "profile-N64-tilelang_upstream_big_fuse_h5120": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 12.370133,
+        "median_us": 12.314
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 13.477467,
+        "median_us": 13.4835
+      }
+    ],
+    "profile-N8192-ascendc_original_pre_sinkhorn": [
+      {
+        "name": "aclnnMhcPreV2_MhcPre_MhcPre",
+        "count": 30,
+        "mean_us": 652.109433,
+        "median_us": 651.9695
+      },
+      {
+        "name": "aclnnMhcSinkhorn_MhcSinkhornAiCore_MhcSinkhorn",
+        "count": 30,
+        "mean_us": 46.170533,
+        "median_us": 46.0815
+      }
+    ],
+    "profile-N8192-tilelang_upstream_big_fuse_bound_h5120": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 286.121833,
+        "median_us": 286.1265
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 250.692,
+        "median_us": 250.685
+      }
+    ],
+    "profile-N8192-tilelang_upstream_big_fuse_h5120": [
+      {
+        "name": "mhc_pre_big_fuse_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 286.077133,
+        "median_us": 286.0115
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 250.898433,
+        "median_us": 249.941
+      }
+    ]
+  }
+}
