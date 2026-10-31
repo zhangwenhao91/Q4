@@ -373,4 +373,3 @@ def mhc_coeff_tail_fwd_asc(
             T.copy(pre_ub[:, 0:mhc], pre_mix[token_base : token_base + tb, 0:mhc])
             T.copy(post_ub[:, 0:mhc], post_mix[token_base : token_base + tb, 0:mhc])
             T.copy(comb_out_ub, comb_mix[token_base : token_base + tb, 0:mhc2])
-
