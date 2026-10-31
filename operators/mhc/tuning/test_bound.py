@@ -39,6 +39,57 @@ class Compiler:
 
 
 class BoundLaunchContract(unittest.TestCase):
+    def test_split_path_binds_three_calls_and_recomputes_old_pre_apply(self):
+        for t in (64, 128, 129, 256, 512, 8192):
+            with self.subTest(t=t):
+                events = []
+                projection = Compiler('projection',4,events)
+                coeff = Compiler('coeff',7,events)
+                apply = Compiler('apply',3,events)
+                fused = Compiler('unused_fused',10,events)
+                torch = types.SimpleNamespace(float32='fp32',
+                    empty=lambda *shape,dtype,device: ViewTensor(shape,dtype,device))
+                x = ViewTensor((t,4,5120),'bf16','npu:0')
+                prev = ViewTensor((t,4,1),'fp32','npu:0')
+                phi = ViewTensor((24,20480),'fp32','npu:0')
+                alpha = ViewTensor((3,),'fp32','npu:0')
+                bias = ViewTensor((24,),'fp32','npu:0')
+                projector = types.SimpleNamespace(t=t,padded=(t+127)//128*128,
+                    x=x.view(t,20480),phi=phi,kernel=projection,config={'config':1})
+                with patch.dict(sys.modules, {
+                    'torch':torch,
+                    'tile_kernels.config':types.SimpleNamespace(get_num_vec_cores=lambda:56),
+                    'apply_tail':types.SimpleNamespace(mhc_shifted_tail_apply_fwd_asc=fused),
+                    'coeff_tail':types.SimpleNamespace(mhc_coeff_tail_fwd_asc=coeff),
+                    'tile_kernels.mhc.pre_apply_mix_asc':types.SimpleNamespace(mhc_pre_apply_mix_fwd_asc=apply)
+                }):
+                    run, meta = make_bound_candidate(projector,x,prev,alpha,bias,split_apply=True)
+                    self.assertEqual(events,[])
+                    self.assertEqual(fused.compiles,[])
+                    self.assertEqual(apply.compiles[0][1],dict(h_blk=5120,num_vec_cores=56))
+                    self.assertEqual(coeff.compiles[0][1]['hidden'],5120)
+                    self.assertNotIn('h_blk',coeff.compiles[0][1])
+                    self.assertEqual(coeff.compiles[0][1]['sinkhorn_repeat'],20)
+                    previous = None
+                    for _ in range(2):
+                        events.clear()
+                        outputs = run()
+                        self.assertEqual([e[0] for e in events],['apply','projection','coeff'])
+                        self.assertEqual([z.shape for z in outputs],[(t,5120),(t,4,1),(t,4,1),(t,4,4)])
+                        self.assertIs(events[0][1][0],x)
+                        self.assertIs(events[0][1][1].storage,prev.storage)
+                        self.assertIs(events[0][1][2].storage,outputs[0].storage)
+                        self.assertIsNot(events[0][1][2].storage,apply.compiles[0][0][2].storage)
+                        self.assertIsNot(events[1][1][2].storage,projection.compiles[0][0][2].storage)
+                        self.assertIs(events[2][1][4].storage,outputs[1].storage)
+                        if previous is not None:
+                            self.assertIsNot(outputs[0].storage,previous[0].storage)
+                            self.assertIsNot(outputs[1].storage,previous[1].storage)
+                        previous = outputs
+                    self.assertEqual(meta['expected_kernels_per_call'],3)
+                    self.assertFalse(meta['output_preallocation'])
+                    self.assertTrue(all(len(c.compiles)==1 for c in (projection,apply,coeff)))
+
     def test_compiles_once_recomputes_twice_and_never_reuses_sample_outputs(self):
         for t in (128, 129, 512):
             with self.subTest(t=t):

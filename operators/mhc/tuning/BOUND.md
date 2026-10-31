@@ -50,3 +50,5 @@ python operators/mhc/matched/collect_results.py --root results/mhc-bound
 已测结果：N=512预绑定约30.36us、AC约40.87us；N=8192约544.14us对705.89us。
 N=128约29.11us对28.30us，尚未超过AC。完整证据见
 [预绑定结果报告](../../../reports/mhc_bound/report.md)。
+
+N=128的下一轮三kernel预绑定对照见 [SPLIT.md](SPLIT.md)，测试范围增加N=64/256。

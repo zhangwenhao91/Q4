@@ -4,7 +4,7 @@ import hashlib
 from mhc_fusion import SOURCE, allocate_outputs
 
 
-def make_bound_candidate(projector, x, prev, alpha, bias):
+def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False):
     import torch
     import sys
     from tile_kernels.config import get_num_vec_cores
@@ -13,7 +13,7 @@ def make_bound_candidate(projector, x, prev, alpha, bias):
     t, padded = projector.t, projector.padded
     prev2d = prev.view(t, 4)
     settings = dict(rms_eps=1e-20, mhc_pre_eps=1e-6, mhc_sinkhorn_eps=1e-6,
-        mhc_post_mult_value=2., sinkhorn_repeat=20, h_blk=256, n_splits=1,
+        mhc_post_mult_value=2., sinkhorn_repeat=20, n_splits=1,
         token_block=16, num_stages=2, num_vec_cores=get_num_vec_cores())
     # Compilation inspects shape/dtype only; these buffers are not reused by run().
     sample_hi, sample_pre, sample_post, sample_comb = allocate_outputs(torch, t, x)
@@ -22,8 +22,16 @@ def make_bound_candidate(projector, x, prev, alpha, bias):
     projection = projector.kernel.compile(projector.x, projector.phi, sample_raw[0], sample_sq,
                                           deterministic=False, **projector.config)
     sample_valid_sq = sample_sq.view(1, padded)[:, :t]
-    tail = mhc_shifted_tail_apply_fwd_asc.compile(sample_raw, sample_valid_sq, alpha, bias,
-        x, prev2d, sample_pre, sample_post, sample_comb, sample_hi, **settings)
+    if split_apply:
+        from coeff_tail import mhc_coeff_tail_fwd_asc
+        from tile_kernels.mhc.pre_apply_mix_asc import mhc_pre_apply_mix_fwd_asc
+        standalone_apply = mhc_pre_apply_mix_fwd_asc.compile(x, prev2d, sample_hi,
+            h_blk=5120, num_vec_cores=settings['num_vec_cores'])
+        tail = mhc_coeff_tail_fwd_asc.compile(sample_raw, sample_valid_sq, alpha, bias,
+            sample_pre, sample_post, sample_comb, hidden=5120, **settings)
+    else:
+        tail = mhc_shifted_tail_apply_fwd_asc.compile(sample_raw, sample_valid_sq, alpha, bias,
+            x, prev2d, sample_pre, sample_post, sample_comb, sample_hi, h_blk=256, **settings)
 
     def run():
         hi, pre, post, comb = allocate_outputs(torch, t, x)
@@ -37,10 +45,26 @@ def make_bound_candidate(projector, x, prev, alpha, bias):
         tail(raw, valid_sq, alpha, bias, x, prev2d, pre, post, comb, hi)
         return hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(t, 4, 4)
 
-    return run, dict(
+    def run_split():
+        hi, pre, post, comb = allocate_outputs(torch, t, x)
+        standalone_apply(x, prev2d, hi)
+        raw = torch.empty(1, t, 24, dtype=torch.float32, device=x.device)
+        sq = torch.empty(padded // 128, 2, 64, dtype=torch.float32, device=x.device)
+        projection(projector.x, projector.phi, raw[0], sq)
+        valid_sq = sq.view(1, padded)
+        if t != padded:
+            valid_sq = valid_sq[:, :t]
+        tail(raw, valid_sq, alpha, bias, pre, post, comb)
+        return hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(t, 4, 4)
+
+    metadata = dict(
         operation='public JITImpl.compile -> JITKernel call; no private cache access',
         projection_device_source_sha256=hashlib.sha256(projection.get_kernel_source().encode()).hexdigest(),
         tail_device_source_sha256=hashlib.sha256(tail.get_kernel_source().encode()).hexdigest(),
         numerical_kernel_changes=False, output_preallocation=False,
-        per_call_allocations=4, expected_kernels_per_call=2,
+        per_call_allocations=4, expected_kernels_per_call=3 if split_apply else 2,
         note='compilation excluded for all sides; all device math, output/workspace allocation and views remain timed')
+    if split_apply:
+        metadata['standalone_apply_source_sha256'] = hashlib.sha256(standalone_apply.get_kernel_source().encode()).hexdigest()
+        metadata['standalone_apply_hidden_tile'] = 5120
+    return (run_split if split_apply else run), metadata

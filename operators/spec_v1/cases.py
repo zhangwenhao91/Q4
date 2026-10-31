@@ -79,7 +79,7 @@ def post_case(a):
                 'comparison_available':True}
 
 
-def shifted_case(a, native_shifted=False, fusion=False, bind=False):
+def shifted_case(a, native_shifted=False, fusion=False, bind=False, split=False):
     import torch
     from fused_projection import HCProjection
     from tile_kernels.mhc import (mhc_reduce_partials_and_rmsnorm_fwd,mhc_pre_split_mixes_fwd,
@@ -141,6 +141,7 @@ def shifted_case(a, native_shifted=False, fusion=False, bind=False):
                ('ascendc_shifted_native' if native_shifted else 'ascendc_pre_plus_torch_apply'):ac}
     fusion_meta=None
     bound_meta=None
+    split_meta=None
     if fusion:
         from mhc_fusion import make_candidates
         candidates,fusion_meta=make_candidates(projector,x,prev,alpha,bias)
@@ -151,9 +152,16 @@ def shifted_case(a, native_shifted=False, fusion=False, bind=False):
             functions={'tilelang_apply_fused':candidates['tilelang_apply_fused'],
                        'tilelang_apply_bound':bound_fn,'ascendc_shifted_native':ac}
             fusion_meta['expected_kernel_counts']={name:2 for name in functions}
+            if split:
+                split_fn,split_meta=make_bound_candidate(projector,x,prev,alpha,bias,split_apply=True)
+                functions={'tilelang_apply_bound':bound_fn,'tilelang_coeff_bound':split_fn,
+                           'ascendc_shifted_native':ac}
+                fusion_meta['expected_kernel_counts']={
+                    'tilelang_apply_bound':2,'tilelang_coeff_bound':3,'ascendc_shifted_native':2}
     meta={
         'fusion':fusion_meta,
         'bound_launch':bound_meta,
+        'split_bound_launch':split_meta,
         'native_adaptation':native_metadata() if native_shifted else None,
         'projection_checks':projection_checks if native_shifted else None,
         'pattern':getattr(a,'mhc_pattern','random'),
@@ -183,3 +191,7 @@ def shifted_fusion_case(a):
 
 def shifted_bound_case(a):
     return shifted_case(a,native_shifted=True,fusion=True,bind=True)
+
+
+def shifted_split_case(a):
+    return shifted_case(a,native_shifted=True,fusion=True,bind=True,split=True)
