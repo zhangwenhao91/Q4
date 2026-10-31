@@ -3,7 +3,7 @@
 
 // No shifted native Pre entry exists in this pinned source. Export the actual
 // next_pre cache from PreV2, then compose old-pre application outside this bridge.
-std::tuple<at::Tensor,at::Tensor,at::Tensor> pre_coefficients(
+std::tuple<at::Tensor,at::Tensor,at::Tensor,at::Tensor> original_pre(
     const at::Tensor& x,const at::Tensor& phi,const at::Tensor& alpha,
     const at::Tensor& bias,double norm_eps,double pre_eps) {
     auto t=x.size(0),d=x.size(2);
@@ -15,7 +15,13 @@ std::tuple<at::Tensor,at::Tensor,at::Tensor> pre_coefficients(
     auto pre=at::empty({t,4},phi.options());
     at::Tensor absent;int64_t mode=1;
     ACLNN_CMD(aclnnMhcPreV2,x,phi,alpha,bias,absent,norm_eps,pre_eps,mode,hin,hp,hr,inv,mix,pre);
-    return {pre,hp,hr};
+    return {hin,pre,hp,hr};
+}
+std::tuple<at::Tensor,at::Tensor,at::Tensor> pre_coefficients(
+    const at::Tensor& x,const at::Tensor& phi,const at::Tensor& alpha,
+    const at::Tensor& bias,double norm_eps,double pre_eps) {
+    auto out=original_pre(x,phi,alpha,bias,norm_eps,pre_eps);
+    return {std::get<1>(out),std::get<2>(out),std::get<3>(out)};
 }
 at::Tensor sinkhorn(const at::Tensor& x,double eps,int64_t repeat) {
     auto y=at::empty_like(x);at::Tensor absent;float e=static_cast<float>(eps);
@@ -24,5 +30,6 @@ at::Tensor sinkhorn(const at::Tensor& x,double eps,int64_t repeat) {
 }
 PYBIND11_MODULE(TORCH_EXTENSION_NAME,m) {
     m.def("pre_coefficients",&pre_coefficients);
+    m.def("original_pre",&original_pre);
     m.def("sinkhorn",&sinkhorn);
 }

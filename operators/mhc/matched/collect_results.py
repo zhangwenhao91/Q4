@@ -34,7 +34,7 @@ def main():
         for meta_file in selected.glob('*/metadata.json'):
             meta = json.loads(meta_file.read_text())
             native = meta.get('native_adaptation') or {}
-            identities.add((meta.get('q4_revision'), native.get('library_sha256'),
+            identities.add((meta.get('q4_revision'), native.get('library_sha256') or meta.get('original_library_sha256'),
                             meta.get('hc_source_sha256'), meta.get('weight_file')))
         for identity in sorted(identities, key=str):
             print('IDENTITY q4/native_library/hc_source/weights:', identity, flush=True)
