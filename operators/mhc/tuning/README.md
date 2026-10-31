@@ -75,3 +75,6 @@ python operators/mhc/matched/collect_results.py --root results/mhc-fusion
 ```
 
 本机只有CPU合约、源码及脚本检查；NPU编译、精度与性能均待验证，不预设候选一定更快。
+
+已测融合结果见 [reports/mhc_fusion/report.md](../../../reports/mhc_fusion/report.md)。
+小N后续的预绑定调用实验见 [BOUND.md](BOUND.md)，保持两kernel的数值源码不变。

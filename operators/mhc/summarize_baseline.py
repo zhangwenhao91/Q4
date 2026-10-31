@@ -85,9 +85,13 @@ def main():
           'profile directories=', len(profiles))
     matched = (root / 'native-source.json').exists()
     fusion = (root / 'fusion-source.json').exists()
+    bound = (root / 'bound-source.json').exists()
     mode_match = re.search(r'-(smoke|check|bench|profile|all)-\d+$', root.name)
     mode = mode_match.group(1) if mode_match else 'all'
-    if fusion:
+    if bound:
+        expected = dict(smoke=(1, 0, 0), check=(12, 0, 0), bench=(9, 9, 0),
+                        profile=(9, 0, 9), all=(30, 9, 9))[mode]
+    elif fusion:
         expected = dict(smoke=(1, 0, 0), check=(12, 0, 0), bench=(9, 9, 0),
                         profile=(8, 0, 8), all=(29, 9, 8))[mode]
     else:

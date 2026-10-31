@@ -79,7 +79,7 @@ def post_case(a):
                 'comparison_available':True}
 
 
-def shifted_case(a, native_shifted=False, fusion=False):
+def shifted_case(a, native_shifted=False, fusion=False, bind=False):
     import torch
     from fused_projection import HCProjection
     from tile_kernels.mhc import (mhc_reduce_partials_and_rmsnorm_fwd,mhc_pre_split_mixes_fwd,
@@ -140,12 +140,20 @@ def shifted_case(a, native_shifted=False, fusion=False):
     functions={'deepgemm_tilelang':tl,
                ('ascendc_shifted_native' if native_shifted else 'ascendc_pre_plus_torch_apply'):ac}
     fusion_meta=None
+    bound_meta=None
     if fusion:
         from mhc_fusion import make_candidates
         candidates,fusion_meta=make_candidates(projector,x,prev,alpha,bias)
         functions={'deepgemm_tilelang':tl,**candidates,'ascendc_shifted_native':ac}
+        if bind:
+            from mhc_bound import make_bound_candidate
+            bound_fn,bound_meta=make_bound_candidate(projector,x,prev,alpha,bias)
+            functions={'tilelang_apply_fused':candidates['tilelang_apply_fused'],
+                       'tilelang_apply_bound':bound_fn,'ascendc_shifted_native':ac}
+            fusion_meta['expected_kernel_counts']={name:2 for name in functions}
     meta={
         'fusion':fusion_meta,
+        'bound_launch':bound_meta,
         'native_adaptation':native_metadata() if native_shifted else None,
         'projection_checks':projection_checks if native_shifted else None,
         'pattern':getattr(a,'mhc_pattern','random'),
@@ -171,3 +179,7 @@ def shifted_native_case(a):
 
 def shifted_fusion_case(a):
     return shifted_case(a,native_shifted=True,fusion=True)
+
+
+def shifted_bound_case(a):
+    return shifted_case(a,native_shifted=True,fusion=True,bind=True)
