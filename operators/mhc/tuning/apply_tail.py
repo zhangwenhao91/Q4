@@ -118,9 +118,27 @@ def mhc_shifted_tail_apply_fwd_asc(
             num_stages=num_stages,
         ):
             token_base = pid * tb
-            T.copy(prev_pre_mix[token_base : token_base + tb, 0:mhc], prev_ub, pad_value=0)
-            T.copy(gemm_out_mul[0:1, token_base : token_base + tb, 0:mhc3], T.view(mul_flat_ub, (tb, mhc3)), pad_value=0)
-            T.copy(gemm_out_sqrsum[0:1, token_base : token_base + tb], sq_ub, pad_value=0)
+            if token_base + tb <= num_tokens:
+                T.copy(prev_pre_mix[token_base : token_base + tb, 0:mhc], prev_ub)
+                T.copy(gemm_out_mul[0:1, token_base : token_base + tb, 0:mhc3], T.view(mul_flat_ub, (tb, mhc3)))
+                T.copy(gemm_out_sqrsum[0:1, token_base : token_base + tb], sq_ub)
+            else:
+                with T.SimtVF(threads=32):
+                    for tail_t, tail_c in T.Parallel(tb, mhc3):
+                        if token_base + tail_t < num_tokens:
+                            mul_flat_ub[tail_t * mhc3 + tail_c] = gemm_out_mul[0, token_base + tail_t, tail_c]
+                        else:
+                            mul_flat_ub[tail_t * mhc3 + tail_c] = T.float32(0)
+                    for tail_t in T.Parallel(tb):
+                        if token_base + tail_t < num_tokens:
+                            sq_ub[tail_t] = gemm_out_sqrsum[0, token_base + tail_t]
+                        else:
+                            sq_ub[tail_t] = T.float32(0)
+                    for tail_t, tail_c in T.Parallel(tb, mhc):
+                        if token_base + tail_t < num_tokens:
+                            prev_ub[tail_t, tail_c] = prev_pre_mix[token_base + tail_t, tail_c]
+                        else:
+                            prev_ub[tail_t, tail_c] = T.float32(0)
 
             ##################################################################
             # _mhc_reduce_partials_and_rmsnorm_fwd + _mhc_pre_split_mixes_fwd
@@ -394,15 +412,23 @@ def mhc_shifted_tail_apply_fwd_asc(
             ##################################################################
             # _mhc_pre_apply_mix_fwd
             for i0_h in T.Pipelined(num_hidden_tiles, num_stages=2):
-                T.copy(
-                    residual[
-                        token_base : token_base + tb,
-                        0:mhc,
-                        i0_h * h_blk : (i0_h + 1) * h_blk,
-                    ],
-                    x_ub,
-                    pad_value=0,
-                )
+                if token_base + tb <= num_tokens:
+                    T.copy(
+                        residual[
+                            token_base : token_base + tb,
+                            0:mhc,
+                            i0_h * h_blk : (i0_h + 1) * h_blk,
+                        ],
+                        x_ub,
+                    )
+                else:
+                    with T.SimtVF(threads=32):
+                        for tail_t, tail_m, tail_h in T.Parallel(tb, mhc, h_blk):
+                            if token_base + tail_t < num_tokens:
+                                x_ub[tail_t, tail_m, tail_h] = residual[
+                                    token_base + tail_t, tail_m, i0_h * h_blk + tail_h]
+                            else:
+                                x_ub[tail_t, tail_m, tail_h] = T.bfloat16(0)
                 with T.SimdVF():
                     mix_reg = S.alloc_local((mhc,), T.float32)
                     xs = S.alloc_local((mhc,), T.float32)

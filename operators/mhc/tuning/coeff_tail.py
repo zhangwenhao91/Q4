@@ -102,8 +102,23 @@ def mhc_coeff_tail_fwd_asc(
             num_stages=num_stages,
         ):
             token_base = pid * tb
-            T.copy(gemm_out_mul[0:1, token_base : token_base + tb, 0:mhc3], T.view(mul_flat_ub, (tb, mhc3)), pad_value=0)
-            T.copy(gemm_out_sqrsum[0:1, token_base : token_base + tb], sq_ub, pad_value=0)
+            if token_base + tb <= num_tokens:
+                T.copy(gemm_out_mul[0:1, token_base : token_base + tb, 0:mhc3], T.view(mul_flat_ub, (tb, mhc3)))
+                T.copy(gemm_out_sqrsum[0:1, token_base : token_base + tb], sq_ub)
+            else:
+                # DMA pad_value pads a row's width, not missing token rows.
+                # Use bounded scalar loads for the final partial token tile.
+                with T.SimtVF(threads=32):
+                    for tail_t, tail_c in T.Parallel(tb, mhc3):
+                        if token_base + tail_t < num_tokens:
+                            mul_flat_ub[tail_t * mhc3 + tail_c] = gemm_out_mul[0, token_base + tail_t, tail_c]
+                        else:
+                            mul_flat_ub[tail_t * mhc3 + tail_c] = T.float32(0)
+                    for tail_t in T.Parallel(tb):
+                        if token_base + tail_t < num_tokens:
+                            sq_ub[tail_t] = gemm_out_sqrsum[0, token_base + tail_t]
+                        else:
+                            sq_ub[tail_t] = T.float32(0)
 
             ##################################################################
             # _mhc_reduce_partials_and_rmsnorm_fwd + _mhc_pre_split_mixes_fwd

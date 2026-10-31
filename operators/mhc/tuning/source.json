@@ -7,11 +7,11 @@
     "emit next_pre",
     "coeff-only kernel",
     "old pre input with separate UB for apply",
-    "explicit zero padding for tail loads"
+    "ordinary DMA for full tiles; bounded SIMT loads and explicit zero initialization for token tails"
   ],
   "files": {
-    "coeff_tail.py": "277dd6d5e45a6970d4849bfede953c6ba1eb7ee88cdb56d359ba2067764e3581",
-    "apply_tail.py": "5069e7919c05edf5d1f562a561b9e6168987a0aec608edd5c90e6bf8040c1637"
+    "coeff_tail.py": "6853f3f90e94ce2fc983bbe614343d8dd3f2516cbb771eda20a77988a99303e6",
+    "apply_tail.py": "0044788115e2e092c1c58f95b46b61e735e0bf2f0176b6ff2bdb0b9bf854d9b3"
   },
   "coefficient_arithmetic_ast_sha256": "adb5cdb011eafc45ca3c7572afab76e2ea644e320f36a34579e665704ef37620"
 }

@@ -17,7 +17,8 @@
 20轮Sinkhorn、post乘数2。是否与分解路径数值一致须设备验精度，不提前宣称bitwise一致。
 
 apply_tail.py通过独立prev_ub读取旧pre，pre_ub计算的新pre单独输出。
-coeff_tail.py完全不处理特征apply。tail加载显式零填充，输出边界由动态shape约束；
+coeff_tail.py完全不处理特征apply。完整token块使用普通DMA，尾块通过有界SIMT加载，
+将无效token显式置零；没有将DMA行宽pad_value用于动态token尾块。输出边界由动态shape约束；
 非16倍数N需要设备检查通过才能宣称支持。
 初始token tile=16、缓冲版本2、融合apply hidden tile=256，暂不同时扫描参数。
 
