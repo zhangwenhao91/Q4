@@ -46,3 +46,7 @@ python operators/mhc/matched/collect_results.py --root results/mhc-bound
 
 本机仅验证CPU调用合约和语法；设备编译、数值与性能待服务器确认。
 预绑定能否补上小N差距由API实测决定，不预设收益。
+
+已测结果：N=512预绑定约30.36us、AC约40.87us；N=8192约544.14us对705.89us。
+N=128约29.11us对28.30us，尚未超过AC。完整证据见
+[预绑定结果报告](../../../reports/mhc_bound/report.md)。
