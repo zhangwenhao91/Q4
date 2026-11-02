@@ -1,582 +1,582 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mhc/matched/collect_results.py --root results/mhc-tail-scan
-SELECTED check results/mhc-tail-scan/20261102-172408-all-3000797
-IDENTITY q4/native_library/hc_source/weights: ('2839687d0a2678474bb033f998c576f43936cc3c', '4307e7ad6acadc9c2bc2746a50fd2dd4eb469235ec428a53e4cb0700018e53af', '984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830', None)
-BASELINE: /home/z30086261/Q4/results/mhc-tail-scan/20261102-172408-all-3000797
-CHECK bench-N128-K14:1-rep1 40/40 passed
-CHECK bench-N128-K14:1-rep2 40/40 passed
-CHECK bench-N128-K14:1-rep3 40/40 passed
-CHECK bench-N128-K14:2-rep1 40/40 passed
-CHECK bench-N128-K14:2-rep2 40/40 passed
-CHECK bench-N128-K14:2-rep3 40/40 passed
-CHECK bench-N128-K28:1-rep1 40/40 passed
-CHECK bench-N128-K28:1-rep2 40/40 passed
-CHECK bench-N128-K28:1-rep3 40/40 passed
-CHECK bench-N128-K28:2-rep1 40/40 passed
-CHECK bench-N128-K28:2-rep2 40/40 passed
-CHECK bench-N128-K28:2-rep3 40/40 passed
-CHECK bench-N128-K56:1-rep1 40/40 passed
-CHECK bench-N128-K56:1-rep2 40/40 passed
-CHECK bench-N128-K56:1-rep3 40/40 passed
-CHECK bench-N128-K56:2-rep1 40/40 passed
-CHECK bench-N128-K56:2-rep2 40/40 passed
-CHECK bench-N128-K56:2-rep3 40/40 passed
-CHECK bench-N256-K14:1-rep1 40/40 passed
-CHECK bench-N256-K14:1-rep2 40/40 passed
-CHECK bench-N256-K14:1-rep3 40/40 passed
-CHECK bench-N256-K14:2-rep1 40/40 passed
-CHECK bench-N256-K14:2-rep2 40/40 passed
-CHECK bench-N256-K14:2-rep3 40/40 passed
-CHECK bench-N256-K28:1-rep1 40/40 passed
-CHECK bench-N256-K28:1-rep2 40/40 passed
-CHECK bench-N256-K28:1-rep3 40/40 passed
-CHECK bench-N256-K28:2-rep1 40/40 passed
-CHECK bench-N256-K28:2-rep2 40/40 passed
-CHECK bench-N256-K28:2-rep3 40/40 passed
-CHECK bench-N256-K56:1-rep1 40/40 passed
-CHECK bench-N256-K56:1-rep2 40/40 passed
-CHECK bench-N256-K56:1-rep3 40/40 passed
-CHECK bench-N256-K56:2-rep1 40/40 passed
-CHECK bench-N256-K56:2-rep2 40/40 passed
-CHECK bench-N256-K56:2-rep3 40/40 passed
-CHECK bench-N512-K14:1-rep1 40/40 passed
-CHECK bench-N512-K14:1-rep2 40/40 passed
-CHECK bench-N512-K14:1-rep3 40/40 passed
-CHECK bench-N512-K14:2-rep1 40/40 passed
-CHECK bench-N512-K14:2-rep2 40/40 passed
-CHECK bench-N512-K14:2-rep3 40/40 passed
-CHECK bench-N512-K28:1-rep1 40/40 passed
-CHECK bench-N512-K28:1-rep2 40/40 passed
-CHECK bench-N512-K28:1-rep3 40/40 passed
-CHECK bench-N512-K28:2-rep1 40/40 passed
-CHECK bench-N512-K28:2-rep2 40/40 passed
-CHECK bench-N512-K28:2-rep3 40/40 passed
-CHECK bench-N512-K56:1-rep1 40/40 passed
-CHECK bench-N512-K56:1-rep2 40/40 passed
-CHECK bench-N512-K56:1-rep3 40/40 passed
-CHECK bench-N512-K56:2-rep1 40/40 passed
-CHECK bench-N512-K56:2-rep2 40/40 passed
-CHECK bench-N512-K56:2-rep3 40/40 passed
-CHECK bench-N64-K14:1-rep1 40/40 passed
-CHECK bench-N64-K14:1-rep2 40/40 passed
-CHECK bench-N64-K14:1-rep3 40/40 passed
-CHECK bench-N64-K14:2-rep1 40/40 passed
-CHECK bench-N64-K14:2-rep2 40/40 passed
-CHECK bench-N64-K14:2-rep3 40/40 passed
-CHECK bench-N64-K28:1-rep1 40/40 passed
-CHECK bench-N64-K28:1-rep2 40/40 passed
-CHECK bench-N64-K28:1-rep3 40/40 passed
-CHECK bench-N64-K28:2-rep1 40/40 passed
-CHECK bench-N64-K28:2-rep2 40/40 passed
-CHECK bench-N64-K28:2-rep3 40/40 passed
-CHECK bench-N64-K56:1-rep1 40/40 passed
-CHECK bench-N64-K56:1-rep2 40/40 passed
-CHECK bench-N64-K56:1-rep3 40/40 passed
-CHECK bench-N64-K56:2-rep1 40/40 passed
-CHECK bench-N64-K56:2-rep2 40/40 passed
-CHECK bench-N64-K56:2-rep3 40/40 passed
-CHECK check-N128-K14:1-seed42 40/40 passed
-CHECK check-N128-K14:1-seed43 40/40 passed
-CHECK check-N128-K14:1-seed44 40/40 passed
-CHECK check-N128-K14:2-seed42 40/40 passed
-CHECK check-N128-K14:2-seed43 40/40 passed
-CHECK check-N128-K14:2-seed44 40/40 passed
-CHECK check-N128-K28:1-seed42 40/40 passed
-CHECK check-N128-K28:1-seed43 40/40 passed
-CHECK check-N128-K28:1-seed44 40/40 passed
-CHECK check-N128-K28:2-seed42 40/40 passed
-CHECK check-N128-K28:2-seed43 40/40 passed
-CHECK check-N128-K28:2-seed44 40/40 passed
-CHECK check-N128-K56:1-seed42 40/40 passed
-CHECK check-N128-K56:1-seed43 40/40 passed
-CHECK check-N128-K56:1-seed44 40/40 passed
-CHECK check-N128-K56:2-seed42 40/40 passed
-CHECK check-N128-K56:2-seed43 40/40 passed
-CHECK check-N128-K56:2-seed44 40/40 passed
-CHECK check-N129-K14:1-seed42 40/40 passed
-CHECK check-N129-K14:1-seed43 40/40 passed
-CHECK check-N129-K14:1-seed44 40/40 passed
-CHECK check-N129-K14:2-seed42 40/40 passed
-CHECK check-N129-K14:2-seed43 40/40 passed
-CHECK check-N129-K14:2-seed44 40/40 passed
-CHECK check-N129-K28:1-seed42 40/40 passed
-CHECK check-N129-K28:1-seed43 40/40 passed
-CHECK check-N129-K28:1-seed44 40/40 passed
-CHECK check-N129-K28:2-seed42 40/40 passed
-CHECK check-N129-K28:2-seed43 40/40 passed
-CHECK check-N129-K28:2-seed44 40/40 passed
-CHECK check-N129-K56:1-seed42 40/40 passed
-CHECK check-N129-K56:1-seed43 40/40 passed
-CHECK check-N129-K56:1-seed44 40/40 passed
-CHECK check-N129-K56:2-seed42 40/40 passed
-CHECK check-N129-K56:2-seed43 40/40 passed
-CHECK check-N129-K56:2-seed44 40/40 passed
-CHECK check-N256-K14:1-seed42 40/40 passed
-CHECK check-N256-K14:1-seed43 40/40 passed
-CHECK check-N256-K14:1-seed44 40/40 passed
-CHECK check-N256-K14:2-seed42 40/40 passed
-CHECK check-N256-K14:2-seed43 40/40 passed
-CHECK check-N256-K14:2-seed44 40/40 passed
-CHECK check-N256-K28:1-seed42 40/40 passed
-CHECK check-N256-K28:1-seed43 40/40 passed
-CHECK check-N256-K28:1-seed44 40/40 passed
-CHECK check-N256-K28:2-seed42 40/40 passed
-CHECK check-N256-K28:2-seed43 40/40 passed
-CHECK check-N256-K28:2-seed44 40/40 passed
-CHECK check-N256-K56:1-seed42 40/40 passed
-CHECK check-N256-K56:1-seed43 40/40 passed
-CHECK check-N256-K56:1-seed44 40/40 passed
-CHECK check-N256-K56:2-seed42 40/40 passed
-CHECK check-N256-K56:2-seed43 40/40 passed
-CHECK check-N256-K56:2-seed44 40/40 passed
-CHECK check-N512-K14:1-seed42 40/40 passed
-CHECK check-N512-K14:1-seed43 40/40 passed
-CHECK check-N512-K14:1-seed44 40/40 passed
-CHECK check-N512-K14:2-seed42 40/40 passed
-CHECK check-N512-K14:2-seed43 40/40 passed
-CHECK check-N512-K14:2-seed44 40/40 passed
-CHECK check-N512-K28:1-seed42 40/40 passed
-CHECK check-N512-K28:1-seed43 40/40 passed
-CHECK check-N512-K28:1-seed44 40/40 passed
-CHECK check-N512-K28:2-seed42 40/40 passed
-CHECK check-N512-K28:2-seed43 40/40 passed
-CHECK check-N512-K28:2-seed44 40/40 passed
-CHECK check-N512-K56:1-seed42 40/40 passed
-CHECK check-N512-K56:1-seed43 40/40 passed
-CHECK check-N512-K56:1-seed44 40/40 passed
-CHECK check-N512-K56:2-seed42 40/40 passed
-CHECK check-N512-K56:2-seed43 40/40 passed
-CHECK check-N512-K56:2-seed44 40/40 passed
-CHECK check-N64-K14:1-seed42 40/40 passed
-CHECK check-N64-K14:1-seed43 40/40 passed
-CHECK check-N64-K14:1-seed44 40/40 passed
-CHECK check-N64-K14:2-seed42 40/40 passed
-CHECK check-N64-K14:2-seed43 40/40 passed
-CHECK check-N64-K14:2-seed44 40/40 passed
-CHECK check-N64-K28:1-seed42 40/40 passed
-CHECK check-N64-K28:1-seed43 40/40 passed
-CHECK check-N64-K28:1-seed44 40/40 passed
-CHECK check-N64-K28:2-seed42 40/40 passed
-CHECK check-N64-K28:2-seed43 40/40 passed
-CHECK check-N64-K28:2-seed44 40/40 passed
-CHECK check-N64-K56:1-seed42 40/40 passed
-CHECK check-N64-K56:1-seed43 40/40 passed
-CHECK check-N64-K56:1-seed44 40/40 passed
-CHECK check-N64-K56:2-seed42 40/40 passed
-CHECK check-N64-K56:2-seed43 40/40 passed
-CHECK check-N64-K56:2-seed44 40/40 passed
-CHECK profile-N128-K14:1 40/40 passed
-CHECK profile-N128-K14:2 40/40 passed
-CHECK profile-N128-K28:1 40/40 passed
-CHECK profile-N128-K28:2 40/40 passed
-CHECK profile-N128-K56:1 40/40 passed
-CHECK profile-N128-K56:2 40/40 passed
-CHECK profile-N256-K14:1 40/40 passed
-CHECK profile-N256-K14:2 40/40 passed
-CHECK profile-N256-K28:1 40/40 passed
-CHECK profile-N256-K28:2 40/40 passed
-CHECK profile-N256-K56:1 40/40 passed
-CHECK profile-N256-K56:2 40/40 passed
-CHECK profile-N512-K14:1 40/40 passed
-CHECK profile-N512-K14:2 40/40 passed
-CHECK profile-N512-K28:1 40/40 passed
-CHECK profile-N512-K28:2 40/40 passed
-CHECK profile-N512-K56:1 40/40 passed
-CHECK profile-N512-K56:2 40/40 passed
-CHECK profile-N64-K14:1 40/40 passed
-CHECK profile-N64-K14:2 40/40 passed
-CHECK profile-N64-K28:1 40/40 passed
-CHECK profile-N64-K28:2 40/40 passed
-CHECK profile-N64-K56:1 40/40 passed
-CHECK profile-N64-K56:2 40/40 passed
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mhc/matched/collect_results.py --root results/mhc-apply-pipeline
+SELECTED check results/mhc-apply-pipeline/20261102-192027-all-3167637
+IDENTITY q4/native_library/hc_source/weights: ('8db9ac844e2d5d5105f52974721bc3fd452b424b', '4307e7ad6acadc9c2bc2746a50fd2dd4eb469235ec428a53e4cb0700018e53af', '984334759325a7f4da7ff4c2a43fc984d2f18bc43706df70139210a0bef59830', None)
+BASELINE: /home/z30086261/Q4/results/mhc-apply-pipeline/20261102-192027-all-3167637
+CHECK bench-N128-K1024:1-rep1 40/40 passed
+CHECK bench-N128-K1024:1-rep2 40/40 passed
+CHECK bench-N128-K1024:1-rep3 40/40 passed
+CHECK bench-N128-K1024:3-rep1 40/40 passed
+CHECK bench-N128-K1024:3-rep2 40/40 passed
+CHECK bench-N128-K1024:3-rep3 40/40 passed
+CHECK bench-N128-K1280:1-rep1 40/40 passed
+CHECK bench-N128-K1280:1-rep2 40/40 passed
+CHECK bench-N128-K1280:1-rep3 40/40 passed
+CHECK bench-N128-K1280:3-rep1 40/40 passed
+CHECK bench-N128-K1280:3-rep2 40/40 passed
+CHECK bench-N128-K1280:3-rep3 40/40 passed
+CHECK bench-N128-K256:1-rep1 40/40 passed
+CHECK bench-N128-K256:1-rep2 40/40 passed
+CHECK bench-N128-K256:1-rep3 40/40 passed
+CHECK bench-N128-K256:3-rep1 40/40 passed
+CHECK bench-N128-K256:3-rep2 40/40 passed
+CHECK bench-N128-K256:3-rep3 40/40 passed
+CHECK bench-N256-K1024:1-rep1 40/40 passed
+CHECK bench-N256-K1024:1-rep2 40/40 passed
+CHECK bench-N256-K1024:1-rep3 40/40 passed
+CHECK bench-N256-K1024:3-rep1 40/40 passed
+CHECK bench-N256-K1024:3-rep2 40/40 passed
+CHECK bench-N256-K1024:3-rep3 40/40 passed
+CHECK bench-N256-K1280:1-rep1 40/40 passed
+CHECK bench-N256-K1280:1-rep2 40/40 passed
+CHECK bench-N256-K1280:1-rep3 40/40 passed
+CHECK bench-N256-K1280:3-rep1 40/40 passed
+CHECK bench-N256-K1280:3-rep2 40/40 passed
+CHECK bench-N256-K1280:3-rep3 40/40 passed
+CHECK bench-N256-K256:1-rep1 40/40 passed
+CHECK bench-N256-K256:1-rep2 40/40 passed
+CHECK bench-N256-K256:1-rep3 40/40 passed
+CHECK bench-N256-K256:3-rep1 40/40 passed
+CHECK bench-N256-K256:3-rep2 40/40 passed
+CHECK bench-N256-K256:3-rep3 40/40 passed
+CHECK bench-N512-K1024:1-rep1 40/40 passed
+CHECK bench-N512-K1024:1-rep2 40/40 passed
+CHECK bench-N512-K1024:1-rep3 40/40 passed
+CHECK bench-N512-K1024:3-rep1 40/40 passed
+CHECK bench-N512-K1024:3-rep2 40/40 passed
+CHECK bench-N512-K1024:3-rep3 40/40 passed
+CHECK bench-N512-K1280:1-rep1 40/40 passed
+CHECK bench-N512-K1280:1-rep2 40/40 passed
+CHECK bench-N512-K1280:1-rep3 40/40 passed
+CHECK bench-N512-K1280:3-rep1 40/40 passed
+CHECK bench-N512-K1280:3-rep2 40/40 passed
+CHECK bench-N512-K1280:3-rep3 40/40 passed
+CHECK bench-N512-K256:1-rep1 40/40 passed
+CHECK bench-N512-K256:1-rep2 40/40 passed
+CHECK bench-N512-K256:1-rep3 40/40 passed
+CHECK bench-N512-K256:3-rep1 40/40 passed
+CHECK bench-N512-K256:3-rep2 40/40 passed
+CHECK bench-N512-K256:3-rep3 40/40 passed
+CHECK bench-N64-K1024:1-rep1 40/40 passed
+CHECK bench-N64-K1024:1-rep2 40/40 passed
+CHECK bench-N64-K1024:1-rep3 40/40 passed
+CHECK bench-N64-K1024:3-rep1 40/40 passed
+CHECK bench-N64-K1024:3-rep2 40/40 passed
+CHECK bench-N64-K1024:3-rep3 40/40 passed
+CHECK bench-N64-K1280:1-rep1 40/40 passed
+CHECK bench-N64-K1280:1-rep2 40/40 passed
+CHECK bench-N64-K1280:1-rep3 40/40 passed
+CHECK bench-N64-K1280:3-rep1 40/40 passed
+CHECK bench-N64-K1280:3-rep2 40/40 passed
+CHECK bench-N64-K1280:3-rep3 40/40 passed
+CHECK bench-N64-K256:1-rep1 40/40 passed
+CHECK bench-N64-K256:1-rep2 40/40 passed
+CHECK bench-N64-K256:1-rep3 40/40 passed
+CHECK bench-N64-K256:3-rep1 40/40 passed
+CHECK bench-N64-K256:3-rep2 40/40 passed
+CHECK bench-N64-K256:3-rep3 40/40 passed
+CHECK check-N128-K1024:1-seed42 40/40 passed
+CHECK check-N128-K1024:1-seed43 40/40 passed
+CHECK check-N128-K1024:1-seed44 40/40 passed
+CHECK check-N128-K1024:3-seed42 40/40 passed
+CHECK check-N128-K1024:3-seed43 40/40 passed
+CHECK check-N128-K1024:3-seed44 40/40 passed
+CHECK check-N128-K1280:1-seed42 40/40 passed
+CHECK check-N128-K1280:1-seed43 40/40 passed
+CHECK check-N128-K1280:1-seed44 40/40 passed
+CHECK check-N128-K1280:3-seed42 40/40 passed
+CHECK check-N128-K1280:3-seed43 40/40 passed
+CHECK check-N128-K1280:3-seed44 40/40 passed
+CHECK check-N128-K256:1-seed42 40/40 passed
+CHECK check-N128-K256:1-seed43 40/40 passed
+CHECK check-N128-K256:1-seed44 40/40 passed
+CHECK check-N128-K256:3-seed42 40/40 passed
+CHECK check-N128-K256:3-seed43 40/40 passed
+CHECK check-N128-K256:3-seed44 40/40 passed
+CHECK check-N129-K1024:1-seed42 40/40 passed
+CHECK check-N129-K1024:1-seed43 40/40 passed
+CHECK check-N129-K1024:1-seed44 40/40 passed
+CHECK check-N129-K1024:3-seed42 40/40 passed
+CHECK check-N129-K1024:3-seed43 40/40 passed
+CHECK check-N129-K1024:3-seed44 40/40 passed
+CHECK check-N129-K1280:1-seed42 40/40 passed
+CHECK check-N129-K1280:1-seed43 40/40 passed
+CHECK check-N129-K1280:1-seed44 40/40 passed
+CHECK check-N129-K1280:3-seed42 40/40 passed
+CHECK check-N129-K1280:3-seed43 40/40 passed
+CHECK check-N129-K1280:3-seed44 40/40 passed
+CHECK check-N129-K256:1-seed42 40/40 passed
+CHECK check-N129-K256:1-seed43 40/40 passed
+CHECK check-N129-K256:1-seed44 40/40 passed
+CHECK check-N129-K256:3-seed42 40/40 passed
+CHECK check-N129-K256:3-seed43 40/40 passed
+CHECK check-N129-K256:3-seed44 40/40 passed
+CHECK check-N256-K1024:1-seed42 40/40 passed
+CHECK check-N256-K1024:1-seed43 40/40 passed
+CHECK check-N256-K1024:1-seed44 40/40 passed
+CHECK check-N256-K1024:3-seed42 40/40 passed
+CHECK check-N256-K1024:3-seed43 40/40 passed
+CHECK check-N256-K1024:3-seed44 40/40 passed
+CHECK check-N256-K1280:1-seed42 40/40 passed
+CHECK check-N256-K1280:1-seed43 40/40 passed
+CHECK check-N256-K1280:1-seed44 40/40 passed
+CHECK check-N256-K1280:3-seed42 40/40 passed
+CHECK check-N256-K1280:3-seed43 40/40 passed
+CHECK check-N256-K1280:3-seed44 40/40 passed
+CHECK check-N256-K256:1-seed42 40/40 passed
+CHECK check-N256-K256:1-seed43 40/40 passed
+CHECK check-N256-K256:1-seed44 40/40 passed
+CHECK check-N256-K256:3-seed42 40/40 passed
+CHECK check-N256-K256:3-seed43 40/40 passed
+CHECK check-N256-K256:3-seed44 40/40 passed
+CHECK check-N512-K1024:1-seed42 40/40 passed
+CHECK check-N512-K1024:1-seed43 40/40 passed
+CHECK check-N512-K1024:1-seed44 40/40 passed
+CHECK check-N512-K1024:3-seed42 40/40 passed
+CHECK check-N512-K1024:3-seed43 40/40 passed
+CHECK check-N512-K1024:3-seed44 40/40 passed
+CHECK check-N512-K1280:1-seed42 40/40 passed
+CHECK check-N512-K1280:1-seed43 40/40 passed
+CHECK check-N512-K1280:1-seed44 40/40 passed
+CHECK check-N512-K1280:3-seed42 40/40 passed
+CHECK check-N512-K1280:3-seed43 40/40 passed
+CHECK check-N512-K1280:3-seed44 40/40 passed
+CHECK check-N512-K256:1-seed42 40/40 passed
+CHECK check-N512-K256:1-seed43 40/40 passed
+CHECK check-N512-K256:1-seed44 40/40 passed
+CHECK check-N512-K256:3-seed42 40/40 passed
+CHECK check-N512-K256:3-seed43 40/40 passed
+CHECK check-N512-K256:3-seed44 40/40 passed
+CHECK check-N64-K1024:1-seed42 40/40 passed
+CHECK check-N64-K1024:1-seed43 40/40 passed
+CHECK check-N64-K1024:1-seed44 40/40 passed
+CHECK check-N64-K1024:3-seed42 40/40 passed
+CHECK check-N64-K1024:3-seed43 40/40 passed
+CHECK check-N64-K1024:3-seed44 40/40 passed
+CHECK check-N64-K1280:1-seed42 40/40 passed
+CHECK check-N64-K1280:1-seed43 40/40 passed
+CHECK check-N64-K1280:1-seed44 40/40 passed
+CHECK check-N64-K1280:3-seed42 40/40 passed
+CHECK check-N64-K1280:3-seed43 40/40 passed
+CHECK check-N64-K1280:3-seed44 40/40 passed
+CHECK check-N64-K256:1-seed42 40/40 passed
+CHECK check-N64-K256:1-seed43 40/40 passed
+CHECK check-N64-K256:1-seed44 40/40 passed
+CHECK check-N64-K256:3-seed42 40/40 passed
+CHECK check-N64-K256:3-seed43 40/40 passed
+CHECK check-N64-K256:3-seed44 40/40 passed
+CHECK profile-N128-K1024:1 40/40 passed
+CHECK profile-N128-K1024:3 40/40 passed
+CHECK profile-N128-K1280:1 40/40 passed
+CHECK profile-N128-K1280:3 40/40 passed
+CHECK profile-N128-K256:1 40/40 passed
+CHECK profile-N128-K256:3 40/40 passed
+CHECK profile-N256-K1024:1 40/40 passed
+CHECK profile-N256-K1024:3 40/40 passed
+CHECK profile-N256-K1280:1 40/40 passed
+CHECK profile-N256-K1280:3 40/40 passed
+CHECK profile-N256-K256:1 40/40 passed
+CHECK profile-N256-K256:3 40/40 passed
+CHECK profile-N512-K1024:1 40/40 passed
+CHECK profile-N512-K1024:3 40/40 passed
+CHECK profile-N512-K1280:1 40/40 passed
+CHECK profile-N512-K1280:3 40/40 passed
+CHECK profile-N512-K256:1 40/40 passed
+CHECK profile-N512-K256:3 40/40 passed
+CHECK profile-N64-K1024:1 40/40 passed
+CHECK profile-N64-K1024:3 40/40 passed
+CHECK profile-N64-K1280:1 40/40 passed
+CHECK profile-N64-K1280:3 40/40 passed
+CHECK profile-N64-K256:1 40/40 passed
+CHECK profile-N64-K256:3 40/40 passed
 CHECK TOTAL: 7440 failed: 0
 RAW PROJECTION CHECKS: 372 failed= 0
-API PROCESS bench-N128-K14:1-rep1 {"ascendc_shifted_native": {"event_us": 22.80063033103943, "wall_us": 23.39364029467106}, "ratios": {"ascendc_over_three": 0.8374142924161827, "two_over_three": 1.0650399747986155}, "tilelang_apply_bound": {"event_us": 28.998290300369263, "wall_us": 29.51832488179207}, "tilelang_coeff_bound": {"event_us": 27.22741961479187, "wall_us": 27.650819974951446}, "tilelang_tail_c14s1": {"event_us": 27.23104953765869, "wall_us": 27.693139854818583}}
-API PROCESS bench-N128-K14:1-rep2 {"ascendc_shifted_native": {"event_us": 22.007864713668823, "wall_us": 22.39799010567367}, "ratios": {"ascendc_over_three": 0.8530408585997181, "two_over_three": 1.1209695264709238}, "tilelang_apply_bound": {"event_us": 28.920239210128784, "wall_us": 29.311509570106864}, "tilelang_coeff_bound": {"event_us": 25.799309015274048, "wall_us": 26.13830496557057}, "tilelang_tail_c14s1": {"event_us": 25.91333031654358, "wall_us": 26.25737979542464}}
-API PROCESS bench-N128-K14:1-rep3 {"ascendc_shifted_native": {"event_us": 25.70913553237915, "wall_us": 26.153624639846385}, "ratios": {"ascendc_over_three": 1.0404338269926428, "two_over_three": 1.1704622813788113}, "tilelang_apply_bound": {"event_us": 28.92214059829712, "wall_us": 29.37867073342204}, "tilelang_coeff_bound": {"event_us": 24.710015058517456, "wall_us": 25.129084824584424}, "tilelang_tail_c14s1": {"event_us": 24.76699471473694, "wall_us": 25.2269406337291}}
-API PROCESS bench-N128-K14:2-rep1 {"ascendc_shifted_native": {"event_us": 26.803114414215088, "wall_us": 27.23419980611652}, "ratios": {"ascendc_over_three": 1.0305925450074724, "two_over_three": 1.1137886169992604}, "tilelang_apply_bound": {"event_us": 28.966834545135498, "wall_us": 29.45027023088187}, "tilelang_coeff_bound": {"event_us": 26.007479429244995, "wall_us": 26.384330121800303}, "tilelang_tail_c14s2": {"event_us": 26.031965017318726, "wall_us": 26.560944388620555}}
-API PROCESS bench-N128-K14:2-rep2 {"ascendc_shifted_native": {"event_us": 28.65435004234314, "wall_us": 29.197694966569543}, "ratios": {"ascendc_over_three": 1.0735649589129455, "two_over_three": 1.0868325935726642}, "tilelang_apply_bound": {"event_us": 29.008474349975586, "wall_us": 29.613514780066907}, "tilelang_coeff_bound": {"event_us": 26.690839529037476, "wall_us": 27.233044966123998}, "tilelang_tail_c14s2": {"event_us": 26.82815432548523, "wall_us": 27.330195880495012}}
-API PROCESS bench-N128-K14:2-rep3 {"ascendc_shifted_native": {"event_us": 28.181140422821045, "wall_us": 28.711165068671107}, "ratios": {"ascendc_over_three": 1.097096534157447, "two_over_three": 1.127027013480798}, "tilelang_apply_bound": {"event_us": 28.949965238571167, "wall_us": 29.477414791472256}, "tilelang_coeff_bound": {"event_us": 25.68701982498169, "wall_us": 26.28121990710497}, "tilelang_tail_c14s2": {"event_us": 25.76830506324768, "wall_us": 26.336354785598814}}
-API PROCESS bench-N128-K28:1-rep1 {"ascendc_shifted_native": {"event_us": 22.004671096801758, "wall_us": 22.427334915846586}, "ratios": {"ascendc_over_three": 0.8525168911335889, "two_over_three": 1.1214210776296603}, "tilelang_apply_bound": {"event_us": 28.945469856262207, "wall_us": 29.281769529916346}, "tilelang_coeff_bound": {"event_us": 25.81141948699951, "wall_us": 26.15348028484732}, "tilelang_tail_c28s1": {"event_us": 25.70534586906433, "wall_us": 26.062540127895772}}
-API PROCESS bench-N128-K28:1-rep2 {"ascendc_shifted_native": {"event_us": 27.89891481399536, "wall_us": 28.463389608077705}, "ratios": {"ascendc_over_three": 1.0722668537340014, "two_over_three": 1.1157535947135364}, "tilelang_apply_bound": {"event_us": 29.030380249023438, "wall_us": 29.60685465950519}, "tilelang_coeff_bound": {"event_us": 26.018630266189575, "wall_us": 26.521130348555744}, "tilelang_tail_c28s1": {"event_us": 26.075119972229004, "wall_us": 26.6171753173694}}
-API PROCESS bench-N128-K28:1-rep3 {"ascendc_shifted_native": {"event_us": 27.020565271377563, "wall_us": 27.48422557488084}, "ratios": {"ascendc_over_three": 1.044625498889309, "two_over_three": 1.1186935782691652}, "tilelang_apply_bound": {"event_us": 28.93643021583557, "wall_us": 29.328190139494836}, "tilelang_coeff_bound": {"event_us": 25.866270065307617, "wall_us": 26.330490363761783}, "tilelang_tail_c28s1": {"event_us": 25.827125310897827, "wall_us": 26.264244806952775}}
-API PROCESS bench-N128-K28:2-rep1 {"ascendc_shifted_native": {"event_us": 27.58575439453125, "wall_us": 28.043959755450487}, "ratios": {"ascendc_over_three": 1.1448706147140606, "two_over_three": 1.200329035283352}, "tilelang_apply_bound": {"event_us": 28.922029733657837, "wall_us": 29.367454699240625}, "tilelang_coeff_bound": {"event_us": 24.09508466720581, "wall_us": 24.450570344924927}, "tilelang_tail_c28s2": {"event_us": 24.059975147247314, "wall_us": 24.490929790772498}}
-API PROCESS bench-N128-K28:2-rep2 {"ascendc_shifted_native": {"event_us": 27.940139770507812, "wall_us": 28.426340431906283}, "ratios": {"ascendc_over_three": 1.0814959895447198, "two_over_three": 1.121933464561134}, "tilelang_apply_bound": {"event_us": 28.984830379486084, "wall_us": 29.487985302694142}, "tilelang_coeff_bound": {"event_us": 25.83471417427063, "wall_us": 26.2737600132823}, "tilelang_tail_c28s2": {"event_us": 26.04923963546753, "wall_us": 26.55222429893911}}
-API PROCESS bench-N128-K28:2-rep3 {"ascendc_shifted_native": {"event_us": 27.571460008621216, "wall_us": 28.00650428980589}, "ratios": {"ascendc_over_three": 1.0548827229113475, "two_over_three": 1.10809062244402}, "tilelang_apply_bound": {"event_us": 28.962154388427734, "wall_us": 29.49524496216327}, "tilelang_coeff_bound": {"event_us": 26.136990785598755, "wall_us": 26.565594598650932}, "tilelang_tail_c28s2": {"event_us": 26.105539798736572, "wall_us": 26.56629541888833}}
-API PROCESS bench-N128-K56:1-rep1 {"ascendc_shifted_native": {"event_us": 27.218964099884033, "wall_us": 27.57811511401087}, "ratios": {"ascendc_over_three": 1.132530924851334, "two_over_three": 1.204119047843432}, "tilelang_apply_bound": {"event_us": 28.939495086669922, "wall_us": 29.360789339989424}, "tilelang_coeff_bound": {"event_us": 24.033749103546143, "wall_us": 24.34722031466663}, "tilelang_tail_c56s1": {"event_us": 24.069379568099976, "wall_us": 24.416825035586953}}
-API PROCESS bench-N128-K56:1-rep2 {"ascendc_shifted_native": {"event_us": 27.357075214385986, "wall_us": 27.94937463477254}, "ratios": {"ascendc_over_three": 1.0236516719062283, "two_over_three": 1.0821929900704514}, "tilelang_apply_bound": {"event_us": 28.92159104347229, "wall_us": 29.369050171226263}, "tilelang_coeff_bound": {"event_us": 26.724984645843506, "wall_us": 27.121235616505146}, "tilelang_tail_c56s1": {"event_us": 26.800949573516846, "wall_us": 27.29324041865766}}
-API PROCESS bench-N128-K56:1-rep3 {"ascendc_shifted_native": {"event_us": 26.850274801254272, "wall_us": 27.35903486609459}, "ratios": {"ascendc_over_three": 1.0499501517496626, "two_over_three": 1.1305206057381683}, "tilelang_apply_bound": {"event_us": 28.91069531440735, "wall_us": 29.394940356723964}, "tilelang_coeff_bound": {"event_us": 25.572904348373413, "wall_us": 26.02959517389536}, "tilelang_tail_c56s1": {"event_us": 25.591505765914917, "wall_us": 26.058180374093354}}
-API PROCESS bench-N128-K56:2-rep1 {"ascendc_shifted_native": {"event_us": 27.66558527946472, "wall_us": 28.10601028613746}, "ratios": {"ascendc_over_three": 1.1442608631212041, "two_over_three": 1.1972485366993337}, "tilelang_apply_bound": {"event_us": 28.946704864501953, "wall_us": 29.444865067489445}, "tilelang_coeff_bound": {"event_us": 24.177690744400024, "wall_us": 24.623035569675267}, "tilelang_tail_c56s2": {"event_us": 24.256539344787598, "wall_us": 24.707604898139834}}
-API PROCESS bench-N128-K56:2-rep2 {"ascendc_shifted_native": {"event_us": 27.972664833068848, "wall_us": 28.459685272537172}, "ratios": {"ascendc_over_three": 1.0886122482988267, "two_over_three": 1.126639447771212}, "tilelang_apply_bound": {"event_us": 28.949800729751587, "wall_us": 29.43104482255876}, "tilelang_coeff_bound": {"event_us": 25.69571018218994, "wall_us": 26.217419654130936}, "tilelang_tail_c56s2": {"event_us": 25.66280961036682, "wall_us": 26.17280522827059}}
-API PROCESS bench-N128-K56:2-rep3 {"ascendc_shifted_native": {"event_us": 36.07409477233887, "wall_us": 36.61386494059116}, "ratios": {"ascendc_over_three": 1.3833545041961004, "two_over_three": 1.1112810397861212}, "tilelang_apply_bound": {"event_us": 28.979164361953735, "wall_us": 29.4700002996251}, "tilelang_coeff_bound": {"event_us": 26.07725977897644, "wall_us": 26.61857521161437}, "tilelang_tail_c56s2": {"event_us": 26.281369924545288, "wall_us": 26.9152206601575}}
-API PROCESS bench-N256-K14:1-rep1 {"ascendc_shifted_native": {"event_us": 27.928249835968018, "wall_us": 28.319174889475107}, "ratios": {"ascendc_over_three": 1.086035281720292, "two_over_three": 1.169619326269968}, "tilelang_apply_bound": {"event_us": 30.07767915725708, "wall_us": 30.411919578909874}, "tilelang_coeff_bound": {"event_us": 25.715785026550293, "wall_us": 26.02583495900035}, "tilelang_tail_c14s1": {"event_us": 28.098974227905273, "wall_us": 28.514370205812156}}
-API PROCESS bench-N256-K14:1-rep2 {"ascendc_shifted_native": {"event_us": 28.08732032775879, "wall_us": 28.520330088213086}, "ratios": {"ascendc_over_three": 1.0687475020708062, "two_over_three": 1.14557583201596}, "tilelang_apply_bound": {"event_us": 30.106414556503296, "wall_us": 30.53799970075488}, "tilelang_coeff_bound": {"event_us": 26.280595064163208, "wall_us": 26.72388043720275}, "tilelang_tail_c14s1": {"event_us": 28.137065172195435, "wall_us": 28.499795007519424}}
-API PROCESS bench-N256-K14:1-rep3 {"ascendc_shifted_native": {"event_us": 28.088990449905396, "wall_us": 28.491535340435803}, "ratios": {"ascendc_over_three": 1.0611511956123914, "two_over_three": 1.136794059436529}, "tilelang_apply_bound": {"event_us": 30.09127974510193, "wall_us": 30.55948531255126}, "tilelang_coeff_bound": {"event_us": 26.47029995918274, "wall_us": 26.93064510822296}, "tilelang_tail_c14s1": {"event_us": 28.108110427856445, "wall_us": 28.53245008736849}}
-API PROCESS bench-N256-K14:2-rep1 {"ascendc_shifted_native": {"event_us": 28.009544610977173, "wall_us": 28.34045502822846}, "ratios": {"ascendc_over_three": 1.0993676138920567, "two_over_three": 1.1711589431334433}, "tilelang_apply_bound": {"event_us": 29.838634729385376, "wall_us": 30.270805000327528}, "tilelang_coeff_bound": {"event_us": 25.477869510650635, "wall_us": 25.852330145426095}, "tilelang_tail_c14s2": {"event_us": 27.733529806137085, "wall_us": 28.139504720456898}}
-API PROCESS bench-N256-K14:2-rep2 {"ascendc_shifted_native": {"event_us": 28.080419301986694, "wall_us": 28.48427975550294}, "ratios": {"ascendc_over_three": 1.0797482887510244, "two_over_three": 1.147674361200105}, "tilelang_apply_bound": {"event_us": 29.846935272216797, "wall_us": 30.390684260055423}, "tilelang_coeff_bound": {"event_us": 26.006449460983276, "wall_us": 26.379115297459066}, "tilelang_tail_c14s2": {"event_us": 27.748254537582397, "wall_us": 28.121680370531976}}
-API PROCESS bench-N256-K14:2-rep3 {"ascendc_shifted_native": {"event_us": 27.499054670333862, "wall_us": 27.908309712074697}, "ratios": {"ascendc_over_three": 1.0777941286543828, "two_over_three": 1.1687370595577358}, "tilelang_apply_bound": {"event_us": 29.819390773773193, "wall_us": 30.288679408840835}, "tilelang_coeff_bound": {"event_us": 25.51419973373413, "wall_us": 25.92808974441141}, "tilelang_tail_c14s2": {"event_us": 27.736990451812744, "wall_us": 28.204505215398967}}
-API PROCESS bench-N256-K28:1-rep1 {"ascendc_shifted_native": {"event_us": 27.268054485321045, "wall_us": 27.630545082502067}, "ratios": {"ascendc_over_three": 1.0610038794143901, "two_over_three": 1.1698783761193277}, "tilelang_apply_bound": {"event_us": 30.066155195236206, "wall_us": 30.48312501050532}, "tilelang_coeff_bound": {"event_us": 25.70024013519287, "wall_us": 25.997899938374758}, "tilelang_tail_c28s1": {"event_us": 25.24295926094055, "wall_us": 25.56174003984779}}
-API PROCESS bench-N256-K28:1-rep2 {"ascendc_shifted_native": {"event_us": 27.97531485557556, "wall_us": 28.37250998709351}, "ratios": {"ascendc_over_three": 1.0675286602078942, "two_over_three": 1.1480363980796362}, "tilelang_apply_bound": {"event_us": 30.08507490158081, "wall_us": 30.60730407014489}, "tilelang_coeff_bound": {"event_us": 26.20568037033081, "wall_us": 26.676864945329726}, "tilelang_tail_c28s1": {"event_us": 26.20137929916382, "wall_us": 26.790029951371253}}
-API PROCESS bench-N256-K28:1-rep3 {"ascendc_shifted_native": {"event_us": 27.627514600753784, "wall_us": 27.999699814245105}, "ratios": {"ascendc_over_three": 1.0621446811529582, "two_over_three": 1.1580696273815045}, "tilelang_apply_bound": {"event_us": 30.12262463569641, "wall_us": 30.549225048162043}, "tilelang_coeff_bound": {"event_us": 26.011065244674683, "wall_us": 26.388235273770988}, "tilelang_tail_c28s1": {"event_us": 25.924619436264038, "wall_us": 26.422279770486057}}
-API PROCESS bench-N256-K28:2-rep1 {"ascendc_shifted_native": {"event_us": 27.31450080871582, "wall_us": 27.692184667102993}, "ratios": {"ascendc_over_three": 1.0738155315386093, "two_over_three": 1.1736340289612108}, "tilelang_apply_bound": {"event_us": 29.853570461273193, "wall_us": 30.232799472287297}, "tilelang_coeff_bound": {"event_us": 25.436865091323853, "wall_us": 25.765540776774287}, "tilelang_tail_c28s2": {"event_us": 25.0095796585083, "wall_us": 25.330945500172675}}
-API PROCESS bench-N256-K28:2-rep2 {"ascendc_shifted_native": {"event_us": 28.075740337371826, "wall_us": 28.470504912547767}, "ratios": {"ascendc_over_three": 1.0839338622654742, "two_over_three": 1.1517229736897612}, "tilelang_apply_bound": {"event_us": 29.831594228744507, "wall_us": 30.215775477699935}, "tilelang_coeff_bound": {"event_us": 25.90170979499817, "wall_us": 26.36309014633298}, "tilelang_tail_c28s2": {"event_us": 26.04906439781189, "wall_us": 26.55969001352787}}
-API PROCESS bench-N256-K28:2-rep3 {"ascendc_shifted_native": {"event_us": 27.81715989112854, "wall_us": 28.390284860506654}, "ratios": {"ascendc_over_three": 1.0370198449318195, "two_over_three": 1.114414879043664}, "tilelang_apply_bound": {"event_us": 29.8932147026062, "wall_us": 30.256780446507037}, "tilelang_coeff_bound": {"event_us": 26.824134588241577, "wall_us": 27.354274643585086}, "tilelang_tail_c28s2": {"event_us": 26.835365295410156, "wall_us": 27.342804824002087}}
-API PROCESS bench-N256-K56:1-rep1 {"ascendc_shifted_native": {"event_us": 27.298295497894287, "wall_us": 27.583824703469872}, "ratios": {"ascendc_over_three": 1.0625712583041982, "two_over_three": 1.1692750456046186}, "tilelang_apply_bound": {"event_us": 30.039600133895874, "wall_us": 30.37190472241491}, "tilelang_coeff_bound": {"event_us": 25.69079041481018, "wall_us": 25.943960063159466}, "tilelang_tail_c56s1": {"event_us": 25.66573977470398, "wall_us": 25.915669975802302}}
-API PROCESS bench-N256-K56:1-rep2 {"ascendc_shifted_native": {"event_us": 27.516674995422363, "wall_us": 27.924884925596416}, "ratios": {"ascendc_over_three": 1.0627050322814702, "two_over_three": 1.1622286426313375}, "tilelang_apply_bound": {"event_us": 30.093644857406616, "wall_us": 30.496694962494075}, "tilelang_coeff_bound": {"event_us": 25.8930504322052, "wall_us": 26.342064957134426}, "tilelang_tail_c56s1": {"event_us": 26.006524562835693, "wall_us": 26.451225276105106}}
-API PROCESS bench-N256-K56:1-rep3 {"ascendc_shifted_native": {"event_us": 29.30917501449585, "wall_us": 29.816775349900126}, "ratios": {"ascendc_over_three": 1.0970645002310249, "two_over_three": 1.1292477958931337}, "tilelang_apply_bound": {"event_us": 30.168983936309814, "wall_us": 30.69999977014959}, "tilelang_coeff_bound": {"event_us": 26.715999841690063, "wall_us": 27.16469462029636}, "tilelang_tail_c56s1": {"event_us": 26.735684871673584, "wall_us": 27.91236969642341}}
-API PROCESS bench-N256-K56:2-rep1 {"ascendc_shifted_native": {"event_us": 28.178645372390747, "wall_us": 28.585874824784696}, "ratios": {"ascendc_over_three": 1.104571268118412, "two_over_three": 1.1699085561330653}, "tilelang_apply_bound": {"event_us": 29.845460653305054, "wall_us": 30.26769496500492}, "tilelang_coeff_bound": {"event_us": 25.510934591293335, "wall_us": 25.8584349649027}, "tilelang_tail_c56s2": {"event_us": 25.574945211410522, "wall_us": 26.01276501081884}}
-API PROCESS bench-N256-K56:2-rep2 {"ascendc_shifted_native": {"event_us": 27.898179292678833, "wall_us": 28.28417520504445}, "ratios": {"ascendc_over_three": 1.079313609590804, "two_over_three": 1.1549821410263748}, "tilelang_apply_bound": {"event_us": 29.85406517982483, "wall_us": 30.305705149658024}, "tilelang_coeff_bound": {"event_us": 25.84807515144348, "wall_us": 26.311164838261902}, "tilelang_tail_c56s2": {"event_us": 25.87568998336792, "wall_us": 26.356379967182875}}
-API PROCESS bench-N256-K56:2-rep3 {"ascendc_shifted_native": {"event_us": 27.271889448165894, "wall_us": 27.674409793689847}, "ratios": {"ascendc_over_three": 1.0396689738691662, "two_over_three": 1.1381983788170615}, "tilelang_apply_bound": {"event_us": 29.856445789337158, "wall_us": 30.22283490281552}, "tilelang_coeff_bound": {"event_us": 26.231319904327393, "wall_us": 26.572109782136977}, "tilelang_tail_c56s2": {"event_us": 26.069024801254272, "wall_us": 26.43214480485767}}
-API PROCESS bench-N512-K14:1-rep1 {"ascendc_shifted_native": {"event_us": 41.01172924041748, "wall_us": 41.541364626027644}, "ratios": {"ascendc_over_three": 1.4534321746224272, "two_over_three": 1.0831904748023575}, "tilelang_apply_bound": {"event_us": 30.56455969810486, "wall_us": 31.010815291665494}, "tilelang_coeff_bound": {"event_us": 28.21716070175171, "wall_us": 28.677614754997194}, "tilelang_tail_c14s1": {"event_us": 33.956929445266724, "wall_us": 34.39068503212184}}
-API PROCESS bench-N512-K14:1-rep2 {"ascendc_shifted_native": {"event_us": 40.87714195251465, "wall_us": 41.39078489970416}, "ratios": {"ascendc_over_three": 1.4535115758548818, "two_over_three": 1.0848038363968282}, "tilelang_apply_bound": {"event_us": 30.507965087890625, "wall_us": 31.03490045759827}, "tilelang_coeff_bound": {"event_us": 28.123024702072144, "wall_us": 28.57411513105035}, "tilelang_tail_c14s1": {"event_us": 33.8766348361969, "wall_us": 34.305500448681414}}
-API PROCESS bench-N512-K14:1-rep3 {"ascendc_shifted_native": {"event_us": 40.905799865722656, "wall_us": 41.434200247749686}, "ratios": {"ascendc_over_three": 1.4542937540752556, "two_over_three": 1.0841682049421608}, "tilelang_apply_bound": {"event_us": 30.495054721832275, "wall_us": 30.94621526543051}, "tilelang_coeff_bound": {"event_us": 28.127604722976685, "wall_us": 28.531744610518217}, "tilelang_tail_c14s1": {"event_us": 33.86146903038025, "wall_us": 34.3108648667112}}
-API PROCESS bench-N512-K14:2-rep1 {"ascendc_shifted_native": {"event_us": 40.9402060508728, "wall_us": 41.39819531701505}, "ratios": {"ascendc_over_three": 1.4560871842738279, "two_over_three": 1.0853242222420552}, "tilelang_apply_bound": {"event_us": 30.515615940093994, "wall_us": 30.925640021450818}, "tilelang_coeff_bound": {"event_us": 28.116589784622192, "wall_us": 28.52353500202298}, "tilelang_tail_c14s2": {"event_us": 33.418649435043335, "wall_us": 33.842960256151855}}
-API PROCESS bench-N512-K14:2-rep2 {"ascendc_shifted_native": {"event_us": 40.953121185302734, "wall_us": 41.46183957345784}, "ratios": {"ascendc_over_three": 1.4530826114229132, "two_over_three": 1.0819649921559522}, "tilelang_apply_bound": {"event_us": 30.493685007095337, "wall_us": 30.932495137676597}, "tilelang_coeff_bound": {"event_us": 28.18361520767212, "wall_us": 28.622334939427674}, "tilelang_tail_c14s2": {"event_us": 33.477745056152344, "wall_us": 33.92994462046772}}
-API PROCESS bench-N512-K14:2-rep3 {"ascendc_shifted_native": {"event_us": 40.90242147445679, "wall_us": 41.41171928495169}, "ratios": {"ascendc_over_three": 1.4525749908566967, "two_over_three": 1.086035954359983}, "tilelang_apply_bound": {"event_us": 30.581209659576416, "wall_us": 31.040204921737313}, "tilelang_coeff_bound": {"event_us": 28.15856099128723, "wall_us": 28.56319071725011}, "tilelang_tail_c14s2": {"event_us": 33.407745361328125, "wall_us": 33.84691954124719}}
-API PROCESS bench-N512-K28:1-rep1 {"ascendc_shifted_native": {"event_us": 40.91774940490723, "wall_us": 41.325835045427084}, "ratios": {"ascendc_over_three": 1.4470114206427696, "two_over_three": 1.0818893732126196}, "tilelang_apply_bound": {"event_us": 30.593039989471436, "wall_us": 30.961340526118875}, "tilelang_coeff_bound": {"event_us": 28.277419805526733, "wall_us": 28.654529596678913}, "tilelang_tail_c28s1": {"event_us": 30.79980969429016, "wall_us": 31.211859895847738}}
-API PROCESS bench-N512-K28:1-rep2 {"ascendc_shifted_native": {"event_us": 40.82491159439087, "wall_us": 41.26890504267067}, "ratios": {"ascendc_over_three": 1.4430352907278634, "two_over_three": 1.0794365935816095}, "tilelang_apply_bound": {"event_us": 30.53834080696106, "wall_us": 30.927684856578708}, "tilelang_coeff_bound": {"event_us": 28.29100012779236, "wall_us": 28.762995498254895}, "tilelang_tail_c28s1": {"event_us": 30.77552080154419, "wall_us": 31.169754802249372}}
-API PROCESS bench-N512-K28:1-rep3 {"ascendc_shifted_native": {"event_us": 40.89466571807861, "wall_us": 41.30384942982346}, "ratios": {"ascendc_over_three": 1.4451341241307167, "two_over_three": 1.0807037709713367}, "tilelang_apply_bound": {"event_us": 30.581949949264526, "wall_us": 30.98733490332961}, "tilelang_coeff_bound": {"event_us": 28.298180103302002, "wall_us": 28.633849578909576}, "tilelang_tail_c28s1": {"event_us": 30.79475998878479, "wall_us": 31.138304620981216}}
-API PROCESS bench-N512-K28:2-rep1 {"ascendc_shifted_native": {"event_us": 40.82236289978027, "wall_us": 41.222929721698165}, "ratios": {"ascendc_over_three": 1.45218699422056, "two_over_three": 1.0832065302250804}, "tilelang_apply_bound": {"event_us": 30.44996976852417, "wall_us": 30.855524819344282}, "tilelang_coeff_bound": {"event_us": 28.110954761505127, "wall_us": 28.574959724210203}, "tilelang_tail_c28s2": {"event_us": 30.495929718017578, "wall_us": 30.886525055393577}}
-API PROCESS bench-N512-K28:2-rep2 {"ascendc_shifted_native": {"event_us": 40.89249610900879, "wall_us": 41.308660292997956}, "ratios": {"ascendc_over_three": 1.454237475530329, "two_over_three": 1.0848688914001061}, "tilelang_apply_bound": {"event_us": 30.506019592285156, "wall_us": 30.89203964918852}, "tilelang_coeff_bound": {"event_us": 28.119544982910156, "wall_us": 28.50099466741085}, "tilelang_tail_c28s2": {"event_us": 30.51850914955139, "wall_us": 30.893339426256716}}
-API PROCESS bench-N512-K28:2-rep3 {"ascendc_shifted_native": {"event_us": 40.86035966873169, "wall_us": 41.283374885097146}, "ratios": {"ascendc_over_three": 1.4514070870319502, "two_over_three": 1.0836866065572175}, "tilelang_apply_bound": {"event_us": 30.508204698562622, "wall_us": 30.985979828983545}, "tilelang_coeff_bound": {"event_us": 28.152239322662354, "wall_us": 28.57466519344598}, "tilelang_tail_c28s2": {"event_us": 30.51737070083618, "wall_us": 30.88933473918587}}
-API PROCESS bench-N512-K56:1-rep1 {"ascendc_shifted_native": {"event_us": 40.88021516799927, "wall_us": 41.379714966751635}, "ratios": {"ascendc_over_three": 1.4446232277222935, "two_over_three": 1.0818382981921404}, "tilelang_apply_bound": {"event_us": 30.614060163497925, "wall_us": 31.06569522060454}, "tilelang_coeff_bound": {"event_us": 28.298184871673584, "wall_us": 28.743064613081515}, "tilelang_tail_c56s1": {"event_us": 28.22793483734131, "wall_us": 28.64547015633434}}
-API PROCESS bench-N512-K56:1-rep2 {"ascendc_shifted_native": {"event_us": 40.83434581756592, "wall_us": 41.25052422750741}, "ratios": {"ascendc_over_three": 1.4444115867724148, "two_over_three": 1.0802611773092703}, "tilelang_apply_bound": {"event_us": 30.539604425430298, "wall_us": 30.98122077062726}, "tilelang_coeff_bound": {"event_us": 28.270574808120728, "wall_us": 28.68091978598386}, "tilelang_tail_c56s1": {"event_us": 28.23897957801819, "wall_us": 28.576665208674967}}
-API PROCESS bench-N512-K56:1-rep3 {"ascendc_shifted_native": {"event_us": 41.007936000823975, "wall_us": 41.507454589009285}, "ratios": {"ascendc_over_three": 1.44896821308726, "two_over_three": 1.080046596189705}, "tilelang_apply_bound": {"event_us": 30.5669105052948, "wall_us": 31.051075202412903}, "tilelang_coeff_bound": {"event_us": 28.30147385597229, "wall_us": 28.766850009560585}, "tilelang_tail_c56s1": {"event_us": 28.24815034866333, "wall_us": 28.683075215667486}}
-API PROCESS bench-N512-K56:2-rep1 {"ascendc_shifted_native": {"event_us": 40.9013032913208, "wall_us": 41.2858696654439}, "ratios": {"ascendc_over_three": 1.454585089783179, "two_over_three": 1.0827881721698303}, "tilelang_apply_bound": {"event_us": 30.44679045677185, "wall_us": 30.897694523446262}, "tilelang_coeff_bound": {"event_us": 28.118879795074463, "wall_us": 28.52913981769234}, "tilelang_tail_c56s2": {"event_us": 28.135815858840942, "wall_us": 28.552724979817867}}
-API PROCESS bench-N512-K56:2-rep2 {"ascendc_shifted_native": {"event_us": 40.914669036865234, "wall_us": 41.46629536990076}, "ratios": {"ascendc_over_three": 1.4544071402065417, "two_over_three": 1.083271546007252}, "tilelang_apply_bound": {"event_us": 30.474064350128174, "wall_us": 31.089784461073577}, "tilelang_coeff_bound": {"event_us": 28.131510019302368, "wall_us": 28.64741545636207}, "tilelang_tail_c56s2": {"event_us": 28.180124759674072, "wall_us": 28.593040187843144}}
-API PROCESS bench-N512-K56:2-rep3 {"ascendc_shifted_native": {"event_us": 40.978238582611084, "wall_us": 41.50695516727865}, "ratios": {"ascendc_over_three": 1.4527279877087727, "two_over_three": 1.0804957061634268}, "tilelang_apply_bound": {"event_us": 30.47839045524597, "wall_us": 31.04385978076607}, "tilelang_coeff_bound": {"event_us": 28.20778489112854, "wall_us": 28.632295434363186}, "tilelang_tail_c56s2": {"event_us": 28.217170238494873, "wall_us": 28.653424815274775}}
-API PROCESS bench-N64-K14:1-rep1 {"ascendc_shifted_native": {"event_us": 27.498865127563477, "wall_us": 28.022535261698067}, "ratios": {"ascendc_over_three": 1.0080186699838871, "two_over_three": 0.9612677627320382}, "tilelang_apply_bound": {"event_us": 26.22349500656128, "wall_us": 26.756679289974272}, "tilelang_coeff_bound": {"event_us": 27.280114889144897, "wall_us": 27.871604543179274}, "tilelang_tail_c14s1": {"event_us": 27.031760215759277, "wall_us": 27.619325555860996}}
-API PROCESS bench-N64-K14:1-rep2 {"ascendc_shifted_native": {"event_us": 27.38398551940918, "wall_us": 27.86729543004185}, "ratios": {"ascendc_over_three": 1.0160077932101326, "two_over_three": 0.9727159359426434}, "tilelang_apply_bound": {"event_us": 26.21716022491455, "wall_us": 26.63420047610998}, "tilelang_coeff_bound": {"event_us": 26.952534914016724, "wall_us": 27.413464849814773}, "tilelang_tail_c14s1": {"event_us": 26.988425254821777, "wall_us": 27.501499862410128}}
-API PROCESS bench-N64-K14:1-rep3 {"ascendc_shifted_native": {"event_us": 28.234119415283203, "wall_us": 28.72353477869183}, "ratios": {"ascendc_over_three": 1.0487448468824294, "two_over_three": 0.9728584282998606}, "tilelang_apply_bound": {"event_us": 26.191118955612183, "wall_us": 26.677915593609214}, "tilelang_coeff_bound": {"event_us": 26.92181944847107, "wall_us": 27.403359417803586}, "tilelang_tail_c14s1": {"event_us": 27.014790773391724, "wall_us": 27.520079747773707}}
-API PROCESS bench-N64-K14:2-rep1 {"ascendc_shifted_native": {"event_us": 20.15395998954773, "wall_us": 20.575510570779443}, "ratios": {"ascendc_over_three": 0.7529705414798886, "two_over_three": 0.9786977562312349}, "tilelang_apply_bound": {"event_us": 26.195759773254395, "wall_us": 26.66399988811463}, "tilelang_coeff_bound": {"event_us": 26.765934228897095, "wall_us": 27.14085509069264}, "tilelang_tail_c14s2": {"event_us": 26.79141402244568, "wall_us": 27.103599859401584}}
-API PROCESS bench-N64-K14:2-rep2 {"ascendc_shifted_native": {"event_us": 27.018229961395264, "wall_us": 27.546920464374125}, "ratios": {"ascendc_over_three": 1.005779903052628, "two_over_three": 0.9758656674663961}, "tilelang_apply_bound": {"event_us": 26.21464490890503, "wall_us": 26.82578458916396}, "tilelang_coeff_bound": {"event_us": 26.862964630126953, "wall_us": 27.35071931965649}, "tilelang_tail_c14s2": {"event_us": 26.735990047454834, "wall_us": 27.28051505982876}}
-API PROCESS bench-N64-K14:2-rep3 {"ascendc_shifted_native": {"event_us": 27.92313575744629, "wall_us": 28.393090469762683}, "ratios": {"ascendc_over_three": 1.0435629478952382, "two_over_three": 0.9791454693252881}, "tilelang_apply_bound": {"event_us": 26.199485063552856, "wall_us": 26.69208508450538}, "tilelang_coeff_bound": {"event_us": 26.757500171661377, "wall_us": 27.107659843750298}, "tilelang_tail_c14s2": {"event_us": 26.77449941635132, "wall_us": 27.272854349575937}}
-API PROCESS bench-N64-K28:1-rep1 {"ascendc_shifted_native": {"event_us": 20.2035653591156, "wall_us": 20.593585213646293}, "ratios": {"ascendc_over_three": 0.7317752735557513, "two_over_three": 0.9491212619365377}, "tilelang_apply_bound": {"event_us": 26.204265356063843, "wall_us": 26.784424553625286}, "tilelang_coeff_bound": {"event_us": 27.608975172042847, "wall_us": 27.97441033180803}, "tilelang_tail_c28s1": {"event_us": 27.319655418395996, "wall_us": 27.667799731716514}}
-API PROCESS bench-N64-K28:1-rep2 {"ascendc_shifted_native": {"event_us": 26.850920915603638, "wall_us": 27.31867483817041}, "ratios": {"ascendc_over_three": 0.9970426269405133, "two_over_three": 0.972921467159813}, "tilelang_apply_bound": {"event_us": 26.201324462890625, "wall_us": 26.6772648319602}, "tilelang_coeff_bound": {"event_us": 26.930564641952515, "wall_us": 27.50084560830146}, "tilelang_tail_c28s1": {"event_us": 26.96658492088318, "wall_us": 27.501750155352056}}
-API PROCESS bench-N64-K28:1-rep3 {"ascendc_shifted_native": {"event_us": 27.208034992218018, "wall_us": 27.704754611477256}, "ratios": {"ascendc_over_three": 0.9737402164163517, "two_over_three": 0.9400863013446156}, "tilelang_apply_bound": {"event_us": 26.26768469810486, "wall_us": 26.760345208458602}, "tilelang_coeff_bound": {"event_us": 27.94178009033203, "wall_us": 28.337049880065024}, "tilelang_tail_c28s1": {"event_us": 27.864699363708496, "wall_us": 28.29664561431855}}
-API PROCESS bench-N64-K28:2-rep1 {"ascendc_shifted_native": {"event_us": 20.235040187835693, "wall_us": 20.651324884966016}, "ratios": {"ascendc_over_three": 0.7484639285455708, "two_over_three": 0.9683034379269101}, "tilelang_apply_bound": {"event_us": 26.178494691848755, "wall_us": 26.54707001056522}, "tilelang_coeff_bound": {"event_us": 27.03542470932007, "wall_us": 27.447519823908806}, "tilelang_tail_c28s2": {"event_us": 26.94746494293213, "wall_us": 27.299945359118283}}
-API PROCESS bench-N64-K28:2-rep2 {"ascendc_shifted_native": {"event_us": 27.88429021835327, "wall_us": 28.43455469701439}, "ratios": {"ascendc_over_three": 1.0497354617978096, "two_over_three": 0.9868105403124285}, "tilelang_apply_bound": {"event_us": 26.21280550956726, "wall_us": 26.714520063251257}, "tilelang_coeff_bound": {"event_us": 26.563159227371216, "wall_us": 27.039659908041358}, "tilelang_tail_c28s2": {"event_us": 26.561191082000732, "wall_us": 27.10521046537906}}
-API PROCESS bench-N64-K28:2-rep3 {"ascendc_shifted_native": {"event_us": 27.23607063293457, "wall_us": 27.70154969766736}, "ratios": {"ascendc_over_three": 1.0563991214888453, "two_over_three": 1.0176521095827071}, "tilelang_apply_bound": {"event_us": 26.237095594406128, "wall_us": 26.697644498199224}, "tilelang_coeff_bound": {"event_us": 25.781989097595215, "wall_us": 26.141059934161603}, "tilelang_tail_c28s2": {"event_us": 25.893524885177612, "wall_us": 26.31011011544615}}
-API PROCESS bench-N64-K56:1-rep1 {"ascendc_shifted_native": {"event_us": 28.263964653015137, "wall_us": 28.69363990612328}, "ratios": {"ascendc_over_three": 1.0577803039293454, "two_over_three": 0.9810668310846321}, "tilelang_apply_bound": {"event_us": 26.2141752243042, "wall_us": 26.655530091375113}, "tilelang_coeff_bound": {"event_us": 26.720070838928223, "wall_us": 27.144209598191082}, "tilelang_tail_c56s1": {"event_us": 26.74330472946167, "wall_us": 27.248370461165905}}
-API PROCESS bench-N64-K56:1-rep2 {"ascendc_shifted_native": {"event_us": 27.36571431159973, "wall_us": 27.859635301865637}, "ratios": {"ascendc_over_three": 1.0098591372092478, "two_over_three": 0.9677687416296071}, "tilelang_apply_bound": {"event_us": 26.225125789642334, "wall_us": 26.759689790196717}, "tilelang_coeff_bound": {"event_us": 27.098546028137207, "wall_us": 27.580969617702067}, "tilelang_tail_c56s1": {"event_us": 27.16128945350647, "wall_us": 27.615274884738028}}
-API PROCESS bench-N64-K56:1-rep3 {"ascendc_shifted_native": {"event_us": 28.97547960281372, "wall_us": 29.500100063160062}, "ratios": {"ascendc_over_three": 1.1141492646119824, "two_over_three": 1.0106683586279528}, "tilelang_apply_bound": {"event_us": 26.28427028656006, "wall_us": 26.83990984223783}, "tilelang_coeff_bound": {"event_us": 26.00682020187378, "wall_us": 26.669710059650242}, "tilelang_tail_c56s1": {"event_us": 26.241880655288696, "wall_us": 26.762139750644565}}
-API PROCESS bench-N64-K56:2-rep1 {"ascendc_shifted_native": {"event_us": 27.244369983673096, "wall_us": 27.768604923039675}, "ratios": {"ascendc_over_three": 1.016918296564049, "two_over_three": 0.9784351810437762}, "tilelang_apply_bound": {"event_us": 26.213364601135254, "wall_us": 26.678814319893718}, "tilelang_coeff_bound": {"event_us": 26.791110038757324, "wall_us": 27.42949523963034}, "tilelang_tail_c56s2": {"event_us": 26.87090516090393, "wall_us": 27.45553443673998}}
-API PROCESS bench-N64-K56:2-rep2 {"ascendc_shifted_native": {"event_us": 26.97911024093628, "wall_us": 27.669905102811754}, "ratios": {"ascendc_over_three": 0.9920225611674873, "two_over_three": 0.9639414680109284}, "tilelang_apply_bound": {"event_us": 26.215415000915527, "wall_us": 26.7639453522861}, "tilelang_coeff_bound": {"event_us": 27.196065187454224, "wall_us": 27.85172953736037}, "tilelang_tail_c56s2": {"event_us": 27.167720794677734, "wall_us": 27.78727503027767}}
-API PROCESS bench-N64-K56:2-rep3 {"ascendc_shifted_native": {"event_us": 27.267000675201416, "wall_us": 27.692989679053426}, "ratios": {"ascendc_over_three": 1.012212907417012, "two_over_three": 0.9730305116908082}, "tilelang_apply_bound": {"event_us": 26.21150493621826, "wall_us": 26.67832071892917}, "tilelang_coeff_bound": {"event_us": 26.93800926208496, "wall_us": 27.343115070834756}, "tilelang_tail_c56s2": {"event_us": 27.037980556488037, "wall_us": 27.58027520030737}}
-API MEDIAN bench-N128-K14:1 ascendc_shifted_native processes= 3 event_us= 22.80063 wall_us= 23.39364
-API MEDIAN bench-N128-K14:1 tilelang_apply_bound processes= 3 event_us= 28.922141 wall_us= 29.378671
-API MEDIAN bench-N128-K14:1 tilelang_coeff_bound processes= 3 event_us= 25.799309 wall_us= 26.138305
-API MEDIAN bench-N128-K14:1 tilelang_tail_c14s1 processes= 3 event_us= 25.91333 wall_us= 26.25738
-API MEDIAN bench-N128-K14:2 ascendc_shifted_native processes= 3 event_us= 28.18114 wall_us= 28.711165
-API MEDIAN bench-N128-K14:2 tilelang_apply_bound processes= 3 event_us= 28.966835 wall_us= 29.477415
-API MEDIAN bench-N128-K14:2 tilelang_coeff_bound processes= 3 event_us= 26.007479 wall_us= 26.38433
-API MEDIAN bench-N128-K14:2 tilelang_tail_c14s2 processes= 3 event_us= 26.031965 wall_us= 26.560944
-API MEDIAN bench-N128-K28:1 ascendc_shifted_native processes= 3 event_us= 27.020565 wall_us= 27.484226
-API MEDIAN bench-N128-K28:1 tilelang_apply_bound processes= 3 event_us= 28.94547 wall_us= 29.32819
-API MEDIAN bench-N128-K28:1 tilelang_coeff_bound processes= 3 event_us= 25.86627 wall_us= 26.33049
-API MEDIAN bench-N128-K28:1 tilelang_tail_c28s1 processes= 3 event_us= 25.827125 wall_us= 26.264245
-API MEDIAN bench-N128-K28:2 ascendc_shifted_native processes= 3 event_us= 27.585754 wall_us= 28.04396
-API MEDIAN bench-N128-K28:2 tilelang_apply_bound processes= 3 event_us= 28.962154 wall_us= 29.487985
-API MEDIAN bench-N128-K28:2 tilelang_coeff_bound processes= 3 event_us= 25.834714 wall_us= 26.27376
-API MEDIAN bench-N128-K28:2 tilelang_tail_c28s2 processes= 3 event_us= 26.04924 wall_us= 26.552224
-API MEDIAN bench-N128-K56:1 ascendc_shifted_native processes= 3 event_us= 27.218964 wall_us= 27.578115
-API MEDIAN bench-N128-K56:1 tilelang_apply_bound processes= 3 event_us= 28.921591 wall_us= 29.36905
-API MEDIAN bench-N128-K56:1 tilelang_coeff_bound processes= 3 event_us= 25.572904 wall_us= 26.029595
-API MEDIAN bench-N128-K56:1 tilelang_tail_c56s1 processes= 3 event_us= 25.591506 wall_us= 26.05818
-API MEDIAN bench-N128-K56:2 ascendc_shifted_native processes= 3 event_us= 27.972665 wall_us= 28.459685
-API MEDIAN bench-N128-K56:2 tilelang_apply_bound processes= 3 event_us= 28.949801 wall_us= 29.444865
-API MEDIAN bench-N128-K56:2 tilelang_coeff_bound processes= 3 event_us= 25.69571 wall_us= 26.21742
-API MEDIAN bench-N128-K56:2 tilelang_tail_c56s2 processes= 3 event_us= 25.66281 wall_us= 26.172805
-API MEDIAN bench-N256-K14:1 ascendc_shifted_native processes= 3 event_us= 28.08732 wall_us= 28.491535
-API MEDIAN bench-N256-K14:1 tilelang_apply_bound processes= 3 event_us= 30.09128 wall_us= 30.538
-API MEDIAN bench-N256-K14:1 tilelang_coeff_bound processes= 3 event_us= 26.280595 wall_us= 26.72388
-API MEDIAN bench-N256-K14:1 tilelang_tail_c14s1 processes= 3 event_us= 28.10811 wall_us= 28.51437
-API MEDIAN bench-N256-K14:2 ascendc_shifted_native processes= 3 event_us= 28.009545 wall_us= 28.340455
-API MEDIAN bench-N256-K14:2 tilelang_apply_bound processes= 3 event_us= 29.838635 wall_us= 30.288679
-API MEDIAN bench-N256-K14:2 tilelang_coeff_bound processes= 3 event_us= 25.5142 wall_us= 25.92809
-API MEDIAN bench-N256-K14:2 tilelang_tail_c14s2 processes= 3 event_us= 27.73699 wall_us= 28.139505
-API MEDIAN bench-N256-K28:1 ascendc_shifted_native processes= 3 event_us= 27.627515 wall_us= 27.9997
-API MEDIAN bench-N256-K28:1 tilelang_apply_bound processes= 3 event_us= 30.085075 wall_us= 30.549225
-API MEDIAN bench-N256-K28:1 tilelang_coeff_bound processes= 3 event_us= 26.011065 wall_us= 26.388235
-API MEDIAN bench-N256-K28:1 tilelang_tail_c28s1 processes= 3 event_us= 25.924619 wall_us= 26.42228
-API MEDIAN bench-N256-K28:2 ascendc_shifted_native processes= 3 event_us= 27.81716 wall_us= 28.390285
-API MEDIAN bench-N256-K28:2 tilelang_apply_bound processes= 3 event_us= 29.85357 wall_us= 30.232799
-API MEDIAN bench-N256-K28:2 tilelang_coeff_bound processes= 3 event_us= 25.90171 wall_us= 26.36309
-API MEDIAN bench-N256-K28:2 tilelang_tail_c28s2 processes= 3 event_us= 26.049064 wall_us= 26.55969
-API MEDIAN bench-N256-K56:1 ascendc_shifted_native processes= 3 event_us= 27.516675 wall_us= 27.924885
-API MEDIAN bench-N256-K56:1 tilelang_apply_bound processes= 3 event_us= 30.093645 wall_us= 30.496695
-API MEDIAN bench-N256-K56:1 tilelang_coeff_bound processes= 3 event_us= 25.89305 wall_us= 26.342065
-API MEDIAN bench-N256-K56:1 tilelang_tail_c56s1 processes= 3 event_us= 26.006525 wall_us= 26.451225
-API MEDIAN bench-N256-K56:2 ascendc_shifted_native processes= 3 event_us= 27.898179 wall_us= 28.284175
-API MEDIAN bench-N256-K56:2 tilelang_apply_bound processes= 3 event_us= 29.854065 wall_us= 30.267695
-API MEDIAN bench-N256-K56:2 tilelang_coeff_bound processes= 3 event_us= 25.848075 wall_us= 26.311165
-API MEDIAN bench-N256-K56:2 tilelang_tail_c56s2 processes= 3 event_us= 25.87569 wall_us= 26.35638
-API MEDIAN bench-N512-K14:1 ascendc_shifted_native processes= 3 event_us= 40.9058 wall_us= 41.4342
-API MEDIAN bench-N512-K14:1 tilelang_apply_bound processes= 3 event_us= 30.507965 wall_us= 31.010815
-API MEDIAN bench-N512-K14:1 tilelang_coeff_bound processes= 3 event_us= 28.127605 wall_us= 28.574115
-API MEDIAN bench-N512-K14:1 tilelang_tail_c14s1 processes= 3 event_us= 33.876635 wall_us= 34.310865
-API MEDIAN bench-N512-K14:2 ascendc_shifted_native processes= 3 event_us= 40.940206 wall_us= 41.411719
-API MEDIAN bench-N512-K14:2 tilelang_apply_bound processes= 3 event_us= 30.515616 wall_us= 30.932495
-API MEDIAN bench-N512-K14:2 tilelang_coeff_bound processes= 3 event_us= 28.158561 wall_us= 28.563191
-API MEDIAN bench-N512-K14:2 tilelang_tail_c14s2 processes= 3 event_us= 33.418649 wall_us= 33.84692
-API MEDIAN bench-N512-K28:1 ascendc_shifted_native processes= 3 event_us= 40.894666 wall_us= 41.303849
-API MEDIAN bench-N512-K28:1 tilelang_apply_bound processes= 3 event_us= 30.58195 wall_us= 30.961341
-API MEDIAN bench-N512-K28:1 tilelang_coeff_bound processes= 3 event_us= 28.291 wall_us= 28.65453
-API MEDIAN bench-N512-K28:1 tilelang_tail_c28s1 processes= 3 event_us= 30.79476 wall_us= 31.169755
-API MEDIAN bench-N512-K28:2 ascendc_shifted_native processes= 3 event_us= 40.86036 wall_us= 41.283375
-API MEDIAN bench-N512-K28:2 tilelang_apply_bound processes= 3 event_us= 30.50602 wall_us= 30.89204
-API MEDIAN bench-N512-K28:2 tilelang_coeff_bound processes= 3 event_us= 28.119545 wall_us= 28.574665
-API MEDIAN bench-N512-K28:2 tilelang_tail_c28s2 processes= 3 event_us= 30.517371 wall_us= 30.889335
-API MEDIAN bench-N512-K56:1 ascendc_shifted_native processes= 3 event_us= 40.880215 wall_us= 41.379715
-API MEDIAN bench-N512-K56:1 tilelang_apply_bound processes= 3 event_us= 30.566911 wall_us= 31.051075
-API MEDIAN bench-N512-K56:1 tilelang_coeff_bound processes= 3 event_us= 28.298185 wall_us= 28.743065
-API MEDIAN bench-N512-K56:1 tilelang_tail_c56s1 processes= 3 event_us= 28.23898 wall_us= 28.64547
-API MEDIAN bench-N512-K56:2 ascendc_shifted_native processes= 3 event_us= 40.914669 wall_us= 41.466295
-API MEDIAN bench-N512-K56:2 tilelang_apply_bound processes= 3 event_us= 30.474064 wall_us= 31.04386
-API MEDIAN bench-N512-K56:2 tilelang_coeff_bound processes= 3 event_us= 28.13151 wall_us= 28.632295
-API MEDIAN bench-N512-K56:2 tilelang_tail_c56s2 processes= 3 event_us= 28.180125 wall_us= 28.59304
-API MEDIAN bench-N64-K14:1 ascendc_shifted_native processes= 3 event_us= 27.498865 wall_us= 28.022535
-API MEDIAN bench-N64-K14:1 tilelang_apply_bound processes= 3 event_us= 26.21716 wall_us= 26.677916
-API MEDIAN bench-N64-K14:1 tilelang_coeff_bound processes= 3 event_us= 26.952535 wall_us= 27.413465
-API MEDIAN bench-N64-K14:1 tilelang_tail_c14s1 processes= 3 event_us= 27.014791 wall_us= 27.52008
-API MEDIAN bench-N64-K14:2 ascendc_shifted_native processes= 3 event_us= 27.01823 wall_us= 27.54692
-API MEDIAN bench-N64-K14:2 tilelang_apply_bound processes= 3 event_us= 26.199485 wall_us= 26.692085
-API MEDIAN bench-N64-K14:2 tilelang_coeff_bound processes= 3 event_us= 26.765934 wall_us= 27.140855
-API MEDIAN bench-N64-K14:2 tilelang_tail_c14s2 processes= 3 event_us= 26.774499 wall_us= 27.272854
-API MEDIAN bench-N64-K28:1 ascendc_shifted_native processes= 3 event_us= 26.850921 wall_us= 27.318675
-API MEDIAN bench-N64-K28:1 tilelang_apply_bound processes= 3 event_us= 26.204265 wall_us= 26.760345
-API MEDIAN bench-N64-K28:1 tilelang_coeff_bound processes= 3 event_us= 27.608975 wall_us= 27.97441
-API MEDIAN bench-N64-K28:1 tilelang_tail_c28s1 processes= 3 event_us= 27.319655 wall_us= 27.6678
-API MEDIAN bench-N64-K28:2 ascendc_shifted_native processes= 3 event_us= 27.236071 wall_us= 27.70155
-API MEDIAN bench-N64-K28:2 tilelang_apply_bound processes= 3 event_us= 26.212806 wall_us= 26.697644
-API MEDIAN bench-N64-K28:2 tilelang_coeff_bound processes= 3 event_us= 26.563159 wall_us= 27.03966
-API MEDIAN bench-N64-K28:2 tilelang_tail_c28s2 processes= 3 event_us= 26.561191 wall_us= 27.10521
-API MEDIAN bench-N64-K56:1 ascendc_shifted_native processes= 3 event_us= 28.263965 wall_us= 28.69364
-API MEDIAN bench-N64-K56:1 tilelang_apply_bound processes= 3 event_us= 26.225126 wall_us= 26.75969
-API MEDIAN bench-N64-K56:1 tilelang_coeff_bound processes= 3 event_us= 26.720071 wall_us= 27.14421
-API MEDIAN bench-N64-K56:1 tilelang_tail_c56s1 processes= 3 event_us= 26.743305 wall_us= 27.24837
-API MEDIAN bench-N64-K56:2 ascendc_shifted_native processes= 3 event_us= 27.24437 wall_us= 27.69299
-API MEDIAN bench-N64-K56:2 tilelang_apply_bound processes= 3 event_us= 26.213365 wall_us= 26.678814
-API MEDIAN bench-N64-K56:2 tilelang_coeff_bound processes= 3 event_us= 26.938009 wall_us= 27.429495
-API MEDIAN bench-N64-K56:2 tilelang_tail_c56s2 processes= 3 event_us= 27.037981 wall_us= 27.580275
-PROFILE profile-N128-K14:1 kernel CSV files= 1
-CSV profile-N128-K14:1/profile/ubuntu162_3081179_20261102174914004_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+API PROCESS bench-N128-K1024:1-rep1 {"ascendc_shifted_native": {"event_us": 22.132195234298706, "wall_us": 22.466100053861737}, "ratios": {"ascendc_over_three": 0.9091409504492616, "two_over_three": 1.186913069644474}, "tilelang_apply_bound": {"event_us": 28.89430046081543, "wall_us": 29.272959800437093}, "tilelang_coeff_bound": {"event_us": 24.344074726104736, "wall_us": 24.662295472808182}, "tilelang_pipeline_h1024s1": {"event_us": 26.465049982070923, "wall_us": 26.75312978681177}}
+API PROCESS bench-N128-K1024:1-rep2 {"ascendc_shifted_native": {"event_us": 27.93766975402832, "wall_us": 28.269600006751716}, "ratios": {"ascendc_over_three": 1.147892200928166, "two_over_three": 1.189816995569883}, "tilelang_apply_bound": {"event_us": 28.95804524421692, "wall_us": 29.390435083769262}, "tilelang_coeff_bound": {"event_us": 24.338234663009644, "wall_us": 24.655629531480372}, "tilelang_pipeline_h1024s1": {"event_us": 26.56291961669922, "wall_us": 26.93730522878468}}
+API PROCESS bench-N128-K1024:1-rep3 {"ascendc_shifted_native": {"event_us": 26.884654760360718, "wall_us": 27.29638945311308}, "ratios": {"ascendc_over_three": 1.1078104613834494, "two_over_three": 1.189861393538929}, "tilelang_apply_bound": {"event_us": 28.875889778137207, "wall_us": 29.331395053304732}, "tilelang_coeff_bound": {"event_us": 24.268280267715454, "wall_us": 24.612664710730314}, "tilelang_pipeline_h1024s1": {"event_us": 26.476445198059082, "wall_us": 26.870055007748306}}
+API PROCESS bench-N128-K1024:3-rep1 {"ascendc_shifted_native": {"event_us": 29.07025456428528, "wall_us": 29.58783006761223}, "ratios": {"ascendc_over_three": 1.1800921875302453, "two_over_three": 1.1746864656123575}, "tilelang_apply_bound": {"event_us": 28.937090635299683, "wall_us": 29.42163497209549}, "tilelang_coeff_bound": {"event_us": 24.63388442993164, "wall_us": 25.057384627871215}, "tilelang_pipeline_h1024s3": {"event_us": 24.8966646194458, "wall_us": 25.318724801763892}}
+API PROCESS bench-N128-K1024:3-rep2 {"ascendc_shifted_native": {"event_us": 27.4835205078125, "wall_us": 27.878365362994373}, "ratios": {"ascendc_over_three": 1.1236172301392826, "two_over_three": 1.1820083790085572}, "tilelang_apply_bound": {"event_us": 28.911759853363037, "wall_us": 29.34751973953098}, "tilelang_coeff_bound": {"event_us": 24.45986032485962, "wall_us": 24.802649859339}, "tilelang_pipeline_h1024s3": {"event_us": 24.898325204849243, "wall_us": 25.265145231969655}}
+API PROCESS bench-N128-K1024:3-rep3 {"ascendc_shifted_native": {"event_us": 26.936854124069214, "wall_us": 27.352420147508383}, "ratios": {"ascendc_over_three": 1.0483789340532277, "two_over_three": 1.125247070851583}, "tilelang_apply_bound": {"event_us": 28.911889791488647, "wall_us": 29.267549980431795}, "tilelang_coeff_bound": {"event_us": 25.693814754486084, "wall_us": 26.05819026939571}, "tilelang_pipeline_h1024s3": {"event_us": 25.759865045547485, "wall_us": 26.16128942463547}}
+API PROCESS bench-N128-K1280:1-rep1 {"ascendc_shifted_native": {"event_us": 22.14805006980896, "wall_us": 22.43735478259623}, "ratios": {"ascendc_over_three": 0.9109269374968989, "two_over_three": 1.190029276541132}, "tilelang_apply_bound": {"event_us": 28.934074640274048, "wall_us": 29.233844834379852}, "tilelang_coeff_bound": {"event_us": 24.31375026702881, "wall_us": 24.588684900663793}, "tilelang_pipeline_h1280s1": {"event_us": 25.943950414657593, "wall_us": 26.22939005959779}}
+API PROCESS bench-N128-K1280:1-rep2 {"ascendc_shifted_native": {"event_us": 27.364341020584106, "wall_us": 27.878170367330313}, "ratios": {"ascendc_over_three": 1.1186100660648766, "two_over_three": 1.1852838831689991}, "tilelang_apply_bound": {"event_us": 28.99536967277527, "wall_us": 29.469654546119273}, "tilelang_coeff_bound": {"event_us": 24.46280598640442, "wall_us": 24.804905406199396}, "tilelang_pipeline_h1280s1": {"event_us": 25.955899953842163, "wall_us": 26.34406555444002}}
+API PROCESS bench-N128-K1280:1-rep3 {"ascendc_shifted_native": {"event_us": 22.151174545288086, "wall_us": 22.473515127785504}, "ratios": {"ascendc_over_three": 0.8749714472127653, "two_over_three": 1.1419677778117332}, "tilelang_apply_bound": {"event_us": 28.910574913024902, "wall_us": 29.216770199127495}, "tilelang_coeff_bound": {"event_us": 25.3164541721344, "wall_us": 25.618229410611093}, "tilelang_pipeline_h1280s1": {"event_us": 25.915745496749878, "wall_us": 26.199794374406338}}
+API PROCESS bench-N128-K1280:3-rep1 {"ascendc_shifted_native": {"event_us": 27.524060010910034, "wall_us": 27.92834071442485}, "ratios": {"ascendc_over_three": 1.1313425453715849, "two_over_three": 1.1884798431702133}, "tilelang_apply_bound": {"event_us": 28.91413450241089, "wall_us": 29.365899972617626}, "tilelang_coeff_bound": {"event_us": 24.328670501708984, "wall_us": 24.673609295859933}, "tilelang_pipeline_h1280s3": {"event_us": 24.41125988960266, "wall_us": 24.792039184831083}}
+API PROCESS bench-N128-K1280:3-rep2 {"ascendc_shifted_native": {"event_us": 27.398275136947632, "wall_us": 27.894939994439483}, "ratios": {"ascendc_over_three": 1.121951546935672, "two_over_three": 1.1857149258994713}, "tilelang_apply_bound": {"event_us": 28.955389261245728, "wall_us": 29.418119811452925}, "tilelang_coeff_bound": {"event_us": 24.420194625854492, "wall_us": 24.834799696691334}, "tilelang_pipeline_h1280s3": {"event_us": 24.553799629211426, "wall_us": 24.929390056058764}}
+API PROCESS bench-N128-K1280:3-rep3 {"ascendc_shifted_native": {"event_us": 27.209954261779785, "wall_us": 27.608164818957448}, "ratios": {"ascendc_over_three": 1.1219861389118102, "two_over_three": 1.1917106773969923}, "tilelang_apply_bound": {"event_us": 28.900885581970215, "wall_us": 29.348169919103384}, "tilelang_coeff_bound": {"event_us": 24.251595735549927, "wall_us": 24.550524540245533}, "tilelang_pipeline_h1280s3": {"event_us": 24.388490915298462, "wall_us": 24.734449689276516}}
+API PROCESS bench-N128-K256:1-rep1 {"ascendc_shifted_native": {"event_us": 22.217094898223877, "wall_us": 22.52263540867716}, "ratios": {"ascendc_over_three": 0.9105992056011888, "two_over_three": 1.1883769019462644}, "tilelang_apply_bound": {"event_us": 28.994405269622803, "wall_us": 29.26189568825066}, "tilelang_coeff_bound": {"event_us": 24.398324489593506, "wall_us": 24.63825512677431}, "tilelang_pipeline_h256s1": {"event_us": 36.69826030731201, "wall_us": 37.011620006524026}}
+API PROCESS bench-N128-K256:1-rep2 {"ascendc_shifted_native": {"event_us": 28.786510229110718, "wall_us": 29.30601069238037}, "ratios": {"ascendc_over_three": 1.175431933800468, "two_over_three": 1.1831713374199777}, "tilelang_apply_bound": {"event_us": 28.976049423217773, "wall_us": 29.476815252564847}, "tilelang_coeff_bound": {"event_us": 24.49015498161316, "wall_us": 24.85167991835624}, "tilelang_pipeline_h256s1": {"event_us": 36.546854972839355, "wall_us": 36.95834020618349}}
+API PROCESS bench-N128-K256:1-rep3 {"ascendc_shifted_native": {"event_us": 26.655009984970093, "wall_us": 27.08743035327643}, "ratios": {"ascendc_over_three": 1.0982796232677967, "two_over_three": 1.1926224562135286}, "tilelang_apply_bound": {"event_us": 28.944690227508545, "wall_us": 29.315520077943802}, "tilelang_coeff_bound": {"event_us": 24.269784688949585, "wall_us": 24.611265398561954}, "tilelang_pipeline_h256s1": {"event_us": 36.413915157318115, "wall_us": 36.77170549053699}}
+API PROCESS bench-N128-K256:3-rep1 {"ascendc_shifted_native": {"event_us": 26.551610231399536, "wall_us": 26.93930990062654}, "ratios": {"ascendc_over_three": 1.093679360531791, "two_over_three": 1.1915389694537724}, "tilelang_apply_bound": {"event_us": 28.927379846572876, "wall_us": 29.437504708766937}, "tilelang_coeff_bound": {"event_us": 24.277325868606567, "wall_us": 24.620979675091803}, "tilelang_pipeline_h256s3": {"event_us": 33.96665573120117, "wall_us": 34.34737503994256}}
+API PROCESS bench-N128-K256:3-rep2 {"ascendc_shifted_native": {"event_us": 27.477850914001465, "wall_us": 27.89694000966847}, "ratios": {"ascendc_over_three": 1.1287894670112473, "two_over_three": 1.1894754440789401}, "tilelang_apply_bound": {"event_us": 28.95511507987976, "wall_us": 29.337750165723264}, "tilelang_coeff_bound": {"event_us": 24.34275984764099, "wall_us": 24.661134812049568}, "tilelang_pipeline_h256s3": {"event_us": 34.33153033256531, "wall_us": 34.7093102755025}}
+API PROCESS bench-N128-K256:3-rep3 {"ascendc_shifted_native": {"event_us": 27.353605031967163, "wall_us": 27.74331020191312}, "ratios": {"ascendc_over_three": 1.1207147589553057, "two_over_three": 1.1847607600058903}, "tilelang_apply_bound": {"event_us": 28.916794061660767, "wall_us": 29.285880154930055}, "tilelang_coeff_bound": {"event_us": 24.407285451889038, "wall_us": 24.820429971441627}, "tilelang_pipeline_h256s3": {"event_us": 34.314035177230835, "wall_us": 34.69909948762506}}
+API PROCESS bench-N256-K1024:1-rep1 {"ascendc_shifted_native": {"event_us": 27.314554452896118, "wall_us": 27.667749673128128}, "ratios": {"ascendc_over_three": 1.0456808811443044, "two_over_three": 1.1544932414871516}, "tilelang_apply_bound": {"event_us": 30.15687584877014, "wall_us": 30.54131055250764}, "tilelang_coeff_bound": {"event_us": 26.121309995651245, "wall_us": 26.431994629092515}, "tilelang_pipeline_h1024s1": {"event_us": 30.243394374847412, "wall_us": 30.595590360462666}}
+API PROCESS bench-N256-K1024:1-rep2 {"ascendc_shifted_native": {"event_us": 27.63496994972229, "wall_us": 28.12053542584181}, "ratios": {"ascendc_over_three": 1.0624059844044387, "two_over_three": 1.1553388438584589}, "tilelang_apply_bound": {"event_us": 30.05231022834778, "wall_us": 30.46885074581951}, "tilelang_coeff_bound": {"event_us": 26.011685132980347, "wall_us": 26.3488752534613}, "tilelang_pipeline_h1024s1": {"event_us": 30.1580548286438, "wall_us": 30.586025095544755}}
+API PROCESS bench-N256-K1024:1-rep3 {"ascendc_shifted_native": {"event_us": 27.632335424423218, "wall_us": 28.02202943712473}, "ratios": {"ascendc_over_three": 1.0529939393873318, "two_over_three": 1.1457711062415912}, "tilelang_apply_bound": {"event_us": 30.066964626312256, "wall_us": 30.474660452455282}, "tilelang_coeff_bound": {"event_us": 26.241685152053833, "wall_us": 26.538960519246757}, "tilelang_pipeline_h1024s1": {"event_us": 30.180234909057617, "wall_us": 30.53270047530532}}
+API PROCESS bench-N256-K1024:3-rep1 {"ascendc_shifted_native": {"event_us": 27.498239278793335, "wall_us": 27.884175069630146}, "ratios": {"ascendc_over_three": 1.0681817118852976, "two_over_three": 1.1583552687604803}, "tilelang_apply_bound": {"event_us": 29.81958031654358, "wall_us": 30.17281007487327}, "tilelang_coeff_bound": {"event_us": 25.743035078048706, "wall_us": 26.043510297313333}, "tilelang_pipeline_h1024s3": {"event_us": 26.5854549407959, "wall_us": 26.935545029118657}}
+API PROCESS bench-N256-K1024:3-rep2 {"ascendc_shifted_native": {"event_us": 27.689955234527588, "wall_us": 28.10370468068868}, "ratios": {"ascendc_over_three": 1.0746476076478875, "two_over_three": 1.1585189583458249}, "tilelang_apply_bound": {"event_us": 29.851030111312866, "wall_us": 30.209114775061607}, "tilelang_coeff_bound": {"event_us": 25.766544342041016, "wall_us": 26.114669744856656}, "tilelang_pipeline_h1024s3": {"event_us": 26.610945463180542, "wall_us": 26.975359651260078}}
+API PROCESS bench-N256-K1024:3-rep3 {"ascendc_shifted_native": {"event_us": 27.70506501197815, "wall_us": 28.064195066690445}, "ratios": {"ascendc_over_three": 1.0751983020145672, "two_over_three": 1.1590600659848582}, "tilelang_apply_bound": {"event_us": 29.865964651107788, "wall_us": 30.25458543561399}, "tilelang_coeff_bound": {"event_us": 25.76740026473999, "wall_us": 26.11231931950897}, "tilelang_pipeline_h1024s3": {"event_us": 26.591320037841797, "wall_us": 26.924784760922194}}
+API PROCESS bench-N256-K1280:1-rep1 {"ascendc_shifted_native": {"event_us": 27.711089849472046, "wall_us": 28.070004773326218}, "ratios": {"ascendc_over_three": 1.0653722965815, "two_over_three": 1.1553564001518835}, "tilelang_apply_bound": {"event_us": 30.051640272140503, "wall_us": 30.52403510082513}, "tilelang_coeff_bound": {"event_us": 26.01071000099182, "wall_us": 26.37170546222478}, "tilelang_pipeline_h1280s1": {"event_us": 29.118635654449463, "wall_us": 29.53053975943476}}
+API PROCESS bench-N256-K1280:1-rep2 {"ascendc_shifted_native": {"event_us": 27.587320804595947, "wall_us": 27.92527957353741}, "ratios": {"ascendc_over_three": 1.0601302770828536, "two_over_three": 1.1570814462879029}, "tilelang_apply_bound": {"event_us": 30.11023998260498, "wall_us": 30.55472974665463}, "tilelang_coeff_bound": {"event_us": 26.022576093673706, "wall_us": 26.35923563502729}, "tilelang_pipeline_h1280s1": {"event_us": 29.136639833450317, "wall_us": 29.50965950731188}}
+API PROCESS bench-N256-K1280:1-rep3 {"ascendc_shifted_native": {"event_us": 27.6608943939209, "wall_us": 27.998144505545497}, "ratios": {"ascendc_over_three": 1.0604803075934202, "two_over_three": 1.15404588380641}, "tilelang_apply_bound": {"event_us": 30.101399421691895, "wall_us": 30.521429725922644}, "tilelang_coeff_bound": {"event_us": 26.083364486694336, "wall_us": 26.393235311843455}, "tilelang_pipeline_h1280s1": {"event_us": 29.18455481529236, "wall_us": 29.58037017378956}}
+API PROCESS bench-N256-K1280:3-rep1 {"ascendc_shifted_native": {"event_us": 27.63984441757202, "wall_us": 27.966744382865727}, "ratios": {"ascendc_over_three": 1.074654676651795, "two_over_three": 1.162093378507242}, "tilelang_apply_bound": {"event_us": 29.888745546340942, "wall_us": 30.23695549927652}, "tilelang_coeff_bound": {"event_us": 25.71974515914917, "wall_us": 26.062189717777073}, "tilelang_pipeline_h1280s3": {"event_us": 25.914804935455322, "wall_us": 26.30505943670869}}
+API PROCESS bench-N256-K1280:3-rep2 {"ascendc_shifted_native": {"event_us": 27.556124925613403, "wall_us": 27.90535567328334}, "ratios": {"ascendc_over_three": 1.0701908433259697, "two_over_three": 1.1592456916557232}, "tilelang_apply_bound": {"event_us": 29.849179983139038, "wall_us": 30.1554350880906}, "tilelang_coeff_bound": {"event_us": 25.7487952709198, "wall_us": 26.041509700007737}, "tilelang_pipeline_h1280s3": {"event_us": 25.90202569961548, "wall_us": 26.229245122522116}}
+API PROCESS bench-N256-K1280:3-rep3 {"ascendc_shifted_native": {"event_us": 27.634525299072266, "wall_us": 27.987980283796787}, "ratios": {"ascendc_over_three": 1.0733092032081415, "two_over_three": 1.1591429831455666}, "tilelang_apply_bound": {"event_us": 29.84449028968811, "wall_us": 30.20876436494291}, "tilelang_coeff_bound": {"event_us": 25.74703097343445, "wall_us": 26.06374502647668}, "tilelang_pipeline_h1280s3": {"event_us": 25.897974967956543, "wall_us": 26.220980216749012}}
+API PROCESS bench-N256-K256:1-rep1 {"ascendc_shifted_native": {"event_us": 27.452855110168457, "wall_us": 27.80981012620032}, "ratios": {"ascendc_over_three": 1.0550354547545289, "two_over_three": 1.1576493667255823}, "tilelang_apply_bound": {"event_us": 30.122950077056885, "wall_us": 30.449724872596562}, "tilelang_coeff_bound": {"event_us": 26.02078914642334, "wall_us": 26.325840153731406}, "tilelang_pipeline_h256s1": {"event_us": 47.066473960876465, "wall_us": 47.4079605191946}}
+API PROCESS bench-N256-K256:1-rep2 {"ascendc_shifted_native": {"event_us": 27.58771538734436, "wall_us": 27.920830762013793}, "ratios": {"ascendc_over_three": 1.059940583152396, "two_over_three": 1.1562927181110088}, "tilelang_apply_bound": {"event_us": 30.09553074836731, "wall_us": 30.47997015528381}, "tilelang_coeff_bound": {"event_us": 26.027605533599854, "wall_us": 26.399894850328565}, "tilelang_pipeline_h256s1": {"event_us": 47.11954355239868, "wall_us": 47.50425519887358}}
+API PROCESS bench-N256-K256:1-rep3 {"ascendc_shifted_native": {"event_us": 27.869999408721924, "wall_us": 28.25558476615697}, "ratios": {"ascendc_over_three": 1.0696407915169373, "two_over_three": 1.1540724156110398}, "tilelang_apply_bound": {"event_us": 30.069905519485474, "wall_us": 30.495989485643804}, "tilelang_coeff_bound": {"event_us": 26.05547547340393, "wall_us": 26.38783014845103}, "tilelang_pipeline_h256s1": {"event_us": 46.73713684082031, "wall_us": 47.106510028243065}}
+API PROCESS bench-N256-K256:3-rep1 {"ascendc_shifted_native": {"event_us": 27.35930562019348, "wall_us": 27.640659827739}, "ratios": {"ascendc_over_three": 1.0605337878358412, "two_over_three": 1.158629603591536}, "tilelang_apply_bound": {"event_us": 29.889949560165405, "wall_us": 30.200699693523347}, "tilelang_coeff_bound": {"event_us": 25.797674655914307, "wall_us": 26.06961061246693}, "tilelang_pipeline_h256s3": {"event_us": 41.50532007217407, "wall_us": 41.77601484116167}}
+API PROCESS bench-N256-K256:3-rep2 {"ascendc_shifted_native": {"event_us": 27.357909679412842, "wall_us": 27.77010027784854}, "ratios": {"ascendc_over_three": 1.062312109397584, "two_over_three": 1.158304352074627}, "tilelang_apply_bound": {"event_us": 29.83001470565796, "wall_us": 30.181020265445113}, "tilelang_coeff_bound": {"event_us": 25.753175020217896, "wall_us": 26.04731998872012}, "tilelang_pipeline_h256s3": {"event_us": 40.95561981201172, "wall_us": 41.28808039240539}}
+API PROCESS bench-N256-K256:3-rep3 {"ascendc_shifted_native": {"event_us": 27.718195915222168, "wall_us": 28.112370055168867}, "ratios": {"ascendc_over_three": 1.0490981576933627, "two_over_three": 1.128950590880871}, "tilelang_apply_bound": {"event_us": 29.827975034713745, "wall_us": 30.263594817370176}, "tilelang_coeff_bound": {"event_us": 26.420974731445312, "wall_us": 26.91501984372735}, "tilelang_pipeline_h256s3": {"event_us": 40.923755168914795, "wall_us": 41.39744502026588}}
+API PROCESS bench-N512-K1024:1-rep1 {"ascendc_shifted_native": {"event_us": 40.85741996765137, "wall_us": 41.232045041397214}, "ratios": {"ascendc_over_three": 1.4266553884079052, "two_over_three": 1.0691386788344877}, "tilelang_apply_bound": {"event_us": 30.618640184402466, "wall_us": 31.051274854689837}, "tilelang_coeff_bound": {"event_us": 28.638604879379272, "wall_us": 29.05142493546009}, "tilelang_pipeline_h1024s1": {"event_us": 37.49914050102234, "wall_us": 37.86754561588168}}
+API PROCESS bench-N512-K1024:1-rep2 {"ascendc_shifted_native": {"event_us": 40.84167957305908, "wall_us": 41.26589512452483}, "ratios": {"ascendc_over_three": 1.4247938236850453, "two_over_three": 1.0659453136423453}, "tilelang_apply_bound": {"event_us": 30.555295944213867, "wall_us": 30.993184773251414}, "tilelang_coeff_bound": {"event_us": 28.6649751663208, "wall_us": 29.0314998710528}, "tilelang_pipeline_h1024s1": {"event_us": 37.49990940093994, "wall_us": 37.90781018324196}}
+API PROCESS bench-N512-K1024:1-rep3 {"ascendc_shifted_native": {"event_us": 40.81538438796997, "wall_us": 41.159234824590385}, "ratios": {"ascendc_over_three": 1.426846441469331, "two_over_three": 1.067698808040866}, "tilelang_apply_bound": {"event_us": 30.541855096817017, "wall_us": 30.88182013016194}, "tilelang_coeff_bound": {"event_us": 28.60530972480774, "wall_us": 29.00254970882088}, "tilelang_pipeline_h1024s1": {"event_us": 37.524980306625366, "wall_us": 37.85963461268693}}
+API PROCESS bench-N512-K1024:3-rep1 {"ascendc_shifted_native": {"event_us": 40.835185050964355, "wall_us": 41.191334603354335}, "ratios": {"ascendc_over_three": 1.4348484809136242, "two_over_three": 1.1388795736349393}, "tilelang_apply_bound": {"event_us": 32.41203427314758, "wall_us": 32.7127700438723}, "tilelang_coeff_bound": {"event_us": 28.459579944610596, "wall_us": 28.797095292247832}, "tilelang_pipeline_h1024s3": {"event_us": 29.777910709381104, "wall_us": 30.155234853737056}}
+API PROCESS bench-N512-K1024:3-rep2 {"ascendc_shifted_native": {"event_us": 42.59941577911377, "wall_us": 43.02113025914878}, "ratios": {"ascendc_over_three": 1.4945228540212327, "two_over_three": 1.138635212759782}, "tilelang_apply_bound": {"event_us": 32.455304861068726, "wall_us": 32.91151486337185}, "tilelang_coeff_bound": {"event_us": 28.503689765930176, "wall_us": 28.915369766764343}, "tilelang_pipeline_h1024s3": {"event_us": 29.74650502204895, "wall_us": 30.25492944288999}}
+API PROCESS bench-N512-K1024:3-rep3 {"ascendc_shifted_native": {"event_us": 42.071640491485596, "wall_us": 42.468050378374755}, "ratios": {"ascendc_over_three": 1.4770992022959077, "two_over_three": 1.0728883358665078}, "tilelang_apply_bound": {"event_us": 30.55866003036499, "wall_us": 30.94086016062647}, "tilelang_coeff_bound": {"event_us": 28.48260998725891, "wall_us": 28.844010084867477}, "tilelang_pipeline_h1024s3": {"event_us": 29.63968515396118, "wall_us": 30.023479484952986}}
+API PROCESS bench-N512-K1280:1-rep1 {"ascendc_shifted_native": {"event_us": 40.79794645309448, "wall_us": 41.18292476050556}, "ratios": {"ascendc_over_three": 1.425364541715357, "two_over_three": 1.0706142689395224}, "tilelang_apply_bound": {"event_us": 30.64399480819702, "wall_us": 31.07070515397936}, "tilelang_coeff_bound": {"event_us": 28.62281560897827, "wall_us": 29.050619923509657}, "tilelang_pipeline_h1280s1": {"event_us": 35.36199450492859, "wall_us": 35.773710696958005}}
+API PROCESS bench-N512-K1280:1-rep2 {"ascendc_shifted_native": {"event_us": 40.87326526641846, "wall_us": 41.25603009015322}, "ratios": {"ascendc_over_three": 1.4266641678773644, "two_over_three": 1.072252279077261}, "tilelang_apply_bound": {"event_us": 30.719529390335083, "wall_us": 31.153279705904424}, "tilelang_coeff_bound": {"event_us": 28.649535179138184, "wall_us": 29.0862302063033}, "tilelang_pipeline_h1280s1": {"event_us": 35.33530950546265, "wall_us": 35.70295462850481}}
+API PROCESS bench-N512-K1280:1-rep3 {"ascendc_shifted_native": {"event_us": 41.027538776397705, "wall_us": 41.410609846934676}, "ratios": {"ascendc_over_three": 1.4286068776737817, "two_over_three": 1.066666146414423}, "tilelang_apply_bound": {"event_us": 30.6331205368042, "wall_us": 31.062394846230745}, "tilelang_coeff_bound": {"event_us": 28.71856451034546, "wall_us": 29.09213479142636}, "tilelang_pipeline_h1280s1": {"event_us": 35.40670990943909, "wall_us": 35.85447964724153}}
+API PROCESS bench-N512-K1280:3-rep1 {"ascendc_shifted_native": {"event_us": 40.89189529418945, "wall_us": 41.228890186175704}, "ratios": {"ascendc_over_three": 1.4359876181229796, "two_over_three": 1.072385102095562}, "tilelang_apply_bound": {"event_us": 30.53776979446411, "wall_us": 30.93559993430972}, "tilelang_coeff_bound": {"event_us": 28.47649574279785, "wall_us": 28.85964000597596}, "tilelang_pipeline_h1280s3": {"event_us": 28.725374937057495, "wall_us": 29.105860157869756}}
+API PROCESS bench-N512-K1280:3-rep2 {"ascendc_shifted_native": {"event_us": 41.809325218200684, "wall_us": 42.2505202004686}, "ratios": {"ascendc_over_three": 1.4678833330836094, "two_over_three": 1.0731541302854395}, "tilelang_apply_bound": {"event_us": 30.566359758377075, "wall_us": 30.992934480309486}, "tilelang_coeff_bound": {"event_us": 28.482730388641357, "wall_us": 28.85163004975766}, "tilelang_pipeline_h1280s3": {"event_us": 28.715100288391113, "wall_us": 29.068044968880713}}
+API PROCESS bench-N512-K1280:3-rep3 {"ascendc_shifted_native": {"event_us": 40.90301990509033, "wall_us": 41.272155358456075}, "ratios": {"ascendc_over_three": 1.4360278042120487, "two_over_three": 1.067614712296315}, "tilelang_apply_bound": {"event_us": 30.409345626831055, "wall_us": 30.89399018790573}, "tilelang_coeff_bound": {"event_us": 28.483445644378662, "wall_us": 28.88927992898971}, "tilelang_pipeline_h1280s3": {"event_us": 28.738009929656982, "wall_us": 29.112359625287354}}
+API PROCESS bench-N512-K256:1-rep1 {"ascendc_shifted_native": {"event_us": 41.02111577987671, "wall_us": 41.373459971509874}, "ratios": {"ascendc_over_three": 1.4291924181669011, "two_over_three": 1.0696113067454}, "tilelang_apply_bound": {"event_us": 30.70030927658081, "wall_us": 31.116169411689043}, "tilelang_coeff_bound": {"event_us": 28.702304363250732, "wall_us": 29.05833476688713}, "tilelang_pipeline_h256s1": {"event_us": 70.19187450408936, "wall_us": 70.58797462377697}}
+API PROCESS bench-N512-K256:1-rep2 {"ascendc_shifted_native": {"event_us": 40.90598106384277, "wall_us": 41.29769455175847}, "ratios": {"ascendc_over_three": 1.428095723598264, "two_over_three": 1.0694602211127988}, "tilelang_apply_bound": {"event_us": 30.63332438468933, "wall_us": 31.045619398355484}, "tilelang_coeff_bound": {"event_us": 28.64372491836548, "wall_us": 29.03449989389628}, "tilelang_pipeline_h256s1": {"event_us": 70.16271352767944, "wall_us": 70.59243507683277}}
+API PROCESS bench-N512-K256:1-rep3 {"ascendc_shifted_native": {"event_us": 41.59989356994629, "wall_us": 42.087185429409146}, "ratios": {"ascendc_over_three": 1.3625103613823715, "two_over_three": 1.0134307723002522}, "tilelang_apply_bound": {"event_us": 30.94186544418335, "wall_us": 31.418325379490852}, "tilelang_coeff_bound": {"event_us": 30.531799793243408, "wall_us": 31.037249718792737}, "tilelang_pipeline_h256s1": {"event_us": 69.74663972854614, "wall_us": 70.2060095500201}}
+API PROCESS bench-N512-K256:3-rep1 {"ascendc_shifted_native": {"event_us": 41.23039484024048, "wall_us": 41.672109509818256}, "ratios": {"ascendc_over_three": 1.44534214448665, "two_over_three": 1.070060720851532}, "tilelang_apply_bound": {"event_us": 30.524970293045044, "wall_us": 31.032650149427354}, "tilelang_coeff_bound": {"event_us": 28.52639079093933, "wall_us": 28.980019851587713}, "tilelang_pipeline_h256s3": {"event_us": 53.26788663864136, "wall_us": 53.6762154661119}}
+API PROCESS bench-N512-K256:3-rep2 {"ascendc_shifted_native": {"event_us": 41.85279607772827, "wall_us": 42.27786499541253}, "ratios": {"ascendc_over_three": 1.4667875959297045, "two_over_three": 1.0725399690738826}, "tilelang_apply_bound": {"event_us": 30.603474378585815, "wall_us": 31.02743998169899}, "tilelang_coeff_bound": {"event_us": 28.533644676208496, "wall_us": 28.98106991779059}, "tilelang_pipeline_h256s3": {"event_us": 53.25019598007202, "wall_us": 53.676459938287735}}
+API PROCESS bench-N512-K256:3-rep3 {"ascendc_shifted_native": {"event_us": 40.90388298034668, "wall_us": 41.31827503442764}, "ratios": {"ascendc_over_three": 1.4367721122201484, "two_over_three": 1.0679952057158908}, "tilelang_apply_bound": {"event_us": 30.40506601333618, "wall_us": 30.848670285195112}, "tilelang_coeff_bound": {"event_us": 28.469290733337402, "wall_us": 28.833645046688616}, "tilelang_pipeline_h256s3": {"event_us": 54.01783466339111, "wall_us": 54.38592052087188}}
+API PROCESS bench-N64-K1024:1-rep1 {"ascendc_shifted_native": {"event_us": 20.244444608688354, "wall_us": 20.567599567584693}, "ratios": {"ascendc_over_three": 0.8109640571776409, "two_over_three": 1.0473300430168928}, "tilelang_apply_bound": {"event_us": 26.14495038986206, "wall_us": 26.48563007824123}, "tilelang_coeff_bound": {"event_us": 24.963430166244507, "wall_us": 25.26364056393504}, "tilelang_pipeline_h1024s1": {"event_us": 25.018839836120605, "wall_us": 25.33906023018062}}
+API PROCESS bench-N64-K1024:1-rep2 {"ascendc_shifted_native": {"event_us": 20.26126503944397, "wall_us": 20.61546954791993}, "ratios": {"ascendc_over_three": 0.8176760806194379, "two_over_three": 1.0571718172866877}, "tilelang_apply_bound": {"event_us": 26.19575023651123, "wall_us": 26.46870445460081}, "tilelang_coeff_bound": {"event_us": 24.77908492088318, "wall_us": 25.029745302163064}, "tilelang_pipeline_h1024s1": {"event_us": 24.71162438392639, "wall_us": 24.978115689009428}}
+API PROCESS bench-N64-K1024:1-rep3 {"ascendc_shifted_native": {"event_us": 27.590659856796265, "wall_us": 27.991340029984713}, "ratios": {"ascendc_over_three": 1.0951738006496736, "two_over_three": 1.040920148169396}, "tilelang_apply_bound": {"event_us": 26.22385025024414, "wall_us": 26.582275168038905}, "tilelang_coeff_bound": {"event_us": 25.192950963974, "wall_us": 25.564145180396736}, "tilelang_pipeline_h1024s1": {"event_us": 25.135420560836792, "wall_us": 25.576164480298758}}
+API PROCESS bench-N64-K1024:3-rep1 {"ascendc_shifted_native": {"event_us": 27.268600463867188, "wall_us": 27.68077014479786}, "ratios": {"ascendc_over_three": 1.0311113579314881, "two_over_three": 0.9892454030931862}, "tilelang_apply_bound": {"event_us": 26.161420345306396, "wall_us": 26.54040465131402}, "tilelang_coeff_bound": {"event_us": 26.445834636688232, "wall_us": 26.79279074072838}, "tilelang_pipeline_h1024s3": {"event_us": 26.44832491874695, "wall_us": 26.869504945352674}}
+API PROCESS bench-N64-K1024:3-rep2 {"ascendc_shifted_native": {"event_us": 29.127495288848877, "wall_us": 29.573555220849812}, "ratios": {"ascendc_over_three": 1.1335124549723652, "two_over_three": 1.0205760095053198}, "tilelang_apply_bound": {"event_us": 26.225404739379883, "wall_us": 26.624485035426915}, "tilelang_coeff_bound": {"event_us": 25.696669816970825, "wall_us": 26.107110315933824}, "tilelang_pipeline_h1024s3": {"event_us": 25.731405019760132, "wall_us": 26.214420213364065}}
+API PROCESS bench-N64-K1024:3-rep3 {"ascendc_shifted_native": {"event_us": 27.207645177841187, "wall_us": 27.606459916569293}, "ratios": {"ascendc_over_three": 1.0193051615632989, "two_over_three": 0.9811640414195565}, "tilelang_apply_bound": {"event_us": 26.189569234848022, "wall_us": 26.608959888108075}, "tilelang_coeff_bound": {"event_us": 26.692345142364502, "wall_us": 27.129745576530695}, "tilelang_pipeline_h1024s3": {"event_us": 26.69562578201294, "wall_us": 27.182024787180126}}
+API PROCESS bench-N64-K1280:1-rep1 {"ascendc_shifted_native": {"event_us": 20.17390489578247, "wall_us": 20.633150124922395}, "ratios": {"ascendc_over_three": 0.7502789311918889, "two_over_three": 0.9751381266907557}, "tilelang_apply_bound": {"event_us": 26.220040321350098, "wall_us": 26.67375491000712}, "tilelang_coeff_bound": {"event_us": 26.888539791107178, "wall_us": 27.253729640506208}, "tilelang_pipeline_h1280s1": {"event_us": 26.896384954452515, "wall_us": 27.22929057199508}}
+API PROCESS bench-N64-K1280:1-rep2 {"ascendc_shifted_native": {"event_us": 28.161344528198242, "wall_us": 28.678764938376844}, "ratios": {"ascendc_over_three": 1.1013804175450121, "two_over_three": 1.0244320175188104}, "tilelang_apply_bound": {"event_us": 26.193840503692627, "wall_us": 26.628795312717557}, "tilelang_coeff_bound": {"event_us": 25.569134950637817, "wall_us": 26.079669478349388}, "tilelang_pipeline_h1280s1": {"event_us": 25.53093433380127, "wall_us": 26.062994729727507}}
+API PROCESS bench-N64-K1280:1-rep3 {"ascendc_shifted_native": {"event_us": 26.621350049972534, "wall_us": 27.040504501201212}, "ratios": {"ascendc_over_three": 1.0007535360401298, "two_over_three": 0.985235847145696}, "tilelang_apply_bound": {"event_us": 26.208559274673462, "wall_us": 26.643265155144036}, "tilelang_coeff_bound": {"event_us": 26.60130500793457, "wall_us": 26.967799640260637}, "tilelang_pipeline_h1280s1": {"event_us": 26.648030281066895, "wall_us": 27.061839937232435}}
+API PROCESS bench-N64-K1280:3-rep1 {"ascendc_shifted_native": {"event_us": 26.54738426208496, "wall_us": 26.97151037864387}, "ratios": {"ascendc_over_three": 1.0530088110728215, "two_over_three": 1.0383176530272615}, "tilelang_apply_bound": {"event_us": 26.177005767822266, "wall_us": 26.589580811560154}, "tilelang_coeff_bound": {"event_us": 25.21098017692566, "wall_us": 25.595035403966904}, "tilelang_pipeline_h1280s3": {"event_us": 25.06495475769043, "wall_us": 25.446770014241338}}
+API PROCESS bench-N64-K1280:3-rep2 {"ascendc_shifted_native": {"event_us": 27.651705741882324, "wall_us": 28.155934414826334}, "ratios": {"ascendc_over_three": 1.1073844801395625, "two_over_three": 1.0476086015515744}, "tilelang_apply_bound": {"event_us": 26.159085035324097, "wall_us": 26.66244050487876}, "tilelang_coeff_bound": {"event_us": 24.970284700393677, "wall_us": 25.34321043640375}, "tilelang_pipeline_h1280s3": {"event_us": 24.90828514099121, "wall_us": 25.370654766447842}}
+API PROCESS bench-N64-K1280:3-rep3 {"ascendc_shifted_native": {"event_us": 27.009389400482178, "wall_us": 27.39914460107684}, "ratios": {"ascendc_over_three": 1.0709255093581538, "two_over_three": 1.0362204150510737}, "tilelang_apply_bound": {"event_us": 26.134105920791626, "wall_us": 26.501549873501062}, "tilelang_coeff_bound": {"event_us": 25.22060513496399, "wall_us": 25.576964835636318}, "tilelang_pipeline_h1280s3": {"event_us": 25.27303457260132, "wall_us": 25.69519041571766}}
+API PROCESS bench-N64-K256:1-rep1 {"ascendc_shifted_native": {"event_us": 27.70496964454651, "wall_us": 28.1382049433887}, "ratios": {"ascendc_over_three": 1.098139571937207, "two_over_three": 1.0375936087316615}, "tilelang_apply_bound": {"event_us": 26.177455186843872, "wall_us": 26.605455204844475}, "tilelang_coeff_bound": {"event_us": 25.229005813598633, "wall_us": 25.638454244472086}, "tilelang_pipeline_h256s1": {"event_us": 29.054709672927856, "wall_us": 29.44772015325725}}
+API PROCESS bench-N64-K256:1-rep2 {"ascendc_shifted_native": {"event_us": 27.13617444038391, "wall_us": 27.575260028243065}, "ratios": {"ascendc_over_three": 1.01573375165422, "two_over_three": 0.9814298117707723}, "tilelang_apply_bound": {"event_us": 26.21971607208252, "wall_us": 26.645420002751052}, "tilelang_coeff_bound": {"event_us": 26.715834140777588, "wall_us": 27.203555218875408}, "tilelang_pipeline_h256s1": {"event_us": 29.03041958808899, "wall_us": 29.41567508969456}}
+API PROCESS bench-N64-K256:1-rep3 {"ascendc_shifted_native": {"event_us": 27.341229915618896, "wall_us": 27.95192413032055}, "ratios": {"ascendc_over_three": 1.0116922414046359, "two_over_three": 0.9703544063457498}, "tilelang_apply_bound": {"event_us": 26.224064826965332, "wall_us": 26.81436948478222}, "tilelang_coeff_bound": {"event_us": 27.02524423599243, "wall_us": 27.61041047051549}, "tilelang_pipeline_h256s1": {"event_us": 29.11118507385254, "wall_us": 29.614819795824587}}
+API PROCESS bench-N64-K256:3-rep1 {"ascendc_shifted_native": {"event_us": 20.04256010055542, "wall_us": 20.387680269777775}, "ratios": {"ascendc_over_three": 0.7961167043742359, "two_over_three": 1.038991252285893}, "tilelang_apply_bound": {"event_us": 26.15702509880066, "wall_us": 26.506204740144312}, "tilelang_coeff_bound": {"event_us": 25.17540454864502, "wall_us": 25.47190524637699}, "tilelang_pipeline_h256s3": {"event_us": 27.539265155792236, "wall_us": 27.87946490570903}}
+API PROCESS bench-N64-K256:3-rep2 {"ascendc_shifted_native": {"event_us": 26.961289644241333, "wall_us": 27.324434486217797}, "ratios": {"ascendc_over_three": 1.0711869921702664, "two_over_three": 1.0409316300826783}, "tilelang_apply_bound": {"event_us": 26.19977593421936, "wall_us": 26.620629942044616}, "tilelang_coeff_bound": {"event_us": 25.1695454120636, "wall_us": 25.529589620418847}, "tilelang_pipeline_h256s3": {"event_us": 27.85051941871643, "wall_us": 28.211719472892582}}
+API PROCESS bench-N64-K256:3-rep3 {"ascendc_shifted_native": {"event_us": 26.744694709777832, "wall_us": 27.21903088968247}, "ratios": {"ascendc_over_three": 0.9932720710637605, "two_over_three": 0.9710566324759685}, "tilelang_apply_bound": {"event_us": 26.146525144577026, "wall_us": 26.637454866431653}, "tilelang_coeff_bound": {"event_us": 26.92584991455078, "wall_us": 27.373209595680237}, "tilelang_pipeline_h256s3": {"event_us": 27.58557438850403, "wall_us": 28.026489890180528}}
+API MEDIAN bench-N128-K1024:1 ascendc_shifted_native processes= 3 event_us= 26.884655 wall_us= 27.296389
+API MEDIAN bench-N128-K1024:1 tilelang_apply_bound processes= 3 event_us= 28.8943 wall_us= 29.331395
+API MEDIAN bench-N128-K1024:1 tilelang_coeff_bound processes= 3 event_us= 24.338235 wall_us= 24.65563
+API MEDIAN bench-N128-K1024:1 tilelang_pipeline_h1024s1 processes= 3 event_us= 26.476445 wall_us= 26.870055
+API MEDIAN bench-N128-K1024:3 ascendc_shifted_native processes= 3 event_us= 27.483521 wall_us= 27.878365
+API MEDIAN bench-N128-K1024:3 tilelang_apply_bound processes= 3 event_us= 28.91189 wall_us= 29.34752
+API MEDIAN bench-N128-K1024:3 tilelang_coeff_bound processes= 3 event_us= 24.633884 wall_us= 25.057385
+API MEDIAN bench-N128-K1024:3 tilelang_pipeline_h1024s3 processes= 3 event_us= 24.898325 wall_us= 25.318725
+API MEDIAN bench-N128-K1280:1 ascendc_shifted_native processes= 3 event_us= 22.151175 wall_us= 22.473515
+API MEDIAN bench-N128-K1280:1 tilelang_apply_bound processes= 3 event_us= 28.934075 wall_us= 29.233845
+API MEDIAN bench-N128-K1280:1 tilelang_coeff_bound processes= 3 event_us= 24.462806 wall_us= 24.804905
+API MEDIAN bench-N128-K1280:1 tilelang_pipeline_h1280s1 processes= 3 event_us= 25.94395 wall_us= 26.22939
+API MEDIAN bench-N128-K1280:3 ascendc_shifted_native processes= 3 event_us= 27.398275 wall_us= 27.89494
+API MEDIAN bench-N128-K1280:3 tilelang_apply_bound processes= 3 event_us= 28.914135 wall_us= 29.3659
+API MEDIAN bench-N128-K1280:3 tilelang_coeff_bound processes= 3 event_us= 24.328671 wall_us= 24.673609
+API MEDIAN bench-N128-K1280:3 tilelang_pipeline_h1280s3 processes= 3 event_us= 24.41126 wall_us= 24.792039
+API MEDIAN bench-N128-K256:1 ascendc_shifted_native processes= 3 event_us= 26.65501 wall_us= 27.08743
+API MEDIAN bench-N128-K256:1 tilelang_apply_bound processes= 3 event_us= 28.976049 wall_us= 29.31552
+API MEDIAN bench-N128-K256:1 tilelang_coeff_bound processes= 3 event_us= 24.398324 wall_us= 24.638255
+API MEDIAN bench-N128-K256:1 tilelang_pipeline_h256s1 processes= 3 event_us= 36.546855 wall_us= 36.95834
+API MEDIAN bench-N128-K256:3 ascendc_shifted_native processes= 3 event_us= 27.353605 wall_us= 27.74331
+API MEDIAN bench-N128-K256:3 tilelang_apply_bound processes= 3 event_us= 28.92738 wall_us= 29.33775
+API MEDIAN bench-N128-K256:3 tilelang_coeff_bound processes= 3 event_us= 24.34276 wall_us= 24.661135
+API MEDIAN bench-N128-K256:3 tilelang_pipeline_h256s3 processes= 3 event_us= 34.314035 wall_us= 34.699099
+API MEDIAN bench-N256-K1024:1 ascendc_shifted_native processes= 3 event_us= 27.632335 wall_us= 28.022029
+API MEDIAN bench-N256-K1024:1 tilelang_apply_bound processes= 3 event_us= 30.066965 wall_us= 30.47466
+API MEDIAN bench-N256-K1024:1 tilelang_coeff_bound processes= 3 event_us= 26.12131 wall_us= 26.431995
+API MEDIAN bench-N256-K1024:1 tilelang_pipeline_h1024s1 processes= 3 event_us= 30.180235 wall_us= 30.586025
+API MEDIAN bench-N256-K1024:3 ascendc_shifted_native processes= 3 event_us= 27.689955 wall_us= 28.064195
+API MEDIAN bench-N256-K1024:3 tilelang_apply_bound processes= 3 event_us= 29.85103 wall_us= 30.209115
+API MEDIAN bench-N256-K1024:3 tilelang_coeff_bound processes= 3 event_us= 25.766544 wall_us= 26.112319
+API MEDIAN bench-N256-K1024:3 tilelang_pipeline_h1024s3 processes= 3 event_us= 26.59132 wall_us= 26.935545
+API MEDIAN bench-N256-K1280:1 ascendc_shifted_native processes= 3 event_us= 27.660894 wall_us= 27.998145
+API MEDIAN bench-N256-K1280:1 tilelang_apply_bound processes= 3 event_us= 30.101399 wall_us= 30.524035
+API MEDIAN bench-N256-K1280:1 tilelang_coeff_bound processes= 3 event_us= 26.022576 wall_us= 26.371705
+API MEDIAN bench-N256-K1280:1 tilelang_pipeline_h1280s1 processes= 3 event_us= 29.13664 wall_us= 29.53054
+API MEDIAN bench-N256-K1280:3 ascendc_shifted_native processes= 3 event_us= 27.634525 wall_us= 27.966744
+API MEDIAN bench-N256-K1280:3 tilelang_apply_bound processes= 3 event_us= 29.84918 wall_us= 30.208764
+API MEDIAN bench-N256-K1280:3 tilelang_coeff_bound processes= 3 event_us= 25.747031 wall_us= 26.06219
+API MEDIAN bench-N256-K1280:3 tilelang_pipeline_h1280s3 processes= 3 event_us= 25.902026 wall_us= 26.229245
+API MEDIAN bench-N256-K256:1 ascendc_shifted_native processes= 3 event_us= 27.587715 wall_us= 27.920831
+API MEDIAN bench-N256-K256:1 tilelang_apply_bound processes= 3 event_us= 30.095531 wall_us= 30.47997
+API MEDIAN bench-N256-K256:1 tilelang_coeff_bound processes= 3 event_us= 26.027606 wall_us= 26.38783
+API MEDIAN bench-N256-K256:1 tilelang_pipeline_h256s1 processes= 3 event_us= 47.066474 wall_us= 47.407961
+API MEDIAN bench-N256-K256:3 ascendc_shifted_native processes= 3 event_us= 27.359306 wall_us= 27.7701
+API MEDIAN bench-N256-K256:3 tilelang_apply_bound processes= 3 event_us= 29.830015 wall_us= 30.2007
+API MEDIAN bench-N256-K256:3 tilelang_coeff_bound processes= 3 event_us= 25.797675 wall_us= 26.069611
+API MEDIAN bench-N256-K256:3 tilelang_pipeline_h256s3 processes= 3 event_us= 40.95562 wall_us= 41.397445
+API MEDIAN bench-N512-K1024:1 ascendc_shifted_native processes= 3 event_us= 40.84168 wall_us= 41.232045
+API MEDIAN bench-N512-K1024:1 tilelang_apply_bound processes= 3 event_us= 30.555296 wall_us= 30.993185
+API MEDIAN bench-N512-K1024:1 tilelang_coeff_bound processes= 3 event_us= 28.638605 wall_us= 29.0315
+API MEDIAN bench-N512-K1024:1 tilelang_pipeline_h1024s1 processes= 3 event_us= 37.499909 wall_us= 37.867546
+API MEDIAN bench-N512-K1024:3 ascendc_shifted_native processes= 3 event_us= 42.07164 wall_us= 42.46805
+API MEDIAN bench-N512-K1024:3 tilelang_apply_bound processes= 3 event_us= 32.412034 wall_us= 32.71277
+API MEDIAN bench-N512-K1024:3 tilelang_coeff_bound processes= 3 event_us= 28.48261 wall_us= 28.84401
+API MEDIAN bench-N512-K1024:3 tilelang_pipeline_h1024s3 processes= 3 event_us= 29.746505 wall_us= 30.155235
+API MEDIAN bench-N512-K1280:1 ascendc_shifted_native processes= 3 event_us= 40.873265 wall_us= 41.25603
+API MEDIAN bench-N512-K1280:1 tilelang_apply_bound processes= 3 event_us= 30.643995 wall_us= 31.070705
+API MEDIAN bench-N512-K1280:1 tilelang_coeff_bound processes= 3 event_us= 28.649535 wall_us= 29.08623
+API MEDIAN bench-N512-K1280:1 tilelang_pipeline_h1280s1 processes= 3 event_us= 35.361995 wall_us= 35.773711
+API MEDIAN bench-N512-K1280:3 ascendc_shifted_native processes= 3 event_us= 40.90302 wall_us= 41.272155
+API MEDIAN bench-N512-K1280:3 tilelang_apply_bound processes= 3 event_us= 30.53777 wall_us= 30.9356
+API MEDIAN bench-N512-K1280:3 tilelang_coeff_bound processes= 3 event_us= 28.48273 wall_us= 28.85964
+API MEDIAN bench-N512-K1280:3 tilelang_pipeline_h1280s3 processes= 3 event_us= 28.725375 wall_us= 29.10586
+API MEDIAN bench-N512-K256:1 ascendc_shifted_native processes= 3 event_us= 41.021116 wall_us= 41.37346
+API MEDIAN bench-N512-K256:1 tilelang_apply_bound processes= 3 event_us= 30.700309 wall_us= 31.116169
+API MEDIAN bench-N512-K256:1 tilelang_coeff_bound processes= 3 event_us= 28.702304 wall_us= 29.058335
+API MEDIAN bench-N512-K256:1 tilelang_pipeline_h256s1 processes= 3 event_us= 70.162714 wall_us= 70.587975
+API MEDIAN bench-N512-K256:3 ascendc_shifted_native processes= 3 event_us= 41.230395 wall_us= 41.67211
+API MEDIAN bench-N512-K256:3 tilelang_apply_bound processes= 3 event_us= 30.52497 wall_us= 31.02744
+API MEDIAN bench-N512-K256:3 tilelang_coeff_bound processes= 3 event_us= 28.526391 wall_us= 28.98002
+API MEDIAN bench-N512-K256:3 tilelang_pipeline_h256s3 processes= 3 event_us= 53.267887 wall_us= 53.67646
+API MEDIAN bench-N64-K1024:1 ascendc_shifted_native processes= 3 event_us= 20.261265 wall_us= 20.61547
+API MEDIAN bench-N64-K1024:1 tilelang_apply_bound processes= 3 event_us= 26.19575 wall_us= 26.48563
+API MEDIAN bench-N64-K1024:1 tilelang_coeff_bound processes= 3 event_us= 24.96343 wall_us= 25.263641
+API MEDIAN bench-N64-K1024:1 tilelang_pipeline_h1024s1 processes= 3 event_us= 25.01884 wall_us= 25.33906
+API MEDIAN bench-N64-K1024:3 ascendc_shifted_native processes= 3 event_us= 27.2686 wall_us= 27.68077
+API MEDIAN bench-N64-K1024:3 tilelang_apply_bound processes= 3 event_us= 26.189569 wall_us= 26.60896
+API MEDIAN bench-N64-K1024:3 tilelang_coeff_bound processes= 3 event_us= 26.445835 wall_us= 26.792791
+API MEDIAN bench-N64-K1024:3 tilelang_pipeline_h1024s3 processes= 3 event_us= 26.448325 wall_us= 26.869505
+API MEDIAN bench-N64-K1280:1 ascendc_shifted_native processes= 3 event_us= 26.62135 wall_us= 27.040505
+API MEDIAN bench-N64-K1280:1 tilelang_apply_bound processes= 3 event_us= 26.208559 wall_us= 26.643265
+API MEDIAN bench-N64-K1280:1 tilelang_coeff_bound processes= 3 event_us= 26.601305 wall_us= 26.9678
+API MEDIAN bench-N64-K1280:1 tilelang_pipeline_h1280s1 processes= 3 event_us= 26.64803 wall_us= 27.06184
+API MEDIAN bench-N64-K1280:3 ascendc_shifted_native processes= 3 event_us= 27.009389 wall_us= 27.399145
+API MEDIAN bench-N64-K1280:3 tilelang_apply_bound processes= 3 event_us= 26.159085 wall_us= 26.589581
+API MEDIAN bench-N64-K1280:3 tilelang_coeff_bound processes= 3 event_us= 25.21098 wall_us= 25.576965
+API MEDIAN bench-N64-K1280:3 tilelang_pipeline_h1280s3 processes= 3 event_us= 25.064955 wall_us= 25.44677
+API MEDIAN bench-N64-K256:1 ascendc_shifted_native processes= 3 event_us= 27.34123 wall_us= 27.951924
+API MEDIAN bench-N64-K256:1 tilelang_apply_bound processes= 3 event_us= 26.219716 wall_us= 26.64542
+API MEDIAN bench-N64-K256:1 tilelang_coeff_bound processes= 3 event_us= 26.715834 wall_us= 27.203555
+API MEDIAN bench-N64-K256:1 tilelang_pipeline_h256s1 processes= 3 event_us= 29.05471 wall_us= 29.44772
+API MEDIAN bench-N64-K256:3 ascendc_shifted_native processes= 3 event_us= 26.744695 wall_us= 27.219031
+API MEDIAN bench-N64-K256:3 tilelang_apply_bound processes= 3 event_us= 26.157025 wall_us= 26.62063
+API MEDIAN bench-N64-K256:3 tilelang_coeff_bound processes= 3 event_us= 25.175405 wall_us= 25.52959
+API MEDIAN bench-N64-K256:3 tilelang_pipeline_h256s3 processes= 3 event_us= 27.585574 wall_us= 28.02649
+PROFILE profile-N128-K1024:1 kernel CSV files= 1
+CSV profile-N128-K1024:1/profile/ubuntu162_3247303_20261102194510304_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 4.516633 median_us= 4.4735 sum_us= 135.499
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 3.052167 median_us= 2.851 sum_us= 91.565
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 15.773933 median_us= 15.806 sum_us= 473.218
-DEVICE summed_duration_us= 700.282
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.294233 median_us= 5.188 sum_us= 158.827
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 5.699767 median_us= 5.594 sum_us= 170.993
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 15.7165 median_us= 15.6945 sum_us= 471.495
+DEVICE summed_duration_us= 801.315
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N128-K14:2 kernel CSV files= 1
-CSV profile-N128-K14:2/profile/ubuntu162_3082298_20261102174926466_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N128-K1024:3 kernel CSV files= 1
+CSV profile-N128-K1024:3/profile/ubuntu162_3248082_20261102194522454_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 4.5277 median_us= 4.5195 sum_us= 135.831
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 3.032367 median_us= 2.868 sum_us= 90.971
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 15.7865 median_us= 15.761 sum_us= 473.595
-DEVICE summed_duration_us= 700.397
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.3174 median_us= 5.1805 sum_us= 159.522
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 4.187533 median_us= 4.0235 sum_us= 125.626
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 15.803933 median_us= 15.7865 sum_us= 474.118
+DEVICE summed_duration_us= 759.266
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N128-K28:1 kernel CSV files= 1
-CSV profile-N128-K28:1/profile/ubuntu162_3082999_20261102174938458_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N128-K1280:1 kernel CSV files= 1
+CSV profile-N128-K1280:1/profile/ubuntu162_3248802_20261102194534358_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 4.671067 median_us= 4.6335 sum_us= 140.132
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 3.077667 median_us= 2.868 sum_us= 92.33
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 15.734633 median_us= 15.7215 sum_us= 472.039
-DEVICE summed_duration_us= 704.501
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.2905 median_us= 5.179 sum_us= 158.715
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 5.0213 median_us= 4.994 sum_us= 150.639
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 15.6947 median_us= 15.6585 sum_us= 470.841
+DEVICE summed_duration_us= 780.195
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N128-K28:2 kernel CSV files= 1
-CSV profile-N128-K28:2/profile/ubuntu162_3083688_20261102174950442_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N128-K1280:3 kernel CSV files= 1
+CSV profile-N128-K1280:3/profile/ubuntu162_3249505_20261102194546674_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 4.689167 median_us= 4.685 sum_us= 140.675
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 3.056233 median_us= 2.9015 sum_us= 91.687
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 15.778533 median_us= 15.7815 sum_us= 473.356
-DEVICE summed_duration_us= 705.718
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.234633 median_us= 5.102 sum_us= 157.039
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 3.590433 median_us= 3.5 sum_us= 107.713
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 15.774767 median_us= 15.7685 sum_us= 473.243
+DEVICE summed_duration_us= 737.995
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N128-K56:1 kernel CSV files= 1
-CSV profile-N128-K56:1/profile/ubuntu162_3085021_20261102175002885_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N128-K256:1 kernel CSV files= 1
+CSV profile-N128-K256:1/profile/ubuntu162_3245843_20261102194445517_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.1909 median_us= 5.041 sum_us= 155.727
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 3.0782 median_us= 2.905 sum_us= 92.346
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 15.6993 median_us= 15.6885 sum_us= 470.979
-DEVICE summed_duration_us= 719.052
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.170067 median_us= 5.2175 sum_us= 155.102
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 15.7205 median_us= 15.685 sum_us= 471.615
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 15.768533 median_us= 15.7215 sum_us= 473.056
+DEVICE summed_duration_us= 1099.773
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N128-K56:2 kernel CSV files= 1
-CSV profile-N128-K56:2/profile/ubuntu162_3085753_20261102175015411_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N128-K256:3 kernel CSV files= 1
+CSV profile-N128-K256:3/profile/ubuntu162_3246638_20261102194457710_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.2431 median_us= 5.1495 sum_us= 157.293
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 3.0924 median_us= 2.939 sum_us= 92.772
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 15.7534 median_us= 15.7405 sum_us= 472.602
-DEVICE summed_duration_us= 722.667
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.315133 median_us= 5.17 sum_us= 159.454
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 13.5337 median_us= 13.4305 sum_us= 406.011
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 15.806733 median_us= 15.803 sum_us= 474.202
+DEVICE summed_duration_us= 1039.667
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N256-K14:1 kernel CSV files= 1
-CSV profile-N256-K14:1/profile/ubuntu162_3086444_20261102175027882_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N256-K1024:1 kernel CSV files= 1
+CSV profile-N256-K1024:1/profile/ubuntu162_3251481_20261102194622103_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 7.818767 median_us= 7.809 sum_us= 234.563
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 4.223733 median_us= 4.032 sum_us= 126.712
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.3977 median_us= 16.405 sum_us= 491.931
-DEVICE summed_duration_us= 853.206
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.3582 median_us= 5.277 sum_us= 160.746
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 8.715733 median_us= 8.527 sum_us= 261.472
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.420267 median_us= 16.4015 sum_us= 492.608
+DEVICE summed_duration_us= 914.826
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N256-K14:2 kernel CSV files= 1
-CSV profile-N256-K14:2/profile/ubuntu162_3087540_20261102175040068_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N256-K1024:3 kernel CSV files= 1
+CSV profile-N256-K1024:3/profile/ubuntu162_3252130_20261102194634241_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 7.6508 median_us= 7.678 sum_us= 229.524
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 4.2318 median_us= 4.0415 sum_us= 126.954
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.237067 median_us= 16.1975 sum_us= 487.112
-DEVICE summed_duration_us= 843.59
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.3986 median_us= 5.257 sum_us= 161.958
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 5.584633 median_us= 5.5135 sum_us= 167.539
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.1544 median_us= 16.104 sum_us= 484.632
+DEVICE summed_duration_us= 814.129
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N256-K28:1 kernel CSV files= 1
-CSV profile-N256-K28:1/profile/ubuntu162_3089302_20261102175053579_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N256-K1280:1 kernel CSV files= 1
+CSV profile-N256-K1280:1/profile/ubuntu162_3252790_20261102194647091_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 4.8642 median_us= 4.82 sum_us= 145.926
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 4.240667 median_us= 4.0475 sum_us= 127.22
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.380267 median_us= 16.254 sum_us= 491.408
-DEVICE summed_duration_us= 764.554
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.3734 median_us= 5.1605 sum_us= 161.202
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 7.7301 median_us= 7.532 sum_us= 231.903
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.316733 median_us= 16.205 sum_us= 489.502
+DEVICE summed_duration_us= 882.607
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N256-K28:2 kernel CSV files= 1
-CSV profile-N256-K28:2/profile/ubuntu162_3089996_20261102175105909_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N256-K1280:3 kernel CSV files= 1
+CSV profile-N256-K1280:3/profile/ubuntu162_3253424_20261102194659219_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 4.8566 median_us= 4.848 sum_us= 145.698
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 4.2379 median_us= 4.0605 sum_us= 127.137
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.157733 median_us= 16.1015 sum_us= 484.732
-DEVICE summed_duration_us= 757.567
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.386433 median_us= 5.241 sum_us= 161.593
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 4.7126 median_us= 4.5775 sum_us= 141.378
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.200667 median_us= 16.145 sum_us= 486.02
+DEVICE summed_duration_us= 788.991
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N256-K56:1 kernel CSV files= 1
-CSV profile-N256-K56:1/profile/ubuntu162_3090677_20261102175118025_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N256-K256:1 kernel CSV files= 1
+CSV profile-N256-K256:1/profile/ubuntu162_3250224_20261102194559221_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.437367 median_us= 5.3145 sum_us= 163.121
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 4.243533 median_us= 4.026 sum_us= 127.306
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.370033 median_us= 16.3915 sum_us= 491.101
-DEVICE summed_duration_us= 781.528
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.291133 median_us= 5.23 sum_us= 158.734
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 25.279 median_us= 25.089 sum_us= 758.37
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.381733 median_us= 16.297 sum_us= 491.452
+DEVICE summed_duration_us= 1408.556
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N256-K56:2 kernel CSV files= 1
-CSV profile-N256-K56:2/profile/ubuntu162_3091555_20261102175131558_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N256-K256:3 kernel CSV files= 1
+CSV profile-N256-K256:3/profile/ubuntu162_3250863_20261102194611129_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.3278 median_us= 5.187 sum_us= 159.834
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 4.210133 median_us= 4.066 sum_us= 126.304
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.1974 median_us= 16.1655 sum_us= 485.922
-DEVICE summed_duration_us= 772.06
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.364333 median_us= 5.243 sum_us= 160.93
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 20.362567 median_us= 20.318 sum_us= 610.877
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.142633 median_us= 16.16 sum_us= 484.279
+DEVICE summed_duration_us= 1256.086
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N512-K14:1 kernel CSV files= 1
-CSV profile-N512-K14:1/profile/ubuntu162_3092264_20261102175144017_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N512-K1024:1 kernel CSV files= 1
+CSV profile-N512-K1024:1/profile/ubuntu162_3255453_20261102194736176_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 11.256067 median_us= 11.2455 sum_us= 337.682
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 6.522367 median_us= 6.2905 sum_us= 195.671
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.446067 median_us= 16.4375 sum_us= 493.382
-DEVICE summed_duration_us= 1026.735
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.586833 median_us= 5.558 sum_us= 167.605
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 15.773 median_us= 15.5955 sum_us= 473.19
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.483433 median_us= 16.49 sum_us= 494.503
+DEVICE summed_duration_us= 1135.298
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N512-K14:2 kernel CSV files= 1
-CSV profile-N512-K14:2/profile/ubuntu162_3093019_20261102175158182_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N512-K1024:3 kernel CSV files= 1
+CSV profile-N512-K1024:3/profile/ubuntu162_3256277_20261102194748325_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 10.823467 median_us= 10.835 sum_us= 324.704
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 6.532533 median_us= 6.3285 sum_us= 195.976
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.4991 median_us= 16.3425 sum_us= 494.973
-DEVICE summed_duration_us= 1015.653
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.7598 median_us= 5.674 sum_us= 172.794
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 8.114267 median_us= 8.039 sum_us= 243.428
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.362033 median_us= 16.3675 sum_us= 490.861
+DEVICE summed_duration_us= 907.083
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N512-K28:1 kernel CSV files= 1
-CSV profile-N512-K28:1/profile/ubuntu162_3093742_20261102175211256_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N512-K1280:1 kernel CSV files= 1
+CSV profile-N512-K1280:1/profile/ubuntu162_3256941_20261102194801079_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 8.0883 median_us= 8.05 sum_us= 242.649
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 6.556167 median_us= 6.343 sum_us= 196.685
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.4824 median_us= 16.439 sum_us= 494.472
-DEVICE summed_duration_us= 933.806
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.659833 median_us= 5.6165 sum_us= 169.795
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 13.563067 median_us= 13.444 sum_us= 406.892
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.505167 median_us= 16.4945 sum_us= 495.155
+DEVICE summed_duration_us= 1071.842
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N512-K28:2 kernel CSV files= 1
-CSV profile-N512-K28:2/profile/ubuntu162_3094441_20261102175224697_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N512-K1280:3 kernel CSV files= 1
+CSV profile-N512-K1280:3/profile/ubuntu162_3257577_20261102194813078_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 7.982767 median_us= 7.9625 sum_us= 239.483
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 6.513733 median_us= 6.312 sum_us= 195.412
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.482367 median_us= 16.432 sum_us= 494.471
-DEVICE summed_duration_us= 929.366
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.809933 median_us= 5.8405 sum_us= 174.298
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 7.196233 median_us= 7.0815 sum_us= 215.887
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.425767 median_us= 16.4085 sum_us= 492.773
+DEVICE summed_duration_us= 882.958
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N512-K56:1 kernel CSV files= 1
-CSV profile-N512-K56:1/profile/ubuntu162_3096445_20261102175237305_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N512-K256:1 kernel CSV files= 1
+CSV profile-N512-K256:1/profile/ubuntu162_3254066_20261102194711244_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.673667 median_us= 5.691 sum_us= 170.21
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 6.5009 median_us= 6.3145 sum_us= 195.027
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.418733 median_us= 16.351 sum_us= 492.562
-DEVICE summed_duration_us= 857.799
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.418033 median_us= 5.4095 sum_us= 162.541
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 48.124767 median_us= 48.085 sum_us= 1443.743
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.3939 median_us= 16.3825 sum_us= 491.817
+DEVICE summed_duration_us= 2098.101
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N512-K56:2 kernel CSV files= 1
-CSV profile-N512-K56:2/profile/ubuntu162_3097160_20261102175250586_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N512-K256:3 kernel CSV files= 1
+CSV profile-N512-K256:3/profile/ubuntu162_3254734_20261102194724193_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.691033 median_us= 5.6365 sum_us= 170.731
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 6.513067 median_us= 6.36 sum_us= 195.392
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.476233 median_us= 16.2955 sum_us= 494.287
-DEVICE summed_duration_us= 860.41
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.473967 median_us= 5.434 sum_us= 164.219
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 31.709333 median_us= 31.4845 sum_us= 951.28
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 16.317433 median_us= 16.249 sum_us= 489.523
+DEVICE summed_duration_us= 1605.022
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N64-K14:1 kernel CSV files= 1
-CSV profile-N64-K14:1/profile/ubuntu162_3076660_20261102174758826_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N64-K1024:1 kernel CSV files= 1
+CSV profile-N64-K1024:1/profile/ubuntu162_3242556_20261102194357799_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 4.396233 median_us= 4.4055 sum_us= 131.887
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 2.665033 median_us= 2.5105 sum_us= 79.951
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.0329 median_us= 13.0125 sum_us= 390.987
-DEVICE summed_duration_us= 602.825
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.204367 median_us= 5.0005 sum_us= 156.131
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 4.197767 median_us= 3.9365 sum_us= 125.933
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.053367 median_us= 13.0115 sum_us= 391.601
+DEVICE summed_duration_us= 673.665
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N64-K14:2 kernel CSV files= 1
-CSV profile-N64-K14:2/profile/ubuntu162_3077695_20261102174812884_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N64-K1024:3 kernel CSV files= 1
+CSV profile-N64-K1024:3/profile/ubuntu162_3243333_20261102194410029_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 4.4072 median_us= 4.4315 sum_us= 132.216
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 2.689667 median_us= 2.5795 sum_us= 80.69
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.034133 median_us= 13.0465 sum_us= 391.024
-DEVICE summed_duration_us= 603.93
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.153067 median_us= 5.028 sum_us= 154.592
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 3.2482 median_us= 3.182 sum_us= 97.446
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.061333 median_us= 13.07 sum_us= 391.84
+DEVICE summed_duration_us= 643.878
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N64-K28:1 kernel CSV files= 1
-CSV profile-N64-K28:1/profile/ubuntu162_3078400_20261102174824942_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N64-K1280:1 kernel CSV files= 1
+CSV profile-N64-K1280:1/profile/ubuntu162_3243987_20261102194421699_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 4.6263 median_us= 4.6055 sum_us= 138.789
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 2.681633 median_us= 2.5935 sum_us= 80.449
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.037667 median_us= 13.021 sum_us= 391.13
-DEVICE summed_duration_us= 610.368
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.164633 median_us= 5.0445 sum_us= 154.939
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 3.6594 median_us= 3.628 sum_us= 109.782
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.058667 median_us= 13.0605 sum_us= 391.76
+DEVICE summed_duration_us= 656.481
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N64-K28:2 kernel CSV files= 1
-CSV profile-N64-K28:2/profile/ubuntu162_3079087_20261102174837264_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N64-K1280:3 kernel CSV files= 1
+CSV profile-N64-K1280:3/profile/ubuntu162_3244782_20261102194433554_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 4.6183 median_us= 4.5925 sum_us= 138.549
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 2.711733 median_us= 2.613 sum_us= 81.352
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.046467 median_us= 13.063 sum_us= 391.394
-DEVICE summed_duration_us= 611.295
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.178833 median_us= 5.0585 sum_us= 155.365
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 2.933133 median_us= 2.7465 sum_us= 87.994
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.053567 median_us= 13.0525 sum_us= 391.607
+DEVICE summed_duration_us= 634.966
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N64-K56:1 kernel CSV files= 1
-CSV profile-N64-K56:1/profile/ubuntu162_3079759_20261102174848943_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N64-K256:1 kernel CSV files= 1
+CSV profile-N64-K256:1/profile/ubuntu162_3240885_20261102194335071_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.087933 median_us= 4.981 sum_us= 152.638
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 2.714333 median_us= 2.5495 sum_us= 81.43
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.029267 median_us= 13.0295 sum_us= 390.878
-DEVICE summed_duration_us= 624.946
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.103533 median_us= 5.0235 sum_us= 153.106
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 10.8452 median_us= 10.816 sum_us= 325.356
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.032067 median_us= 13.0105 sum_us= 390.962
+DEVICE summed_duration_us= 869.424
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
-PROFILE profile-N64-K56:2 kernel CSV files= 1
-CSV profile-N64-K56:2/profile/ubuntu162_3080481_20261102174901007_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+PROFILE profile-N64-K256:3 kernel CSV files= 1
+CSV profile-N64-K256:3/profile/ubuntu162_3241924_20261102194346941_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 COLUMNS ["Device_id", "Name", "Type", "Accelerator Core", "Start Time(us)", "Duration(us)", "Wait Time(us)", "Block Num", "Mix Block Num", "Input Shapes", "Input Data Types", "Input Formats", "Output Shapes", "Output Data Types", "Output Formats"]
 ROWS 90 invalid durations= 0 expected API calls=30
-KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.178633 median_us= 5.096 sum_us= 155.359
-KERNEL mhc_pre_apply_mix_fwd_asc_kernel count= 30 mean_us= 2.714 median_us= 2.5445 sum_us= 81.42
-KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.025567 median_us= 13.009 sum_us= 390.767
-DEVICE summed_duration_us= 627.546
+KERNEL mhc_coeff_tail_fwd_asc_kernel count= 30 mean_us= 5.141633 median_us= 5.017 sum_us= 154.249
+KERNEL mhc_pre_apply_pipeline_asc_kernel count= 30 mean_us= 9.543167 median_us= 9.5185 sum_us= 286.295
+KERNEL tf32_hc_prenorm_gemm_kernel_kernel count= 30 mean_us= 13.054233 median_us= 13.054 sum_us= 391.627
+DEVICE summed_duration_us= 832.171
 NOTE: summed durations are device work, not elapsed latency when kernels overlap.
 FILES: correctness= 186 API summaries= 72 profile directories= 24
 Expected for all mode: 186 correctness files, 72 API summaries, 24 profile directories.
-SELECTED bench results/mhc-tail-scan/20261102-172408-all-3000797
-SELECTED profile results/mhc-tail-scan/20261102-172408-all-3000797
+SELECTED bench results/mhc-apply-pipeline/20261102-192027-all-3167637
+SELECTED profile results/mhc-apply-pipeline/20261102-192027-all-3167637
 Offline collection complete. No kernels executed.
 (zwh) root@ubuntu162:/home/z30086261/Q4#
