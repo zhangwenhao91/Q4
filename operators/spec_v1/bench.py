@@ -24,6 +24,7 @@ def implementation_order(labels,round_index):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--suite',choices=['mha','mha_bf16','mha_nostore','mha_stages','mha_finalize','mha_buffers','mha_stats_split','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_split','mhc_original','mhc_original_fused','mhc_original_big5120'],required=True)
+    p.add_argument('--mhc-apply-pipeline',choices=[f'{b}:{s}' for b in (256,1024,1280) for s in (1,3)],help='experimental token-owned apply pipeline block:stages')
     p.add_argument('--mhc-tail-config',choices=[f'{c}:{s}' for c in (14,28,56) for s in (1,2)],help='shifted_split: tail cores:stages, apply fixed H1280')
     p.add_argument('--mhc-apply-block',type=int,choices=[256,512,1024,1280,2560,5120],help='shifted_split: compare apply hidden tile')
     p.add_argument('--mhc-projection-splits',type=int,choices=[1,2,4,8],help='shifted_split only: compare one K-split candidate against unchanged baselines')
@@ -57,6 +58,8 @@ def main():
         p.error('--mhc-apply-block requires shifted_split and cannot combine with projection scan')
     if a.mhc_tail_config and (a.suite!='mhc_shifted_split' or a.mhc_apply_block or a.mhc_projection_splits):
         p.error('--mhc-tail-config requires shifted_split without other scan flags')
+    if a.mhc_apply_pipeline and (a.suite!='mhc_shifted_split' or a.mhc_apply_block or a.mhc_tail_config or a.mhc_projection_splits):
+        p.error('--mhc-apply-pipeline requires shifted_split without other scan flags')
     a.output.mkdir(parents=True,exist_ok=False)
     import torch
     import torch_npu
@@ -120,6 +123,10 @@ def main():
         import deep_gemm
         file=Path(deep_gemm.__file__).parent/'tilelang_ops'/'hc_prenorm.py'
         meta['hc_source_sha256']=hashlib.sha256(file.read_bytes()).hexdigest()
+    pipeline_meta = (meta.get('split_bound_launch') or {}).get('apply_pipeline') or {}
+    generated_apply = pipeline_meta.pop('generated_apply_source', None)
+    if generated_apply is not None:
+        (a.output/'apply_pipeline_kernel.cpp').write_text(generated_apply)
     (a.output/'metadata.json').write_text(json.dumps(meta,indent=2))
     records=[];values={}
     def validate(label,outputs,expected):

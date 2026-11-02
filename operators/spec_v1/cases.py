@@ -158,6 +158,16 @@ def shifted_case(a, native_shifted=False, fusion=False, bind=False, split=False)
                            'ascendc_shifted_native':ac}
                 fusion_meta['expected_kernel_counts']={
                     'tilelang_apply_bound':2,'tilelang_coeff_bound':3,'ascendc_shifted_native':2}
+                pipeline_config = getattr(a, 'mhc_apply_pipeline', None)
+                if pipeline_config:
+                    block, stages = map(int,pipeline_config.split(':'))
+                    pipe_fn, pipe_meta = make_bound_candidate(projector,x,prev,alpha,bias,
+                        split_apply=True,apply_pipeline=(block,stages))
+                    label = f'tilelang_pipeline_h{block}s{stages}'
+                    functions = {'tilelang_apply_bound':bound_fn,'tilelang_coeff_bound':split_fn,
+                                 label:pipe_fn,'ascendc_shifted_native':ac}
+                    split_meta['apply_pipeline'] = pipe_meta
+                    fusion_meta['expected_kernel_counts'][label] = 3
                 tail_config = getattr(a, 'mhc_tail_config', None)
                 if tail_config:
                     cores, stages = map(int, tail_config.split(':'))
