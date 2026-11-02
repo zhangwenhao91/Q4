@@ -158,6 +158,19 @@ def shifted_case(a, native_shifted=False, fusion=False, bind=False, split=False)
                            'ascendc_shifted_native':ac}
                 fusion_meta['expected_kernel_counts']={
                     'tilelang_apply_bound':2,'tilelang_coeff_bound':3,'ascendc_shifted_native':2}
+                tail_config = getattr(a, 'mhc_tail_config', None)
+                if tail_config:
+                    cores, stages = map(int, tail_config.split(':'))
+                    tail_base, tail_base_meta = make_bound_candidate(projector,x,prev,alpha,bias,
+                        split_apply=True,apply_h_blk=1280)
+                    tail_fn, tail_meta = make_bound_candidate(projector,x,prev,alpha,bias,
+                        split_apply=True,apply_h_blk=1280,tail_cores=cores,tail_stages=stages)
+                    label = f'tilelang_tail_c{cores}s{stages}'
+                    functions = {'tilelang_apply_bound':bound_fn,'tilelang_coeff_bound':tail_base,
+                                 label:tail_fn,'ascendc_shifted_native':ac}
+                    split_meta['tail_scan'] = dict(baseline=tail_base_meta,candidate=tail_meta,
+                        baseline_label_note='tilelang_coeff_bound uses H1280 in this suite')
+                    fusion_meta['expected_kernel_counts'][label] = 3
                 apply_block = getattr(a, 'mhc_apply_block', None)
                 if apply_block is not None:
                     apply_fn, apply_meta = make_bound_candidate(projector,x,prev,alpha,bias,

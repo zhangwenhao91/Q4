@@ -4,7 +4,7 @@ import hashlib
 from mhc_fusion import SOURCE, allocate_outputs
 
 
-def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, apply_h_blk=5120):
+def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, apply_h_blk=5120, tail_cores=None, tail_stages=2):
     if apply_h_blk <= 0 or apply_h_blk % 64 or 5120 % apply_h_blk:
         raise ValueError("apply_h_blk must divide 5120 and be a multiple of 64")
     import torch
@@ -17,6 +17,12 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, app
     settings = dict(rms_eps=1e-20, mhc_pre_eps=1e-6, mhc_sinkhorn_eps=1e-6,
         mhc_post_mult_value=2., sinkhorn_repeat=20, n_splits=1,
         token_block=16, num_stages=2, num_vec_cores=get_num_vec_cores())
+    if tail_stages not in (1,2,3,4) or (tail_cores is not None and not 0 < tail_cores <= settings['num_vec_cores']):
+        raise ValueError('Invalid tail core/stage configuration')
+    apply_cores = settings['num_vec_cores']
+    settings['num_stages'] = tail_stages
+    if tail_cores is not None:
+        settings['num_vec_cores'] = tail_cores
     # Compilation inspects shape/dtype only; these buffers are not reused by run().
     sample_hi, sample_pre, sample_post, sample_comb = allocate_outputs(torch, t, x)
     sample_raw = torch.empty(1, t, 24, dtype=torch.float32, device=x.device)
@@ -28,7 +34,7 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, app
         from coeff_tail import mhc_coeff_tail_fwd_asc
         from tile_kernels.mhc.pre_apply_mix_asc import mhc_pre_apply_mix_fwd_asc
         standalone_apply = mhc_pre_apply_mix_fwd_asc.compile(x, prev2d, sample_hi,
-            h_blk=apply_h_blk, num_vec_cores=settings['num_vec_cores'])
+            h_blk=apply_h_blk, num_vec_cores=apply_cores)
         tail = mhc_coeff_tail_fwd_asc.compile(sample_raw, sample_valid_sq, alpha, bias,
             sample_pre, sample_post, sample_comb, hidden=5120, **settings)
     else:
@@ -60,6 +66,7 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, app
         return hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(t, 4, 4)
 
     metadata = dict(
+        tail_settings=dict(settings),
         operation='public JITImpl.compile -> JITKernel call; no private cache access',
         projection_device_source_sha256=hashlib.sha256(projection.get_kernel_source().encode()).hexdigest(),
         tail_device_source_sha256=hashlib.sha256(tail.get_kernel_source().encode()).hexdigest(),

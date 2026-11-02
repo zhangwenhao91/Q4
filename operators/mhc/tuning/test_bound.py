@@ -63,10 +63,12 @@ class BoundLaunchContract(unittest.TestCase):
                     'coeff_tail':types.SimpleNamespace(mhc_coeff_tail_fwd_asc=coeff),
                     'tile_kernels.mhc.pre_apply_mix_asc':types.SimpleNamespace(mhc_pre_apply_mix_fwd_asc=apply)
                 }):
-                    run, meta = make_bound_candidate(projector,x,prev,alpha,bias,split_apply=True,apply_h_blk=block)
+                    run, meta = make_bound_candidate(projector,x,prev,alpha,bias,split_apply=True,apply_h_blk=block,tail_cores=14,tail_stages=1)
                     self.assertEqual(events,[])
                     self.assertEqual(fused.compiles,[])
                     self.assertEqual(apply.compiles[0][1],dict(h_blk=block,num_vec_cores=56))
+                    self.assertEqual(coeff.compiles[0][1]['num_vec_cores'],14)
+                    self.assertEqual(coeff.compiles[0][1]['num_stages'],1)
                     self.assertEqual(coeff.compiles[0][1]['hidden'],5120)
                     self.assertNotIn('h_blk',coeff.compiles[0][1])
                     self.assertEqual(coeff.compiles[0][1]['sinkhorn_repeat'],20)
