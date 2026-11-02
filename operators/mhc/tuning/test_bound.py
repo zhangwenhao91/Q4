@@ -40,7 +40,7 @@ class Compiler:
 
 class BoundLaunchContract(unittest.TestCase):
     def test_split_path_binds_three_calls_and_recomputes_old_pre_apply(self):
-        for t in (64, 128, 129, 256, 512, 8192):
+        for t, block in ((t,b) for t in (64,128,129,256,512,8192) for b in (256,512,1024,1280,2560,5120)):
             with self.subTest(t=t):
                 events = []
                 projection = Compiler('projection',4,events)
@@ -63,10 +63,10 @@ class BoundLaunchContract(unittest.TestCase):
                     'coeff_tail':types.SimpleNamespace(mhc_coeff_tail_fwd_asc=coeff),
                     'tile_kernels.mhc.pre_apply_mix_asc':types.SimpleNamespace(mhc_pre_apply_mix_fwd_asc=apply)
                 }):
-                    run, meta = make_bound_candidate(projector,x,prev,alpha,bias,split_apply=True)
+                    run, meta = make_bound_candidate(projector,x,prev,alpha,bias,split_apply=True,apply_h_blk=block)
                     self.assertEqual(events,[])
                     self.assertEqual(fused.compiles,[])
-                    self.assertEqual(apply.compiles[0][1],dict(h_blk=5120,num_vec_cores=56))
+                    self.assertEqual(apply.compiles[0][1],dict(h_blk=block,num_vec_cores=56))
                     self.assertEqual(coeff.compiles[0][1]['hidden'],5120)
                     self.assertNotIn('h_blk',coeff.compiles[0][1])
                     self.assertEqual(coeff.compiles[0][1]['sinkhorn_repeat'],20)

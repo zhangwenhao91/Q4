@@ -158,6 +158,15 @@ def shifted_case(a, native_shifted=False, fusion=False, bind=False, split=False)
                            'ascendc_shifted_native':ac}
                 fusion_meta['expected_kernel_counts']={
                     'tilelang_apply_bound':2,'tilelang_coeff_bound':3,'ascendc_shifted_native':2}
+                apply_block = getattr(a, 'mhc_apply_block', None)
+                if apply_block is not None:
+                    apply_fn, apply_meta = make_bound_candidate(projector,x,prev,alpha,bias,
+                        split_apply=True,apply_h_blk=apply_block)
+                    label = 'tilelang_apply_h'+str(apply_block)
+                    functions = {'tilelang_apply_bound':bound_fn,'tilelang_coeff_bound':split_fn,
+                                 label:apply_fn,'ascendc_shifted_native':ac}
+                    split_meta['apply_scan'] = apply_meta
+                    fusion_meta['expected_kernel_counts'][label] = 3
                 requested = getattr(a, 'mhc_projection_splits', None)
                 if requested is not None:
                     import copy

@@ -95,7 +95,12 @@ def main():
                   for p in root.glob('*/metadata.json'))
     scan = any(json.loads(p.read_text()).get('arguments', {}).get('mhc_projection_splits') is not None
                for p in root.glob('*/metadata.json'))
-    if scan:
+    apply_scan = any(json.loads(p.read_text()).get('arguments', {}).get('mhc_apply_block') is not None
+                     for p in root.glob('*/metadata.json'))
+    if apply_scan:
+        expected = dict(smoke=(6,0,0), check=(90,0,0), bench=(90,90,0),
+                        profile=(30,0,30), all=(210,90,30))[mode]
+    elif scan:
         expected = dict(smoke=(3,0,0), check=(45,0,0), bench=(36,36,0),
                         profile=(12,0,12), all=(93,36,12))[mode]
     elif big5120:

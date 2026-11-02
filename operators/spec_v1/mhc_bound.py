@@ -4,7 +4,9 @@ import hashlib
 from mhc_fusion import SOURCE, allocate_outputs
 
 
-def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False):
+def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, apply_h_blk=5120):
+    if apply_h_blk <= 0 or apply_h_blk % 64 or 5120 % apply_h_blk:
+        raise ValueError("apply_h_blk must divide 5120 and be a multiple of 64")
     import torch
     import sys
     from tile_kernels.config import get_num_vec_cores
@@ -26,7 +28,7 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False):
         from coeff_tail import mhc_coeff_tail_fwd_asc
         from tile_kernels.mhc.pre_apply_mix_asc import mhc_pre_apply_mix_fwd_asc
         standalone_apply = mhc_pre_apply_mix_fwd_asc.compile(x, prev2d, sample_hi,
-            h_blk=5120, num_vec_cores=settings['num_vec_cores'])
+            h_blk=apply_h_blk, num_vec_cores=settings['num_vec_cores'])
         tail = mhc_coeff_tail_fwd_asc.compile(sample_raw, sample_valid_sq, alpha, bias,
             sample_pre, sample_post, sample_comb, hidden=5120, **settings)
     else:
@@ -66,5 +68,5 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False):
         note='compilation excluded for all sides; all device math, output/workspace allocation and views remain timed')
     if split_apply:
         metadata['standalone_apply_source_sha256'] = hashlib.sha256(standalone_apply.get_kernel_source().encode()).hexdigest()
-        metadata['standalone_apply_hidden_tile'] = 5120
+        metadata['standalone_apply_hidden_tile'] = apply_h_blk
     return (run_split if split_apply else run), metadata

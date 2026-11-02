@@ -24,6 +24,7 @@ def implementation_order(labels,round_index):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--suite',choices=['mha','mha_bf16','mha_nostore','mha_stages','mha_finalize','mha_buffers','mha_stats_split','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_split','mhc_original','mhc_original_fused','mhc_original_big5120'],required=True)
+    p.add_argument('--mhc-apply-block',type=int,choices=[256,512,1024,1280,2560,5120],help='shifted_split: compare apply hidden tile')
     p.add_argument('--mhc-projection-splits',type=int,choices=[1,2,4,8],help='shifted_split only: compare one K-split candidate against unchanged baselines')
     p.add_argument('--tokens',type=int,default=512,help='mHC only; MHA is fixed at 4096')
     p.add_argument('--implementations',nargs='+',help='Validate and time only these exact implementation labels')
@@ -51,6 +52,8 @@ def main():
         p.error('--mhc-weights/--mhc-pattern require a native/split shifted suite')
     if a.mhc_projection_splits is not None and a.suite!='mhc_shifted_split':
         p.error('--mhc-projection-splits requires mhc_shifted_split')
+    if a.mhc_apply_block is not None and (a.suite!='mhc_shifted_split' or a.mhc_projection_splits is not None):
+        p.error('--mhc-apply-block requires shifted_split and cannot combine with projection scan')
     a.output.mkdir(parents=True,exist_ok=False)
     import torch
     import torch_npu
