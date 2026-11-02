@@ -1,5 +1,11 @@
 # MHA 与三 kernel 预绑定 mHC 的 MFU 测量
 
+2026-11-02：已对照新增 `MFU计算.md` 和官方白皮书表3-1，添加
+`peaks/ascend950pr_28aic.json`：BF16 Cube 378 TFLOPS、TF32 Cube 189 TFLOPS。
+本项目 HF32 投影按 TF32 档归一化，配置中记录该映射条件。
+这不是 Cube+Vector 总算力，也不按实时频率缩放额定峰值。
+本轮结果见 [MFU 报告](../../reports/mfu_20261102/report.md)。
+
 先测有用矩阵 FLOPs / 完整 API event 延迟，输出有效 TFLOPS。
 理论峰值尚未确认时，MFU 百分比留空，不使用其他芯片、稀疏峰值或整机峰值替代。
 这是算子级矩阵计算口径的 MFU proxy，不是完整模型训练 MFU 或硬件指令利用率。
@@ -63,6 +69,15 @@ N=64/128/256/512/8192，每形状三进程、预热 100 次、9 轮各 100 次�
 ```bash
 python operators/mfu/analyze.py --input results/mfu/实际目录 --peak-json /path/to/peak.json
 ```
+
+当前已确认 28 AIC 设备可直接使用已提交配置，无需重新计时：
+
+```bash
+python operators/mfu/analyze.py --input results/mfu/实际目录 \
+  --peak-json operators/mfu/peaks/ascend950pr_28aic.json
+```
+
+保留实际目录名；本轮粘贴的 error.txt 未包含 MFU OUTPUT 路径，不能从表格恢复该路径。
 
 若没有 peak-json，仍可离线重复生成有效 TFLOPS 报告。JSON 中峰值为 null，
 不把缺失峰值解释成 0% MFU。MFU 大于 100% 时保留结果用于排查峰值/时钟/计时口径，

@@ -1,0 +1,21 @@
+{
+  "bf16": {
+    "tflops": 378,
+    "source": "Huawei Ascend 950 NPU architecture white paper, Table 3-1, PDF pages 13-14; https://public-download.obs.cn-east-2.myhuaweicloud.com/ascend/%E6%98%87%E8%85%BE950%20NPU%E6%9E%B6%E6%9E%84%E7%99%BD%E7%9A%AE%E4%B9%A6.pdf ; checked 2026-11-02",
+    "scope": "visible_device_dense",
+    "name": "Ascend950PR_9579",
+    "cube_core_num": 28,
+    "hardware_precision": "BF16",
+    "peak_kind": "Cube only, published nominal peak"
+  },
+  "hf32": {
+    "tflops": 189,
+    "source": "Huawei Ascend 950 NPU architecture white paper, Table 3-1, PDF pages 13-14, TF32 row; https://public-download.obs.cn-east-2.myhuaweicloud.com/ascend/%E6%98%87%E8%85%BE950%20NPU%E6%9E%B6%E6%9E%84%E7%99%BD%E7%9A%AE%E4%B9%A6.pdf ; checked 2026-11-02",
+    "scope": "visible_device_dense",
+    "name": "Ascend950PR_9579",
+    "cube_core_num": 28,
+    "hardware_precision": "TF32",
+    "mapping_note": "Normalize this project's HF32-enabled tf32_hc_prenorm_gemm projection against the TF32 Cube tier. Not IEEE FP32, not BF16 peak. Conditional on this software-to-hardware compute-mode mapping.",
+    "peak_kind": "Cube only, published nominal peak"
+  }
+}

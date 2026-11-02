@@ -1,0 +1,129 @@
+{
+  "evidence": "9fe3f55:error.txt",
+  "evidence_sha256": "548dc902dd21daee2a030a523aec34470b2cfacb2de541bb6aa1e87d8a4c4b5f",
+  "wiki_sha256": "ae9af77761683561c12a47afbf8a60ed747ff12d3569ad5387e0289f3e110e88",
+  "calculation": "Offline normalization of pasted final summary; six-decimal precision. No new NPU timing.",
+  "peaks": {
+    "bf16": {
+      "tflops": 378,
+      "source": "Huawei Ascend 950 NPU architecture white paper, Table 3-1, PDF pages 13-14; https://public-download.obs.cn-east-2.myhuaweicloud.com/ascend/%E6%98%87%E8%85%BE950%20NPU%E6%9E%B6%E6%9E%84%E7%99%BD%E7%9A%AE%E4%B9%A6.pdf ; checked 2026-11-02",
+      "scope": "visible_device_dense",
+      "name": "Ascend950PR_9579",
+      "cube_core_num": 28,
+      "hardware_precision": "BF16",
+      "peak_kind": "Cube only, published nominal peak"
+    },
+    "hf32": {
+      "tflops": 189,
+      "source": "Huawei Ascend 950 NPU architecture white paper, Table 3-1, PDF pages 13-14, TF32 row; https://public-download.obs.cn-east-2.myhuaweicloud.com/ascend/%E6%98%87%E8%85%BE950%20NPU%E6%9E%B6%E6%9E%84%E7%99%BD%E7%9A%AE%E4%B9%A6.pdf ; checked 2026-11-02",
+      "scope": "visible_device_dense",
+      "name": "Ascend950PR_9579",
+      "cube_core_num": 28,
+      "hardware_precision": "TF32",
+      "mapping_note": "Normalize this project's HF32-enabled tf32_hc_prenorm_gemm projection against the TF32 Cube tier. Not IEEE FP32, not BF16 peak. Conditional on this software-to-hardware compute-mode mapping.",
+      "peak_kind": "Cube only, published nominal peak"
+    }
+  },
+  "results": [
+    {
+      "suite": "mha_stats_split",
+      "tokens": 4096,
+      "implementation": "tilelang_q128",
+      "event_us": 52.6791,
+      "effective_tflops": 163.061529,
+      "useful_matrix_flops": 8589934592,
+      "compute_mode": "bf16",
+      "peak_tflops": 378,
+      "matrix_mfu_percent": 43.137970634920634
+    },
+    {
+      "suite": "mha_stats_split",
+      "tokens": 4096,
+      "implementation": "tilelang_kv2",
+      "event_us": 51.089995,
+      "effective_tflops": 168.133401,
+      "useful_matrix_flops": 8589934592,
+      "compute_mode": "bf16",
+      "peak_tflops": 378,
+      "matrix_mfu_percent": 44.47973571428571
+    },
+    {
+      "suite": "mha_stats_split",
+      "tokens": 4096,
+      "implementation": "tilelang_s2buf",
+      "event_us": 50.964119,
+      "effective_tflops": 168.548671,
+      "useful_matrix_flops": 8589934592,
+      "compute_mode": "bf16",
+      "peak_tflops": 378,
+      "matrix_mfu_percent": 44.58959550264551
+    },
+    {
+      "suite": "mha_stats_split",
+      "tokens": 4096,
+      "implementation": "ascendc",
+      "event_us": 40.085506,
+      "effective_tflops": 214.290285,
+      "useful_matrix_flops": 8589934592,
+      "compute_mode": "bf16",
+      "peak_tflops": 378,
+      "matrix_mfu_percent": 56.690551587301584
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 64,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 26.715851,
+      "effective_tflops": 2.354953,
+      "useful_matrix_flops": 62914560,
+      "compute_mode": "hf32",
+      "peak_tflops": 189,
+      "matrix_mfu_percent": 1.2460068783068783
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 128,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 25.96122,
+      "effective_tflops": 4.846811,
+      "useful_matrix_flops": 125829120,
+      "compute_mode": "hf32",
+      "peak_tflops": 189,
+      "matrix_mfu_percent": 2.5644502645502643
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 256,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 25.65711,
+      "effective_tflops": 9.808518,
+      "useful_matrix_flops": 251658240,
+      "compute_mode": "hf32",
+      "peak_tflops": 189,
+      "matrix_mfu_percent": 5.189692063492063
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 512,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 39.343319,
+      "effective_tflops": 12.792934,
+      "useful_matrix_flops": 503316480,
+      "compute_mode": "hf32",
+      "peak_tflops": 189,
+      "matrix_mfu_percent": 6.768748148148148
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 8192,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 585.551186,
+      "effective_tflops": 13.752963,
+      "useful_matrix_flops": 8053063680,
+      "compute_mode": "hf32",
+      "peak_tflops": 189,
+      "matrix_mfu_percent": 7.2767
+    }
+  ],
+  "raw_capture_available_locally": false
+}
