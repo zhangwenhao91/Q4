@@ -1,3 +1,5 @@
+> 历史实验：此候选未采用，其独立代码与入口已从当前分支清理。结果保留供查证；源码见 [清理前版本](https://github.com/zhangwenhao91/Q4/tree/b53f66a/operators/mha/tuning)。
+
 # Q常驻L0A结果：未观察到稳定收益
 
 B1/H1/S4096/D128，BF16输入输出，原生AscendC复用metadata。

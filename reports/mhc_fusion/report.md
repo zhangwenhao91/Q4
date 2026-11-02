@@ -1,3 +1,5 @@
+> 历史入口已由 `operators/mhc/tuning/run_split.sh` 覆盖；当前数值实现与共享依赖仍保留。下文记录原实验结果。
+
 # shifted mHC：三kernel与两kernel融合结果
 
 证据：`7a7d682:error.txt`；运行代码 `c22cbde6a3f630f1496e395eea248ead1aac4631`。

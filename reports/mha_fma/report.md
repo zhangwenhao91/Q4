@@ -1,3 +1,5 @@
+> 历史实验：此候选未采用，其独立代码与入口已从当前分支清理。结果保留供查证；源码见 [清理前版本](https://github.com/zhangwenhao91/Q4/tree/b53f66a/operators/mha/tuning)。
+
 # Q128 Vector FMA 实验结果：未观察到有效API收益
 
 规格：单head、4096x128、BF16输入/输出，AC复用metadata。未叠加Q64。

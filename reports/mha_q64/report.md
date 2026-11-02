@@ -1,3 +1,5 @@
+> 历史实验：此候选未采用，其独立代码与入口已从当前分支清理。结果保留供查证；源码见 [清理前版本](https://github.com/zhangwenhao91/Q4/tree/b53f66a/operators/mha/tuning)。
+
 # Q64 分块实验结果：不采用
 
 范围：B=1、H=1、S=4096、D=128，BF16输入/输出，复用AscendC metadata，三侧同输入、同进程对照。

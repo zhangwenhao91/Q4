@@ -1,5 +1,7 @@
 # Q4 测试结果总览
 
+当前可用实现与已清理版本见 [版本索引](ACTIVE_VERSIONS.md)。
+
 汇总日期：2026-11-02。仅整理既有服务器结果，没有新增设备测试。
 时间单位均为 us。AC/TL > 1 表示 TileLang 更快。
 API event 延迟、设备 kernel Duration 和诊断重放分别记录，不混算。

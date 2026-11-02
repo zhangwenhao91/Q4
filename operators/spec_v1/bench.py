@@ -23,12 +23,12 @@ def implementation_order(labels,round_index):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--suite',choices=['mha','mha_bf16','mha_q64','mha_fma','mha_nostore','mha_rowfused','mha_rowbatch','mha_stages','mha_finalize','mha_qresident','mha_buffers','mha_firstpv','mha_pbuffer','mha_l2','mha_stats_split','mha_manual','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_fusion','mhc_shifted_bound','mhc_shifted_split','mhc_original','mhc_original_fused','mhc_original_big5120'],required=True)
+    p.add_argument('--suite',choices=['mha','mha_bf16','mha_nostore','mha_stages','mha_finalize','mha_buffers','mha_stats_split','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_split','mhc_original','mhc_original_fused','mhc_original_big5120'],required=True)
     p.add_argument('--tokens',type=int,default=512,help='mHC only; MHA is fixed at 4096')
     p.add_argument('--seed',type=int,default=42)
     p.add_argument('--mhc-pattern',choices=['random','zero','prev_zero','prev_basis'],default='random',
-                   help='native/fusion shifted mHC correctness inputs; no device work is precomputed')
-    p.add_argument('--mhc-weights',type=Path,help='native/fusion shifted mHC: CPU torch file containing FP32 fn/scale/base')
+                   help='native/split shifted mHC correctness inputs; no device work is precomputed')
+    p.add_argument('--mhc-weights',type=Path,help='native/split shifted mHC: CPU torch file containing FP32 fn/scale/base')
     p.add_argument('--ac-metadata',choices=['cached','per_call'],default='cached',
                    help='mha_bf16: reuse fixed-shape metadata or include native metadata generation each call')
     p.add_argument('--warmup',type=int,default=100)
@@ -45,12 +45,12 @@ def main():
         p.error('tokens/iters/rounds > 0; warmup >= 0')
     if a.suite=='mhc_shifted' and a.tokens%128:
         p.error('current tested mHC paths require N divisible by 128')
-    if a.suite not in ('mhc_shifted_native','mhc_shifted_fusion','mhc_shifted_bound','mhc_shifted_split') and (a.mhc_weights or a.mhc_pattern!='random'):
-        p.error('--mhc-weights/--mhc-pattern require a native/fusion/bound shifted suite')
+    if a.suite not in ('mhc_shifted_native','mhc_shifted_split') and (a.mhc_weights or a.mhc_pattern!='random'):
+        p.error('--mhc-weights/--mhc-pattern require a native/split shifted suite')
     a.output.mkdir(parents=True,exist_ok=False)
     import torch
     import torch_npu
-    from cases import mha_case,post_case,shifted_case,shifted_native_case,shifted_fusion_case,shifted_bound_case,shifted_split_case,ROOT
+    from cases import mha_case,post_case,shifted_case,shifted_native_case,shifted_split_case,ROOT
     torch.manual_seed(a.seed);torch.npu.set_device(0)
     torch.npu.matmul.allow_hf32=True
     with torch.no_grad():
@@ -60,20 +60,8 @@ def main():
         elif a.suite=='mha_stats_split':
             from mha_stats_split import make_case
             functions,refs,names,meta=make_case(a)
-        elif a.suite=='mha_l2':
-            from mha_l2 import make_case
-            functions,refs,names,meta=make_case(a)
-        elif a.suite=='mha_pbuffer':
-            from mha_pbuffer import make_case
-            functions,refs,names,meta=make_case(a)
-        elif a.suite=='mha_firstpv':
-            from mha_firstpv import make_case
-            functions,refs,names,meta=make_case(a)
         elif a.suite=='mha_buffers':
             from mha_buffers import make_case
-            functions,refs,names,meta=make_case(a)
-        elif a.suite=='mha_qresident':
-            from mha_qresident import make_case
             functions,refs,names,meta=make_case(a)
         elif a.suite=='mha_finalize':
             from mha_finalize import make_case
@@ -81,23 +69,8 @@ def main():
         elif a.suite=='mha_stages':
             from mha_stages import make_case
             functions,refs,names,meta=make_case(a)
-        elif a.suite=='mha_rowbatch':
-            from mha_rowbatch import make_case
-            functions,refs,names,meta=make_case(a)
-        elif a.suite=='mha_rowfused':
-            from mha_rowfused import make_case
-            functions,refs,names,meta=make_case(a)
         elif a.suite=='mha_nostore':
             from mha_nostore import make_case
-            functions,refs,names,meta=make_case(a)
-        elif a.suite=='mha_manual':
-            from mha_manual import make_case
-            functions,refs,names,meta=make_case(a)
-        elif a.suite=='mha_fma':
-            from mha_fma import make_case
-            functions,refs,names,meta=make_case(a)
-        elif a.suite=='mha_q64':
-            from mha_q64 import make_case
             functions,refs,names,meta=make_case(a)
         elif a.suite=='mha_bf16':
             from mha_bf16 import make_case
@@ -105,8 +78,6 @@ def main():
         else:
             functions,refs,names,meta={'mha':mha_case,'mhc_post':post_case,'mhc_shifted':shifted_case,
                                      'mhc_shifted_native':shifted_native_case,
-                                     'mhc_shifted_fusion':shifted_fusion_case,
-                                     'mhc_shifted_bound':shifted_bound_case,
                                      'mhc_shifted_split':shifted_split_case}[a.suite](a)
     meta.update(arguments={k:str(v) if isinstance(v,Path) else v for k,v in vars(a).items()},
                 torch=torch.__version__,torch_npu=torch_npu.__version__,device=torch.npu.get_device_name(0),
@@ -126,7 +97,7 @@ def main():
             meta['source_revisions'][name]=dict(
                 revision=subprocess.check_output(['git','-C',str(folder),'rev-parse','HEAD'],text=True).strip(),
                 status=subprocess.check_output(['git','-C',str(folder),'status','--short'],text=True).strip())
-    if a.suite in ('mhc_shifted','mhc_shifted_native','mhc_shifted_fusion','mhc_shifted_bound','mhc_shifted_split'):
+    if a.suite in ('mhc_shifted','mhc_shifted_native','mhc_shifted_split'):
         import deep_gemm
         file=Path(deep_gemm.__file__).parent/'tilelang_ops'/'hc_prenorm.py'
         meta['hc_source_sha256']=hashlib.sha256(file.read_bytes()).hexdigest()
@@ -141,7 +112,7 @@ def main():
             delta=y.double()-r.double();err=delta.norm().item()/max(r.double().norm().item(),1e-30)
             finite=bool(torch.isfinite(y).all() and torch.isfinite(r).all())
             rtol,atol=(.02,.02) if r.dtype==torch.bfloat16 else (1e-3,1e-4)
-            if a.suite in ('mha','mha_bf16','mha_q64','mha_fma','mha_manual','mha_nostore','mha_rowfused','mha_rowbatch','mha_stages','mha_finalize','mha_qresident','mha_buffers','mha_firstpv','mha_pbuffer','mha_l2','mha_stats_split'):
+            if a.suite in ('mha','mha_bf16','mha_nostore','mha_stages','mha_finalize','mha_buffers','mha_stats_split'):
                 passed=finite and err<=.01 and delta.abs().max().item()<=.02
                 gate={'relative_l2_max':.01,'max_abs_max':.02}
             else:
@@ -218,27 +189,10 @@ def main():
         if a.suite=='mhc_original_fused':
             summary['ac_over_tl']={label:summary['ascendc_original_fused_h4096']['event_us']/summary[label]['event_us']
                                    for label in functions if label.startswith('tilelang_')}
-        if a.suite=='mhc_shifted_fusion':
-            summary['ratios']={label:dict(
-                original_over_candidate=summary['deepgemm_tilelang']['event_us']/summary[label]['event_us'],
-                ascendc_over_candidate=summary['ascendc_shifted_native']['event_us']/summary[label]['event_us'])
-                for label in ('tilelang_coeff_fused','tilelang_apply_fused')}
-        if a.suite=='mhc_shifted_bound':
-            summary['ratios']=dict(
-                fused_over_bound=summary['tilelang_apply_fused']['event_us']/summary['tilelang_apply_bound']['event_us'],
-                ascendc_over_bound=summary['ascendc_shifted_native']['event_us']/summary['tilelang_apply_bound']['event_us'])
         if a.suite=='mhc_shifted_split':
             summary['ratios']=dict(
                 two_over_three=summary['tilelang_apply_bound']['event_us']/summary['tilelang_coeff_bound']['event_us'],
                 ascendc_over_three=summary['ascendc_shifted_native']['event_us']/summary['tilelang_coeff_bound']['event_us'])
-        if a.suite=='mha_q64':
-            summary['ratios']=dict(
-                q128_over_q64=summary['tilelang_q128']['event_us']/summary['tilelang_q64']['event_us'],
-                ascendc_over_q64=summary['ascendc']['event_us']/summary['tilelang_q64']['event_us'])
-        if a.suite=='mha_fma':
-            summary['ratios']=dict(
-                q128_over_fma=summary['tilelang_q128']['event_us']/summary['tilelang_fma']['event_us'],
-                ascendc_over_fma=summary['ascendc']['event_us']/summary['tilelang_fma']['event_us'])
         if a.suite=='mha_stats_split':
             summary['ratios']={}
             for candidate in ('tilelang_s2buf','tilelang_alpha2buf'):
@@ -246,23 +200,6 @@ def main():
                     matched_best_over_candidate=summary['tilelang_kv2']['event_us']/summary[candidate]['event_us'],
                     original_over_candidate=summary['tilelang_q128']['event_us']/summary[candidate]['event_us'],
                     ascendc_over_candidate=summary['ascendc']['event_us']/summary[candidate]['event_us'])
-        if a.suite=='mha_l2':
-            summary['ratios']={}
-            for candidate in ('tilelang_q_l2','tilelang_o_l2','tilelang_qo_l2'):
-                summary['ratios'][candidate]=dict(
-                    matched_best_over_candidate=summary['tilelang_kv2']['event_us']/summary[candidate]['event_us'],
-                    original_over_candidate=summary['tilelang_q128']['event_us']/summary[candidate]['event_us'],
-                    ascendc_over_candidate=summary['ascendc']['event_us']/summary[candidate]['event_us'])
-        if a.suite=='mha_pbuffer':
-            summary['ratios']=dict(
-                matched_best_over_pbuffer=summary['tilelang_kv2']['event_us']/summary['tilelang_pbuffer']['event_us'],
-                original_over_pbuffer=summary['tilelang_q128']['event_us']/summary['tilelang_pbuffer']['event_us'],
-                ascendc_over_pbuffer=summary['ascendc']['event_us']/summary['tilelang_pbuffer']['event_us'])
-        if a.suite=='mha_firstpv':
-            summary['ratios']=dict(
-                matched_best_over_firstpv=summary['tilelang_kv2']['event_us']/summary['tilelang_firstpv']['event_us'],
-                original_over_firstpv=summary['tilelang_q128']['event_us']/summary['tilelang_firstpv']['event_us'],
-                ascendc_over_firstpv=summary['ascendc']['event_us']/summary['tilelang_firstpv']['event_us'])
         if a.suite=='mha_buffers':
             summary['ratios']={}
             for candidate in ('tilelang_kv2','tilelang_stats2','tilelang_buffers2'):
@@ -270,11 +207,6 @@ def main():
                     matched_best_over_candidate=summary['tilelang_finalize']['event_us']/summary[candidate]['event_us'],
                     original_over_candidate=summary['tilelang_q128']['event_us']/summary[candidate]['event_us'],
                     ascendc_over_candidate=summary['ascendc']['event_us']/summary[candidate]['event_us'])
-        if a.suite=='mha_qresident':
-            summary['ratios']=dict(
-                matched_best_over_qresident=summary['tilelang_finalize']['event_us']/summary['tilelang_qresident']['event_us'],
-                original_over_qresident=summary['tilelang_q128']['event_us']/summary['tilelang_qresident']['event_us'],
-                ascendc_over_qresident=summary['ascendc']['event_us']/summary['tilelang_qresident']['event_us'])
         if a.suite=='mha_finalize':
             summary['ratios']=dict(
                 matched_best_over_finalize=summary['tilelang_nostore_s2']['event_us']/summary['tilelang_finalize']['event_us'],
@@ -287,22 +219,10 @@ def main():
                 best_s3_over_original_s2=summary['tilelang_nostore']['event_us']/summary['tilelang_s2']['event_us'],
                 ascendc_over_original_s2=summary['ascendc']['event_us']/summary['tilelang_s2']['event_us'],
                 ascendc_over_nostore_s2=summary['ascendc']['event_us']/summary['tilelang_nostore_s2']['event_us'])
-        if a.suite=='mha_rowbatch':
-            summary['ratios']=dict(
-                q128_over_rowbatch=summary['tilelang_q128']['event_us']/summary['tilelang_rowbatch']['event_us'],
-                ascendc_over_rowbatch=summary['ascendc']['event_us']/summary['tilelang_rowbatch']['event_us'])
-        if a.suite=='mha_rowfused':
-            summary['ratios']=dict(
-                q128_over_rowfused=summary['tilelang_q128']['event_us']/summary['tilelang_rowfused']['event_us'],
-                ascendc_over_rowfused=summary['ascendc']['event_us']/summary['tilelang_rowfused']['event_us'])
         if a.suite=='mha_nostore':
             summary['ratios']=dict(
                 q128_over_nostore=summary['tilelang_q128']['event_us']/summary['tilelang_nostore']['event_us'],
                 ascendc_over_nostore=summary['ascendc']['event_us']/summary['tilelang_nostore']['event_us'])
-        if a.suite=='mha_manual':
-            summary['ratios']=dict(
-                q128_over_manual=summary['tilelang_q128']['event_us']/summary['tilelang_manual']['event_us'],
-                ascendc_over_manual=summary['ascendc']['event_us']/summary['tilelang_manual']['event_us'])
         (a.output/'summary.json').write_text(json.dumps(summary,indent=2));print(summary)
 
 

@@ -1,3 +1,5 @@
+> 历史入口已由 `operators/mhc/tuning/run_split.sh` 覆盖；当前数值实现与共享依赖仍保留。下文记录原实验结果。
+
 # shifted mHC：预绑定编译对象结果
 
 证据：`6bdde45:error.txt`；运行代码 `2d3a48d6522bfa664033e0d72d59f65f0bad96c6`。
