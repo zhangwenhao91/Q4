@@ -14,6 +14,7 @@
 | mHC 新 pre 4096 | `operators/mhc/tuning/run_original.sh` | 上游预绑定与原版融合 AC，同主输出 |
 | mHC 新 pre 5120 | `operators/mhc/tuning/run_big5120.sh` | AC 额外缓存输出需单独注明 |
 | mHC Post | `operators/spec_v1/bench.py --suite mhc_post` | 同规格原生对照 |
+| MHA / 三 kernel mHC 吞吐与 MFU | `operators/mfu/run.sh` | 有效矩阵 TFLOPS，峰值确认后离线补算 MFU |
 
 其他保留项：原始基线、投影兼容补丁、固定源码/许可与哈希校验、已采用优化的消融对照、
 组合缓冲实验的负对照、精度/调用合约测试、构建恢复与采集工具。

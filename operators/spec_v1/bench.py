@@ -25,6 +25,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--suite',choices=['mha','mha_bf16','mha_nostore','mha_stages','mha_finalize','mha_buffers','mha_stats_split','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_split','mhc_original','mhc_original_fused','mhc_original_big5120'],required=True)
     p.add_argument('--tokens',type=int,default=512,help='mHC only; MHA is fixed at 4096')
+    p.add_argument('--implementations',nargs='+',help='Validate and time only these exact implementation labels')
     p.add_argument('--seed',type=int,default=42)
     p.add_argument('--mhc-pattern',choices=['random','zero','prev_zero','prev_basis'],default='random',
                    help='native/split shifted mHC correctness inputs; no device work is precomputed')
@@ -79,6 +80,15 @@ def main():
             functions,refs,names,meta={'mha':mha_case,'mhc_post':post_case,'mhc_shifted':shifted_case,
                                      'mhc_shifted_native':shifted_native_case,
                                      'mhc_shifted_split':shifted_split_case}[a.suite](a)
+    if a.implementations:
+        if len(set(a.implementations))!=len(a.implementations):
+            p.error('duplicate implementation labels')
+        unknown=set(a.implementations)-set(functions)
+        if unknown:p.error('unknown implementations: '+str(sorted(unknown)))
+        functions={label:functions[label] for label in a.implementations}
+    props=torch_npu.npu.get_device_properties(0)
+    meta['device_properties']=dict(name=props.name,cube_core_num=props.cube_core_num,
+                                   vector_core_num=props.vector_core_num)
     meta.update(arguments={k:str(v) if isinstance(v,Path) else v for k,v in vars(a).items()},
                 torch=torch.__version__,torch_npu=torch_npu.__version__,device=torch.npu.get_device_name(0),
                 q4_revision=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
@@ -183,46 +193,47 @@ def main():
             first,second=list(functions)
             summary['ratio']=dict(numerator=second,denominator=first,
                                   event_ratio=summary[second]['event_us']/summary[first]['event_us'])
-        if a.suite=='mhc_original_big5120':
-            summary['ac_over_tl']={label:summary['ascendc_original_pre_sinkhorn']['event_us']/summary[label]['event_us']
-                                   for label in functions if label.startswith('tilelang_')}
-        if a.suite=='mhc_original_fused':
-            summary['ac_over_tl']={label:summary['ascendc_original_fused_h4096']['event_us']/summary[label]['event_us']
-                                   for label in functions if label.startswith('tilelang_')}
-        if a.suite=='mhc_shifted_split':
-            summary['ratios']=dict(
-                two_over_three=summary['tilelang_apply_bound']['event_us']/summary['tilelang_coeff_bound']['event_us'],
-                ascendc_over_three=summary['ascendc_shifted_native']['event_us']/summary['tilelang_coeff_bound']['event_us'])
-        if a.suite=='mha_stats_split':
-            summary['ratios']={}
-            for candidate in ('tilelang_s2buf','tilelang_alpha2buf'):
-                summary['ratios'][candidate]=dict(
-                    matched_best_over_candidate=summary['tilelang_kv2']['event_us']/summary[candidate]['event_us'],
-                    original_over_candidate=summary['tilelang_q128']['event_us']/summary[candidate]['event_us'],
-                    ascendc_over_candidate=summary['ascendc']['event_us']/summary[candidate]['event_us'])
-        if a.suite=='mha_buffers':
-            summary['ratios']={}
-            for candidate in ('tilelang_kv2','tilelang_stats2','tilelang_buffers2'):
-                summary['ratios'][candidate]=dict(
-                    matched_best_over_candidate=summary['tilelang_finalize']['event_us']/summary[candidate]['event_us'],
-                    original_over_candidate=summary['tilelang_q128']['event_us']/summary[candidate]['event_us'],
-                    ascendc_over_candidate=summary['ascendc']['event_us']/summary[candidate]['event_us'])
-        if a.suite=='mha_finalize':
-            summary['ratios']=dict(
-                matched_best_over_finalize=summary['tilelang_nostore_s2']['event_us']/summary['tilelang_finalize']['event_us'],
-                original_over_finalize=summary['tilelang_q128']['event_us']/summary['tilelang_finalize']['event_us'],
-                ascendc_over_finalize=summary['ascendc']['event_us']/summary['tilelang_finalize']['event_us'])
-        if a.suite=='mha_stages':
-            summary['ratios']=dict(
-                original_s3_over_s2=summary['tilelang_q128']['event_us']/summary['tilelang_s2']['event_us'],
-                nostore_s3_over_s2=summary['tilelang_nostore']['event_us']/summary['tilelang_nostore_s2']['event_us'],
-                best_s3_over_original_s2=summary['tilelang_nostore']['event_us']/summary['tilelang_s2']['event_us'],
-                ascendc_over_original_s2=summary['ascendc']['event_us']/summary['tilelang_s2']['event_us'],
-                ascendc_over_nostore_s2=summary['ascendc']['event_us']/summary['tilelang_nostore_s2']['event_us'])
-        if a.suite=='mha_nostore':
-            summary['ratios']=dict(
-                q128_over_nostore=summary['tilelang_q128']['event_us']/summary['tilelang_nostore']['event_us'],
-                ascendc_over_nostore=summary['ascendc']['event_us']/summary['tilelang_nostore']['event_us'])
+        if not a.implementations:
+            if a.suite=='mhc_original_big5120':
+                summary['ac_over_tl']={label:summary['ascendc_original_pre_sinkhorn']['event_us']/summary[label]['event_us']
+                                       for label in functions if label.startswith('tilelang_')}
+            if a.suite=='mhc_original_fused':
+                summary['ac_over_tl']={label:summary['ascendc_original_fused_h4096']['event_us']/summary[label]['event_us']
+                                       for label in functions if label.startswith('tilelang_')}
+            if a.suite=='mhc_shifted_split':
+                summary['ratios']=dict(
+                    two_over_three=summary['tilelang_apply_bound']['event_us']/summary['tilelang_coeff_bound']['event_us'],
+                    ascendc_over_three=summary['ascendc_shifted_native']['event_us']/summary['tilelang_coeff_bound']['event_us'])
+            if a.suite=='mha_stats_split':
+                summary['ratios']={}
+                for candidate in ('tilelang_s2buf','tilelang_alpha2buf'):
+                    summary['ratios'][candidate]=dict(
+                        matched_best_over_candidate=summary['tilelang_kv2']['event_us']/summary[candidate]['event_us'],
+                        original_over_candidate=summary['tilelang_q128']['event_us']/summary[candidate]['event_us'],
+                        ascendc_over_candidate=summary['ascendc']['event_us']/summary[candidate]['event_us'])
+            if a.suite=='mha_buffers':
+                summary['ratios']={}
+                for candidate in ('tilelang_kv2','tilelang_stats2','tilelang_buffers2'):
+                    summary['ratios'][candidate]=dict(
+                        matched_best_over_candidate=summary['tilelang_finalize']['event_us']/summary[candidate]['event_us'],
+                        original_over_candidate=summary['tilelang_q128']['event_us']/summary[candidate]['event_us'],
+                        ascendc_over_candidate=summary['ascendc']['event_us']/summary[candidate]['event_us'])
+            if a.suite=='mha_finalize':
+                summary['ratios']=dict(
+                    matched_best_over_finalize=summary['tilelang_nostore_s2']['event_us']/summary['tilelang_finalize']['event_us'],
+                    original_over_finalize=summary['tilelang_q128']['event_us']/summary['tilelang_finalize']['event_us'],
+                    ascendc_over_finalize=summary['ascendc']['event_us']/summary['tilelang_finalize']['event_us'])
+            if a.suite=='mha_stages':
+                summary['ratios']=dict(
+                    original_s3_over_s2=summary['tilelang_q128']['event_us']/summary['tilelang_s2']['event_us'],
+                    nostore_s3_over_s2=summary['tilelang_nostore']['event_us']/summary['tilelang_nostore_s2']['event_us'],
+                    best_s3_over_original_s2=summary['tilelang_nostore']['event_us']/summary['tilelang_s2']['event_us'],
+                    ascendc_over_original_s2=summary['ascendc']['event_us']/summary['tilelang_s2']['event_us'],
+                    ascendc_over_nostore_s2=summary['ascendc']['event_us']/summary['tilelang_nostore_s2']['event_us'])
+            if a.suite=='mha_nostore':
+                summary['ratios']=dict(
+                    q128_over_nostore=summary['tilelang_q128']['event_us']/summary['tilelang_nostore']['event_us'],
+                    ascendc_over_nostore=summary['ascendc']['event_us']/summary['tilelang_nostore']['event_us'])
         (a.output/'summary.json').write_text(json.dumps(summary,indent=2));print(summary)
 
 

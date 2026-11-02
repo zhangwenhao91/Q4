@@ -1,0 +1,136 @@
+"""Offline useful-matmul FLOP throughput and peak-normalized operator MFU proxy."""
+import argparse
+import csv
+import json
+import math
+from pathlib import Path
+import statistics
+
+
+def matrix_flops(suite,contract):
+    if suite=='mha_stats_split':
+        expected={'Q':[4096,128],'K':[4096,128],'V':[4096,128],
+                  'batch':1,'heads':1,'input_dtype':'bfloat16','output_dtype':'bfloat16',
+                  'causal':False,'dropout':0}
+        if any(contract.get(k)!=v for k,v in expected.items()):
+            raise ValueError('MHA contract differs from the validated BF16 dense core')
+        return 4*4096*4096*128,'bf16'
+    if suite=='mhc_shifted_split':
+        if any(contract.get(k)!=v for k,v in {'hidden':5120,'hc_mult':4,'flattened':20480,
+                                              'channels':24,'hc_shifted':True,'repeat':20}.items()):
+            raise ValueError('mHC contract differs from shifted H5120 three-kernel path')
+        n=contract.get('N')
+        if not isinstance(n,int) or n<=0:raise ValueError('Invalid token count')
+        return 2*n*20480*24,'hf32'
+    raise ValueError('Unsupported suite')
+
+
+def throughput(flops,time_us):
+    if not math.isfinite(time_us) or time_us<=0:raise ValueError('Invalid latency')
+    return flops/time_us/1e6
+
+
+def peak_for(config,mode,properties):
+    if mode not in config:return None
+    entry=config[mode]
+    value=entry.get('tflops')
+    if isinstance(value,bool) or not isinstance(value,(float,int)) or not math.isfinite(value) or value<=0:
+        raise ValueError('Peak TFLOPS must be finite and positive')
+    if not isinstance(entry.get('source'),str) or not entry['source'].strip():
+        raise ValueError('Peak needs an explicit source')
+    if entry.get('scope')!='visible_device_dense':raise ValueError('Peak must be dense, for the visible device')
+    for key in ('name','cube_core_num'):
+        if entry.get(key)!=properties.get(key) or entry.get(key) is None:
+            raise ValueError('Peak device identity/core count mismatch: '+key)
+    return entry
+
+
+def analyze(folder,peak_config=None):
+    folder=Path(folder)
+    plan=json.loads((folder/'plan.json').read_text(encoding='utf-8'))
+    config=peak_config or {}
+    groups={}
+    identities=set()
+    for case in plan['cases']:
+        path=folder/case['directory']
+        meta=json.loads((path/'metadata.json').read_text(encoding='utf-8'))
+        checks=json.loads((path/'correctness.json').read_text(encoding='utf-8'))
+        if not checks or not all(c.get('passed') is True for c in checks):
+            raise ValueError('Missing/failed precision checks: '+str(path))
+        arguments=meta['arguments']
+        if arguments['suite']!=case['suite'] or arguments['tokens']!=case['tokens']:
+            raise ValueError('Plan and measured contract disagree')
+        if meta['implementation_labels']!=case['labels'] or arguments['implementations']!=case['labels']:
+            raise ValueError('Implementation selection mismatch')
+        if arguments['rounds']!=case['rounds'] or arguments['warmup']!=100 or arguments['iters']!=100:
+            raise ValueError('Timing settings mismatch')
+        if meta.get('hf32') is not True:raise ValueError('Expected HF32-enabled configuration')
+        if case['suite']=='mhc_shifted_split':
+            if case['labels']!=['tilelang_coeff_bound']:raise ValueError('Expected bound three-kernel label only')
+            if meta['contract']['N']!=case['tokens']:raise ValueError('mHC N mismatch')
+            if meta['split_bound_launch']['expected_kernels_per_call']!=3:
+                raise ValueError('Expected three-kernel bound mHC path')
+            projection=meta.get('projection_checks')
+            if not projection or not all(c.get('passed') is True for c in projection):
+                raise ValueError('Missing/failed raw projection checks')
+        flops,mode=matrix_flops(case['suite'],meta['contract'])
+        properties=meta['device_properties']
+        identities.add((properties['name'],properties['cube_core_num'],meta['q4_revision']))
+        peak=peak_for(config,mode,properties)
+        with (path/'timings.csv').open(newline='',encoding='utf-8') as f:
+            timings=list(csv.DictReader(f))
+        if len(timings)!=case['rounds']*len(case['labels']):raise ValueError('Incomplete timing CSV')
+        summary=json.loads((path/'summary.json').read_text(encoding='utf-8'))
+        for label in case['labels']:
+            rows=[r for r in timings if r['implementation']==label]
+            if sorted(int(r['round']) for r in rows)!=list(range(case['rounds'])):
+                raise ValueError('Missing/duplicate timing rounds')
+            for r in rows:
+                for field in ('event_us','wall_us'):throughput(flops,float(r[field]))
+            for field in ('event_us','wall_us'):
+                value=statistics.median(float(r[field]) for r in rows)
+                if not math.isclose(value,summary[label][field],rel_tol=1e-9):raise ValueError('Summary mismatch')
+            key=(case['suite'],case['tokens'],label)
+            group=groups.setdefault(key,dict(suite=case['suite'],tokens=case['tokens'],implementation=label,
+                useful_matrix_flops=flops,compute_mode=mode,peak=peak,replicas=[]))
+            group['replicas'].append(dict(replica=case['replica'],directory=case['directory'],
+                event_us=summary[label]['event_us'],wall_us=summary[label]['wall_us']))
+    if len(identities)!=1:raise ValueError('Mixed devices/core counts or Q4 revisions')
+    results=[]
+    for group in groups.values():
+        replicas=group['replicas']
+        if sorted(r['replica'] for r in replicas)!=[1,2,3]:raise ValueError('Expected exactly three replicas')
+        event=statistics.median(r['event_us'] for r in replicas)
+        wall=statistics.median(r['wall_us'] for r in replicas)
+        rates=[throughput(group['useful_matrix_flops'],r['event_us']) for r in replicas]
+        effective=throughput(group['useful_matrix_flops'],event)
+        group.update(event_us=event,wall_us=wall,effective_tflops=effective,
+            wall_effective_tflops=throughput(group['useful_matrix_flops'],wall),
+            replica_effective_tflops_min=min(rates),replica_effective_tflops_max=max(rates),
+            matrix_mfu_percent=100*effective/group['peak']['tflops'] if group['peak'] else None)
+        results.append(group)
+    return dict(device_revision=list(identities)[0],results=results,
+        definition='Useful matmul FLOPs / full API event latency / dense peak for the actual compute mode. Operator MFU proxy, not full-model MFU or hardware issue utilization.',
+        omitted_flops='MHA softmax/scaling and mHC square-sum/RMS/apply/coefficient/Sinkhorn scalar-vector operations. Their execution time is INCLUDED. No padding/recompute FLOPs credited.')
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--input',type=Path,required=True)
+    p.add_argument('--peak-json',type=Path)
+    a=p.parse_args()
+    peaks=json.loads(a.peak_json.read_text(encoding='utf-8')) if a.peak_json else None
+    result=analyze(a.input,peaks)
+    lines=['# Operator MFU proxy',result['definition'],result['omitted_flops'],
+           '\n| Suite | N | Implementation | Event us | Effective TFLOPS | Matrix MFU % |',
+           '|---|---:|---|---:|---:|---:|']
+    for r in result['results']:
+        mfu=f"{r['matrix_mfu_percent']:.4f}" if r['matrix_mfu_percent'] is not None else 'pending peak'
+        lines.append(f"| {r['suite']} | {r['tokens']} | {r['implementation']} | {r['event_us']:.6f} | {r['effective_tflops']:.6f} | {mfu} |")
+    text='\n'.join(lines)+'\n'
+    (a.input/'mfu.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+    (a.input/'mfu.md').write_text(text,encoding='utf-8')
+    print(text)
+
+
+if __name__=='__main__':main()
