@@ -31,7 +31,7 @@ run_case() {
   local tag="$1" tokens="$2" splits="$3"
   shift 3
   python operators/spec_v1/bench.py --suite mhc_shifted_split --tokens "$tokens" \
-    --mhc-apply-flat "$splits" --output "$OUT/$tag" "$@" 2>&1 | tee "$OUT/$tag.log"
+    --mhc-apply-pipeline "$splits" --mhc-pipeline-flat --output "$OUT/$tag" "$@" 2>&1 | tee "$OUT/$tag.log"
 }
 if [[ "$MODE" == smoke ]]; then
   for splits in 1024:1 1024:3 1280:1 1280:3; do run_case "smoke-K$splits" 128 "$splits" --check-only; done
