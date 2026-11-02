@@ -4,7 +4,7 @@ import hashlib
 from mhc_fusion import SOURCE, allocate_outputs
 
 
-def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, apply_h_blk=5120, tail_cores=None, tail_stages=2, apply_pipeline=None):
+def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, apply_h_blk=5120, tail_cores=None, tail_stages=2, apply_pipeline=None, flat_pipeline=False):
     if apply_h_blk <= 0 or apply_h_blk % 64 or 5120 % apply_h_blk:
         raise ValueError("apply_h_blk must divide 5120 and be a multiple of 64")
     import torch
@@ -35,6 +35,9 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, app
         from tile_kernels.mhc.pre_apply_mix_asc import mhc_pre_apply_mix_fwd_asc
         if apply_pipeline is not None:
             from apply_pipeline import mhc_pre_apply_pipeline_asc
+            if flat_pipeline:
+                from apply_flat_pipeline import mhc_pre_apply_flat_pipeline_asc
+                mhc_pre_apply_pipeline_asc = mhc_pre_apply_flat_pipeline_asc
             block, stages = apply_pipeline
             standalone_apply = mhc_pre_apply_pipeline_asc.compile(x, prev2d, sample_hi,
                 h_blk=block,num_vec_cores=apply_cores,pipeline_stages=stages)
@@ -72,7 +75,7 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, app
         return hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(t, 4, 4)
 
     metadata = dict(
-        apply_pipeline=apply_pipeline,
+        apply_pipeline=apply_pipeline, flat_pipeline=flat_pipeline,
         tail_settings=dict(settings),
         operation='public JITImpl.compile -> JITKernel call; no private cache access',
         projection_device_source_sha256=hashlib.sha256(projection.get_kernel_source().encode()).hexdigest(),

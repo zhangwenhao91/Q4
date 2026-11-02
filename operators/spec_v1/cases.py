@@ -167,6 +167,14 @@ def shifted_case(a, native_shifted=False, fusion=False, bind=False, split=False)
                     functions = {'tilelang_apply_bound':bound_fn,'tilelang_coeff_bound':split_fn,
                                  label:pipe_fn,'ascendc_shifted_native':ac}
                     split_meta['apply_pipeline'] = pipe_meta
+                    if getattr(a, 'mhc_pipeline_flat', False):
+                        flat_fn, flat_meta = make_bound_candidate(projector,x,prev,alpha,bias,
+                            split_apply=True,apply_pipeline=(block,stages),flat_pipeline=True)
+                        flat_label = f'tilelang_flat_h{block}s{stages}'
+                        functions = {**functions, flat_label:flat_fn}
+                        split_meta['apply_flat_pipeline'] = flat_meta
+                        fusion_meta['expected_kernel_counts'][flat_label] = 3
+
                     fusion_meta['expected_kernel_counts'][label] = 3
                 tail_config = getattr(a, 'mhc_tail_config', None)
                 if tail_config:
