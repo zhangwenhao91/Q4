@@ -1,0 +1,1126 @@
+{
+  "evidence": "7d35a1d:error.txt",
+  "output_checks": 3720,
+  "raw_projection_checks": 372,
+  "failed": 0,
+  "median_api": {
+    "bench-N128-K1": {
+      "ascendc_shifted_native": {
+        "event_us": 22.647064924240112,
+        "wall_us": 22.952729486860335
+      },
+      "tilelang_apply_bound": {
+        "event_us": 29.178080558776855,
+        "wall_us": 29.538049129769206
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 24.44058060646057,
+        "wall_us": 24.833754869177938
+      },
+      "tilelang_projection_k1": {
+        "event_us": 60.09805917739868,
+        "wall_us": 60.439404333010316
+      }
+    },
+    "bench-N128-K2": {
+      "ascendc_shifted_native": {
+        "event_us": 27.151424884796143,
+        "wall_us": 27.661239728331566
+      },
+      "tilelang_apply_bound": {
+        "event_us": 29.12647008895874,
+        "wall_us": 29.627889744006097
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 24.333360195159912,
+        "wall_us": 24.713369202800095
+      },
+      "tilelang_projection_k2": {
+        "event_us": 36.261329650878906,
+        "wall_us": 36.640255129896104
+      }
+    },
+    "bench-N128-K4": {
+      "ascendc_shifted_native": {
+        "event_us": 22.054494619369507,
+        "wall_us": 22.392540122382343
+      },
+      "tilelang_apply_bound": {
+        "event_us": 29.16815996170044,
+        "wall_us": 29.550324543379247
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 24.427205324172974,
+        "wall_us": 24.741560337133706
+      },
+      "tilelang_projection_k4": {
+        "event_us": 24.40140962600708,
+        "wall_us": 24.7095653321594
+      }
+    },
+    "bench-N256-K1": {
+      "ascendc_shifted_native": {
+        "event_us": 27.896615266799927,
+        "wall_us": 28.349169297143817
+      },
+      "tilelang_apply_bound": {
+        "event_us": 30.02827525138855,
+        "wall_us": 30.49008024390787
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 25.865944623947144,
+        "wall_us": 26.21692488901317
+      },
+      "tilelang_projection_k1": {
+        "event_us": 62.13985204696655,
+        "wall_us": 62.628790037706494
+      }
+    },
+    "bench-N256-K2": {
+      "ascendc_shifted_native": {
+        "event_us": 27.651264667510986,
+        "wall_us": 28.11732527334243
+      },
+      "tilelang_apply_bound": {
+        "event_us": 30.02010941505432,
+        "wall_us": 30.321429949253798
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 25.83797574043274,
+        "wall_us": 26.120179682038724
+      },
+      "tilelang_projection_k2": {
+        "event_us": 38.057204484939575,
+        "wall_us": 38.39032957330346
+      }
+    },
+    "bench-N256-K4": {
+      "ascendc_shifted_native": {
+        "event_us": 27.70402431488037,
+        "wall_us": 28.04977528285235
+      },
+      "tilelang_apply_bound": {
+        "event_us": 30.019185543060303,
+        "wall_us": 30.40705982130021
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 25.84667444229126,
+        "wall_us": 26.170149794779718
+      },
+      "tilelang_projection_k4": {
+        "event_us": 25.87043523788452,
+        "wall_us": 26.23945998493582
+      }
+    },
+    "bench-N512-K1": {
+      "ascendc_shifted_native": {
+        "event_us": 40.85976600646973,
+        "wall_us": 41.16614523809403
+      },
+      "tilelang_apply_bound": {
+        "event_us": 30.4905903339386,
+        "wall_us": 30.905355233699083
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 28.483619689941406,
+        "wall_us": 28.770199860446155
+      },
+      "tilelang_projection_k1": {
+        "event_us": 64.87032890319824,
+        "wall_us": 65.25838514789939
+      }
+    },
+    "bench-N512-K2": {
+      "ascendc_shifted_native": {
+        "event_us": 40.88520050048828,
+        "wall_us": 41.30535467993468
+      },
+      "tilelang_apply_bound": {
+        "event_us": 30.518674850463867,
+        "wall_us": 30.95232939813286
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 28.493635654449463,
+        "wall_us": 28.889680397696793
+      },
+      "tilelang_projection_k2": {
+        "event_us": 40.674893856048584,
+        "wall_us": 41.083270334638655
+      }
+    },
+    "bench-N512-K4": {
+      "ascendc_shifted_native": {
+        "event_us": 40.876305103302,
+        "wall_us": 41.25442530494183
+      },
+      "tilelang_apply_bound": {
+        "event_us": 30.508029460906982,
+        "wall_us": 30.905010062269866
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 28.475239276885986,
+        "wall_us": 28.838604921475053
+      },
+      "tilelang_projection_k4": {
+        "event_us": 28.469804525375366,
+        "wall_us": 28.904954669997096
+      }
+    },
+    "bench-N64-K1": {
+      "ascendc_shifted_native": {
+        "event_us": 27.52601981163025,
+        "wall_us": 27.89668971672654
+      },
+      "tilelang_apply_bound": {
+        "event_us": 26.795583963394165,
+        "wall_us": 27.180469478480518
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 25.072230100631714,
+        "wall_us": 25.477169547230005
+      },
+      "tilelang_projection_k1": {
+        "event_us": 53.00609588623047,
+        "wall_us": 53.376759751699865
+      }
+    },
+    "bench-N64-K2": {
+      "ascendc_shifted_native": {
+        "event_us": 26.82724952697754,
+        "wall_us": 27.238960028626025
+      },
+      "tilelang_apply_bound": {
+        "event_us": 26.403504610061646,
+        "wall_us": 26.840410428121686
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 25.204850435256958,
+        "wall_us": 25.54381499066949
+      },
+      "tilelang_projection_k2": {
+        "event_us": 31.09876036643982,
+        "wall_us": 31.4951449399814
+      }
+    },
+    "bench-N64-K4": {
+      "ascendc_shifted_native": {
+        "event_us": 27.82048463821411,
+        "wall_us": 28.23199494741857
+      },
+      "tilelang_apply_bound": {
+        "event_us": 26.761115789413452,
+        "wall_us": 27.168195229023695
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 25.72695016860962,
+        "wall_us": 26.293190312571824
+      },
+      "tilelang_projection_k4": {
+        "event_us": 25.647454261779785,
+        "wall_us": 26.136900414712727
+      }
+    }
+  },
+  "processes": [
+    {
+      "tag": "bench-N128-K1-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.784385681152344,
+          "wall_us": 28.208665316924453
+        },
+        "ratios": {
+          "ascendc_over_three": 1.1368136513830558,
+          "two_over_three": 1.1933519475550116
+        },
+        "tilelang_apply_bound": {
+          "event_us": 29.16621446609497,
+          "wall_us": 29.59328528959304
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 24.44058060646057,
+          "wall_us": 24.833754869177938
+        },
+        "tilelang_projection_k1": {
+          "event_us": 60.083444118499756,
+          "wall_us": 60.49238552805036
+        }
+      }
+    },
+    {
+      "tag": "bench-N128-K1-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 22.647064924240112,
+          "wall_us": 22.952729486860335
+        },
+        "ratios": {
+          "ascendc_over_three": 0.909208489420768,
+          "two_over_three": 1.1718277259908516
+        },
+        "tilelang_apply_bound": {
+          "event_us": 29.18852925300598,
+          "wall_us": 29.538049129769206
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 24.908549785614014,
+          "wall_us": 25.347970076836646
+        },
+        "tilelang_projection_k1": {
+          "event_us": 60.11079549789429,
+          "wall_us": 60.439404333010316
+        }
+      }
+    },
+    {
+      "tag": "bench-N128-K1-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 22.010329961776733,
+          "wall_us": 22.328690392896533
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9072489045977095,
+          "two_over_three": 1.202698081818177
+        },
+        "tilelang_apply_bound": {
+          "event_us": 29.178080558776855,
+          "wall_us": 29.473709873855114
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 24.2605197429657,
+          "wall_us": 24.574510171078146
+        },
+        "tilelang_projection_k1": {
+          "event_us": 60.09805917739868,
+          "wall_us": 60.385275282897055
+        }
+      }
+    },
+    {
+      "tag": "bench-N128-K2-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.150745391845703,
+          "wall_us": 27.62312942650169
+        },
+        "ratios": {
+          "ascendc_over_three": 1.099954375624848,
+          "two_over_three": 1.1793060642169237
+        },
+        "tilelang_apply_bound": {
+          "event_us": 29.109424352645874,
+          "wall_us": 29.635049868375063
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 24.6835196018219,
+          "wall_us": 25.188435101881623
+        },
+        "tilelang_projection_k2": {
+          "event_us": 36.24791502952576,
+          "wall_us": 36.664545186795294
+        }
+      }
+    },
+    {
+      "tag": "bench-N128-K2-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.151424884796143,
+          "wall_us": 27.661239728331566
+        },
+        "ratios": {
+          "ascendc_over_three": 1.1190141902764719,
+          "two_over_three": 1.2027730651870723
+        },
+        "tilelang_apply_bound": {
+          "event_us": 29.183725118637085,
+          "wall_us": 29.627889744006097
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 24.263700246810913,
+          "wall_us": 24.55533016473055
+        },
+        "tilelang_projection_k2": {
+          "event_us": 36.28985047340393,
+          "wall_us": 36.620774772018194
+        }
+      }
+    },
+    {
+      "tag": "bench-N128-K2-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.37764000892639,
+          "wall_us": 27.79403468593955
+        },
+        "ratios": {
+          "ascendc_over_three": 1.1251072514996103,
+          "two_over_three": 1.196976901478334
+        },
+        "tilelang_apply_bound": {
+          "event_us": 29.12647008895874,
+          "wall_us": 29.584525036625564
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 24.333360195159912,
+          "wall_us": 24.713369202800095
+        },
+        "tilelang_projection_k2": {
+          "event_us": 36.261329650878906,
+          "wall_us": 36.640255129896104
+        }
+      }
+    },
+    {
+      "tag": "bench-N128-K4-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 22.054494619369507,
+          "wall_us": 22.392540122382343
+        },
+        "ratios": {
+          "ascendc_over_three": 0.903898675839922,
+          "two_over_three": 1.195450706130113
+        },
+        "tilelang_apply_bound": {
+          "event_us": 29.16815996170044,
+          "wall_us": 29.550324543379247
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 24.39929962158203,
+          "wall_us": 24.705504765734076
+        },
+        "tilelang_projection_k4": {
+          "event_us": 24.388439655303955,
+          "wall_us": 24.707610718905926
+        }
+      }
+    },
+    {
+      "tag": "bench-N128-K4-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.45566964149475,
+          "wall_us": 27.84517011605203
+        },
+        "ratios": {
+          "ascendc_over_three": 1.1239791567283726,
+          "two_over_three": 1.1941818430263982
+        },
+        "tilelang_apply_bound": {
+          "event_us": 29.170525074005127,
+          "wall_us": 29.605305171571672
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 24.427205324172974,
+          "wall_us": 24.741560337133706
+        },
+        "tilelang_projection_k4": {
+          "event_us": 24.40140962600708,
+          "wall_us": 24.7095653321594
+        }
+      }
+    },
+    {
+      "tag": "bench-N128-K4-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 21.99409008026123,
+          "wall_us": 22.32733997516334
+        },
+        "ratios": {
+          "ascendc_over_three": 0.8922275052034571,
+          "two_over_three": 1.1827478799297437
+        },
+        "tilelang_apply_bound": {
+          "event_us": 29.15563941001892,
+          "wall_us": 29.500745004042983
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 24.65076446533203,
+          "wall_us": 24.979315348900855
+        },
+        "tilelang_projection_k4": {
+          "event_us": 24.635615348815918,
+          "wall_us": 24.982719914987683
+        }
+      }
+    },
+    {
+      "tag": "bench-N256-K1-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.73158550262451,
+          "wall_us": 28.135250322520733
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0721273050646727,
+          "two_over_three": 1.160919335750369
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.02827525138855,
+          "wall_us": 30.49008024390787
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.865944623947144,
+          "wall_us": 26.21692488901317
+        },
+        "tilelang_projection_k1": {
+          "event_us": 62.139506340026855,
+          "wall_us": 62.628790037706494
+        }
+      }
+    },
+    {
+      "tag": "bench-N256-K1-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 28.012704849243164,
+          "wall_us": 28.4006999572739
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0854368901543647,
+          "two_over_three": 1.1605400606010607
+        },
+        "tilelang_apply_bound": {
+          "event_us": 29.950950145721436,
+          "wall_us": 30.432995408773422
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.807769298553467,
+          "wall_us": 26.163290021941066
+        },
+        "tilelang_projection_k1": {
+          "event_us": 62.28341341018677,
+          "wall_us": 62.69263511057943
+        }
+      }
+    },
+    {
+      "tag": "bench-N256-K1-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.896615266799927,
+          "wall_us": 28.349169297143817
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0773967813329983,
+          "two_over_three": 1.160221941726761
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.04117488861084,
+          "wall_us": 30.49729042686522
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.892610549926758,
+          "wall_us": 26.273964904248714
+        },
+        "tilelang_projection_k1": {
+          "event_us": 62.13985204696655,
+          "wall_us": 62.578265788033605
+        }
+      }
+    },
+    {
+      "tag": "bench-N256-K2-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.651264667510986,
+          "wall_us": 28.11732527334243
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0679382412857636,
+          "two_over_three": 1.1597778760694029
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.029194355010986,
+          "wall_us": 30.41397489141673
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.892194509506226,
+          "wall_us": 26.218275306746364
+        },
+        "tilelang_projection_k2": {
+          "event_us": 38.11890006065369,
+          "wall_us": 38.51006040349603
+        }
+      }
+    },
+    {
+      "tag": "bench-N256-K2-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.881335020065308,
+          "wall_us": 28.277015080675483
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0833211940463594,
+          "two_over_three": 1.1622599703997478
+        },
+        "tilelang_apply_bound": {
+          "event_us": 29.91297483444214,
+          "wall_us": 30.319225043058395
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.736905336380005,
+          "wall_us": 26.078870287165046
+        },
+        "tilelang_projection_k2": {
+          "event_us": 37.97895550727844,
+          "wall_us": 38.39032957330346
+        }
+      }
+    },
+    {
+      "tag": "bench-N256-K2-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.57661461830139,
+          "wall_us": 27.868400211445987
+        },
+        "ratios": {
+          "ascendc_over_three": 1.067290057678471,
+          "two_over_three": 1.1618599582504112
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.02010941505432,
+          "wall_us": 30.321429949253798
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.83797574043274,
+          "wall_us": 26.120179682038724
+        },
+        "tilelang_projection_k2": {
+          "event_us": 38.057204484939575,
+          "wall_us": 38.34471455775201
+        }
+      }
+    },
+    {
+      "tag": "bench-N256-K4-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.70402431488037,
+          "wall_us": 28.04977528285235
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0718603036044765,
+          "two_over_three": 1.1614331897933388
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.019185543060303,
+          "wall_us": 30.40705982130021
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.84667444229126,
+          "wall_us": 26.170149794779718
+        },
+        "tilelang_projection_k4": {
+          "event_us": 25.87043523788452,
+          "wall_us": 26.27621463034302
+        }
+      }
+    },
+    {
+      "tag": "bench-N256-K4-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.741035223007202,
+          "wall_us": 28.140709619037807
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0761096059342805,
+          "two_over_three": 1.1623053173140325
+        },
+        "tilelang_apply_bound": {
+          "event_us": 29.963074922561646,
+          "wall_us": 30.401000403799117
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.77900528907776,
+          "wall_us": 26.13270014990121
+        },
+        "tilelang_projection_k4": {
+          "event_us": 25.820554494857788,
+          "wall_us": 26.195240789093077
+        }
+      }
+    },
+    {
+      "tag": "bench-N256-K4-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.324564456939697,
+          "wall_us": 27.71461964584887
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0553090643849548,
+          "two_over_three": 1.1612591385625066
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.06787419319153,
+          "wall_us": 30.436954693868756
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.892475843429565,
+          "wall_us": 26.210765354335308
+        },
+        "tilelang_projection_k4": {
+          "event_us": 25.909719467163086,
+          "wall_us": 26.23945998493582
+        }
+      }
+    },
+    {
+      "tag": "bench-N512-K1-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 40.85976600646973,
+          "wall_us": 41.16614523809403
+        },
+        "ratios": {
+          "ascendc_over_three": 1.4356188674279202,
+          "two_over_three": 1.071295091496281
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.4905903339386,
+          "wall_us": 30.766450217925012
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 28.461430072784424,
+          "wall_us": 28.747570468112826
+        },
+        "tilelang_projection_k1": {
+          "event_us": 64.87032890319824,
+          "wall_us": 65.14872016850859
+        }
+      }
+    },
+    {
+      "tag": "bench-N512-K1-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 40.82273483276367,
+          "wall_us": 41.138450033031404
+        },
+        "ratios": {
+          "ascendc_over_three": 1.432389470354246,
+          "two_over_three": 1.0697467583044338
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.487509965896606,
+          "wall_us": 30.930089997127652
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 28.49974513053894,
+          "wall_us": 28.770199860446155
+        },
+        "tilelang_projection_k1": {
+          "event_us": 64.97591018676758,
+          "wall_us": 65.25953998789191
+        }
+      }
+    },
+    {
+      "tag": "bench-N512-K1-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 40.87070941925049,
+          "wall_us": 41.293089161626995
+        },
+        "ratios": {
+          "ascendc_over_three": 1.4348846763209455,
+          "two_over_three": 1.07052915669476
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.49254536628723,
+          "wall_us": 30.905355233699083
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 28.483619689941406,
+          "wall_us": 28.838509460911155
+        },
+        "tilelang_projection_k1": {
+          "event_us": 64.86009359359741,
+          "wall_us": 65.25838514789939
+        }
+      }
+    },
+    {
+      "tag": "bench-N512-K2-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 40.91191053390503,
+          "wall_us": 41.36444011237472
+        },
+        "ratios": {
+          "ascendc_over_three": 1.4357671002672907,
+          "two_over_three": 1.0710485412839856
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.51932454109192,
+          "wall_us": 30.95232939813286
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 28.494809865951538,
+          "wall_us": 28.907260857522488
+        },
+        "tilelang_projection_k2": {
+          "event_us": 40.674893856048584,
+          "wall_us": 41.108354926109314
+        }
+      }
+    },
+    {
+      "tag": "bench-N512-K2-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 40.87641477584839,
+          "wall_us": 41.30535467993468
+        },
+        "ratios": {
+          "ascendc_over_three": 1.4345805242815786,
+          "two_over_three": 1.0704330740516959
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.500530004501343,
+          "wall_us": 30.89399018790573
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 28.493635654449463,
+          "wall_us": 28.865490457974374
+        },
+        "tilelang_projection_k2": {
+          "event_us": 40.64182996749878,
+          "wall_us": 41.082025272771716
+        }
+      }
+    },
+    {
+      "tag": "bench-N512-K2-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 40.88520050048828,
+          "wall_us": 41.30390007048845
+        },
+        "ratios": {
+          "ascendc_over_three": 1.4353508365795127,
+          "two_over_three": 1.0714147158796077
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.518674850463867,
+          "wall_us": 30.960640287958086
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 28.48446488380432,
+          "wall_us": 28.889680397696793
+        },
+        "tilelang_projection_k2": {
+          "event_us": 40.685410499572754,
+          "wall_us": 41.083270334638655
+        }
+      }
+    },
+    {
+      "tag": "bench-N512-K4-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 40.880959033966064,
+          "wall_us": 41.25442530494183
+        },
+        "ratios": {
+          "ascendc_over_three": 1.4356043542388557,
+          "two_over_three": 1.070353309594859
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.479894876480103,
+          "wall_us": 30.905010062269866
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 28.47648024559021,
+          "wall_us": 28.88813556637615
+        },
+        "tilelang_projection_k4": {
+          "event_us": 28.490045070648193,
+          "wall_us": 28.92824006266892
+        }
+      }
+    },
+    {
+      "tag": "bench-N512-K4-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 40.84105968475342,
+          "wall_us": 41.22779006138444
+        },
+        "ratios": {
+          "ascendc_over_three": 1.4353181732125861,
+          "two_over_three": 1.0724679752151378
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.51638960838318,
+          "wall_us": 30.937555129639804
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 28.454359769821167,
+          "wall_us": 28.82243483327329
+        },
+        "tilelang_projection_k4": {
+          "event_us": 28.463335037231445,
+          "wall_us": 28.837149729952216
+        }
+      }
+    },
+    {
+      "tag": "bench-N512-K4-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 40.876305103302,
+          "wall_us": 41.271650115959346
+        },
+        "ratios": {
+          "ascendc_over_three": 1.4355034809657332,
+          "two_over_three": 1.0713879930649453
+        },
+        "tilelang_apply_bound": {
+          "event_us": 30.508029460906982,
+          "wall_us": 30.88717523496598
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 28.475239276885986,
+          "wall_us": 28.838604921475053
+        },
+        "tilelang_projection_k4": {
+          "event_us": 28.469804525375366,
+          "wall_us": 28.904954669997096
+        }
+      }
+    },
+    {
+      "tag": "bench-N64-K1-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.58302927017212,
+          "wall_us": 27.92728948406875
+        },
+        "ratios": {
+          "ascendc_over_three": 1.1001426342795548,
+          "two_over_three": 1.0687355634439168
+        },
+        "tilelang_apply_bound": {
+          "event_us": 26.795583963394165,
+          "wall_us": 27.210264815948904
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.072230100631714,
+          "wall_us": 25.477169547230005
+        },
+        "tilelang_projection_k1": {
+          "event_us": 53.00609588623047,
+          "wall_us": 53.45542507711798
+        }
+      }
+    },
+    {
+      "tag": "bench-N64-K1-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.52601981163025,
+          "wall_us": 27.89668971672654
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0925982821546405,
+          "two_over_three": 1.0463168853606208
+        },
+        "tilelang_apply_bound": {
+          "event_us": 26.360044479370117,
+          "wall_us": 26.801800122484565
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.193175077438354,
+          "wall_us": 25.677664671093225
+        },
+        "tilelang_projection_k1": {
+          "event_us": 50.97395896911621,
+          "wall_us": 51.34125938639045
+        }
+      }
+    },
+    {
+      "tag": "bench-N64-K1-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 20.305020809173584,
+          "wall_us": 20.684775081463158
+        },
+        "ratios": {
+          "ascendc_over_three": 0.8127590259671691,
+          "two_over_three": 1.0749710468286262
+        },
+        "tilelang_apply_bound": {
+          "event_us": 26.85581922531128,
+          "wall_us": 27.180469478480518
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 24.982830286026,
+          "wall_us": 25.269199395552278
+        },
+        "tilelang_projection_k1": {
+          "event_us": 53.06119918823242,
+          "wall_us": 53.376759751699865
+        }
+      }
+    },
+    {
+      "tag": "bench-N64-K2-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 20.146290063858032,
+          "wall_us": 20.41526953689754
+        },
+        "ratios": {
+          "ascendc_over_three": 0.7998171393068332,
+          "two_over_three": 1.0481288795426127
+        },
+        "tilelang_apply_bound": {
+          "event_us": 26.400920152664185,
+          "wall_us": 26.716470019891858
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.18862009048462,
+          "wall_us": 25.535349850542843
+        },
+        "tilelang_projection_k2": {
+          "event_us": 31.09876036643982,
+          "wall_us": 31.414020340889692
+        }
+      }
+    },
+    {
+      "tag": "bench-N64-K2-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.200419902801514,
+          "wall_us": 27.58467453531921
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0733337639080858,
+          "two_over_three": 1.0571503311607497
+        },
+        "tilelang_apply_bound": {
+          "event_us": 26.79029941558838,
+          "wall_us": 27.17776980716735
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.34199595451355,
+          "wall_us": 25.683275307528675
+        },
+        "tilelang_projection_k2": {
+          "event_us": 31.78000569343567,
+          "wall_us": 32.12158044334501
+        }
+      }
+    },
+    {
+      "tag": "bench-N64-K2-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 26.82724952697754,
+          "wall_us": 27.238960028626025
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0643685268392287,
+          "two_over_three": 1.047556488299093
+        },
+        "tilelang_apply_bound": {
+          "event_us": 26.403504610061646,
+          "wall_us": 26.840410428121686
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.204850435256958,
+          "wall_us": 25.54381499066949
+        },
+        "tilelang_projection_k2": {
+          "event_us": 31.097559928894043,
+          "wall_us": 31.4951449399814
+        }
+      }
+    },
+    {
+      "tag": "bench-N64-K4-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 20.07654905319214,
+          "wall_us": 20.62267973087728
+        },
+        "ratios": {
+          "ascendc_over_three": 0.7871954001777489,
+          "two_over_three": 1.0492952348153133
+        },
+        "tilelang_apply_bound": {
+          "event_us": 26.761115789413452,
+          "wall_us": 27.168195229023695
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.50389528274536,
+          "wall_us": 25.91145981568843
+        },
+        "tilelang_projection_k4": {
+          "event_us": 25.486875772476196,
+          "wall_us": 25.913419667631388
+        }
+      }
+    },
+    {
+      "tag": "bench-N64-K4-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.960950136184692,
+          "wall_us": 28.302104910835624
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0548302645442111,
+          "two_over_three": 0.9963278235621196
+        },
+        "tilelang_apply_bound": {
+          "event_us": 26.410194635391235,
+          "wall_us": 26.756334700621665
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 26.507534980773926,
+          "wall_us": 26.829789858311415
+        },
+        "tilelang_projection_k4": {
+          "event_us": 26.520960330963135,
+          "wall_us": 26.83639933820814
+        }
+      }
+    },
+    {
+      "tag": "bench-N64-K4-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 27.82048463821411,
+          "wall_us": 28.23199494741857
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0813751515777759,
+          "two_over_three": 1.0423137962303528
+        },
+        "tilelang_apply_bound": {
+          "event_us": 26.815555095672607,
+          "wall_us": 27.2665498778224
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 25.72695016860962,
+          "wall_us": 26.293190312571824
+        },
+        "tilelang_projection_k4": {
+          "event_us": 25.647454261779785,
+          "wall_us": 26.136900414712727
+        }
+      }
+    }
+  ]
+}
