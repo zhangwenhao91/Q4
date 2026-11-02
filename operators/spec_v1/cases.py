@@ -158,6 +158,25 @@ def shifted_case(a, native_shifted=False, fusion=False, bind=False, split=False)
                            'ascendc_shifted_native':ac}
                 fusion_meta['expected_kernel_counts']={
                     'tilelang_apply_bound':2,'tilelang_coeff_bound':3,'ascendc_shifted_native':2}
+                requested = getattr(a, 'mhc_projection_splits', None)
+                if requested is not None:
+                    import copy
+                    from mhc_projection_scan import split_config
+                    candidate = copy.copy(projector)
+                    candidate.config = split_config(projector.config, t, 20480, requested)
+                    candidate_checks = check_projection(candidate, x0, phi0, t, d)
+                    if not all(item['passed'] for item in candidate_checks):
+                        raise AssertionError('Candidate raw projection failed: '+str(candidate_checks))
+                    projection_checks.extend(candidate_checks)
+                    candidate_fn, candidate_meta = make_bound_candidate(candidate,x,prev,alpha,bias,split_apply=True)
+                    label = 'tilelang_projection_k'+str(requested)
+                    functions = {'tilelang_apply_bound':bound_fn,'tilelang_coeff_bound':split_fn,
+                                 label:candidate_fn,'ascendc_shifted_native':ac}
+                    split_meta['projection_scan'] = dict(base_config=projector.config,
+                        candidate_config=candidate.config, candidate=candidate_meta,
+                        note='Only projection K partition changes; reduction order may change, precision gate unchanged')
+                    fusion_meta['expected_kernel_counts'][label] = 3
+
     meta={
         'fusion':fusion_meta,
         'bound_launch':bound_meta,

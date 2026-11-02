@@ -93,7 +93,12 @@ def main():
                    ('mhc_original', 'mhc_original_fused') for p in root.glob('*/metadata.json'))
     big5120 = any(json.loads(p.read_text()).get('arguments', {}).get('suite') == 'mhc_original_big5120'
                   for p in root.glob('*/metadata.json'))
-    if big5120:
+    scan = any(json.loads(p.read_text()).get('arguments', {}).get('mhc_projection_splits') is not None
+               for p in root.glob('*/metadata.json'))
+    if scan:
+        expected = dict(smoke=(3,0,0), check=(45,0,0), bench=(36,36,0),
+                        profile=(12,0,12), all=(93,36,12))[mode]
+    elif big5120:
         expected = dict(smoke=(1, 0, 0), check=(13, 0, 0), bench=(15, 15, 0),
                         profile=(15, 0, 15), all=(43, 15, 15))[mode]
     elif original:
