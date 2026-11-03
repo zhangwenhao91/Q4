@@ -1,29 +1,729 @@
-cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# msprof op simulator \
+>   --soc-version=Ascend950PR_9579 \
+>   --kernel-name='mhc_pre_apply_mix_fwd_asc|tf32_hc_prenorm_gemm|mhc_coeff_tail_fwd_asc' \
+>   --launch-count=4 \
+>   --aic-metrics=PipeUtilization \
+>   --dump=true \
+>   --timeout=30 \
+>   --output="$OUT/prof" \
+>   "$CONDA_PREFIX/bin/python" "$Q4_ROOT/operators/spec_v1/bench.py" \
+>     --suite mhc_shifted_split \
+>     --implementations tilelang_coeff_bound \
+>     --tokens 128 \
+>     --check-only \
+>     --output "$OUT/check" \
+>   2>&1 | tee "$OUT/console.log"
+=================================================================
+                   >>>>>   MindStudio   <<<<<
+    THE END-TO-END TOOLCHAIN TO UNLEASH HUAWEI ASCEND COMPUTE
+=================================================================
 
-Q4_ROOT=/home/z30086261/Q4
-OUT="$Q4_ROOT/results/mhc-three-simulator/$(date +%Y%m%d-%H%M%S)-$$"
-mkdir -p "$OUT"
-
-set -o pipefail
-msprof op simulator \
-  --soc-version=Ascend950PR_9579 \
-  --kernel-name='mhc_pre_apply_mix_fwd_asc|tf32_hc_prenorm_gemm|mhc_coeff_tail_fwd_asc' \
-  --launch-count=4 \
-  --aic-metrics=PipeUtilization \
-  --dump=true \
-  --timeout=30 \
-  --output="$OUT/prof" \
-  "$CONDA_PREFIX/bin/python" "$Q4_ROOT/operators/spec_v1/bench.py" \
-    --suite mhc_shifted_split \
-    --implementations tilelang_coeff_bound \
-    --tokens 128 \
-    --check-only \
-    --output "$OUT/check" \
-  2>&1 | tee "$OUT/console.log"
-
-
-
-grep 'Start profiling on kernel:' "$OUT/console.log"
-
-find "$OUT/prof" -type f \
-  \( -name 'visualize_data.bin' -o -name 'trace.json' \)
+[WARN]  Currently, the root permission is used, which is unrecommended. Please ensure the security of the execution environment and programs.
+[INFO]  Op profiling analysis start.
+[INFO]  Ascend950 simulator library is loaded from camodel; real-time parsing is enabled with instruction callback dump
+[INFO]  Running simulation task: Binary Simulation Running, use simulator Ascend950PR 9579 by --soc-version
+[W1103 16:32:36.293564980 FunctionLoader.cpp:44] Warning: LD_PRELOAD detected, FunctionLoader prefers RTLD_DEFAULT for symbol resolution. (function operator())
+soc version: Ascend950PR
+[camodel_config] Using config from SO dir: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/tools/simulator/dav_3510/camodel/camodel_v100.json
+[camodel_config] Alias: sysconf -> soc_mp.cfg
+[camodel_config] Loaded config from: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/tools/simulator/dav_3510/camodel/camodel_v100.json (1 sections)
+[camodel_config] Override esl_top_thread_cnt = 32 (in soc_mp.cfg)
+chip type: 0 
+core count: 256
+thread count: 32
+rankId: 0 chipNum: 1
+rankId: 1 chipNum: 1
+rankId: 0 chipId Base: 0
+rankId: 1 chipId Base: 1
+rankId: 0 threadNum: 10
+rankId: 1 threadNum: 10
+DDR load checkpoint start, please specify the "DDR_offset_addr", "DDR_CheckPoint_Raw" and "DDR_CheckPoint_Guide"  in confgiuration file: 0x560977c54090
+ DIE0 HA TOP: 0x56090b5be910
+== Loading public model file './parameter/public.ini' ==
+== Loading system model file './parameter/bailusystem.ini' ==
+== Loading device model file './parameter/lpddr5_6400M_bailu.ini' ==
+== lpddr5 1900 Mbps, 1 Channels, 1 Ranks, Gbuf false, IECC false ==
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore0] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000] init_new_core_cfg (274):: CoreWrapper [DvcCore0] init, mode=CA, core ver=5, config file=./etc/1982_cloud_config.toml
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore0] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore1] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore1] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore2] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore2] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore3] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore3] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore4] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore4] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore5] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore5] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore6] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore6] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore7] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore7] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore8] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore8] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore9] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore9] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore10] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore10] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore11] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore11] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore12] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore12] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore13] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore13] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore14] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore14] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore15] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore15] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+Module STARS_ChiWrapper_0_0_SCHE_Chn0 allocate thread Id : 0
+CONFIG STARS SIM_CFG: 1981_sim_ffts_plus.toml
+CONFIG STARS LOG_PATH: ./log_ca
+[INFO] [0000000000] sim_cfg: 1981_sim_ffts_plus.toml
+[INFO] [0000000000] model_cfg: 1981_model.toml
+[INFO] [0000000000] stars_cfg: 1981_stars_ffts_plus.toml
+[INFO] [0000000000] ffts_cfg: 1981_ffts.toml
+[TmSim]: Run in parallel esl_sim mode, concurrency num is: 32
+[TmSim]: Top module clk0 is assigned to thread 0
+[TmSim]: Top module core0 is assigned to thread 0
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore0] build, esl_idx=0, log_path=./log_ca
+[TmSim]: Top module clk1 is assigned to thread 1
+[TmSim]: Top module core1 is assigned to thread 1
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore1] build, esl_idx=1, log_path=./log_ca
+[TmSim]: Top module clk2 is assigned to thread 2
+[TmSim]: Top module core2 is assigned to thread 2
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore2] build, esl_idx=2, log_path=./log_ca
+[TmSim]: Top module clk3 is assigned to thread 3
+[TmSim]: Top module core3 is assigned to thread 3
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore3] build, esl_idx=3, log_path=./log_ca
+[TmSim]: Top module clk4 is assigned to thread 4
+[TmSim]: Top module core4 is assigned to thread 4
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore4] build, esl_idx=4, log_path=./log_ca
+[TmSim]: Top module clk5 is assigned to thread 5
+[TmSim]: Top module core5 is assigned to thread 5
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore5] build, esl_idx=5, log_path=./log_ca
+[TmSim]: Top module clk6 is assigned to thread 6
+[TmSim]: Top module core6 is assigned to thread 6
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore6] build, esl_idx=6, log_path=./log_ca
+[TmSim]: Top module clk7 is assigned to thread 7
+[TmSim]: Top module core7 is assigned to thread 7
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore7] build, esl_idx=7, log_path=./log_ca
+[TmSim]: Top module clk8 is assigned to thread 8
+[TmSim]: Top module core8 is assigned to thread 8
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore8] build, esl_idx=8, log_path=./log_ca
+[TmSim]: Top module clk9 is assigned to thread 9
+[TmSim]: Top module core9 is assigned to thread 9
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore9] build, esl_idx=9, log_path=./log_ca
+[TmSim]: Top module clk10 is assigned to thread 10
+[TmSim]: Top module core10 is assigned to thread 10
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore10] build, esl_idx=10, log_path=./log_ca
+[TmSim]: Top module clk11 is assigned to thread 11
+[TmSim]: Top module core11 is assigned to thread 11
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore11] build, esl_idx=11, log_path=./log_ca
+[TmSim]: Top module clk12 is assigned to thread 12
+[TmSim]: Top module core12 is assigned to thread 12
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore12] build, esl_idx=12, log_path=./log_ca
+[TmSim]: Top module clk13 is assigned to thread 13
+[TmSim]: Top module core13 is assigned to thread 13
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore13] build, esl_idx=13, log_path=./log_ca
+[TmSim]: Top module clk14 is assigned to thread 14
+[TmSim]: Top module core14 is assigned to thread 14
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore14] build, esl_idx=14, log_path=./log_ca
+[TmSim]: Top module clk15 is assigned to thread 15
+[TmSim]: Top module core15 is assigned to thread 15
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore15] build, esl_idx=15, log_path=./log_ca
+Start to build SMMU Page !
+SMMU Page build finished!
+Start simulation with m_socCycle: 0
+SoC unit rank0_chip0_die0 Created
+DDR load checkpoint start, please specify the "DDR_offset_addr", "DDR_CheckPoint_Raw" and "DDR_CheckPoint_Guide"  in confgiuration file: 0x560a27e39d30
+ DIE1 HA TOP: 0x5609bb7a2390
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore16] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore16] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore17] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore17] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore18] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore18] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore19] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore19] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore20] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore20] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore21] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore21] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore22] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore22] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore23] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore23] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore24] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore24] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore25] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore25] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore26] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore26] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore27] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore27] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore28] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore28] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore29] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore29] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore30] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore30] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore31] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore31] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+Module STARS_ChiWrapper_0_1_SCHE_Chn0 allocate thread Id : 1
+CONFIG STARS SIM_CFG: 1981_sim_ffts_plus.toml
+CONFIG STARS LOG_PATH: ./log_ca
+[TmSim]: Top module clk16 is assigned to thread 16
+[TmSim]: Top module core16 is assigned to thread 16
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore16] build, esl_idx=17, log_path=./log_ca
+[TmSim]: Top module clk17 is assigned to thread 17
+[TmSim]: Top module core17 is assigned to thread 17
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore17] build, esl_idx=18, log_path=./log_ca
+[TmSim]: Top module clk18 is assigned to thread 18
+[TmSim]: Top module core18 is assigned to thread 18
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore18] build, esl_idx=19, log_path=./log_ca
+[TmSim]: Top module clk19 is assigned to thread 19
+[TmSim]: Top module core19 is assigned to thread 19
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore19] build, esl_idx=20, log_path=./log_ca
+[TmSim]: Top module clk20 is assigned to thread 20
+[TmSim]: Top module core20 is assigned to thread 20
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore20] build, esl_idx=21, log_path=./log_ca
+[TmSim]: Top module clk21 is assigned to thread 21
+[TmSim]: Top module core21 is assigned to thread 21
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore21] build, esl_idx=22, log_path=./log_ca
+[TmSim]: Top module clk22 is assigned to thread 22
+[TmSim]: Top module core22 is assigned to thread 22
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore22] build, esl_idx=23, log_path=./log_ca
+[TmSim]: Top module clk23 is assigned to thread 23
+[TmSim]: Top module core23 is assigned to thread 23
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore23] build, esl_idx=24, log_path=./log_ca
+[TmSim]: Top module clk24 is assigned to thread 24
+[TmSim]: Top module core24 is assigned to thread 24
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore24] build, esl_idx=25, log_path=./log_ca
+[TmSim]: Top module clk25 is assigned to thread 25
+[TmSim]: Top module core25 is assigned to thread 25
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore25] build, esl_idx=26, log_path=./log_ca
+[TmSim]: Top module clk26 is assigned to thread 26
+[TmSim]: Top module core26 is assigned to thread 26
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore26] build, esl_idx=27, log_path=./log_ca
+[TmSim]: Top module clk27 is assigned to thread 27
+[TmSim]: Top module core27 is assigned to thread 27
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore27] build, esl_idx=28, log_path=./log_ca
+[TmSim]: Top module clk28 is assigned to thread 28
+[TmSim]: Top module core28 is assigned to thread 28
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore28] build, esl_idx=29, log_path=./log_ca
+[TmSim]: Top module clk29 is assigned to thread 29
+[TmSim]: Top module core29 is assigned to thread 29
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore29] build, esl_idx=30, log_path=./log_ca
+[TmSim]: Top module clk30 is assigned to thread 30
+[TmSim]: Top module core30 is assigned to thread 30
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore30] build, esl_idx=31, log_path=./log_ca
+[TmSim]: Top module clk31 is assigned to thread 31
+[TmSim]: Top module core31 is assigned to thread 31
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore31] build, esl_idx=32, log_path=./log_ca
+Start to build SMMU Page !
+SMMU Page build finished!
+Start simulation with m_socCycle: 0
+SoC unit rank0_chip0_die1 Created
+can not find accessable port: 9 in chip: 0, die: 2
+Start simulation with m_socCycle: 0
+SoC unit rank0_chip0_die2 Created
+can not find accessable port: 9 in chip: 0, die: 3
+Start simulation with m_socCycle: 0
+SoC unit rank0_chip0_die3 Created
+Multi SoC in one chip Created
+SLLC CONNECT : 600 +++++  10609
+SLLC CONNECT : 601 +++++  10608
+SLLC CONNECT : 602 +++++  10607
+SLLC CONNECT : 604 +++++  10605
+SLLC CONNECT : 605 +++++  10604
+SLLC CONNECT : 607 +++++  10602
+SLLC CONNECT : 608 +++++  10601
+SLLC CONNECT : 609 +++++  10600
+SLLC CONNECT : 60a +++++  2060c
+SLLC CONNECT : 60b +++++  2060b
+SLLC CONNECT : 60c +++++  2060a
+SLLC CONNECT : 1060a +++++  3060c
+SLLC CONNECT : 1060b +++++  3060b
+SLLC CONNECT : 1060c +++++  3060a
+rank0_chip0 created!
+All Chip In Rank0 created!
+[Esl Top] Number of concurrent threads: 32
+[DRVSTUB_LOG] driver_api.c:601 sendSwapBuf:swapbuf_base_addr:9000000000
+[DRVSTUB_LOG] driver_api.c:602 sendSwapBuf:sq:0 swapbuf_addr:9000000000
+[DRVSTUB_LOG] driver_api.c:601 sendSwapBuf:swapbuf_base_addr:9000000000
+[DRVSTUB_LOG] driver_api.c:602 sendSwapBuf:sq:1 swapbuf_addr:9000000080
+SoC sub 0 1 all tasks are finished!
+[Hardware] parallel simulation finish. sim time: 2.74912s, cycle: 248, speed: 0.0902105KHz
+SoC sub 0 2 all tasks are finished!
+SoC sub 0 3 all tasks are finished!
+[Hardware] parallel simulation finish. sim time: 0.62124s, cycle: 420, speed: 0.676068KHz
+[Hardware] parallel simulation finish. sim time: 0.46869s, cycle: 420, speed: 0.896115KHz
+[INFO] Thread 32 is running. Cycle Count: 10000
+[INFO] Thread 32 is running. Cycle Count: 20000
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+[DRVSTUB_LOG] driver_api.c:601 sendSwapBuf:swapbuf_base_addr:9000000000
+[DRVSTUB_LOG] driver_api.c:602 sendSwapBuf:sq:2 swapbuf_addr:9000000100
+[DRVSTUB_LOG] driver_api.c:601 sendSwapBuf:swapbuf_base_addr:9000000000
+[DRVSTUB_LOG] driver_api.c:602 sendSwapBuf:sq:3 swapbuf_addr:9000000180
+[INFO] Thread 32 is running. Cycle Count: 30000
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+[2026-11-03 16:32:45] [318560] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: tf32_hc_prenorm_gemm_kernel_kernel
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[0]: 0x40000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[1]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[2]: 0x20002
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[3]: 0x37f0000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[4]: 0x4df0d200
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[5]: 0x91
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[6]: 0x8090800
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[7]: 0x2120000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[8]: 0xd0d000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[9]: 0xd0d738
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[10]: 0x900090
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[11]: 0x40000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[12]: 0x22c000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[13]: 0x90
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[14]: 0x22c000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[15]: 0x90
+[DRVSTUB_LOG] driver_queue.c:188 sendStarsSQE:sq_addr: 9154b4d800
+[info] [0000014447] [TASK_BEGIN] RTSQ_2 ACSQ_0 stream_id:0, task_id:0 full_task_id:0 BEGIN
+[INFO] Thread 32 is running. Cycle Count: 40000
+[INFO] Thread 32 is running. Cycle Count: 50000
+[INFO] Thread 32 is running. Cycle Count: 60000
+[INFO] Thread 32 is running. Cycle Count: 70000
+[INFO] Thread 32 is running. Cycle Count: 80000
+[info] [0000032799] [TASK_DONE] RTSQ_2 ACSQ_0 stream_id:0, task_id:0 TASK_DONE
+[INFO] Thread 32 is running. Cycle Count: 90000
+[INFO] Thread 32 is running. Cycle Count: 100000
+[INFO] Thread 32 is running. Cycle Count: 110000
+[INFO] Thread 32 is running. Cycle Count: 120000
+[INFO] Thread 32 is running. Cycle Count: 130000
+[INFO]  Extract 1172 relations from kernel
+[WARN]  Failed to parse pc to code, maybe kernel missed debug_line information. If you need code call stack, please recompile kernel with -g option
+[2026-11-03 16:33:09] [318560] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: mhc_pre_apply_mix_fwd_asc_kernel
+[INFO] Thread 32 is running. Cycle Count: 140000
+[INFO] Thread 32 is running. Cycle Count: 150000
+[INFO] Thread 32 is running. Cycle Count: 160000
+[INFO] Thread 32 is running. Cycle Count: 170000
+[WARN]  Code call stack is empty
+[WARN]  Lack of code info of files
+[INFO]  Core operator results run in simulator as follow:
+core_name           duration_time(us)   running_time(us)    
+core0.cubecore0     15.78               15.78               
+core0.veccore0      15.46               15.46               
+core0.veccore1      15.43               15.43               
+core1.cubecore0     16.32               16.32               
+core1.veccore0      15.52               15.51               
+core1.veccore1      15.52               15.52               
+core16.cubecore0    16.16               16.16               
+core16.veccore0     15.54               15.54               
+core16.veccore1     15.54               15.53               
+core17.cubecore0    16.2                16.2                
+core17.veccore0     15.65               15.65               
+core17.veccore1     15.61               15.61               
+[INFO] Thread 32 is running. Cycle Count: 180000
+[INFO] Thread 32 is running. Cycle Count: 190000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[0]: 0x380001
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[1]: 0x1
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[2]: 0x1c0002
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[3]: 0x57f0000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[4]: 0x4df0d200
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[5]: 0x91
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[6]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[7]: 0x1120000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[8]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[9]: 0xd0f000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[10]: 0x900000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[11]: 0x40000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[12]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[13]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[14]: 0x22c000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[15]: 0x90
+[DRVSTUB_LOG] driver_queue.c:188 sendStarsSQE:sq_addr: 9154b4d840
+[info] [0000076676] [TASK_BEGIN] RTSQ_2 ACSQ_0 stream_id:1, task_id:0 full_task_id:1 BEGIN
+[INFO] Thread 32 is running. Cycle Count: 200000
+[info] [0000082406] [TASK_DONE] RTSQ_2 ACSQ_0 stream_id:1, task_id:0 TASK_DONE
+[INFO] Thread 32 is running. Cycle Count: 210000
+[INFO] Thread 32 is running. Cycle Count: 220000
+[INFO] Thread 32 is running. Cycle Count: 230000
+[INFO] Thread 32 is running. Cycle Count: 240000
+[INFO] Thread 32 is running. Cycle Count: 250000
+[INFO] Thread 32 is running. Cycle Count: 260000
+[INFO] Thread 32 is running. Cycle Count: 270000
+[INFO] Thread 32 is running. Cycle Count: 280000
+[INFO] Thread 32 is running. Cycle Count: 290000
+[2026-11-03 16:33:29] [318560] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: tf32_hc_prenorm_gemm_kernel_kernel
+[INFO] Thread 32 is running. Cycle Count: 300000
+[INFO] Thread 32 is running. Cycle Count: 310000
+[INFO] Thread 32 is running. Cycle Count: 320000
+[INFO]  Extract 247 relations from kernel
+[WARN]  Failed to parse pc to code, maybe kernel missed debug_line information. If you need code call stack, please recompile kernel with -g option
+[WARN]  Code call stack is empty
+[WARN]  Lack of code info of files
+[INFO]  Core operator results run in simulator as follow:
+core_name           duration_time(us)   running_time(us)    
+core0.veccore0      3.6                 3.37                
+core0.veccore1      4.49                3.92                
+core1.veccore0      4.66                4.12                
+core1.veccore1      3.75                3.5                 
+core10.veccore0     4.01                3.64                
+core10.veccore1     3.86                3.66                
+core11.veccore0     4.12                3.82                
+core11.veccore1     3.89                3.67                
+core12.veccore0     4.21                3.87                
+core12.veccore1     3.86                3.75                
+core13.veccore0     3.85                3.68                
+core13.veccore1     3.98                3.69                
+core16.veccore0     3.44                2.94                
+core16.veccore1     2.78                2.47                
+core17.veccore0     3.26                2.71                
+core17.veccore1     4.08                3.26                
+core18.veccore0     4.18                4                   
+core18.veccore1     4.08                3.91                
+core19.veccore0     4.27                3.93                
+core19.veccore1     3.47                3.36                
+core2.veccore0      5.09                4.54                
+core2.veccore1      5.07                4.52                
+core20.veccore0     3.48                3.31                
+core20.veccore1     4.24                3.77                
+core21.veccore0     4.36                4.12                
+core21.veccore1     3.8                 3.7                 
+core22.veccore0     4.37                4.21                
+core22.veccore1     3.67                3.59                
+core23.veccore0     4.24                3.89                
+core23.veccore1     4.34                4.02                
+core24.veccore0     4.49                3.97                
+core24.veccore1     4.05                3.61                
+core25.veccore0     3.97                3.87                
+core25.veccore1     4.08                3.91                
+core26.veccore0     3.28                3.19                
+core26.veccore1     3.96                3.72                
+core27.veccore0     2.87                2.71                
+core27.veccore1     3.75                3.28                
+core28.veccore0     2.99                2.85                
+core28.veccore1     3.49                3.15                
+core29.veccore0     3.67                3.54                
+core29.veccore1     3.84                3.68                
+core3.veccore0      4.96                4.51                
+core3.veccore1      4.56                4.37                
+core4.veccore0      4.48                4.39                
+core4.veccore1      4.56                4.33                
+core5.veccore0      4.51                4.3                 
+core5.veccore1      4.46                4.33                
+core6.veccore0      4.55                4.45                
+core6.veccore1      4.6                 4.26                
+core7.veccore0      4.56                4.48                
+core7.veccore1      4.53                4.45                
+core8.veccore0      3.95                3.43                
+core8.veccore1      3.04                2.84                
+core9.veccore0      2.88                2.74                
+core9.veccore1      3.77                3.36                
+[INFO] Thread 32 is running. Cycle Count: 330000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[0]: 0x40000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[1]: 0x2
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[2]: 0x20002
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[3]: 0x37f0000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[4]: 0x4df0d200
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[5]: 0x91
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[6]: 0x8090800
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[7]: 0x2120000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[8]: 0xd0d000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[9]: 0xd0d738
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[10]: 0x900090
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[11]: 0x40000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[12]: 0x22c000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[13]: 0x90
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[14]: 0x22c000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[15]: 0x90
+[DRVSTUB_LOG] driver_queue.c:188 sendStarsSQE:sq_addr: 9154b4d880
+[info] [0000132764] [TASK_BEGIN] RTSQ_2 ACSQ_0 stream_id:2, task_id:0 full_task_id:2 BEGIN
+[INFO] Thread 32 is running. Cycle Count: 340000
+[INFO] Thread 32 is running. Cycle Count: 350000
+[INFO] Thread 32 is running. Cycle Count: 360000
+[info] [0000147826] [TASK_DONE] RTSQ_2 ACSQ_0 stream_id:2, task_id:0 TASK_DONE
+[INFO] Thread 32 is running. Cycle Count: 370000
+[INFO] Thread 32 is running. Cycle Count: 380000
+[INFO] Thread 32 is running. Cycle Count: 390000
+[INFO] Thread 32 is running. Cycle Count: 400000
+[INFO] Thread 32 is running. Cycle Count: 410000
+[INFO] Thread 32 is running. Cycle Count: 420000
+[INFO] Thread 32 is running. Cycle Count: 430000
+[2026-11-03 16:33:56] [318560] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: mhc_coeff_tail_fwd_asc_kernel
+[INFO] Thread 32 is running. Cycle Count: 440000
+[INFO] Thread 32 is running. Cycle Count: 450000
+[INFO] Thread 32 is running. Cycle Count: 460000
+[INFO] Thread 32 is running. Cycle Count: 470000
+[INFO] Thread 32 is running. Cycle Count: 480000
+[INFO]  Extract 1172 relations from kernel
+[WARN]  Failed to parse pc to code, maybe kernel missed debug_line information. If you need code call stack, please recompile kernel with -g option
+[WARN]  Code call stack is empty
+[WARN]  Lack of code info of files
+[INFO]  Core operator results run in simulator as follow:
+core_name           duration_time(us)   running_time(us)    
+core0.cubecore0     14.45               14.45               
+core0.veccore0      13.98               13.98               
+core0.veccore1      13.96               13.96               
+core1.cubecore0     14.97               14.97               
+core1.veccore0      14.07               14.06               
+core1.veccore1      14.05               14.04               
+core16.cubecore0    14.85               14.85               
+core16.veccore0     13.96               13.95               
+core16.veccore1     13.93               13.93               
+core17.cubecore0    14.83               14.83               
+core17.veccore0     13.92               13.91               
+core17.veccore1     13.9                13.89               
+[INFO] Thread 32 is running. Cycle Count: 490000
+[INFO] Thread 32 is running. Cycle Count: 500000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[0]: 0x380001
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[1]: 0x3
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[2]: 0x1c0002
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[3]: 0x57f0000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[4]: 0x4df0d200
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[5]: 0x91
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[6]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[7]: 0x1120000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[8]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[9]: 0xd10000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[10]: 0x900000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[11]: 0x5000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[12]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[13]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[14]: 0x22c000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[15]: 0x90
+[DRVSTUB_LOG] driver_queue.c:188 sendStarsSQE:sq_addr: 9154b4d8c0
+[info] [0000200771] [TASK_BEGIN] RTSQ_2 ACSQ_0 stream_id:3, task_id:0 full_task_id:3 BEGIN
+[INFO] Thread 32 is running. Cycle Count: 510000
+[info] [0000206468] [TASK_DONE] RTSQ_2 ACSQ_0 stream_id:3, task_id:0 TASK_DONE
+[INFO] Thread 32 is running. Cycle Count: 520000
+2026-11-03 16:33:08  [TileLang:tilelang.cache.kernel_cache:WARNING] (kernel_cache.py:379): Found kernel 'tf32_hc_prenorm_gemm_kernel' in memory cache. For better performance, consider using `@tilelang.jit` instead of direct kernel caching.
+2026-11-03 16:33:08  [TileLang:tilelang.cache.kernel_cache:WARNING] (kernel_cache.py:379): Found kernel 'tf32_hc_prenorm_gemm_kernel' in memory cache. For better performance, consider using `@tilelang.jit` instead of direct kernel caching.
+{'implementation': 'tilelang_coeff_bound', 'output': 'layer_input', 'shape': [128, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 2.215548518326271e-05, 'relative_l2': 1.9314915095015055e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'tilelang_coeff_bound', 'output': 'next_pre_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.463859558105469e-06, 'rmse': 2.809648790302404e-06, 'relative_l2': 5.597840266298936e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_coeff_bound', 'output': 'post_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.5497207641601562e-05, 'rmse': 5.595144821704978e-06, 'relative_l2': 5.595915552430052e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_coeff_bound', 'output': 'comb_mix', 'shape': [128, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.255243301391602e-06, 'rmse': 2.147009146479868e-06, 'relative_l2': 8.550350417369976e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+Correctness passed. Implementations: ['tilelang_coeff_bound']
+Parallel Simulation: All threads are joined.
+ESL_TOP: parallel threads joined
+[INFO]  Extract 1255 relations from kernel
+[WARN]  Failed to parse pc to code, maybe kernel missed debug_line information. If you need code call stack, please recompile kernel with -g option
+[WARN]  Code call stack is empty
+[WARN]  Lack of code info of files
+[INFO]  Core operator results run in simulator as follow:
+core_name           duration_time(us)   running_time(us)    
+core0.veccore0      5.24                5.24                
+core0.veccore1      5.11                5.11                
+core1.veccore0      5.15                5.14                
+core1.veccore1      5.27                5.27                
+core10.veccore0     1.81                1.81                
+core10.veccore1     1.66                1.66                
+core11.veccore0     1.6                 1.6                 
+core11.veccore1     1.85                1.85                
+core12.veccore0     1.49                1.49                
+core12.veccore1     1.69                1.69                
+core13.veccore0     1.63                1.63                
+core13.veccore1     1.69                1.69                
+core16.veccore0     1.5                 1.5                 
+core16.veccore1     1.26                1.11                
+core17.veccore0     1.78                1.78                
+core17.veccore1     1.37                1.36                
+core18.veccore0     1.33                1.33                
+core18.veccore1     1.52                1.38                
+core19.veccore0     1.53                1.53                
+core19.veccore1     1.59                1.59                
+core2.veccore0      5.29                5.29                
+core2.veccore1      5.25                5.25                
+core20.veccore0     1.63                1.63                
+core20.veccore1     1.63                1.63                
+core21.veccore0     1.66                1.66                
+core21.veccore1     1.66                1.66                
+core22.veccore0     1.53                1.53                
+core22.veccore1     1.58                1.58                
+core23.veccore0     1.61                1.56                
+core23.veccore1     1.67                1.67                
+core24.veccore0     1.56                1.56                
+core24.veccore1     1.56                1.56                
+core25.veccore0     1.56                1.56                
+core25.veccore1     1.63                1.63                
+core26.veccore0     1.36                1.36                
+core26.veccore1     1.27                1.19                
+core27.veccore0     1.45                1.45                
+core27.veccore1     1.52                1.52                
+core28.veccore0     1.33                1.33                
+core28.veccore1     1.3                 1.27                
+core29.veccore0     1.55                1.55                
+core29.veccore1     1.3                 1.17                
+core3.veccore0      5.21                5.21                
+core3.veccore1      5.1                 5.1                 
+core4.veccore0      1.57                1.57                
+core4.veccore1      1.72                1.72                
+core5.veccore0      1.8                 1.8                 
+core5.veccore1      1.59                1.59                
+core6.veccore0      1.55                1.55                
+core6.veccore1      1.76                1.76                
+core7.veccore0      1.69                1.69                
+core7.veccore1      1.6                 1.6                 
+core8.veccore0      1.66                1.66                
+core8.veccore1      1.49                1.49                
+core9.veccore0      1.71                1.71                
+core9.veccore1      1.51                1.51                
+ESL_TOP: system destructed
+[INFO] Model stopped successfully.
+[INFO]  Profiling running finished. All task success.
+[INFO]  Start parse dump file
+[INFO]  Profiling results saved in /home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF
+[INFO]  Profiling data parse finished.
+[INFO]  Op profiling finish. Welcome to next use.
+(zwh) root@ubuntu162:/home/z30086261/Q4# grep 'Start profiling on kernel:' "$OUT/console.log"
+[2026-11-03 16:32:45] [318560] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: tf32_hc_prenorm_gemm_kernel_kernel
+[2026-11-03 16:33:09] [318560] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: mhc_pre_apply_mix_fwd_asc_kernel
+[2026-11-03 16:33:29] [318560] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: tf32_hc_prenorm_gemm_kernel_kernel
+[2026-11-03 16:33:56] [318560] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: mhc_coeff_tail_fwd_asc_kernel
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# find "$OUT/prof" -type f \
+>   \( -name 'visualize_data.bin' -o -name 'trace.json' \)
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core5.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core29.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core24.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core27.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core19.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core7.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core29.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core8.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core2.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core26.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core28.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core9.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core25.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/visualize_data.bin
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core11.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core13.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core17.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core18.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core24.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core23.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core7.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core0.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core3.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core16.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core27.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core1.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core3.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core22.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core20.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core16.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core22.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core25.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core26.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core1.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core20.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core2.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core13.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core4.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core10.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core12.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core21.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core28.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core23.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core9.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core19.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core10.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core21.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core5.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core17.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core8.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core18.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core11.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core4.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core0.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core6.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core12.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_pre_apply_mix_fwd_asc_kernel/0/simulator/core6.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/core0.cubecore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/core1.cubecore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/core17.cubecore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/visualize_data.bin
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/core17.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/core0.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/core16.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/core1.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/core16.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/core1.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/core16.cubecore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/core17.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/0/simulator/core0.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/core0.cubecore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/core1.cubecore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/core17.cubecore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/visualize_data.bin
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/core17.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/core0.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/core16.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/core1.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/core16.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/core1.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/core16.cubecore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/core17.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/tf32_hc_prenorm_gemm_kernel_kernel/1/simulator/core0.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core5.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core29.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core24.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core27.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core19.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core7.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core29.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core8.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core2.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core26.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core28.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core9.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core25.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/visualize_data.bin
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core11.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core13.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core17.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core18.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core24.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core23.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core7.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core0.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core3.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core16.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core27.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core1.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core3.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core22.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core20.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core16.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core22.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core25.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core26.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core1.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core20.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core2.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core13.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core4.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core10.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core12.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core21.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core28.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core23.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core9.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core19.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core10.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core21.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core5.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core17.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core8.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core18.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core11.veccore0/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core4.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core0.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core6.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core12.veccore1/trace.json
+/home/z30086261/Q4/results/mhc-three-simulator/20261103-163234-2600770/prof/OPPROF_20261103163235_TYRZKNDGWYORLKAF/mhc_coeff_tail_fwd_asc_kernel/0/simulator/core6.veccore0/trace.json
+(zwh) root@ubuntu162:/home/z30086261/Q4#
