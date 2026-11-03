@@ -1,28 +1,37 @@
-OUT="$PWD/results/mhc-three-simulator/$(date +%Y%m%d-%H%M%S)-$$"
-mkdir -p "$OUT"
+(zwh) root@ubuntu162:/home/z30086261/Q4/results/mhc-three-simulator/20261103-160449-2600770# OUT="$PWD/results/mhc-three-simulator/$(date +%Y%m%d-%H%M%S)-$$"
+(zwh) root@ubuntu162:/home/z30086261/Q4/results/mhc-three-simulator/20261103-160449-2600770# mkdir -p "$OUT"
+(zwh) root@ubuntu162:/home/z30086261/Q4/results/mhc-three-simulator/20261103-160449-2600770# 
+(zwh) root@ubuntu162:/home/z30086261/Q4/results/mhc-three-simulator/20261103-160449-2600770# msprof op simulator \
+>   --soc-version=Ascend950PR_9579 \
+>   --kernel-name='mhc_pre_apply_mix_fwd_asc|tf32_hc_prenorm_gemm|mhc_coeff_tail_fwd_asc' \
+>   --launch-count=4 \
+>   --aic-metrics=PipeUtilization \
+>   --dump=true \
+>   --timeout=30 \
+>   --output="$OUT/prof" \
+>   "$CONDA_PREFIX/bin/python" operators/spec_v1/bench.py \
+>     --suite mhc_shifted_split \
+>     --implementations tilelang_coeff_bound \
+>     --tokens 128 \
+>     --check-only \
+>     --output "$OUT/check" \
+>   2>&1 | tee "$OUT/console.log"
+=================================================================
+                   >>>>>   MindStudio   <<<<<
+    THE END-TO-END TOOLCHAIN TO UNLEASH HUAWEI ASCEND COMPUTE
+=================================================================
 
-msprof op simulator \
-  --soc-version=Ascend950PR_9579 \
-  --kernel-name='mhc_pre_apply_mix_fwd_asc|tf32_hc_prenorm_gemm|mhc_coeff_tail_fwd_asc' \
-  --launch-count=4 \
-  --aic-metrics=PipeUtilization \
-  --dump=true \
-  --timeout=30 \
-  --output="$OUT/prof" \
-  "$CONDA_PREFIX/bin/python" operators/spec_v1/bench.py \
-    --suite mhc_shifted_split \
-    --implementations tilelang_coeff_bound \
-    --tokens 128 \
-    --check-only \
-    --output "$OUT/check" \
-  2>&1 | tee "$OUT/console.log"
-
-
-
-
-
-
-grep 'Start profiling on kernel:' "$OUT/console.log"
-
-find "$OUT/prof" -type f \
-  \( -name 'visualize_data.bin' -o -name 'trace.json' \)
+[WARN]  Currently, the root permission is used, which is unrecommended. Please ensure the security of the execution environment and programs.
+[INFO]  Op profiling analysis start.
+[INFO]  Ascend950 simulator library is loaded from camodel; real-time parsing is enabled with instruction callback dump
+[INFO]  Running simulation task: Binary Simulation Running, use simulator Ascend950PR 9579 by --soc-version
+/root/miniconda3/envs/zwh/bin/python: can't open file '/home/z30086261/Q4/results/mhc-three-simulator/20261103-160449-2600770/operators/spec_v1/bench.py': [Errno 2] No such file or directory
+[WARN]  Child process exited with return value 2
+[WARN]  Profiling running finished. May cause generating performance files to fail.
+[WARN]  Running task failed, proceeding to data parsing
+[INFO]  Start parse dump file
+[WARN]  No profiling data matched --kernel-name=mhc_pre_apply_mix_fwd_asc|tf32_hc_prenorm_gemm|mhc_coeff_tail_fwd_asc. All kernels were filtered out or no matching dump was generated. Please confirm the kernel name or wildcard pattern.
+[WARN]  Profiling results are empty. No kernel profiling data was generated. Please check the dump output.
+[ERROR] Profiling data parse failed. Please check
+[INFO]  Op profiling finish. Welcome to next use.
+(zwh) root@ubuntu162:/home/z30086261/Q4/results/mhc-three-simulator/20261103-160449-2600770#
