@@ -1,8 +1,30 @@
-rg -n -i '9579' "$CANN_ROOT/share/info/simulator"
-echo "rg exit code: $?"
+cd /home/z30086261/Q4
+source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
 
-CANN_ROOT=/home/CANN/9.3.0.weekly.20260930/ascend-toolkit/latest
+export ASCEND_RT_VISIBLE_DEVICES=0
+export ASCEND_NPU_ARCH=dav-3510
+export CC="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-gcc"
+export CXX="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++"
+export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
+export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4mhcmatch-opp/vendors/q4mhcmatch_transformer"
+export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
 
-rg --follow --hidden --no-ignore -n -i '9579' \
-  "$CANN_ROOT/share/info/simulator"
-echo "rg exit code: $?"
+OUT="$PWD/results/mhc-three-simulator/$(date +%Y%m%d-%H%M%S)-$$"
+mkdir -p "$OUT"
+
+set -o pipefail
+msprof op simulator \
+  --soc-version=Ascend950PR_9579 \
+  --kernel-name='mhc_pre_apply_mix_fwd_asc|tf32_hc_prenorm_gemm|mhc_coeff_tail_fwd_asc' \
+  --launch-count=3 \
+  --aic-metrics=PipeUtilization \
+  --dump=true \
+  --timeout=30 \
+  --output="$OUT/prof" \
+  "$CONDA_PREFIX/bin/python" operators/spec_v1/bench.py \
+    --suite mhc_shifted_split \
+    --implementations tilelang_coeff_bound \
+    --tokens 128 \
+    --check-only \
+    --output "$OUT/check" \
+  2>&1 | tee "$OUT/console.log"
