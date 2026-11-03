@@ -97,7 +97,10 @@ def main():
                for p in root.glob('*/metadata.json'))
     apply_scan = any(json.loads(p.read_text()).get('arguments', {}).get('mhc_apply_block') is not None
                      for p in root.glob('*/metadata.json'))
-    if (root / 'apply-flat.json').exists():
+    if (root / 'apply-large.json').exists():
+        expected = dict(smoke=(4,0,0), check=(60,0,0), bench=(48,48,0),
+                        profile=(36,0,36), all=(144,48,36))[mode]
+    elif (root / 'apply-flat.json').exists():
         expected = dict(smoke=(4,0,0), check=(60,0,0), bench=(48,48,0),
                         profile=(16,0,16), all=(124,48,16))[mode]
     elif (root / 'apply-pipeline.json').exists():
