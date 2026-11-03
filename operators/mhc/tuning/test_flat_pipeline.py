@@ -7,7 +7,7 @@ import unittest
 class FlatPipelineContract(unittest.TestCase):
     def test_every_output_tile_owned_once_without_invalid_tokens(self):
         for tokens in (1,17,55,56,57,64,128,129,256,512,8192):
-            for block in (1024,1280):
+            for block in (1024,1280,5120):
                 tiles = 5120 // block
                 owned = Counter()
                 for core in range(56):

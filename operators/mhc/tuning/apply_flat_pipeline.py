@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Adapted from TileKernels c1cf914 pre_apply_mix_asc.py; see LICENSE_TILEKERNELS.
-# Experimental: token ownership retained, hidden tiles software-pipelined.
+# Experimental: per-core token/hidden jobs software-pipelined.
+# With h_blk=hidden=5120 there is one hidden tile: each pipeline iteration
+# processes a complete token, overlapping transfers/compute across tokens.
 import tilelang
 from tilelang.ascend import language as T
 from tilelang.ascend.language import simd as S
