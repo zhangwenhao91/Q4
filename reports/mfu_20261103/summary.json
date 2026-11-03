@@ -1,0 +1,281 @@
+{
+  "evidence": "a55bb09:error.txt",
+  "evidence_sha256": "5e11e3a04a7b8d140415cce305cac3d51a0f10932cfcbfa8b84815f736e9a2b7",
+  "output": "/home/z30086261/Q4/results/mfu/20261103-115353-28394",
+  "completed_processes": 36,
+  "local_raw_files_available": false,
+  "results": [
+    {
+      "suite": "mha_stats_split",
+      "tokens": 4096,
+      "implementation": "tilelang_q128",
+      "event_us": 52.664266,
+      "effective_tflops": 163.10746,
+      "matrix_mfu_percent": 43.1501,
+      "useful_matrix_flops": 8589934592,
+      "peak_tflops": 378
+    },
+    {
+      "suite": "mha_stats_split",
+      "tokens": 4096,
+      "implementation": "tilelang_kv2",
+      "event_us": 51.097226,
+      "effective_tflops": 168.109607,
+      "matrix_mfu_percent": 44.4734,
+      "useful_matrix_flops": 8589934592,
+      "peak_tflops": 378
+    },
+    {
+      "suite": "mha_stats_split",
+      "tokens": 4096,
+      "implementation": "tilelang_s2buf",
+      "event_us": 50.957088,
+      "effective_tflops": 168.571927,
+      "matrix_mfu_percent": 44.5957,
+      "useful_matrix_flops": 8589934592,
+      "peak_tflops": 378
+    },
+    {
+      "suite": "mha_stats_split",
+      "tokens": 4096,
+      "implementation": "ascendc",
+      "event_us": 40.088296,
+      "effective_tflops": 214.275374,
+      "matrix_mfu_percent": 56.6866,
+      "useful_matrix_flops": 8589934592,
+      "peak_tflops": 378
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 64,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 25.208039,
+      "effective_tflops": 2.495813,
+      "matrix_mfu_percent": 1.3205,
+      "useful_matrix_flops": 62914560,
+      "peak_tflops": 189
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 128,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 24.314139,
+      "effective_tflops": 5.175142,
+      "matrix_mfu_percent": 2.7382,
+      "useful_matrix_flops": 125829120,
+      "peak_tflops": 189
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 256,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 25.658,
+      "effective_tflops": 9.808179,
+      "matrix_mfu_percent": 5.1895,
+      "useful_matrix_flops": 251658240,
+      "peak_tflops": 189
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 512,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 39.02034,
+      "effective_tflops": 12.898823,
+      "matrix_mfu_percent": 6.8248,
+      "useful_matrix_flops": 503316480,
+      "peak_tflops": 189
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 8192,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 586.927643,
+      "effective_tflops": 13.720709,
+      "matrix_mfu_percent": 7.2596,
+      "useful_matrix_flops": 8053063680,
+      "peak_tflops": 189
+    },
+    {
+      "suite": "mha_stats_split",
+      "tokens": 3584,
+      "implementation": "tilelang_q128",
+      "event_us": 24.652045,
+      "effective_tflops": 266.779845,
+      "matrix_mfu_percent": 70.5767,
+      "useful_matrix_flops": 6576668672,
+      "peak_tflops": 378
+    },
+    {
+      "suite": "mha_stats_split",
+      "tokens": 3584,
+      "implementation": "tilelang_kv2",
+      "event_us": 24.02172,
+      "effective_tflops": 273.780094,
+      "matrix_mfu_percent": 72.4286,
+      "useful_matrix_flops": 6576668672,
+      "peak_tflops": 378
+    },
+    {
+      "suite": "mha_stats_split",
+      "tokens": 3584,
+      "implementation": "tilelang_s2buf",
+      "event_us": 24.250644,
+      "effective_tflops": 271.195625,
+      "matrix_mfu_percent": 71.7449,
+      "useful_matrix_flops": 6576668672,
+      "peak_tflops": 378
+    },
+    {
+      "suite": "mha_stats_split",
+      "tokens": 3584,
+      "implementation": "ascendc",
+      "event_us": 26.777985,
+      "effective_tflops": 245.599833,
+      "matrix_mfu_percent": 64.9735,
+      "useful_matrix_flops": 6576668672,
+      "peak_tflops": 378
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 56,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 25.04637,
+      "effective_tflops": 2.197933,
+      "matrix_mfu_percent": 1.1629,
+      "useful_matrix_flops": 55050240,
+      "peak_tflops": 189
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 112,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 27.004681,
+      "effective_tflops": 4.077089,
+      "matrix_mfu_percent": 2.1572,
+      "useful_matrix_flops": 110100480,
+      "peak_tflops": 189
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 224,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 25.293651,
+      "effective_tflops": 8.70578,
+      "matrix_mfu_percent": 4.6062,
+      "useful_matrix_flops": 220200960,
+      "peak_tflops": 189
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 448,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 29.743409,
+      "effective_tflops": 14.806706,
+      "matrix_mfu_percent": 7.8342,
+      "useful_matrix_flops": 440401920,
+      "peak_tflops": 189
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "tokens": 7168,
+      "implementation": "tilelang_coeff_bound",
+      "event_us": 546.508522,
+      "effective_tflops": 12.893542,
+      "matrix_mfu_percent": 6.822,
+      "useful_matrix_flops": 7046430720,
+      "peak_tflops": 189
+    }
+  ],
+  "size_comparisons": [
+    {
+      "suite": "mha_stats_split",
+      "implementation": "tilelang_q128",
+      "full_tokens": 4096,
+      "scaled_tokens": 3584,
+      "useful_flops_ratio": 0.765625,
+      "latency_ratio": 0.46809814077727774,
+      "throughput_ratio": 1.6356078685794018,
+      "note": "Different workloads; throughput ratio measures shape efficiency, not same-work speedup."
+    },
+    {
+      "suite": "mha_stats_split",
+      "implementation": "tilelang_kv2",
+      "full_tokens": 4096,
+      "scaled_tokens": 3584,
+      "useful_flops_ratio": 0.765625,
+      "latency_ratio": 0.4701178885914472,
+      "throughput_ratio": 1.6285808936546975,
+      "note": "Different workloads; throughput ratio measures shape efficiency, not same-work speedup."
+    },
+    {
+      "suite": "mha_stats_split",
+      "implementation": "tilelang_s2buf",
+      "full_tokens": 4096,
+      "scaled_tokens": 3584,
+      "useful_flops_ratio": 0.765625,
+      "latency_ratio": 0.47590325412629547,
+      "throughput_ratio": 1.6087828491157963,
+      "note": "Different workloads; throughput ratio measures shape efficiency, not same-work speedup."
+    },
+    {
+      "suite": "mha_stats_split",
+      "implementation": "ascendc",
+      "full_tokens": 4096,
+      "scaled_tokens": 3584,
+      "useful_flops_ratio": 0.765625,
+      "latency_ratio": 0.6679751366832853,
+      "throughput_ratio": 1.1461878629132622,
+      "note": "Different workloads; throughput ratio measures shape efficiency, not same-work speedup."
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "implementation": "tilelang_coeff_bound",
+      "full_tokens": 64,
+      "scaled_tokens": 56,
+      "useful_flops_ratio": 0.875,
+      "latency_ratio": 0.9935866094145602,
+      "throughput_ratio": 0.880648109453713,
+      "note": "Different workloads; throughput ratio measures shape efficiency, not same-work speedup."
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "implementation": "tilelang_coeff_bound",
+      "full_tokens": 128,
+      "scaled_tokens": 112,
+      "useful_flops_ratio": 0.875,
+      "latency_ratio": 1.1106575067289037,
+      "throughput_ratio": 0.7878216675020705,
+      "note": "Different workloads; throughput ratio measures shape efficiency, not same-work speedup."
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "implementation": "tilelang_coeff_bound",
+      "full_tokens": 256,
+      "scaled_tokens": 224,
+      "useful_flops_ratio": 0.875,
+      "latency_ratio": 0.9857997895393249,
+      "throughput_ratio": 0.8876041108140461,
+      "note": "Different workloads; throughput ratio measures shape efficiency, not same-work speedup."
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "implementation": "tilelang_coeff_bound",
+      "full_tokens": 512,
+      "scaled_tokens": 448,
+      "useful_flops_ratio": 0.875,
+      "latency_ratio": 0.7622539680587099,
+      "throughput_ratio": 1.1479114024589685,
+      "note": "Different workloads; throughput ratio measures shape efficiency, not same-work speedup."
+    },
+    {
+      "suite": "mhc_shifted_split",
+      "implementation": "tilelang_coeff_bound",
+      "full_tokens": 8192,
+      "scaled_tokens": 7168,
+      "useful_flops_ratio": 0.875,
+      "latency_ratio": 0.931134405608495,
+      "throughput_ratio": 0.9397139754221157,
+      "note": "Different workloads; throughput ratio measures shape efficiency, not same-work speedup."
+    }
+  ]
+}

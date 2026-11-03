@@ -2,6 +2,9 @@
 
 ## 28 AIC：7/8 规模复测（2026-11-03）
 
+本轮已经完成，见 [结果报告](../../reports/mfu_20261103/report.md)。
+后续优先用 `export.py` 导出现有逐进程证据，命令见报告，无需立即重测。
+
 ```bash
 cd /home/z30086261/Q4
 git pull --no-rebase

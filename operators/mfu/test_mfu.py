@@ -6,6 +6,7 @@ import unittest
 
 from analyze import analyze,matrix_flops,peak_for,throughput,compare_sizes
 from run import make_groups
+from export import export_capture
 
 
 MHA=dict(Q=[4096,128],K=[4096,128],V=[4096,128],batch=1,heads=1,
@@ -98,6 +99,17 @@ class MFUTest(unittest.TestCase):
             folder=Path(temp);plan=self.fixture(folder)
             plan['cases'].pop();(folder/'plan.json').write_text(json.dumps(plan))
             with self.assertRaisesRegex(ValueError,'three replicas'):analyze(folder)
+
+    def test_export_preserves_raw_timings_and_refuses_overwrite(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source=Path(temp)/'source';source.mkdir()
+            self.fixture(source)
+            target=Path(temp)/'exported'
+            manifest=export_capture(source,target,{})
+            self.assertEqual(len(manifest['copied_files']),13)
+            self.assertEqual((target/'case1/timings.csv').read_bytes(),(source/'case1/timings.csv').read_bytes())
+            self.assertEqual(analyze(target)['results'],analyze(source)['results'])
+            with self.assertRaisesRegex(ValueError,'new output'):export_capture(source,target,{})
 
     def test_full_and_scaled_capture_analyzed_with_actual_shapes(self):
         with tempfile.TemporaryDirectory() as temp:
