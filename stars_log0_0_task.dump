@@ -1,0 +1,8 @@
+[info] [0000002320] [TASK_BEGIN] RTSQ_2 ACSQ_0 stream_id:0, task_id:0 full_task_id:0 BEGIN
+[info] [0000010176] [TASK_DONE] RTSQ_2 ACSQ_0 stream_id:0, task_id:0 TASK_DONE
+[info] [0000002063] [TASK_BEGIN] RTSQ_2 ACSQ_0 stream_id:0, task_id:0 full_task_id:0 BEGIN
+[info] [0000009836] [TASK_DONE] RTSQ_2 ACSQ_0 stream_id:0, task_id:0 TASK_DONE
+[info] [0000002400] [TASK_BEGIN] RTSQ_2 ACSQ_0 stream_id:0, task_id:0 full_task_id:0 BEGIN
+[info] [0000010652] [TASK_DONE] RTSQ_2 ACSQ_0 stream_id:0, task_id:0 TASK_DONE
+[info] [0000002094] [TASK_BEGIN] RTSQ_2 ACSQ_0 stream_id:0, task_id:0 full_task_id:0 BEGIN
+[info] [0000009920] [TASK_DONE] RTSQ_2 ACSQ_0 stream_id:0, task_id:0 TASK_DONE
