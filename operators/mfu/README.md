@@ -1,5 +1,13 @@
 # MHA 与三 kernel 预绑定 mHC 的 MFU 测量
 
+## 当前范围：仅 MHA（2026-11-03）
+
+mHC后续测试挂起。当前结果、同规格AC/TL、MFU及仅导出MHA的命令见
+[MHA当前工作页](../../reports/MHA_FOCUS.md)。
+默认运行入口已改为 `bash operators/mfu/run.sh mha both`（不传参数效果相同）。
+分析新增同规格AC/TL及三进程配对比；导出新增 `--operator mha`，只依赖MHA六个进程文件。
+下方联合实验命令保留为历史说明，当前不要求重跑联合实验。
+
 ## 28 AIC：7/8 规模复测（2026-11-03）
 
 本轮已经完成，见 [结果报告](../../reports/mfu_20261103/report.md)。
@@ -34,7 +42,7 @@ mHC 只改N，投影FLOPs比例7/8；hidden、24输出通道、数值公式与�
 
 仅测新规模用 `bash operators/mfu/run.sh all seven-eighths`；
 只测一种算子用 `bash operators/mfu/run.sh mha both` 或 `mhc both`。
-默认仍为 `all full`，现在自动读取已提供的28 AIC峰值配置。
+当前默认改为 `mha both`，自动读取已提供的28 AIC峰值配置。
 
 2026-11-02：已对照新增 `MFU计算.md` 和官方白皮书表3-1，添加
 `peaks/ascend950pr_28aic.json`：BF16 Cube 378 TFLOPS、TF32 Cube 189 TFLOPS。

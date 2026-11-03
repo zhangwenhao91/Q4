@@ -1,5 +1,7 @@
 # Q4 测试结果总览
 
+当前后续范围仅MHA，见 [AC/TL与MFU专页](MHA_FOCUS.md)。mHC后续工作挂起。
+
 当前可用实现与已清理版本见 [版本索引](ACTIVE_VERSIONS.md)。
 新增：[2026-11-02 MFU 实测与 WIKI 核对](mfu_20261102/report.md)，采用 28 AIC Cube 峰值。
 最新：[2026-11-03 原规模/7⁄8 规模对照](mfu_20261103/report.md)：MHA S3584 KV2为72.43% MFU，

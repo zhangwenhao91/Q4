@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from analyze import analyze,matrix_flops,peak_for,throughput,compare_sizes
+from analyze import analyze,matrix_flops,peak_for,throughput,compare_sizes,attention_comparisons
 from run import make_groups
 from export import export_capture
 
@@ -15,6 +15,20 @@ DEVICE=dict(name='test-device',cube_core_num=28,vector_core_num=56)
 
 
 class MFUTest(unittest.TestCase):
+    def test_attention_ratio_uses_matching_shape_and_replica(self):
+        base=dict(suite='mha_stats_split',tokens=3584,useful_matrix_flops=6576668672,
+                  matrix_mfu_percent=None)
+        tl={**base,'implementation':'tilelang_kv2','event_us':24.,'wall_us':25.,
+            'replicas':[dict(replica=r,event_us=t) for r,t in ((1,24),(2,30),(3,24))]}
+        ac={**base,'implementation':'ascendc','event_us':27.,'wall_us':28.,
+            'replicas':[dict(replica=r,event_us=27.) for r in (3,1,2)]}
+        # Do not pair with an AC at another sequence length.
+        self.assertEqual(attention_comparisons([tl,{**ac,'tokens':4096}]),[])
+        result=attention_comparisons([tl,ac])[0]
+        self.assertEqual(result['ac_over_tl'],27/24)
+        self.assertEqual(result['tl_wins'],2)
+        self.assertEqual(result['paired_replicas'][1]['ac_over_tl'],.9)
+
     def test_scaled_plan_and_useful_flops(self):
         groups=make_groups('all','both')
         self.assertEqual(len(groups),12)
@@ -110,6 +124,18 @@ class MFUTest(unittest.TestCase):
             self.assertEqual((target/'case1/timings.csv').read_bytes(),(source/'case1/timings.csv').read_bytes())
             self.assertEqual(analyze(target)['results'],analyze(source)['results'])
             with self.assertRaisesRegex(ValueError,'new output'):export_capture(source,target,{})
+
+    def test_mha_only_export_does_not_require_or_copy_mhc_cases(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source=Path(temp)/'source';source.mkdir()
+            plan=self.fixture(source)
+            plan['cases'].append(dict(suite='mhc_shifted_split',directory='ignored-mhc'))
+            (source/'plan.json').write_text(json.dumps(plan))
+            target=Path(temp)/'mha-export'
+            export_capture(source,target,{},operator='mha')
+            self.assertEqual(len(json.loads((target/'plan.json').read_text())['cases']),3)
+            self.assertFalse((target/'ignored-mhc').exists())
+            self.assertEqual(len(analyze(target)['results']),1)
 
     def test_full_and_scaled_capture_analyzed_with_actual_shapes(self):
         with tempfile.TemporaryDirectory() as temp:

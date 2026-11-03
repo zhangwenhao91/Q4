@@ -2,4 +2,4 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-python operators/mfu/run.py --operator "${1:-all}" --scale "${2:-full}"
+python operators/mfu/run.py --operator "${1:-mha}" --scale "${2:-both}"

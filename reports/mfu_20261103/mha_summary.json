@@ -1,0 +1,62 @@
+{
+  "evidence": "a55bb09:error.txt",
+  "scope": "MHA only. mHC work paused at user request.",
+  "definition": "AC/TL > 1 means TL faster; each ratio compares identical shapes.",
+  "comparisons": [
+    {
+      "sequence": 4096,
+      "implementation": "tilelang_q128",
+      "tl_event_us": 52.664266,
+      "ac_event_us": 40.088296,
+      "ac_over_tl": 0.7612048746677681,
+      "tl_mfu_percent": 43.1501,
+      "ac_mfu_percent": 56.6866
+    },
+    {
+      "sequence": 4096,
+      "implementation": "tilelang_kv2",
+      "tl_event_us": 51.097226,
+      "ac_event_us": 40.088296,
+      "ac_over_tl": 0.7845493608596287,
+      "tl_mfu_percent": 44.4734,
+      "ac_mfu_percent": 56.6866
+    },
+    {
+      "sequence": 4096,
+      "implementation": "tilelang_s2buf",
+      "tl_event_us": 50.957088,
+      "ac_event_us": 40.088296,
+      "ac_over_tl": 0.7867069641028153,
+      "tl_mfu_percent": 44.5957,
+      "ac_mfu_percent": 56.6866
+    },
+    {
+      "sequence": 3584,
+      "implementation": "tilelang_q128",
+      "tl_event_us": 24.652045,
+      "ac_event_us": 26.777985,
+      "ac_over_tl": 1.0862378760058242,
+      "tl_mfu_percent": 70.5767,
+      "ac_mfu_percent": 64.9735
+    },
+    {
+      "sequence": 3584,
+      "implementation": "tilelang_kv2",
+      "tl_event_us": 24.02172,
+      "ac_event_us": 26.777985,
+      "ac_over_tl": 1.1147405348159916,
+      "tl_mfu_percent": 72.4286,
+      "ac_mfu_percent": 64.9735
+    },
+    {
+      "sequence": 3584,
+      "implementation": "tilelang_s2buf",
+      "tl_event_us": 24.250644,
+      "ac_event_us": 26.777985,
+      "ac_over_tl": 1.1042174797502284,
+      "tl_mfu_percent": 71.7449,
+      "ac_mfu_percent": 64.9735
+    }
+  ],
+  "paired_process_results_available": false
+}

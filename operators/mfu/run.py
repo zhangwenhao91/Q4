@@ -28,9 +28,9 @@ def make_groups(operator,scale):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--operator',choices=('all','mha','mhc'),default='all')
+    p.add_argument('--operator',choices=('all','mha','mhc'),default='mha')
     p.add_argument('--output',type=Path)
-    p.add_argument('--scale',choices=('full','seven-eighths','both'),default='full')
+    p.add_argument('--scale',choices=('full','seven-eighths','both'),default='both')
     p.add_argument('--peak-json',type=Path,default=Path(__file__).with_name('peaks')/'ascend950pr_28aic.json')
     a=p.parse_args()
     root=Path(__file__).resolve().parents[2]

@@ -66,13 +66,35 @@ def compare_sizes(results):
     return comparisons
 
 
-def analyze(folder,peak_config=None):
+def attention_comparisons(results):
+    """Compare AC/TL only within the same shape and same process replica."""
+    index={(r['tokens'],r['implementation']):r for r in results if r['suite']=='mha_stats_split'}
+    comparisons=[]
+    for (n,label),tl in index.items():
+        ac=index.get((n,'ascendc'))
+        if label=='ascendc' or ac is None:continue
+        if ac['useful_matrix_flops']!=tl['useful_matrix_flops']:
+            raise ValueError('Cannot compare attention paths with different useful work')
+        ac_reps={r['replica']:r for r in ac['replicas']}
+        ratios=[dict(replica=r['replica'],ac_over_tl=ac_reps[r['replica']]['event_us']/r['event_us'])
+                for r in tl['replicas']]
+        comparisons.append(dict(tokens=n,implementation=label,
+            ac_over_tl=ac['event_us']/tl['event_us'],ac_over_tl_wall=ac['wall_us']/tl['wall_us'],
+            tl_mfu_percent=tl['matrix_mfu_percent'],ac_mfu_percent=ac['matrix_mfu_percent'],
+            paired_replicas=ratios,tl_wins=sum(r['ac_over_tl']>1 for r in ratios),
+            note='AC/TL > 1 means TL faster. Ratio of aggregate medians; paired replicas reported separately.'))
+    return comparisons
+
+
+def analyze(folder,peak_config=None,operator='all'):
     folder=Path(folder)
     plan=json.loads((folder/'plan.json').read_text(encoding='utf-8'))
     config=peak_config or {}
     groups={}
     identities=set()
-    for case in plan['cases']:
+    selected=[case for case in plan['cases'] if operator=='all' or
+              case['suite']==('mha_stats_split' if operator=='mha' else 'mhc_shifted_split')]
+    for case in selected:
         path=folder/case['directory']
         meta=json.loads((path/'metadata.json').read_text(encoding='utf-8'))
         checks=json.loads((path/'correctness.json').read_text(encoding='utf-8'))
@@ -134,6 +156,7 @@ def analyze(folder,peak_config=None):
             matrix_mfu_percent=100*effective/group['peak']['tflops'] if group['peak'] else None)
         results.append(group)
     return dict(device_revision=list(identities)[0],results=results,size_comparisons=compare_sizes(results),
+        mha_comparisons=attention_comparisons(results),
         definition='Useful matmul FLOPs / full API event latency / dense peak for the actual compute mode. Operator MFU proxy, not full-model MFU or hardware issue utilization.',
         omitted_flops='MHA softmax/scaling and mHC square-sum/RMS/apply/coefficient/Sinkhorn scalar-vector operations. Their execution time is INCLUDED. No padding/recompute FLOPs credited.')
 
@@ -142,15 +165,23 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--input',type=Path,required=True)
     p.add_argument('--peak-json',type=Path)
+    p.add_argument('--operator',choices=('all','mha','mhc'),default='all')
     a=p.parse_args()
     peaks=json.loads(a.peak_json.read_text(encoding='utf-8')) if a.peak_json else None
-    result=analyze(a.input,peaks)
+    result=analyze(a.input,peaks,operator=a.operator)
     lines=['# Operator MFU proxy',result['definition'],result['omitted_flops'],
            '\n| Suite | N | Implementation | Event us | Effective TFLOPS | Matrix MFU % |',
            '|---|---:|---|---:|---:|---:|']
     for r in result['results']:
         mfu=f"{r['matrix_mfu_percent']:.4f}" if r['matrix_mfu_percent'] is not None else 'pending peak'
         lines.append(f"| {r['suite']} | {r['tokens']} | {r['implementation']} | {r['event_us']:.6f} | {r['effective_tflops']:.6f} | {mfu} |")
+    if result['mha_comparisons']:
+        lines.extend(['\n## MHA AC/TL speedup at matching shapes',
+            'AC/TL > 1 means TL faster. Wins count paired independent processes, not individual calls.',
+            '| S | TL | AC/TL event | AC/TL wall | TL paired wins |',
+            '|---:|---|---:|---:|---:|'])
+        for r in result['mha_comparisons']:
+            lines.append(f"| {r['tokens']} | {r['implementation']} | {r['ac_over_tl']:.6f} | {r['ac_over_tl_wall']:.6f} | {r['tl_wins']}/{len(r['paired_replicas'])} |")
     if result['size_comparisons']:
         lines.extend(['\n## Seven-eighths / full shape efficiency',
             'Different workloads. A lower latency alone is not a same-work speedup.',
