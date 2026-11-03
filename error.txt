@@ -1,42 +1,4 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
-(zwh) root@ubuntu162:/home/z30086261/Q4# msprof op simulator --help
-Description:
-  Profile Ascend C operators by running the application on the simulator.
+python3 -c "import acl; print(acl.get_soc_name())"
 
-Usage:
-  msopprof simulator [options] (<application> [application-args] | --config <FILE> | --export <DIR>)
-
-Optional arguments:
-  Exactly one of <application>, --config, and --export must be specified.
-  -h, --help                                Show help message.
-  -V, --version                             Show version information.
-      --config <FILE>                       JSON operator configuration file.
-      --application <FILE>                  Application executable path.
-      --export <DIR>                        Simulator data directory to parse.
-      --output <DIR>                        Output directory [default: ./].
-      --kernel-name <NAME>                  Specify the kernel name to profile.
-                                              Not effective in config mode.
-      --launch-count <N>                    Kernel launches to collect (1-5000) [default: 1].
-      --aic-metrics <NAME>[,<NAME>...]      Enable collection ability type:
-                                              Supported values: PipeUtilization | ResourceConflictRatio |
-                                                | PMSampling | Overhead |
-                                              PMSampling and Overhead are not supported on Ascend950.
-                                              PipeUtilization is required.
-      --mstx {true,false}                       Enable mstx API [default: false].
-      --mstx-include <RANGE>                Specify the mstx range to collect.
-      --soc-version <VERSION>               Simulator version; required for Ascend950.
-      --core-id <ID>                        Specify the id of cores to parse.
-      --timeout <MINUTES>                   Application timeout (1-2880 minutes).
-      --dump {true,false}                       Enable native dump for A2/A3, or instruction dump from Ascend950 camodel real-time callbacks [default: false].
-
-Examples:
-  msopprof simulator ./my_operator
-  msopprof simulator --config ./op_config.json
-  msopprof simulator --export ./simulator_output
-
-Output:
-  Results are written to <output-dir>/OPPROF_{timestamp}_{random}.
-
-Troubleshooting:
-  Check that exactly one input is provided and option values are valid.
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+find /home/CANN/9.3.0.weekly.20260930/ascend-toolkit \
+  -maxdepth 6 -type d -iname '*950*'
