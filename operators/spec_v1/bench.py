@@ -23,7 +23,7 @@ def implementation_order(labels,round_index):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--suite',choices=['mha','mha_bf16','mha_nostore','mha_stages','mha_finalize','mha_buffers','mha_stats_split','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_split','mhc_original','mhc_original_fused','mhc_original_big5120'],required=True)
+    p.add_argument('--suite',choices=['mha','mha_scenarios','mha_bf16','mha_nostore','mha_stages','mha_finalize','mha_buffers','mha_stats_split','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_split','mhc_original','mhc_original_fused','mhc_original_big5120'],required=True)
     p.add_argument('--mhc-pipeline-flat',action='store_true',help='compare flat with nested apply pipeline')
     p.add_argument('--mhc-apply-pipeline',choices=[f'{b}:{s}' for b in (256,1024,1280) for s in (1,3)],help='experimental token-owned apply pipeline block:stages')
     p.add_argument('--mhc-tail-config',choices=[f'{c}:{s}' for c in (14,28,56) for s in (1,2)],help='shifted_split: tail cores:stages, apply fixed H1280')
@@ -31,7 +31,7 @@ def main():
     p.add_argument('--mhc-projection-splits',type=int,choices=[1,2,4,8],help='shifted_split only: compare one K-split candidate against unchanged baselines')
     p.add_argument('--tokens',type=int,default=512,help='mHC token count; MFU runner also records MHA S here')
     p.add_argument('--mha-seqlen',type=int,choices=(3584,4096),default=4096,
-                   help='BF16 baseline / stats-split MHA only; 3584 tests 28 Q tiles')
+                   help='BF16 baseline / stats-split / all-scenarios MHA; 3584 tests 28 Q tiles')
     p.add_argument('--implementations',nargs='+',help='Validate and time only these exact implementation labels')
     p.add_argument('--seed',type=int,default=42)
     p.add_argument('--mhc-pattern',choices=['random','zero','prev_zero','prev_basis'],default='random',
@@ -47,8 +47,8 @@ def main():
     p.add_argument('--profile-pipe-metrics',action='store_true',help='explicit Level1 PipeUtilization counters; requires --profile')
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
-    if a.mha_seqlen!=4096 and a.suite not in ('mha_bf16','mha_stats_split'):
-        p.error('--mha-seqlen 3584 requires mha_bf16 or mha_stats_split')
+    if a.mha_seqlen!=4096 and a.suite not in ('mha_bf16','mha_stats_split','mha_scenarios'):
+        p.error('--mha-seqlen 3584 requires mha_bf16, mha_stats_split or mha_scenarios')
     if a.profile_pipe_metrics and (not a.profile or a.check_only):
         p.error('--profile-pipe-metrics requires --profile and cannot be combined with --check-only')
     if a.tokens<=0 or a.iters<=0 or a.rounds<=0 or a.warmup<0:
@@ -76,6 +76,9 @@ def main():
     with torch.no_grad():
         if a.suite in ('mhc_original','mhc_original_fused','mhc_original_big5120'):
             from mhc_original import make_case
+            functions,refs,names,meta=make_case(a)
+        elif a.suite=='mha_scenarios':
+            from mha_scenarios import make_case
             functions,refs,names,meta=make_case(a)
         elif a.suite=='mha_stats_split':
             from mha_stats_split import make_case
@@ -149,7 +152,7 @@ def main():
             delta=y.double()-r.double();err=delta.norm().item()/max(r.double().norm().item(),1e-30)
             finite=bool(torch.isfinite(y).all() and torch.isfinite(r).all())
             rtol,atol=(.02,.02) if r.dtype==torch.bfloat16 else (1e-3,1e-4)
-            if a.suite in ('mha','mha_bf16','mha_nostore','mha_stages','mha_finalize','mha_buffers','mha_stats_split'):
+            if a.suite in ('mha','mha_scenarios','mha_bf16','mha_nostore','mha_stages','mha_finalize','mha_buffers','mha_stats_split'):
                 passed=finite and err<=.01 and delta.abs().max().item()<=.02
                 gate={'relative_l2_max':.01,'max_abs_max':.02}
             else:

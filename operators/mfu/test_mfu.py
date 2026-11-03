@@ -15,6 +15,29 @@ DEVICE=dict(name='test-device',cube_core_num=28,vector_core_num=56)
 
 
 class MFUTest(unittest.TestCase):
+    def test_all_retained_variants_plan_is_fixed_s3584_and_balanced(self):
+        groups=make_groups('mha','seven-eighths',all_mha_variants=True)
+        self.assertEqual(len(groups),1)
+        group=groups[0]
+        self.assertEqual((group['suite'],group['tokens'],group['rounds']),('mha_scenarios',3584,16))
+        self.assertEqual(len(group['labels']),8)
+        self.assertEqual(group['labels'][-1],'ascendc')
+        import sys
+        sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'spec_v1'))
+        from bench import implementation_order
+        from mha_scenarios import configurations
+        self.assertEqual(set(group['labels'])-{'tilelang_q128','ascendc'},
+                         {label for label,_ in configurations()})
+        from collections import Counter
+        positions=Counter((label,pos) for rnd in range(16)
+            for pos,label in enumerate(implementation_order(group['labels'],rnd)))
+        self.assertEqual(set(positions.values()),{2})
+
+    def test_new_scenarios_suite_uses_scaled_flops(self):
+        contract={**MHA,**{key:[3584,128] for key in ('Q','K','V')}}
+        self.assertEqual(matrix_flops('mha_scenarios',contract),(6576668672,'bf16'))
+        with self.assertRaisesRegex(ValueError,'requires S3584'):matrix_flops('mha_scenarios',MHA)
+
     def test_attention_ratio_uses_matching_shape_and_replica(self):
         base=dict(suite='mha_stats_split',tokens=3584,useful_matrix_flops=6576668672,
                   matrix_mfu_percent=None)

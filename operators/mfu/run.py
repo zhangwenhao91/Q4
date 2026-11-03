@@ -10,13 +10,17 @@ import sys
 from analyze import analyze
 
 
-def make_groups(operator,scale):
+def make_groups(operator,scale,all_mha_variants=False):
     groups=[]
     for size_mode in (('full','seven-eighths') if scale=='both' else (scale,)):
         def size(n):return n if size_mode=='full' else n*7//8
         if operator in ('all','mha'):
-            groups.append(dict(suite='mha_stats_split',tokens=size(4096),base_tokens=4096,
-                labels=['tilelang_q128','tilelang_kv2','tilelang_s2buf','ascendc'],rounds=8,
+            labels=['tilelang_q128','tilelang_kv2','tilelang_s2buf','ascendc']
+            if all_mha_variants:
+                labels=['tilelang_q128','tilelang_s2','tilelang_nostore','tilelang_nostore_s2',
+                        'tilelang_finalize','tilelang_kv2','tilelang_s2buf','ascendc']
+            groups.append(dict(suite='mha_scenarios' if all_mha_variants else 'mha_stats_split',
+                tokens=size(4096),base_tokens=4096,labels=labels,rounds=2*len(labels),
                 package='q4fa-opp',vendor='q4fa_transformer',size_mode=size_mode))
         if operator in ('all','mhc'):
             for n in (64,128,256,512,8192):
@@ -32,7 +36,10 @@ def main():
     p.add_argument('--output',type=Path)
     p.add_argument('--scale',choices=('full','seven-eighths','both'),default='both')
     p.add_argument('--peak-json',type=Path,default=Path(__file__).with_name('peaks')/'ascend950pr_28aic.json')
+    p.add_argument('--all-mha-variants',action='store_true',help='S3584: all retained useful versions and ablations')
     a=p.parse_args()
+    if a.all_mha_variants and (a.operator!='mha' or a.scale!='seven-eighths'):
+        p.error('--all-mha-variants requires --operator mha --scale seven-eighths')
     root=Path(__file__).resolve().parents[2]
     output=(a.output or root/'results/mfu'/f'{datetime.now():%Y%m%d-%H%M%S}-{os.getpid()}').resolve()
     prefix=os.environ.get('CONDA_PREFIX','')
@@ -41,7 +48,7 @@ def main():
     for compiler in ('gcc','g++'):
         if not (Path(prefix)/'bin'/f'x86_64-conda-linux-gnu-{compiler}').is_file():
             p.error('Missing Conda GCC13 toolchain')
-    groups=make_groups(a.operator,a.scale)
+    groups=make_groups(a.operator,a.scale,a.all_mha_variants)
     peaks=json.loads(a.peak_json.read_text(encoding='utf-8'))
     for group in groups:
         package,vendor=group['package'],group['vendor']
@@ -74,7 +81,7 @@ def main():
             command=[sys.executable,str(root/'operators/spec_v1/bench.py'),'--suite',suite,
                 '--tokens',str(n),'--warmup','100','--iters','100','--rounds',str(rounds),
                 '--output',str(output/name),'--implementations',*labels]
-            if suite=='mha_stats_split':command.extend(['--mha-seqlen',str(n)])
+            if suite in ('mha_stats_split','mha_scenarios'):command.extend(['--mha-seqlen',str(n)])
             case=dict(directory=name,suite=suite,tokens=n,labels=labels,rounds=rounds,replica=rep,
                       size_mode=group['size_mode'],base_tokens=group['base_tokens'])
             plan['cases'].append(case)

@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import shutil
 
-from analyze import analyze
+from analyze import analyze,MHA_SUITES
 
 
 def export_capture(source,destination,peaks,operator='all'):
@@ -15,8 +15,7 @@ def export_capture(source,destination,peaks,operator='all'):
     result=analyze(source,peaks,operator=operator)
     plan=json.loads((source/'plan.json').read_text(encoding='utf-8'))
     if operator!='all':
-        suite='mha_stats_split' if operator=='mha' else 'mhc_shifted_split'
-        plan={**plan,'cases':[case for case in plan['cases'] if case['suite']==suite],
+        plan={**plan,'cases':[case for case in plan['cases'] if (case['suite'] in MHA_SUITES if operator=='mha' else case['suite']=='mhc_shifted_split')],
               'export_operator':operator}
     files=[source/'plan.json']
     for case in plan['cases']:

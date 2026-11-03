@@ -7,12 +7,17 @@ from pathlib import Path
 import statistics
 
 
+MHA_SUITES=('mha_stats_split','mha_scenarios')
+
+
 def matrix_flops(suite,contract):
-    if suite=='mha_stats_split':
+    if suite in MHA_SUITES:
         q=contract.get('Q',[])
         if not isinstance(q,list) or len(q)!=2 or q[0] not in (3584,4096):
             raise ValueError('Expected MHA sequence length 3584 or 4096')
         seq_len=q[0]
+        if suite=='mha_scenarios' and seq_len!=3584:
+            raise ValueError('All-scenarios sweep requires S3584')
         expected={'Q':[seq_len,128],'K':[seq_len,128],'V':[seq_len,128],
                   'batch':1,'heads':1,'input_dtype':'bfloat16','output_dtype':'bfloat16',
                   'causal':False,'dropout':0}
@@ -54,7 +59,7 @@ def compare_sizes(results):
     comparisons=[]
     for row in results:
         suite,n,label=row['suite'],row['tokens'],row['implementation']
-        if (suite=='mha_stats_split' and n!=4096) or (suite=='mhc_shifted_split' and n not in (64,128,256,512,8192)):
+        if (suite in MHA_SUITES and n!=4096) or (suite=='mhc_shifted_split' and n not in (64,128,256,512,8192)):
             continue
         scaled=index.get((suite,n*7//8,label))
         if scaled is None:continue
@@ -68,10 +73,10 @@ def compare_sizes(results):
 
 def attention_comparisons(results):
     """Compare AC/TL only within the same shape and same process replica."""
-    index={(r['tokens'],r['implementation']):r for r in results if r['suite']=='mha_stats_split'}
+    index={(r['suite'],r['tokens'],r['implementation']):r for r in results if r['suite'] in MHA_SUITES}
     comparisons=[]
-    for (n,label),tl in index.items():
-        ac=index.get((n,'ascendc'))
+    for (suite,n,label),tl in index.items():
+        ac=index.get((suite,n,'ascendc'))
         if label=='ascendc' or ac is None:continue
         if ac['useful_matrix_flops']!=tl['useful_matrix_flops']:
             raise ValueError('Cannot compare attention paths with different useful work')
@@ -93,7 +98,7 @@ def analyze(folder,peak_config=None,operator='all'):
     groups={}
     identities=set()
     selected=[case for case in plan['cases'] if operator=='all' or
-              case['suite']==('mha_stats_split' if operator=='mha' else 'mhc_shifted_split')]
+              (case['suite'] in MHA_SUITES if operator=='mha' else case['suite']=='mhc_shifted_split')]
     for case in selected:
         path=folder/case['directory']
         meta=json.loads((path/'metadata.json').read_text(encoding='utf-8'))
@@ -101,7 +106,7 @@ def analyze(folder,peak_config=None,operator='all'):
         if not checks or not all(c.get('passed') is True for c in checks):
             raise ValueError('Missing/failed precision checks: '+str(path))
         arguments=meta['arguments']
-        if case['suite']=='mha_stats_split':
+        if case['suite'] in MHA_SUITES:
             if meta['contract']['Q'][0]!=case['tokens'] or arguments.get('mha_seqlen',4096)!=case['tokens']:
                 raise ValueError('MHA plan/shape/sequence argument mismatch')
         if arguments['suite']!=case['suite'] or arguments['tokens']!=case['tokens']:

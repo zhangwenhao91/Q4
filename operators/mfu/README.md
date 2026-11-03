@@ -2,6 +2,15 @@
 
 ## 当前范围：仅 MHA（2026-11-03）
 
+S3584全部保留实现/优化阶段扫描：
+
+```bash
+python operators/mfu/run.py --operator mha --scale seven-eighths --all-mha-variants
+```
+
+覆盖7条TL路径和原生AC，三进程、每进程16轮均衡对照，详见
+[场景列表与说明](../../reports/MHA_ALL_SCENARIOS.md)。不改变batch/head或因果语义。
+
 mHC后续测试挂起。当前结果、同规格AC/TL、MFU及仅导出MHA的命令见
 [MHA当前工作页](../../reports/MHA_FOCUS.md)。
 默认运行入口已改为 `bash operators/mfu/run.sh mha both`（不传参数效果相同）。
