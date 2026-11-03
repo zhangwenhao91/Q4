@@ -23,14 +23,22 @@ if msprof op simulator --soc-version="${MHC_SIM_SOC:-Ascend950PR_9579}" \
   "$CONDA_PREFIX/bin/python" "$ROOT/operators/mhc/tuning/simulate_all_token.py" \
     --tokens "${MHC_SIM_TOKENS:-2048}" --output "$OUT/source" \
     > "$OUT/console.log" 2>&1; then
-  grep -E 'Start profiling on kernel:|ALL TOKEN CHECK:|Profiling results saved|Profiling data parse finished|\[ERROR\]' \
-    "$OUT/console.log" | tee -a "$REPORT" || true
+  "$CONDA_PREFIX/bin/python" "$ROOT/operators/mhc/tuning/diagnose_all_token.py" --input "$OUT"
 else
-  tail -n 60 "$OUT/console.log" | tee -a "$REPORT"
-  cp "$REPORT" "$ROOT/error.txt"
+  "$CONDA_PREFIX/bin/python" "$ROOT/operators/mhc/tuning/diagnose_all_token.py" --input "$OUT"
+  exit 1
+fi
+if grep -q '\[ERROR\]' "$OUT/console.log" || \
+   ! grep -q 'Profiling data parse finished' "$OUT/console.log" || \
+   ! test -f "$OUT/source/correctness.json"; then
+  echo 'Simulation incomplete or errors detected. See error.txt and full console.log.'
+  exit 1
+fi
+"$CONDA_PREFIX/bin/python" -c 'import json,sys; checks=json.load(open(sys.argv[1])); sys.exit(0 if len(checks)==4 and all(v["passed"] for v in checks) else 1)' "$OUT/source/correctness.json"
+if [[ "$(find "$OUT/prof" -name visualize_data.bin | wc -l)" -lt 3 ]]; then
+  echo 'Missing kernel visualization files. See error.txt and full console.log.'
   exit 1
 fi
 find "$OUT" -name visualize_data.bin -print | tee -a "$REPORT"
 echo 'Inspect same-core N-iteration overlap in all three traces; actual overlap is not yet verified.' | tee -a "$REPORT"
-cp "$REPORT" "$ROOT/error.txt"
 echo "Compact report: $ROOT/error.txt"
