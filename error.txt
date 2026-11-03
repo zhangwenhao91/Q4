@@ -1,115 +1,27 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mfu/run.sh all both
-MFU OUTPUT: /home/z30086261/Q4/results/mfu/20261103-115353-28394
-RUN: mha_stats_split-N4096-rep1 tilelang_q128,tilelang_kv2,tilelang_s2buf,ascendc
-DONE: mha_stats_split-N4096-rep1
-RUN: mhc_shifted_split-N64-rep1 tilelang_coeff_bound
-DONE: mhc_shifted_split-N64-rep1
-RUN: mhc_shifted_split-N128-rep1 tilelang_coeff_bound
-DONE: mhc_shifted_split-N128-rep1
-RUN: mhc_shifted_split-N256-rep1 tilelang_coeff_bound
-DONE: mhc_shifted_split-N256-rep1
-RUN: mhc_shifted_split-N512-rep1 tilelang_coeff_bound
-DONE: mhc_shifted_split-N512-rep1
-RUN: mhc_shifted_split-N8192-rep1 tilelang_coeff_bound
-DONE: mhc_shifted_split-N8192-rep1
-RUN: mha_stats_split-N3584-rep1 tilelang_q128,tilelang_kv2,tilelang_s2buf,ascendc
-DONE: mha_stats_split-N3584-rep1
-RUN: mhc_shifted_split-N56-rep1 tilelang_coeff_bound
-DONE: mhc_shifted_split-N56-rep1
-RUN: mhc_shifted_split-N112-rep1 tilelang_coeff_bound
-DONE: mhc_shifted_split-N112-rep1
-RUN: mhc_shifted_split-N224-rep1 tilelang_coeff_bound
-DONE: mhc_shifted_split-N224-rep1
-RUN: mhc_shifted_split-N448-rep1 tilelang_coeff_bound
-DONE: mhc_shifted_split-N448-rep1
-RUN: mhc_shifted_split-N7168-rep1 tilelang_coeff_bound
-DONE: mhc_shifted_split-N7168-rep1
-RUN: mhc_shifted_split-N7168-rep2 tilelang_coeff_bound
-DONE: mhc_shifted_split-N7168-rep2
-RUN: mhc_shifted_split-N448-rep2 tilelang_coeff_bound
-DONE: mhc_shifted_split-N448-rep2
-RUN: mhc_shifted_split-N224-rep2 tilelang_coeff_bound
-DONE: mhc_shifted_split-N224-rep2
-RUN: mhc_shifted_split-N112-rep2 tilelang_coeff_bound
-DONE: mhc_shifted_split-N112-rep2
-RUN: mhc_shifted_split-N56-rep2 tilelang_coeff_bound
-DONE: mhc_shifted_split-N56-rep2
-RUN: mha_stats_split-N3584-rep2 tilelang_q128,tilelang_kv2,tilelang_s2buf,ascendc
-DONE: mha_stats_split-N3584-rep2
-RUN: mhc_shifted_split-N8192-rep2 tilelang_coeff_bound
-DONE: mhc_shifted_split-N8192-rep2
-RUN: mhc_shifted_split-N512-rep2 tilelang_coeff_bound
-DONE: mhc_shifted_split-N512-rep2
-RUN: mhc_shifted_split-N256-rep2 tilelang_coeff_bound
-DONE: mhc_shifted_split-N256-rep2
-RUN: mhc_shifted_split-N128-rep2 tilelang_coeff_bound
-DONE: mhc_shifted_split-N128-rep2
-RUN: mhc_shifted_split-N64-rep2 tilelang_coeff_bound
-DONE: mhc_shifted_split-N64-rep2
-RUN: mha_stats_split-N4096-rep2 tilelang_q128,tilelang_kv2,tilelang_s2buf,ascendc
-DONE: mha_stats_split-N4096-rep2
-RUN: mha_stats_split-N4096-rep3 tilelang_q128,tilelang_kv2,tilelang_s2buf,ascendc
-DONE: mha_stats_split-N4096-rep3
-RUN: mhc_shifted_split-N64-rep3 tilelang_coeff_bound
-DONE: mhc_shifted_split-N64-rep3
-RUN: mhc_shifted_split-N128-rep3 tilelang_coeff_bound
-DONE: mhc_shifted_split-N128-rep3
-RUN: mhc_shifted_split-N256-rep3 tilelang_coeff_bound
-DONE: mhc_shifted_split-N256-rep3
-RUN: mhc_shifted_split-N512-rep3 tilelang_coeff_bound
-DONE: mhc_shifted_split-N512-rep3
-RUN: mhc_shifted_split-N8192-rep3 tilelang_coeff_bound
-DONE: mhc_shifted_split-N8192-rep3
-RUN: mha_stats_split-N3584-rep3 tilelang_q128,tilelang_kv2,tilelang_s2buf,ascendc
-DONE: mha_stats_split-N3584-rep3
-RUN: mhc_shifted_split-N56-rep3 tilelang_coeff_bound
-DONE: mhc_shifted_split-N56-rep3
-RUN: mhc_shifted_split-N112-rep3 tilelang_coeff_bound
-DONE: mhc_shifted_split-N112-rep3
-RUN: mhc_shifted_split-N224-rep3 tilelang_coeff_bound
-DONE: mhc_shifted_split-N224-rep3
-RUN: mhc_shifted_split-N448-rep3 tilelang_coeff_bound
-DONE: mhc_shifted_split-N448-rep3
-RUN: mhc_shifted_split-N7168-rep3 tilelang_coeff_bound
-DONE: mhc_shifted_split-N7168-rep3
-# Operator MFU proxy
-Useful matmul FLOPs / full API event latency / dense peak for the actual compute mode. Operator MFU proxy, not full-model MFU or hardware issue utilization.
-MHA softmax/scaling and mHC square-sum/RMS/apply/coefficient/Sinkhorn scalar-vector operations. Their execution time is INCLUDED. No padding/recompute FLOPs credited.
-
-| Suite | N | Implementation | Event us | Effective TFLOPS | Matrix MFU % |
-|---|---:|---|---:|---:|---:|
-| mha_stats_split | 4096 | tilelang_q128 | 52.664266 | 163.107460 | 43.1501 |
-| mha_stats_split | 4096 | tilelang_kv2 | 51.097226 | 168.109607 | 44.4734 |
-| mha_stats_split | 4096 | tilelang_s2buf | 50.957088 | 168.571927 | 44.5957 |
-| mha_stats_split | 4096 | ascendc | 40.088296 | 214.275374 | 56.6866 |
-| mhc_shifted_split | 64 | tilelang_coeff_bound | 25.208039 | 2.495813 | 1.3205 |
-| mhc_shifted_split | 128 | tilelang_coeff_bound | 24.314139 | 5.175142 | 2.7382 |
-| mhc_shifted_split | 256 | tilelang_coeff_bound | 25.658000 | 9.808179 | 5.1895 |
-| mhc_shifted_split | 512 | tilelang_coeff_bound | 39.020340 | 12.898823 | 6.8248 |
-| mhc_shifted_split | 8192 | tilelang_coeff_bound | 586.927643 | 13.720709 | 7.2596 |
-| mha_stats_split | 3584 | tilelang_q128 | 24.652045 | 266.779845 | 70.5767 |
-| mha_stats_split | 3584 | tilelang_kv2 | 24.021720 | 273.780094 | 72.4286 |
-| mha_stats_split | 3584 | tilelang_s2buf | 24.250644 | 271.195625 | 71.7449 |
-| mha_stats_split | 3584 | ascendc | 26.777985 | 245.599833 | 64.9735 |
-| mhc_shifted_split | 56 | tilelang_coeff_bound | 25.046370 | 2.197933 | 1.1629 |
-| mhc_shifted_split | 112 | tilelang_coeff_bound | 27.004681 | 4.077089 | 2.1572 |
-| mhc_shifted_split | 224 | tilelang_coeff_bound | 25.293651 | 8.705780 | 4.6062 |
-| mhc_shifted_split | 448 | tilelang_coeff_bound | 29.743409 | 14.806706 | 7.8342 |
-| mhc_shifted_split | 7168 | tilelang_coeff_bound | 546.508522 | 12.893542 | 6.8220 |
-
-## Seven-eighths / full shape efficiency
-Different workloads. A lower latency alone is not a same-work speedup.
-| Suite | Implementation | Full -> scaled | FLOPs ratio | Latency ratio | TFLOPS ratio |
-|---|---|---|---:|---:|---:|
-| mha_stats_split | tilelang_q128 | 4096 -> 3584 | 0.765625 | 0.468098 | 1.635608 |
-| mha_stats_split | tilelang_kv2 | 4096 -> 3584 | 0.765625 | 0.470118 | 1.628581 |
-| mha_stats_split | tilelang_s2buf | 4096 -> 3584 | 0.765625 | 0.475903 | 1.608783 |
-| mha_stats_split | ascendc | 4096 -> 3584 | 0.765625 | 0.667975 | 1.146188 |
-| mhc_shifted_split | tilelang_coeff_bound | 64 -> 56 | 0.875000 | 0.993587 | 0.880648 |
-| mhc_shifted_split | tilelang_coeff_bound | 128 -> 112 | 0.875000 | 1.110657 | 0.787822 |
-| mhc_shifted_split | tilelang_coeff_bound | 256 -> 224 | 0.875000 | 0.985800 | 0.887604 |
-| mhc_shifted_split | tilelang_coeff_bound | 512 -> 448 | 0.875000 | 0.762254 | 1.147911 |
-| mhc_shifted_split | tilelang_coeff_bound | 8192 -> 7168 | 0.875000 | 0.931134 | 0.939714 |
-
-Complete. Update error.txt with this output; retain the full MFU OUTPUT directory.
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mfu/run.sh all both
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mha/collect_plain3584.py 
+SELECTED results/mha-plain3584/20261103-151933-all-216035
+CHECKS 48 FAILED 0
+IDENTITY bench-cached-rep1 661c44965a68d07e78aab30a7aa07b10ce9df6bd {'Q': [3584, 128], 'K': [3584, 128], 'V': [3584, 128], 'batch': 1, 'heads': 1, 'input_dtype': 'bfloat16', 'output_dtype': 'bfloat16', 'scale': 0.08838834764831843, 'causal': False, 'dropout': 0, 'attention_bias': False, 'return_lse': False} source 80364b3d9758854a9692cc0f14089025f54d3f3f
+API PROCESS bench-cached-rep1 {"tilelang": {"event_us": 24.5830500125885, "wall_us": 24.922730517573655}, "ascendc": {"event_us": 26.580945253372192, "wall_us": 26.921125245280564}, "ratio": {"numerator": "ascendc", "denominator": "tilelang", "event_ratio": 1.0812712515233305}}
+API PROCESS bench-cached-rep2 {"tilelang": {"event_us": 24.680955410003662, "wall_us": 25.038960156962276}, "ascendc": {"event_us": 26.530214548110962, "wall_us": 26.892140158452094}, "ratio": {"numerator": "ascendc", "denominator": "tilelang", "event_ratio": 1.0749265620956374}}
+API PROCESS bench-cached-rep3 {"tilelang": {"event_us": 24.723055362701416, "wall_us": 25.08527017198503}, "ascendc": {"event_us": 26.557835340499878, "wall_us": 26.93705551791936}, "ratio": {"numerator": "ascendc", "denominator": "tilelang", "event_ratio": 1.0742133183330775}}
+API PROCESS bench-per_call-rep1 {"tilelang": {"event_us": 24.775065183639526, "wall_us": 25.16779990401119}, "ascendc": {"event_us": 64.87185478210449, "wall_us": 65.26293989736587}, "ratio": {"numerator": "ascendc", "denominator": "tilelang", "event_ratio": 2.618433263495238}}
+API PROCESS bench-per_call-rep2 {"tilelang": {"event_us": 24.62452530860901, "wall_us": 24.985825293697417}, "ascendc": {"event_us": 64.79619026184082, "wall_us": 65.16358989756554}, "ratio": {"numerator": "ascendc", "denominator": "tilelang", "event_ratio": 2.6313680954161316}}
+API PROCESS bench-per_call-rep3 {"tilelang": {"event_us": 24.6206796169281, "wall_us": 24.976115091703832}, "ascendc": {"event_us": 64.55282926559448, "wall_us": 64.97060065157712}, "ratio": {"numerator": "ascendc", "denominator": "tilelang", "event_ratio": 2.6218946946212967}}
+API MEDIAN bench-cached processes 3 TL_us 24.680955410003662 AC_us 26.557835340499878 AC/TL 1.0760456756765373
+API MEDIAN bench-per_call processes 3 TL_us 24.62452530860901 AC_us 64.79619026184082 AC/TL 2.6313680954161316
+PROFILE profile-cached-ascendc CSV 1
+KERNEL FlashAttn count 30 mean_us 26.645666666666667
+PROFILE profile-cached-ascendc.log CSV 0
+PROFILE profile-cached-tilelang CSV 1
+KERNEL main_kernel count 30 mean_us 24.526
+PROFILE profile-cached-tilelang.log CSV 0
+PROFILE profile-per_call-ascendc CSV 1
+KERNEL aclnnFlashAttnMetadata_FlashAttnMetadata_FlashAttnMetadata count 30 mean_us 38.26886666666667
+KERNEL FlashAttn count 30 mean_us 26.549966666666666
+PROFILE profile-per_call-ascendc.log CSV 0
+PROFILE profile-per_call-tilelang CSV 1
+KERNEL main_kernel count 30 mean_us 24.599733333333333
+PROFILE profile-per_call-tilelang.log CSV 0
+Expected all: 16 correctness files, 6 API summaries, 4 profile directories; 48 output checks.
+(zwh) root@ubuntu162:/home/z30086261/Q4#
