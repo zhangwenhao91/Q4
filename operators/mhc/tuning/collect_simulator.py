@@ -93,7 +93,7 @@ def compact_trace(file,events):
         if duration<0: continue
         lanes[key].append((start,start+duration));names[key][short(e.get('name'),50)]+=1
     merged={k:merge(v) for k,v in lanes.items()}
-    keys=sorted(merged,key=lambda k:sum(b-a for a,b in merged[k]),reverse=True)[:8]
+    keys=sorted(merged,key=lambda k:sum(b-a for a,b in merged[k]),reverse=True)[:4]
     print('CORE',file.parent.name,'events',len(events),'lanes',len(merged),'shown',len(keys),
           'phases',short(dict(Counter(str(e.get('ph')) for e in events))))
     for idx,key in enumerate(keys):
@@ -101,13 +101,29 @@ def compact_trace(file,events):
         label=labels.get(key) or labels.get((key[0],None),'')
         print(' L',idx,short(key,30),label,'count',len(lanes[key]),'busy',round(busy,6),
               'span',round(spans[-1][1]-spans[0][0],6),'names',short(names[key].most_common(3),130))
-    overlaps=[]
-    for i,left in enumerate(keys):
-        for j in range(i+1,len(keys)):
-            value=intersection(merged[left],merged[keys[j]])
-            if value>0: overlaps.append((value,i,j))
-    print(' OVERLAP_TOP8',[(i,j,round(v,6)) for v,i,j in sorted(overlaps,reverse=True)[:8]])
-    print(' Units=raw_trace; lane IDs are local to this CORE; parent spans may overlap child instructions.')
+    pipes=defaultdict(list);counts=Counter();vf=[]
+    for e in events:
+        if e.get('ph')!='X': continue
+        try: start=float(e['ts']);end=start+float(e['dur'])
+        except (KeyError,ValueError,TypeError): continue
+        if end<start: continue
+        key=(e.get('pid'),e.get('tid'));label=labels.get(key,'');name=str(e.get('name',''))
+        group=None
+        if label.startswith('MTE2_') and name.startswith('MOV_SRC_TO_DST'): group='MTE2'
+        elif label.startswith('MTE3_') and name.startswith('MOV_SRC_TO_DST'): group='MTE3'
+        elif label.startswith('RVEC') and name.startswith('RV_'): group='VECTOR_RV'
+        if group:
+            pipes[group].append((start,end));counts[group]+=1
+        if label.startswith('PUSHQ_') and name=='VF': vf.append((start,end))
+    united={g:merge(pipes[g]) for g in ('MTE2','VECTOR_RV','MTE3')}
+    busy=lambda xs:sum(b-a for a,b in xs)
+    for group,xs in united.items():
+        print(' PIPE',group,'events',counts[group],'union',round(busy(xs),6),
+              'range',tuple(round(v,6) for v in (xs[0][0],xs[-1][1])) if xs else None)
+    print(' PIPE_OVERLAP',[(a,b,round(intersection(united[a],united[b]),6))
+                          for a,b in (('MTE2','VECTOR_RV'),('VECTOR_RV','MTE3'),('MTE2','MTE3'))])
+    print(' VF_QUEUE_PROXY',len(vf),'union',round(busy(merge(vf)),6),
+          'NOTE raw trace units; spans may include stalls; VF queue is not Vector execution.')
 
 
 if __name__=='__main__': main()
