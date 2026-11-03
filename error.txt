@@ -1,4 +1,5 @@
-python3 -c "import acl; print(acl.get_soc_name())"
-
-find /home/CANN/9.3.0.weekly.20260930/ascend-toolkit \
-  -maxdepth 6 -type d -iname '*950*'
+(zwh) root@ubuntu162:/home/z30086261/Q4# python3 -c "import acl; print(acl.get_soc_name())"
+Ascend950PR_9579
+(zwh) root@ubuntu162:/home/z30086261/Q4# find /home/CANN/9.3.0.weekly.20260930/ascend-toolkit \
+>   -maxdepth 6 -type d -iname '*950*'
+(zwh) root@ubuntu162:/home/z30086261/Q4#
