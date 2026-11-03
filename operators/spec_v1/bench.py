@@ -25,6 +25,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--suite',choices=['mha','mha_scenarios','mha_bf16','mha_nostore','mha_stages','mha_finalize','mha_buffers','mha_stats_split','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_split','mhc_original','mhc_original_fused','mhc_original_big5120'],required=True)
     p.add_argument('--mhc-pipeline-flat',action='store_true',help='compare flat with nested apply pipeline')
+    p.add_argument('--mhc-all-token-pipeline',action='store_true',help='three-kernel N-pipeline candidate; N must be divisible by 128')
     p.add_argument('--mhc-apply-pipeline',choices=[f'{b}:{s}' for b in (256,1024,1280,5120) for s in (1,3)],help='apply block:stages; use 5120 with --mhc-pipeline-flat for full-hidden token pipelining')
     p.add_argument('--mhc-tail-config',choices=[f'{c}:{s}' for c in (14,28,56) for s in (1,2)],help='shifted_split: tail cores:stages, apply fixed H1280')
     p.add_argument('--mhc-apply-block',type=int,choices=[256,512,1024,1280,2560,5120],help='shifted_split: compare apply hidden tile')
@@ -67,6 +68,10 @@ def main():
         p.error('--mhc-apply-pipeline requires shifted_split without other scan flags')
     if a.mhc_pipeline_flat and not a.mhc_apply_pipeline:
         p.error('--mhc-pipeline-flat requires --mhc-apply-pipeline')
+    if a.mhc_all_token_pipeline and (a.suite!='mhc_shifted_split' or a.tokens%128 or
+            a.mhc_apply_pipeline or a.mhc_pipeline_flat or a.mhc_apply_block or
+            a.mhc_tail_config or a.mhc_projection_splits):
+        p.error('--mhc-all-token-pipeline requires shifted_split, N divisible by 128, and no other scan flags')
     a.output.mkdir(parents=True,exist_ok=False)
     import torch
     import torch_npu

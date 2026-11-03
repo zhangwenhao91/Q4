@@ -159,6 +159,13 @@ def shifted_case(a, native_shifted=False, fusion=False, bind=False, split=False)
                 fusion_meta['expected_kernel_counts']={
                     'tilelang_apply_bound':2,'tilelang_coeff_bound':3,'ascendc_shifted_native':2}
                 pipeline_config = getattr(a, 'mhc_apply_pipeline', None)
+                if getattr(a, 'mhc_all_token_pipeline', False):
+                    all_fn, all_meta = make_bound_candidate(projector,x,prev,alpha,bias,
+                        split_apply=True,apply_pipeline=(5120,3),flat_pipeline=True,
+                        all_token_pipeline=True)
+                    functions['tilelang_all_token_h5120s3'] = all_fn
+                    split_meta['all_token_pipeline'] = all_meta
+                    fusion_meta['expected_kernel_counts']['tilelang_all_token_h5120s3'] = 3
                 if pipeline_config:
                     block, stages = map(int,pipeline_config.split(':'))
                     pipe_fn, pipe_meta = make_bound_candidate(projector,x,prev,alpha,bias,
