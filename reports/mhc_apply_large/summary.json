@@ -1,0 +1,2369 @@
+{
+  "evidence": "4e99fe7:error.txt",
+  "run_revision": "04d7f8c9ea8f3b943b449762ec2c51920b861a04",
+  "output_checks": 8640,
+  "raw_projection_checks": 288,
+  "failed": 0,
+  "median_api": {
+    "bench-N1024-K1024:1": {
+      "ascendc_shifted_native": {
+        "event_us": 64.27465915679932,
+        "wall_us": 64.67525439802557
+      },
+      "tilelang_apply_bound": {
+        "event_us": 69.37804698944092,
+        "wall_us": 69.72423463594168
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 64.04428482055664,
+        "wall_us": 64.45378065109253
+      },
+      "tilelang_flat_h1024s1": {
+        "event_us": 81.35023593902588,
+        "wall_us": 81.785325310193
+      },
+      "tilelang_pipeline_h1024s1": {
+        "event_us": 81.3573169708252,
+        "wall_us": 81.72037487383932
+      }
+    },
+    "bench-N1024-K1024:3": {
+      "ascendc_shifted_native": {
+        "event_us": 64.2619800567627,
+        "wall_us": 64.62969409767538
+      },
+      "tilelang_apply_bound": {
+        "event_us": 69.47407484054565,
+        "wall_us": 69.88827488385141
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 64.12749528884888,
+        "wall_us": 64.53004491049796
+      },
+      "tilelang_flat_h1024s3": {
+        "event_us": 65.50148487091064,
+        "wall_us": 65.84577029570937
+      },
+      "tilelang_pipeline_h1024s3": {
+        "event_us": 65.53845882415771,
+        "wall_us": 65.97680505365133
+      }
+    },
+    "bench-N1024-K1280:1": {
+      "ascendc_shifted_native": {
+        "event_us": 64.27830457687378,
+        "wall_us": 64.63869998697191
+      },
+      "tilelang_apply_bound": {
+        "event_us": 69.339439868927,
+        "wall_us": 69.70054470002651
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 64.02106523513794,
+        "wall_us": 64.50995977502316
+      },
+      "tilelang_flat_h1280s1": {
+        "event_us": 77.1832537651062,
+        "wall_us": 77.58015999570489
+      },
+      "tilelang_pipeline_h1280s1": {
+        "event_us": 77.22108125686646,
+        "wall_us": 77.59137952234596
+      }
+    },
+    "bench-N1024-K1280:3": {
+      "ascendc_shifted_native": {
+        "event_us": 64.31234359741211,
+        "wall_us": 64.65648009907454
+      },
+      "tilelang_apply_bound": {
+        "event_us": 69.63055610656738,
+        "wall_us": 70.0682500610128
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 64.2853045463562,
+        "wall_us": 64.68738021794707
+      },
+      "tilelang_flat_h1280s3": {
+        "event_us": 64.65462446212769,
+        "wall_us": 65.04952441900969
+      },
+      "tilelang_pipeline_h1280s3": {
+        "event_us": 64.7307801246643,
+        "wall_us": 65.190534805879
+      }
+    },
+    "bench-N2048-K1024:1": {
+      "ascendc_shifted_native": {
+        "event_us": 120.66468238830566,
+        "wall_us": 121.05837988201529
+      },
+      "tilelang_apply_bound": {
+        "event_us": 119.91712093353271,
+        "wall_us": 120.20649970509112
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 123.90625,
+        "wall_us": 124.25917957443744
+      },
+      "tilelang_flat_h1024s1": {
+        "event_us": 156.9370698928833,
+        "wall_us": 157.39198017399758
+      },
+      "tilelang_pipeline_h1024s1": {
+        "event_us": 161.13975524902344,
+        "wall_us": 161.68121539521962
+      }
+    },
+    "bench-N2048-K1024:3": {
+      "ascendc_shifted_native": {
+        "event_us": 120.09117603302002,
+        "wall_us": 120.52598060108721
+      },
+      "tilelang_apply_bound": {
+        "event_us": 120.6422758102417,
+        "wall_us": 120.9778047632426
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 123.47791194915771,
+        "wall_us": 123.84401052258909
+      },
+      "tilelang_flat_h1024s3": {
+        "event_us": 122.53806591033936,
+        "wall_us": 122.98301502596587
+      },
+      "tilelang_pipeline_h1024s3": {
+        "event_us": 126.15112781524658,
+        "wall_us": 126.6414049314335
+      }
+    },
+    "bench-N2048-K1280:1": {
+      "ascendc_shifted_native": {
+        "event_us": 120.27686595916748,
+        "wall_us": 120.65331975463778
+      },
+      "tilelang_apply_bound": {
+        "event_us": 119.60352420806885,
+        "wall_us": 120.03093434032053
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 122.9985237121582,
+        "wall_us": 123.57831001281738
+      },
+      "tilelang_flat_h1280s1": {
+        "event_us": 148.3716917037964,
+        "wall_us": 148.7961848033592
+      },
+      "tilelang_pipeline_h1280s1": {
+        "event_us": 152.32833862304688,
+        "wall_us": 152.68386981915683
+      }
+    },
+    "bench-N2048-K1280:3": {
+      "ascendc_shifted_native": {
+        "event_us": 120.38323879241943,
+        "wall_us": 120.8040997153148
+      },
+      "tilelang_apply_bound": {
+        "event_us": 119.34596538543701,
+        "wall_us": 119.72929059993476
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 123.5538911819458,
+        "wall_us": 123.89909068588167
+      },
+      "tilelang_flat_h1280s3": {
+        "event_us": 121.30932807922363,
+        "wall_us": 121.7486645327881
+      },
+      "tilelang_pipeline_h1280s3": {
+        "event_us": 125.4544734954834,
+        "wall_us": 125.78923022374511
+      }
+    },
+    "bench-N4096-K1024:1": {
+      "ascendc_shifted_native": {
+        "event_us": 298.8215446472168,
+        "wall_us": 299.34285033959895
+      },
+      "tilelang_apply_bound": {
+        "event_us": 318.3621025085449,
+        "wall_us": 319.2096442217007
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 341.09214782714844,
+        "wall_us": 341.66497527621686
+      },
+      "tilelang_flat_h1024s1": {
+        "event_us": 457.67858505249023,
+        "wall_us": 458.27052963431925
+      },
+      "tilelang_pipeline_h1024s1": {
+        "event_us": 456.7264175415039,
+        "wall_us": 457.31549500487745
+      }
+    },
+    "bench-N4096-K1024:3": {
+      "ascendc_shifted_native": {
+        "event_us": 303.4688186645508,
+        "wall_us": 303.96062531508505
+      },
+      "tilelang_apply_bound": {
+        "event_us": 319.94664192199707,
+        "wall_us": 320.680650183931
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 343.96623611450195,
+        "wall_us": 344.5595200173557
+      },
+      "tilelang_flat_h1024s3": {
+        "event_us": 358.0216979980469,
+        "wall_us": 358.61975979059935
+      },
+      "tilelang_pipeline_h1024s3": {
+        "event_us": 357.4654006958008,
+        "wall_us": 358.2717344397679
+      }
+    },
+    "bench-N4096-K1280:1": {
+      "ascendc_shifted_native": {
+        "event_us": 297.6358222961426,
+        "wall_us": 298.2671302743256
+      },
+      "tilelang_apply_bound": {
+        "event_us": 320.5542182922363,
+        "wall_us": 321.1732901399955
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 343.3816146850586,
+        "wall_us": 343.90793938655406
+      },
+      "tilelang_flat_h1280s1": {
+        "event_us": 431.0636520385742,
+        "wall_us": 431.53151986189187
+      },
+      "tilelang_pipeline_h1280s1": {
+        "event_us": 429.67899322509766,
+        "wall_us": 430.3126403829083
+      }
+    },
+    "bench-N4096-K1280:3": {
+      "ascendc_shifted_native": {
+        "event_us": 307.0685577392578,
+        "wall_us": 307.66653013415635
+      },
+      "tilelang_apply_bound": {
+        "event_us": 319.6387577056885,
+        "wall_us": 320.4759949585423
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 343.82558822631836,
+        "wall_us": 344.351755338721
+      },
+      "tilelang_flat_h1280s3": {
+        "event_us": 352.86298751831055,
+        "wall_us": 353.3803002210334
+      },
+      "tilelang_pipeline_h1280s3": {
+        "event_us": 352.66563415527344,
+        "wall_us": 353.10863982886076
+      }
+    },
+    "bench-N8192-K1024:1": {
+      "ascendc_shifted_native": {
+        "event_us": 706.0006713867188,
+        "wall_us": 706.7002053372562
+      },
+      "tilelang_apply_bound": {
+        "event_us": 547.1124458312988,
+        "wall_us": 547.6721248123795
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 587.3427581787109,
+        "wall_us": 587.9712250316516
+      },
+      "tilelang_flat_h1024s1": {
+        "event_us": 780.8977890014648,
+        "wall_us": 781.6899847239256
+      },
+      "tilelang_pipeline_h1024s1": {
+        "event_us": 781.1492538452148,
+        "wall_us": 781.8403601413593
+      }
+    },
+    "bench-N8192-K1024:3": {
+      "ascendc_shifted_native": {
+        "event_us": 733.7805557250977,
+        "wall_us": 734.201415325515
+      },
+      "tilelang_apply_bound": {
+        "event_us": 544.709529876709,
+        "wall_us": 545.304169645533
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 586.0159301757812,
+        "wall_us": 586.7364699952304
+      },
+      "tilelang_flat_h1024s3": {
+        "event_us": 602.4759292602539,
+        "wall_us": 603.0814896803349
+      },
+      "tilelang_pipeline_h1024s3": {
+        "event_us": 602.720890045166,
+        "wall_us": 603.4294550772756
+      }
+    },
+    "bench-N8192-K1280:1": {
+      "ascendc_shifted_native": {
+        "event_us": 715.9397125244141,
+        "wall_us": 716.4602947887033
+      },
+      "tilelang_apply_bound": {
+        "event_us": 546.0065841674805,
+        "wall_us": 546.4232055237517
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 587.300968170166,
+        "wall_us": 588.0444799549878
+      },
+      "tilelang_flat_h1280s1": {
+        "event_us": 719.7698211669922,
+        "wall_us": 720.2538347337395
+      },
+      "tilelang_pipeline_h1280s1": {
+        "event_us": 719.2758560180664,
+        "wall_us": 719.8330550454557
+      }
+    },
+    "bench-N8192-K1280:3": {
+      "ascendc_shifted_native": {
+        "event_us": 743.2044219970703,
+        "wall_us": 743.8121299492195
+      },
+      "tilelang_apply_bound": {
+        "event_us": 544.4727897644043,
+        "wall_us": 545.0258549535647
+      },
+      "tilelang_coeff_bound": {
+        "event_us": 586.5495491027832,
+        "wall_us": 586.9804852409288
+      },
+      "tilelang_flat_h1280s3": {
+        "event_us": 593.3652687072754,
+        "wall_us": 593.925555003807
+      },
+      "tilelang_pipeline_h1280s3": {
+        "event_us": 593.5807418823242,
+        "wall_us": 594.1870942479
+      }
+    }
+  },
+  "processes": [
+    {
+      "tag": "bench-N1024-K1024:1-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 64.27465915679932,
+          "wall_us": 64.67525439802557
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0035971099823842,
+          "two_over_three": 1.0834685050919286
+        },
+        "tilelang_apply_bound": {
+          "event_us": 69.3899655342102,
+          "wall_us": 69.7728549130261
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 64.04428482055664,
+          "wall_us": 64.45378065109253
+        },
+        "tilelang_flat_h1024s1": {
+          "event_us": 81.35023593902588,
+          "wall_us": 81.85648010112345
+        },
+        "tilelang_pipeline_h1024s1": {
+          "event_us": 81.3653564453125,
+          "wall_us": 81.73889946192503
+        }
+      }
+    },
+    {
+      "tag": "bench-N1024-K1024:1-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 64.31463956832886,
+          "wall_us": 64.69989020843059
+        },
+        "ratios": {
+          "ascendc_over_three": 1.004309344902359,
+          "two_over_three": 1.083377305544013
+        },
+        "tilelang_apply_bound": {
+          "event_us": 69.37804698944092,
+          "wall_us": 69.72423463594168
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 64.03867483139038,
+          "wall_us": 64.43785445299
+        },
+        "tilelang_flat_h1024s1": {
+          "event_us": 81.36173725128174,
+          "wall_us": 81.785325310193
+        },
+        "tilelang_pipeline_h1024s1": {
+          "event_us": 81.3573169708252,
+          "wall_us": 81.72037487383932
+        }
+      }
+    },
+    {
+      "tag": "bench-N1024-K1024:1-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 64.20440435409546,
+          "wall_us": 64.54556481912732
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0021638461555065,
+          "two_over_three": 1.0805251836413008
+        },
+        "tilelang_apply_bound": {
+          "event_us": 69.22468423843384,
+          "wall_us": 69.6672999765724
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 64.06577587127686,
+          "wall_us": 64.45747974794358
+        },
+        "tilelang_flat_h1024s1": {
+          "event_us": 81.29306316375732,
+          "wall_us": 81.6552306059748
+        },
+        "tilelang_pipeline_h1024s1": {
+          "event_us": 81.32472515106201,
+          "wall_us": 81.6795602440834
+        }
+      }
+    },
+    {
+      "tag": "bench-N1024-K1024:3-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 64.22948360443115,
+          "wall_us": 64.59799013100564
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0018037064337626,
+          "two_over_three": 1.083833117141927
+        },
+        "tilelang_apply_bound": {
+          "event_us": 69.48870420455933,
+          "wall_us": 69.88827488385141
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 64.11384105682373,
+          "wall_us": 64.53004491049796
+        },
+        "tilelang_flat_h1024s3": {
+          "event_us": 65.42957544326782,
+          "wall_us": 65.8329448197037
+        },
+        "tilelang_pipeline_h1024s3": {
+          "event_us": 65.55980443954468,
+          "wall_us": 65.97680505365133
+        }
+      }
+    },
+    {
+      "tag": "bench-N1024-K1024:3-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 64.2659044265747,
+          "wall_us": 64.69153508078307
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0008269841670014,
+          "two_over_three": 1.0819349610164943
+        },
+        "tilelang_apply_bound": {
+          "event_us": 69.47407484054565,
+          "wall_us": 69.87986504100263
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 64.21280145645142,
+          "wall_us": 64.58056508563459
+        },
+        "tilelang_flat_h1024s3": {
+          "event_us": 65.51513195037842,
+          "wall_us": 65.92773948796093
+        },
+        "tilelang_pipeline_h1024s3": {
+          "event_us": 65.53520917892456,
+          "wall_us": 65.99038024432957
+        }
+      }
+    },
+    {
+      "tag": "bench-N1024-K1024:3-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 64.2619800567627,
+          "wall_us": 64.62969409767538
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0020971467435,
+          "two_over_three": 1.0833261051474807
+        },
+        "tilelang_apply_bound": {
+          "event_us": 69.47098970413208,
+          "wall_us": 69.94210998527706
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 64.12749528884888,
+          "wall_us": 64.52162517234683
+        },
+        "tilelang_flat_h1024s3": {
+          "event_us": 65.50148487091064,
+          "wall_us": 65.84577029570937
+        },
+        "tilelang_pipeline_h1024s3": {
+          "event_us": 65.53845882415771,
+          "wall_us": 65.91457000467926
+        }
+      }
+    },
+    {
+      "tag": "bench-N1024-K1280:1-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 64.33326959609985,
+          "wall_us": 64.69858984928578
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0025874563247381,
+          "two_over_three": 1.0808803593680258
+        },
+        "tilelang_apply_bound": {
+          "event_us": 69.35710906982422,
+          "wall_us": 69.70054470002651
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 64.16723966598511,
+          "wall_us": 64.50995977502316
+        },
+        "tilelang_flat_h1280s1": {
+          "event_us": 77.26093530654907,
+          "wall_us": 77.67024450004101
+        },
+        "tilelang_pipeline_h1280s1": {
+          "event_us": 77.27498531341553,
+          "wall_us": 77.60616019368172
+        }
+      }
+    },
+    {
+      "tag": "bench-N1024-K1280:1-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 64.27830457687378,
+          "wall_us": 64.61547513026744
+        },
+        "ratios": {
+          "ascendc_over_three": 1.005756329438691,
+          "two_over_three": 1.0831340897891741
+        },
+        "tilelang_apply_bound": {
+          "event_us": 69.22354936599731,
+          "wall_us": 69.59489022847265
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 63.910415172576904,
+          "wall_us": 64.31366957258433
+        },
+        "tilelang_flat_h1280s1": {
+          "event_us": 77.07624435424805,
+          "wall_us": 77.47050025500357
+        },
+        "tilelang_pipeline_h1280s1": {
+          "event_us": 77.05847978591919,
+          "wall_us": 77.39348511677235
+        }
+      }
+    },
+    {
+      "tag": "bench-N1024-K1280:1-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 64.25852537155151,
+          "wall_us": 64.63869998697191
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0037090938043818,
+          "two_over_three": 1.083072260891874
+        },
+        "tilelang_apply_bound": {
+          "event_us": 69.339439868927,
+          "wall_us": 69.76249045692384
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 64.02106523513794,
+          "wall_us": 64.51581546571106
+        },
+        "tilelang_flat_h1280s1": {
+          "event_us": 77.1832537651062,
+          "wall_us": 77.58015999570489
+        },
+        "tilelang_pipeline_h1280s1": {
+          "event_us": 77.22108125686646,
+          "wall_us": 77.59137952234596
+        }
+      }
+    },
+    {
+      "tag": "bench-N1024-K1280:3-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 64.278564453125,
+          "wall_us": 64.53755544498563
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0034255178938072,
+          "two_over_three": 1.0810376641718102
+        },
+        "tilelang_apply_bound": {
+          "event_us": 69.2503309249878,
+          "wall_us": 69.52737981919199
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 64.0591287612915,
+          "wall_us": 64.3179751932621
+        },
+        "tilelang_flat_h1280s3": {
+          "event_us": 64.2845106124878,
+          "wall_us": 64.56594448536634
+        },
+        "tilelang_pipeline_h1280s3": {
+          "event_us": 64.31251525878906,
+          "wall_us": 64.58917981944978
+        }
+      }
+    },
+    {
+      "tag": "bench-N1024-K1280:3-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 64.31234359741211,
+          "wall_us": 64.65648009907454
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0004206101417223,
+          "two_over_three": 1.0831488875712911
+        },
+        "tilelang_apply_bound": {
+          "event_us": 69.63055610656738,
+          "wall_us": 70.0682500610128
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 64.2853045463562,
+          "wall_us": 64.68738021794707
+        },
+        "tilelang_flat_h1280s3": {
+          "event_us": 64.65462446212769,
+          "wall_us": 65.04952441900969
+        },
+        "tilelang_pipeline_h1280s3": {
+          "event_us": 64.7307801246643,
+          "wall_us": 65.190534805879
+        }
+      }
+    },
+    {
+      "tag": "bench-N1024-K1280:3-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 65.00057458877563,
+          "wall_us": 65.37635519634932
+        },
+        "ratios": {
+          "ascendc_over_three": 1.0058089496177585,
+          "two_over_three": 1.082849140446564
+        },
+        "tilelang_apply_bound": {
+          "event_us": 69.97931003570557,
+          "wall_us": 70.39072981569916
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 64.62517023086548,
+          "wall_us": 65.02242991700768
+        },
+        "tilelang_flat_h1280s3": {
+          "event_us": 64.97627019882202,
+          "wall_us": 65.34871470648795
+        },
+        "tilelang_pipeline_h1280s3": {
+          "event_us": 64.9053406715393,
+          "wall_us": 65.35402499139309
+        }
+      }
+    },
+    {
+      "tag": "bench-N2048-K1024:1-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 119.3572187423706,
+          "wall_us": 119.77095040492713
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9708554737255279,
+          "two_over_three": 0.9754097362390837
+        },
+        "tilelang_apply_bound": {
+          "event_us": 119.91712093353271,
+          "wall_us": 120.20649970509112
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 122.94025421142578,
+          "wall_us": 123.36609011981636
+        },
+        "tilelang_flat_h1024s1": {
+          "event_us": 154.57950115203857,
+          "wall_us": 155.01761459745467
+        },
+        "tilelang_pipeline_h1024s1": {
+          "event_us": 158.74489784240723,
+          "wall_us": 159.15131487417966
+        }
+      }
+    },
+    {
+      "tag": "bench-N2048-K1024:1-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 120.92225074768066,
+          "wall_us": 121.40264560002834
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9642931903368059,
+          "two_over_three": 0.937516857103213
+        },
+        "tilelang_apply_bound": {
+          "event_us": 117.56450176239014,
+          "wall_us": 118.00629959907383
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 125.39988040924072,
+          "wall_us": 125.88161509484053
+        },
+        "tilelang_flat_h1024s1": {
+          "event_us": 156.9370698928833,
+          "wall_us": 157.39198017399758
+        },
+        "tilelang_pipeline_h1024s1": {
+          "event_us": 162.48003959655762,
+          "wall_us": 162.87425067275763
+        }
+      }
+    },
+    {
+      "tag": "bench-N2048-K1024:1-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 120.66468238830566,
+          "wall_us": 121.05837988201529
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9738385463873345,
+          "two_over_three": 1.0115677014575781
+        },
+        "tilelang_apply_bound": {
+          "event_us": 125.33956050872803,
+          "wall_us": 125.78446476254612
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 123.90625,
+          "wall_us": 124.25917957443744
+        },
+        "tilelang_flat_h1024s1": {
+          "event_us": 158.38223934173584,
+          "wall_us": 158.7133650900796
+        },
+        "tilelang_pipeline_h1024s1": {
+          "event_us": 161.13975524902344,
+          "wall_us": 161.68121539521962
+        }
+      }
+    },
+    {
+      "tag": "bench-N2048-K1024:3-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 120.04197120666504,
+          "wall_us": 120.4786152811721
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9720237561115815,
+          "two_over_three": 0.9669283840095682
+        },
+        "tilelang_apply_bound": {
+          "event_us": 119.4127082824707,
+          "wall_us": 119.88542508333921
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 123.49695205688477,
+          "wall_us": 123.89212963171303
+        },
+        "tilelang_flat_h1024s3": {
+          "event_us": 122.5853681564331,
+          "wall_us": 123.24355484452099
+        },
+        "tilelang_pipeline_h1024s3": {
+          "event_us": 126.55953884124756,
+          "wall_us": 127.01691943220794
+        }
+      }
+    },
+    {
+      "tag": "bench-N2048-K1024:3-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 120.09117603302002,
+          "wall_us": 120.52598060108721
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9725721316251915,
+          "two_over_three": 0.9770352762356105
+        },
+        "tilelang_apply_bound": {
+          "event_us": 120.6422758102417,
+          "wall_us": 120.9778047632426
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 123.47791194915771,
+          "wall_us": 123.803949682042
+        },
+        "tilelang_flat_h1024s3": {
+          "event_us": 122.29336738586426,
+          "wall_us": 122.68701975699514
+        },
+        "tilelang_pipeline_h1024s3": {
+          "event_us": 126.15112781524658,
+          "wall_us": 126.61881977692246
+        }
+      }
+    },
+    {
+      "tag": "bench-N2048-K1024:3-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 120.10815620422363,
+          "wall_us": 120.52768492139876
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9731562550092606,
+          "two_over_three": 0.977590811314673
+        },
+        "tilelang_apply_bound": {
+          "event_us": 120.65547466278076,
+          "wall_us": 121.09654024243355
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 123.42124462127686,
+          "wall_us": 123.84401052258909
+        },
+        "tilelang_flat_h1024s3": {
+          "event_us": 122.53806591033936,
+          "wall_us": 122.98301502596587
+        },
+        "tilelang_pipeline_h1024s3": {
+          "event_us": 126.13741874694824,
+          "wall_us": 126.6414049314335
+        }
+      }
+    },
+    {
+      "tag": "bench-N2048-K1280:1-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 120.06217956542969,
+          "wall_us": 120.4616395989433
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9746424375676194,
+          "two_over_three": 0.97064312658343
+        },
+        "tilelang_apply_bound": {
+          "event_us": 119.56952095031738,
+          "wall_us": 119.91952022071928
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 123.18587303161621,
+          "wall_us": 123.57921048533171
+        },
+        "tilelang_flat_h1280s1": {
+          "event_us": 148.18472862243652,
+          "wall_us": 148.61050993204117
+        },
+        "tilelang_pipeline_h1280s1": {
+          "event_us": 152.32833862304688,
+          "wall_us": 152.65422000084072
+        }
+      }
+    },
+    {
+      "tag": "bench-N2048-K1280:1-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 120.33088207244873,
+          "wall_us": 120.79188018105924
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9785108289418664,
+          "two_over_three": 0.9730908906478194
+        },
+        "tilelang_apply_bound": {
+          "event_us": 119.66437339782715,
+          "wall_us": 120.11050479486585
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 122.97348022460938,
+          "wall_us": 123.37535503320396
+        },
+        "tilelang_flat_h1280s1": {
+          "event_us": 148.4898328781128,
+          "wall_us": 148.84661068208516
+        },
+        "tilelang_pipeline_h1280s1": {
+          "event_us": 152.39953517913818,
+          "wall_us": 152.80694991815835
+        }
+      }
+    },
+    {
+      "tag": "bench-N2048-K1280:1-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 120.27686595916748,
+          "wall_us": 120.65331975463778
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9778724356126423,
+          "two_over_three": 0.972398046727501
+        },
+        "tilelang_apply_bound": {
+          "event_us": 119.60352420806885,
+          "wall_us": 120.03093434032053
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 122.9985237121582,
+          "wall_us": 123.57831001281738
+        },
+        "tilelang_flat_h1280s1": {
+          "event_us": 148.3716917037964,
+          "wall_us": 148.7961848033592
+        },
+        "tilelang_pipeline_h1280s1": {
+          "event_us": 152.311749458313,
+          "wall_us": 152.68386981915683
+        }
+      }
+    },
+    {
+      "tag": "bench-N2048-K1280:3-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 120.09218215942383,
+          "wall_us": 120.5199200194329
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9740804916962328,
+          "two_over_three": 0.967750496774106
+        },
+        "tilelang_apply_bound": {
+          "event_us": 119.31177139282227,
+          "wall_us": 119.70434978138655
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 123.28773975372314,
+          "wall_us": 123.6597349634394
+        },
+        "tilelang_flat_h1280s3": {
+          "event_us": 121.30932807922363,
+          "wall_us": 121.76829972304404
+        },
+        "tilelang_pipeline_h1280s3": {
+          "event_us": 125.4544734954834,
+          "wall_us": 125.78923022374511
+        }
+      }
+    },
+    {
+      "tag": "bench-N2048-K1280:3-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 120.51466941833496,
+          "wall_us": 120.93915487639606
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9752503825175917,
+          "two_over_three": 0.9657927865200693
+        },
+        "tilelang_apply_bound": {
+          "event_us": 119.34596538543701,
+          "wall_us": 119.75877976510674
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 123.57305526733398,
+          "wall_us": 123.98762512020767
+        },
+        "tilelang_flat_h1280s3": {
+          "event_us": 121.39018535614014,
+          "wall_us": 121.73730006907135
+        },
+        "tilelang_pipeline_h1280s3": {
+          "event_us": 125.51210403442383,
+          "wall_us": 125.92562939971685
+        }
+      }
+    },
+    {
+      "tag": "bench-N2048-K1280:3-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 120.38323879241943,
+          "wall_us": 120.8040997153148
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9743378993636287,
+          "two_over_three": 0.9660929093440892
+        },
+        "tilelang_apply_bound": {
+          "event_us": 119.36453819274902,
+          "wall_us": 119.72929059993476
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 123.5538911819458,
+          "wall_us": 123.89909068588167
+        },
+        "tilelang_flat_h1280s3": {
+          "event_us": 121.11907005310059,
+          "wall_us": 121.7486645327881
+        },
+        "tilelang_pipeline_h1280s3": {
+          "event_us": 125.14674186706543,
+          "wall_us": 125.47670514322817
+        }
+      }
+    },
+    {
+      "tag": "bench-N4096-K1024:1-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 296.31861686706543,
+          "wall_us": 297.0779949100688
+        },
+        "ratios": {
+          "ascendc_over_three": 0.8687347942621875,
+          "two_over_three": 0.9345126603669217
+        },
+        "tilelang_apply_bound": {
+          "event_us": 318.7549304962158,
+          "wall_us": 319.3074947921559
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 341.09214782714844,
+          "wall_us": 341.66497527621686
+        },
+        "tilelang_flat_h1024s1": {
+          "event_us": 457.67858505249023,
+          "wall_us": 458.27052963431925
+        },
+        "tilelang_pipeline_h1024s1": {
+          "event_us": 456.72204971313477,
+          "wall_us": 457.31549500487745
+        }
+      }
+    },
+    {
+      "tag": "bench-N4096-K1024:1-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 298.9750099182129,
+          "wall_us": 300.1660801237449
+        },
+        "ratios": {
+          "ascendc_over_three": 0.8764166939005206,
+          "two_over_three": 0.9332481046495666
+        },
+        "tilelang_apply_bound": {
+          "event_us": 318.3621025085449,
+          "wall_us": 319.2096442217007
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 341.1334037780762,
+          "wall_us": 341.7687851469964
+        },
+        "tilelang_flat_h1024s1": {
+          "event_us": 457.4452781677246,
+          "wall_us": 458.3376250229776
+        },
+        "tilelang_pipeline_h1024s1": {
+          "event_us": 456.78701400756836,
+          "wall_us": 457.52495585475117
+        }
+      }
+    },
+    {
+      "tag": "bench-N4096-K1024:1-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 298.8215446472168,
+          "wall_us": 299.34285033959895
+        },
+        "ratios": {
+          "ascendc_over_three": 0.876269363455756,
+          "two_over_three": 0.9329789518900343
+        },
+        "tilelang_apply_bound": {
+          "event_us": 318.160400390625,
+          "wall_us": 318.67664481978863
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 341.015625,
+          "wall_us": 341.42966964282095
+        },
+        "tilelang_flat_h1024s1": {
+          "event_us": 457.7494812011719,
+          "wall_us": 458.2687251968309
+        },
+        "tilelang_pipeline_h1024s1": {
+          "event_us": 456.7264175415039,
+          "wall_us": 457.2402802295983
+        }
+      }
+    },
+    {
+      "tag": "bench-N4096-K1024:3-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 300.44429779052734,
+          "wall_us": 301.13724002148956
+        },
+        "ratios": {
+          "ascendc_over_three": 0.8734703184370494,
+          "two_over_three": 0.9299936003280962
+        },
+        "tilelang_apply_bound": {
+          "event_us": 319.8863983154297,
+          "wall_us": 320.680650183931
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 343.96623611450195,
+          "wall_us": 344.5057896897197
+        },
+        "tilelang_flat_h1024s3": {
+          "event_us": 357.73189544677734,
+          "wall_us": 358.3257202990353
+        },
+        "tilelang_pipeline_h1024s3": {
+          "event_us": 357.4654006958008,
+          "wall_us": 358.2717344397679
+        }
+      }
+    },
+    {
+      "tag": "bench-N4096-K1024:3-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 303.4688186645508,
+          "wall_us": 303.96062531508505
+        },
+        "ratios": {
+          "ascendc_over_three": 0.8819025875063708,
+          "two_over_three": 0.9312634501803242
+        },
+        "tilelang_apply_bound": {
+          "event_us": 320.4542350769043,
+          "wall_us": 321.01364980917424
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 344.10696029663086,
+          "wall_us": 344.5978742092848
+        },
+        "tilelang_flat_h1024s3": {
+          "event_us": 358.04710388183594,
+          "wall_us": 358.6940694367513
+        },
+        "tilelang_pipeline_h1024s3": {
+          "event_us": 357.71156311035156,
+          "wall_us": 358.3194053499028
+        }
+      }
+    },
+    {
+      "tag": "bench-N4096-K1024:3-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 307.5946235656738,
+          "wall_us": 308.2656249171123
+        },
+        "ratios": {
+          "ascendc_over_three": 0.8942696941054997,
+          "two_over_three": 0.9301807108490557
+        },
+        "tilelang_apply_bound": {
+          "event_us": 319.94664192199707,
+          "wall_us": 320.6361847696826
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 343.9618110656738,
+          "wall_us": 344.5595200173557
+        },
+        "tilelang_flat_h1024s3": {
+          "event_us": 358.0216979980469,
+          "wall_us": 358.61975979059935
+        },
+        "tilelang_pipeline_h1024s3": {
+          "event_us": 357.4061584472656,
+          "wall_us": 357.99601988401264
+        }
+      }
+    },
+    {
+      "tag": "bench-N4096-K1280:1-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 297.39084243774414,
+          "wall_us": 297.8972747223452
+        },
+        "ratios": {
+          "ascendc_over_three": 0.8655964889032169,
+          "two_over_three": 0.9341371232387488
+        },
+        "tilelang_apply_bound": {
+          "event_us": 320.9391784667969,
+          "wall_us": 321.5476998593658
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 343.5675239562988,
+          "wall_us": 344.1512049175799
+        },
+        "tilelang_flat_h1280s1": {
+          "event_us": 430.8922004699707,
+          "wall_us": 431.53151986189187
+        },
+        "tilelang_pipeline_h1280s1": {
+          "event_us": 429.67899322509766,
+          "wall_us": 430.3126403829083
+        }
+      }
+    },
+    {
+      "tag": "bench-N4096-K1280:1-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 297.6358222961426,
+          "wall_us": 298.2671302743256
+        },
+        "ratios": {
+          "ascendc_over_three": 0.8667785622975972,
+          "two_over_three": 0.9335217862093199
+        },
+        "tilelang_apply_bound": {
+          "event_us": 320.5542182922363,
+          "wall_us": 321.1732901399955
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 343.3816146850586,
+          "wall_us": 343.90793938655406
+        },
+        "tilelang_flat_h1280s1": {
+          "event_us": 431.08715057373047,
+          "wall_us": 431.6288646077737
+        },
+        "tilelang_pipeline_h1280s1": {
+          "event_us": 429.69825744628906,
+          "wall_us": 430.44063553679734
+        }
+      }
+    },
+    {
+      "tag": "bench-N4096-K1280:1-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 299.1507148742676,
+          "wall_us": 299.5090954937041
+        },
+        "ratios": {
+          "ascendc_over_three": 0.8717952209802089,
+          "two_over_three": 0.9335230361778514
+        },
+        "tilelang_apply_bound": {
+          "event_us": 320.33220291137695,
+          "wall_us": 320.8198642823845
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 343.1433296203613,
+          "wall_us": 343.5475000878796
+        },
+        "tilelang_flat_h1280s1": {
+          "event_us": 431.0636520385742,
+          "wall_us": 431.3852050108835
+        },
+        "tilelang_pipeline_h1280s1": {
+          "event_us": 429.4564628601074,
+          "wall_us": 429.83177001588047
+        }
+      }
+    },
+    {
+      "tag": "bench-N4096-K1280:3-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 307.0685577392578,
+          "wall_us": 307.66653013415635
+        },
+        "ratios": {
+          "ascendc_over_three": 0.8930939646560984,
+          "two_over_three": 0.9296537798556481
+        },
+        "tilelang_apply_bound": {
+          "event_us": 319.6387577056885,
+          "wall_us": 320.19036007113755
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 343.82558822631836,
+          "wall_us": 344.351755338721
+        },
+        "tilelang_flat_h1280s3": {
+          "event_us": 352.89777755737305,
+          "wall_us": 353.3803002210334
+        },
+        "tilelang_pipeline_h1280s3": {
+          "event_us": 352.66563415527344,
+          "wall_us": 353.10863982886076
+        }
+      }
+    },
+    {
+      "tag": "bench-N4096-K1280:3-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 301.90452575683594,
+          "wall_us": 302.3534151725471
+        },
+        "ratios": {
+          "ascendc_over_three": 0.8774285203188955,
+          "two_over_three": 0.9300980391124278
+        },
+        "tilelang_apply_bound": {
+          "event_us": 320.0269889831543,
+          "wall_us": 321.2139551760629
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 344.0787696838379,
+          "wall_us": 344.73608538974077
+        },
+        "tilelang_flat_h1280s3": {
+          "event_us": 352.86298751831055,
+          "wall_us": 353.5824496066198
+        },
+        "tilelang_pipeline_h1280s3": {
+          "event_us": 352.9937744140625,
+          "wall_us": 353.586109704338
+        }
+      }
+    },
+    {
+      "tag": "bench-N4096-K1280:3-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 312.20190048217773,
+          "wall_us": 312.5626250403002
+        },
+        "ratios": {
+          "ascendc_over_three": 0.9082112633066608,
+          "two_over_three": 0.9297015860100906
+        },
+        "tilelang_apply_bound": {
+          "event_us": 319.58930015563965,
+          "wall_us": 320.4759949585423
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 343.75471115112305,
+          "wall_us": 344.164224807173
+        },
+        "tilelang_flat_h1280s3": {
+          "event_us": 352.82575607299805,
+          "wall_us": 353.2844496658072
+        },
+        "tilelang_pipeline_h1280s3": {
+          "event_us": 352.32669830322266,
+          "wall_us": 352.73137502372265
+        }
+      }
+    },
+    {
+      "tag": "bench-N8192-K1024:1-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 706.0006713867188,
+          "wall_us": 706.7002053372562
+        },
+        "ratios": {
+          "ascendc_over_three": 1.2020406013312777,
+          "two_over_three": 0.9311773128653151
+        },
+        "tilelang_apply_bound": {
+          "event_us": 546.9131469726562,
+          "wall_us": 547.370970598422
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 587.3351287841797,
+          "wall_us": 587.8125800518319
+        },
+        "tilelang_flat_h1024s1": {
+          "event_us": 780.8551788330078,
+          "wall_us": 781.4439648063853
+        },
+        "tilelang_pipeline_h1024s1": {
+          "event_us": 780.9835433959961,
+          "wall_us": 781.4406155375764
+        }
+      }
+    },
+    {
+      "tag": "bench-N8192-K1024:1-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 705.6462097167969,
+          "wall_us": 706.5329601755366
+        },
+        "ratios": {
+          "ascendc_over_three": 1.200912709894938,
+          "two_over_three": 0.93184568614603
+        },
+        "tilelang_apply_bound": {
+          "event_us": 547.5446891784668,
+          "wall_us": 548.229964915663
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 587.5915908813477,
+          "wall_us": 588.0840896861628
+        },
+        "tilelang_flat_h1024s1": {
+          "event_us": 780.8977890014648,
+          "wall_us": 781.6899847239256
+        },
+        "tilelang_pipeline_h1024s1": {
+          "event_us": 781.1492538452148,
+          "wall_us": 781.8403601413593
+        }
+      }
+    },
+    {
+      "tag": "bench-N8192-K1024:1-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 709.8326873779297,
+          "wall_us": 710.4728149715811
+        },
+        "ratios": {
+          "ascendc_over_three": 1.208549313826644,
+          "two_over_three": 0.9315045400880363
+        },
+        "tilelang_apply_bound": {
+          "event_us": 547.1124458312988,
+          "wall_us": 547.6721248123795
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 587.3427581787109,
+          "wall_us": 587.9712250316516
+        },
+        "tilelang_flat_h1024s1": {
+          "event_us": 781.4581680297852,
+          "wall_us": 782.2600950021297
+        },
+        "tilelang_pipeline_h1024s1": {
+          "event_us": 781.270866394043,
+          "wall_us": 781.9606398697942
+        }
+      }
+    },
+    {
+      "tag": "bench-N8192-K1024:3-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 731.8412780761719,
+          "wall_us": 732.4930944014341
+        },
+        "ratios": {
+          "ascendc_over_three": 1.2480064843738818,
+          "two_over_three": 0.9293910686336628
+        },
+        "tilelang_apply_bound": {
+          "event_us": 545.0025749206543,
+          "wall_us": 545.3938548453152
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 586.4082336425781,
+          "wall_us": 586.9212507968768
+        },
+        "tilelang_flat_h1024s3": {
+          "event_us": 602.4759292602539,
+          "wall_us": 603.0274543445557
+        },
+        "tilelang_pipeline_h1024s3": {
+          "event_us": 602.720890045166,
+          "wall_us": 603.4294550772756
+        }
+      }
+    },
+    {
+      "tag": "bench-N8192-K1024:3-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 741.1076736450195,
+          "wall_us": 741.8202352710068
+        },
+        "ratios": {
+          "ascendc_over_three": 1.2646544837487899,
+          "two_over_three": 0.9293041894913024
+        },
+        "tilelang_apply_bound": {
+          "event_us": 544.5870590209961,
+          "wall_us": 545.304169645533
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 586.0159301757812,
+          "wall_us": 586.7364699952304
+        },
+        "tilelang_flat_h1024s3": {
+          "event_us": 602.424430847168,
+          "wall_us": 603.1423207605258
+        },
+        "tilelang_pipeline_h1024s3": {
+          "event_us": 603.0806541442871,
+          "wall_us": 603.579684975557
+        }
+      }
+    },
+    {
+      "tag": "bench-N8192-K1024:3-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 733.7805557250977,
+          "wall_us": 734.201415325515
+        },
+        "ratios": {
+          "ascendc_over_three": 1.2530375169612258,
+          "two_over_three": 0.9301711137703331
+        },
+        "tilelang_apply_bound": {
+          "event_us": 544.709529876709,
+          "wall_us": 545.2002101810649
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 585.6014251708984,
+          "wall_us": 586.1552996793762
+        },
+        "tilelang_flat_h1024s3": {
+          "event_us": 602.6908111572266,
+          "wall_us": 603.0814896803349
+        },
+        "tilelang_pipeline_h1024s3": {
+          "event_us": 602.5463104248047,
+          "wall_us": 603.1965051079169
+        }
+      }
+    },
+    {
+      "tag": "bench-N8192-K1280:1-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 715.9397125244141,
+          "wall_us": 716.4602947887033
+        },
+        "ratios": {
+          "ascendc_over_three": 1.2185777440956416,
+          "two_over_three": 0.9293955317610539
+        },
+        "tilelang_apply_bound": {
+          "event_us": 546.0391616821289,
+          "wall_us": 546.6086254455149
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 587.520751953125,
+          "wall_us": 588.1466850405559
+        },
+        "tilelang_flat_h1280s1": {
+          "event_us": 719.5062255859375,
+          "wall_us": 720.2538347337395
+        },
+        "tilelang_pipeline_h1280s1": {
+          "event_us": 719.1515350341797,
+          "wall_us": 719.8330550454557
+        }
+      }
+    },
+    {
+      "tag": "bench-N8192-K1280:1-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 722.2991943359375,
+          "wall_us": 722.9060097597539
+        },
+        "ratios": {
+          "ascendc_over_three": 1.2298620868723935,
+          "two_over_three": 0.9290171292485568
+        },
+        "tilelang_apply_bound": {
+          "event_us": 545.6126594543457,
+          "wall_us": 546.3595100445673
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 587.300968170166,
+          "wall_us": 588.0444799549878
+        },
+        "tilelang_flat_h1280s1": {
+          "event_us": 719.9633026123047,
+          "wall_us": 720.7309547811747
+        },
+        "tilelang_pipeline_h1280s1": {
+          "event_us": 719.6756744384766,
+          "wall_us": 720.2828797744587
+        }
+      }
+    },
+    {
+      "tag": "bench-N8192-K1280:1-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 707.0173263549805,
+          "wall_us": 707.4344099964947
+        },
+        "ratios": {
+          "ascendc_over_three": 1.2041199352905323,
+          "two_over_three": 0.9299028302254843
+        },
+        "tilelang_apply_bound": {
+          "event_us": 546.0065841674805,
+          "wall_us": 546.4232055237517
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 587.1652030944824,
+          "wall_us": 587.6460851868615
+        },
+        "tilelang_flat_h1280s1": {
+          "event_us": 719.7698211669922,
+          "wall_us": 720.2015549410135
+        },
+        "tilelang_pipeline_h1280s1": {
+          "event_us": 719.2758560180664,
+          "wall_us": 719.7329995688051
+        }
+      }
+    },
+    {
+      "tag": "bench-N8192-K1280:3-rep1",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 732.8571701049805,
+          "wall_us": 733.2960545318201
+        },
+        "ratios": {
+          "ascendc_over_three": 1.2494377861614538,
+          "two_over_three": 0.9282639302975483
+        },
+        "tilelang_apply_bound": {
+          "event_us": 544.4727897644043,
+          "wall_us": 545.0258549535647
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 586.5495491027832,
+          "wall_us": 586.9804852409288
+        },
+        "tilelang_flat_h1280s3": {
+          "event_us": 593.3652687072754,
+          "wall_us": 593.925555003807
+        },
+        "tilelang_pipeline_h1280s3": {
+          "event_us": 593.6701965332031,
+          "wall_us": 594.1870942479
+        }
+      }
+    },
+    {
+      "tag": "bench-N8192-K1280:3-rep2",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 743.2044219970703,
+          "wall_us": 743.8121299492195
+        },
+        "ratios": {
+          "ascendc_over_three": 1.2690934811595131,
+          "two_over_three": 0.9281739301553805
+        },
+        "tilelang_apply_bound": {
+          "event_us": 543.5556793212891,
+          "wall_us": 544.0305144293234
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 585.6183433532715,
+          "wall_us": 586.1002596793696
+        },
+        "tilelang_flat_h1280s3": {
+          "event_us": 593.6278343200684,
+          "wall_us": 594.0930551150814
+        },
+        "tilelang_pipeline_h1280s3": {
+          "event_us": 592.8827095031738,
+          "wall_us": 593.2853906415403
+        }
+      }
+    },
+    {
+      "tag": "bench-N8192-K1280:3-rep3",
+      "data": {
+        "ascendc_shifted_native": {
+          "event_us": 746.2948989868164,
+          "wall_us": 746.704310295172
+        },
+        "ratios": {
+          "ascendc_over_three": 1.27219525727383,
+          "two_over_three": 0.9290603704911186
+        },
+        "tilelang_apply_bound": {
+          "event_us": 545.0051879882812,
+          "wall_us": 545.7475857110694
+        },
+        "tilelang_coeff_bound": {
+          "event_us": 586.6197776794434,
+          "wall_us": 587.0782298734412
+        },
+        "tilelang_flat_h1280s3": {
+          "event_us": 593.181095123291,
+          "wall_us": 593.765209778212
+        },
+        "tilelang_pipeline_h1280s3": {
+          "event_us": 593.5807418823242,
+          "wall_us": 594.201015192084
+        }
+      }
+    }
+  ],
+  "profiles": {
+    "profile-N1024-K1024:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 8.466233
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 28.3334
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 44.381833
+      }
+    ],
+    "profile-N1024-K1024:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 8.5416
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 12.4761
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 44.302367
+      }
+    ],
+    "profile-N1024-K1280:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 8.4483
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 24.320767
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 44.094133
+      }
+    ],
+    "profile-N1024-K1280:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 8.596833
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 11.446933
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 44.8782
+      }
+    ],
+    "profile-N2048-K1024:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 11.637533
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 56.733567
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 91.517933
+      }
+    ],
+    "profile-N2048-K1024:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 11.659433
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 23.359433
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 91.3497
+      }
+    ],
+    "profile-N2048-K1280:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 11.6194
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 48.457967
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 91.423067
+      }
+    ],
+    "profile-N2048-K1280:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 11.654867
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 22.033533
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 91.644733
+      }
+    ],
+    "profile-N4096-K1024:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 18.3823
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 229.393833
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 214.9445
+      }
+    ],
+    "profile-N4096-K1024:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 18.591967
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 123.290133
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 215.025867
+      }
+    ],
+    "profile-N4096-K1280:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 18.507467
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 198.6617
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 214.1408
+      }
+    ],
+    "profile-N4096-K1280:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 18.585967
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 118.341167
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 215.0782
+      }
+    ],
+    "profile-N8192-K1024:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 34.506567
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 474.502333
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 272.914367
+      }
+    ],
+    "profile-N8192-K1024:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 34.612233
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 296.833967
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 270.630133
+      }
+    ],
+    "profile-N8192-K1280:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 34.602867
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 416.374533
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 267.621867
+      }
+    ],
+    "profile-N8192-K1280:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 34.643033
+      },
+      {
+        "name": "mhc_pre_apply_flat_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 289.413233
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 269.8386
+      }
+    ],
+    "profile-nested-N1024-K1024:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 8.4042
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 28.337867
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 44.0392
+      }
+    ],
+    "profile-nested-N1024-K1024:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 8.482333
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 12.609267
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 44.050833
+      }
+    ],
+    "profile-nested-N1024-K1280:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 8.3089
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 24.238433
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 43.709067
+      }
+    ],
+    "profile-nested-N1024-K1280:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 8.469867
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 11.583433
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 43.886
+      }
+    ],
+    "profile-nested-N2048-K1024:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 11.8394
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 57.403433
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 91.3083
+      }
+    ],
+    "profile-nested-N2048-K1024:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 11.843067
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 23.2419
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 91.250633
+      }
+    ],
+    "profile-nested-N2048-K1280:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 11.799633
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 49.2269
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 91.6414
+      }
+    ],
+    "profile-nested-N2048-K1280:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 11.7993
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 21.980033
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 91.3854
+      }
+    ],
+    "profile-nested-N4096-K1024:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 18.686467
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 228.520033
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 213.5907
+      }
+    ],
+    "profile-nested-N4096-K1024:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 18.8234
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 122.791733
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 213.9246
+      }
+    ],
+    "profile-nested-N4096-K1280:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 18.4956
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 197.929633
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 213.110533
+      }
+    ],
+    "profile-nested-N4096-K1280:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 18.776167
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 118.4036
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 214.1168
+      }
+    ],
+    "profile-nested-N8192-K1024:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 34.685867
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 474.299233
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 269.9391
+      }
+    ],
+    "profile-nested-N8192-K1024:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 34.698967
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 296.963333
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 268.3135
+      }
+    ],
+    "profile-nested-N8192-K1280:1": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 34.462167
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 416.516067
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 267.1699
+      }
+    ],
+    "profile-nested-N8192-K1280:3": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 34.5894
+      },
+      {
+        "name": "mhc_pre_apply_pipeline_asc_kernel",
+        "count": 30,
+        "mean_us": 289.034767
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 271.216667
+      }
+    ],
+    "profile-original-N1024": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 8.4094
+      },
+      {
+        "name": "mhc_pre_apply_mix_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 11.215867
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 43.664967
+      }
+    ],
+    "profile-original-N2048": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 11.853833
+      },
+      {
+        "name": "mhc_pre_apply_mix_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 20.212267
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 90.210467
+      }
+    ],
+    "profile-original-N4096": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 18.7628
+      },
+      {
+        "name": "mhc_pre_apply_mix_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 108.857433
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 214.400133
+      }
+    ],
+    "profile-original-N8192": [
+      {
+        "name": "mhc_coeff_tail_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 34.5767
+      },
+      {
+        "name": "mhc_pre_apply_mix_fwd_asc_kernel",
+        "count": 30,
+        "mean_us": 280.852067
+      },
+      {
+        "name": "tf32_hc_prenorm_gemm_kernel_kernel",
+        "count": 30,
+        "mean_us": 269.678267
+      }
+    ]
+  }
+}
