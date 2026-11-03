@@ -10,10 +10,28 @@ import sys
 from analyze import analyze
 
 
+def make_groups(operator,scale):
+    groups=[]
+    for size_mode in (('full','seven-eighths') if scale=='both' else (scale,)):
+        def size(n):return n if size_mode=='full' else n*7//8
+        if operator in ('all','mha'):
+            groups.append(dict(suite='mha_stats_split',tokens=size(4096),base_tokens=4096,
+                labels=['tilelang_q128','tilelang_kv2','tilelang_s2buf','ascendc'],rounds=8,
+                package='q4fa-opp',vendor='q4fa_transformer',size_mode=size_mode))
+        if operator in ('all','mhc'):
+            for n in (64,128,256,512,8192):
+                groups.append(dict(suite='mhc_shifted_split',tokens=size(n),base_tokens=n,
+                    labels=['tilelang_coeff_bound'],rounds=9,package='q4mhcmatch-opp',
+                    vendor='q4mhcmatch_transformer',size_mode=size_mode))
+    return groups
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--operator',choices=('all','mha','mhc'),default='all')
     p.add_argument('--output',type=Path)
+    p.add_argument('--scale',choices=('full','seven-eighths','both'),default='full')
+    p.add_argument('--peak-json',type=Path,default=Path(__file__).with_name('peaks')/'ascend950pr_28aic.json')
     a=p.parse_args()
     root=Path(__file__).resolve().parents[2]
     output=(a.output or root/'results/mfu'/f'{datetime.now():%Y%m%d-%H%M%S}-{os.getpid()}').resolve()
@@ -23,22 +41,23 @@ def main():
     for compiler in ('gcc','g++'):
         if not (Path(prefix)/'bin'/f'x86_64-conda-linux-gnu-{compiler}').is_file():
             p.error('Missing Conda GCC13 toolchain')
-    groups=[]
-    if a.operator in ('all','mha'):
-        groups.append(('mha_stats_split',4096,['tilelang_q128','tilelang_kv2','tilelang_s2buf','ascendc'],8,'q4fa-opp','q4fa_transformer'))
-    if a.operator in ('all','mhc'):
-        for n in (64,128,256,512,8192):
-            groups.append(('mhc_shifted_split',n,['tilelang_coeff_bound'],9,'q4mhcmatch-opp','q4mhcmatch_transformer'))
-    for _,_,_,_,package,vendor in groups:
+    groups=make_groups(a.operator,a.scale)
+    peaks=json.loads(a.peak_json.read_text(encoding='utf-8'))
+    for group in groups:
+        package,vendor=group['package'],group['vendor']
         if not (root/'third_party'/package/'vendors'/vendor/'op_api/lib/libcust_opapi.so').is_file():
             p.error(f'Missing {package}/{vendor}; restore the corresponding existing vendor first')
     output.mkdir(parents=True,exist_ok=False)
     print('MFU OUTPUT:',output,flush=True)
     plan={'scope':'Existing full API calls, matrix FLOP numerator, no new numeric kernels',
+          'scale':a.scale,
           'q4_revision':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),
           'cases':[]}
     for rep in (1,2,3):
-        for suite,n,labels,rounds,package,vendor in groups:
+        # Reverse the shape order on alternate processes to reduce fixed shape-order bias.
+        for group in (groups if rep%2 else list(reversed(groups))):
+            suite,n,labels,rounds,package,vendor=(group[k] for k in
+                ('suite','tokens','labels','rounds','package','vendor'))
             name=f'{suite}-N{n}-rep{rep}'
             env=os.environ.copy()
             env.update(ASCEND_RT_VISIBLE_DEVICES=env.get('ASCEND_RT_VISIBLE_DEVICES') or '4',
@@ -55,7 +74,9 @@ def main():
             command=[sys.executable,str(root/'operators/spec_v1/bench.py'),'--suite',suite,
                 '--tokens',str(n),'--warmup','100','--iters','100','--rounds',str(rounds),
                 '--output',str(output/name),'--implementations',*labels]
-            case=dict(directory=name,suite=suite,tokens=n,labels=labels,rounds=rounds,replica=rep)
+            if suite=='mha_stats_split':command.extend(['--mha-seqlen',str(n)])
+            case=dict(directory=name,suite=suite,tokens=n,labels=labels,rounds=rounds,replica=rep,
+                      size_mode=group['size_mode'],base_tokens=group['base_tokens'])
             plan['cases'].append(case)
             (output/'plan.json').write_text(json.dumps(plan,indent=2)+'\n',encoding='utf-8')
             print('RUN:',name,','.join(labels),flush=True)
@@ -66,9 +87,9 @@ def main():
                 raise RuntimeError(f'Case failed ({result.returncode}); preserve logs at {output}')
             print('DONE:',name,flush=True)
     # Validate all expected files before the CLI writes reports.
-    analyze(output)
+    analyze(output,peaks)
     subprocess.run([sys.executable,str(Path(__file__).with_name('analyze.py')),
-                    '--input',str(output)],check=True)
+                    '--input',str(output),'--peak-json',str(a.peak_json.resolve())],check=True)
     print('Complete. Update error.txt with this output; retain the full MFU OUTPUT directory.',flush=True)
 
 

@@ -33,12 +33,15 @@ def transform(original, label):
 
 def build_candidate(source, q, k, v):
     import tilelang
+    seq_len=int(q.shape[0])
+    if seq_len not in (3584,4096) or tuple(q.shape)!=(seq_len,128) or tuple(k.shape)!=tuple(q.shape) or tuple(v.shape)!=tuple(q.shape):
+        raise ValueError('Expected matched Q/K/V [3584 or 4096,128]')
     original = (Path(source)/'core.py').read_bytes()
     functions = {}
     details = {}
     for label, changed in CONFIGS.items():
         data = transform(original, label)
-        target = Path(__file__).resolve().parents[3]/'third_party'/'mha-stats-split-candidate'/(label+'.py')
+        target = Path(__file__).resolve().parents[3]/'third_party'/'mha-stats-split-candidate'/f's{seq_len}'/(label+'.py')
         target.parent.mkdir(parents=True, exist_ok=True)
         if target.exists() and target.read_bytes() != data:
             raise RuntimeError(f'Candidate source modified; preserve it before proceeding: {target}')
@@ -48,7 +51,7 @@ def build_candidate(source, q, k, v):
         sys.modules[spec.name] = module
         spec.loader.exec_module(module)
         program = module.flash_attention_fwd(
-            q_len=4096, kv_len=4096, head_dim=128, out_dtype='bfloat16',
+            q_len=seq_len, kv_len=seq_len, head_dim=128, out_dtype='bfloat16',
             softmax_scale=1/math.sqrt(128), manual_schedule=False,
             tiling=module.FwdTiling(block_q=128, block_kv=128, num_stages=2))
         kernel = tilelang.compile(program, out_idx=-1,
@@ -68,6 +71,7 @@ def build_candidate(source, q, k, v):
             generated_source=str(target), compiled_source=str(cpp_path),
             cpp_sha256=hashlib.sha256(cpp.encode()).hexdigest())
     return functions, dict(
+        seq_len=seq_len, q_tiles=seq_len//128, kv_blocks=seq_len//128,
         candidate='Separate S_ub and alpha_ub versions2 on the best KV2 kernel',
         original_sha256=ORIGINAL_SHA256, sources=details,
         scope='Matched nostore+stages2+fused finalization+KV2. Independently change only S or alpha versions from 3 to 2. Default cache policy and P buffer retained; no Q residency or first-PV changes. Actual allocation, schedule legality and accuracy require server validation.')

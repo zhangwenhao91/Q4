@@ -29,7 +29,9 @@ def main():
     p.add_argument('--mhc-tail-config',choices=[f'{c}:{s}' for c in (14,28,56) for s in (1,2)],help='shifted_split: tail cores:stages, apply fixed H1280')
     p.add_argument('--mhc-apply-block',type=int,choices=[256,512,1024,1280,2560,5120],help='shifted_split: compare apply hidden tile')
     p.add_argument('--mhc-projection-splits',type=int,choices=[1,2,4,8],help='shifted_split only: compare one K-split candidate against unchanged baselines')
-    p.add_argument('--tokens',type=int,default=512,help='mHC only; MHA is fixed at 4096')
+    p.add_argument('--tokens',type=int,default=512,help='mHC token count; MFU runner also records MHA S here')
+    p.add_argument('--mha-seqlen',type=int,choices=(3584,4096),default=4096,
+                   help='BF16 baseline / stats-split MHA only; 3584 tests 28 Q tiles')
     p.add_argument('--implementations',nargs='+',help='Validate and time only these exact implementation labels')
     p.add_argument('--seed',type=int,default=42)
     p.add_argument('--mhc-pattern',choices=['random','zero','prev_zero','prev_basis'],default='random',
@@ -45,6 +47,8 @@ def main():
     p.add_argument('--profile-pipe-metrics',action='store_true',help='explicit Level1 PipeUtilization counters; requires --profile')
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
+    if a.mha_seqlen!=4096 and a.suite not in ('mha_bf16','mha_stats_split'):
+        p.error('--mha-seqlen 3584 requires mha_bf16 or mha_stats_split')
     if a.profile_pipe_metrics and (not a.profile or a.check_only):
         p.error('--profile-pipe-metrics requires --profile and cannot be combined with --check-only')
     if a.tokens<=0 or a.iters<=0 or a.rounds<=0 or a.warmup<0:

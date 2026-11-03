@@ -1,5 +1,38 @@
 # MHA 与三 kernel 预绑定 mHC 的 MFU 测量
 
+## 28 AIC：7/8 规模复测（2026-11-03）
+
+```bash
+cd /home/z30086261/Q4
+git pull --no-rebase
+conda activate zwh
+source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+bash operators/mfu/run.sh all both
+```
+
+`both` 同一轮测原规模和 7/8 规模；每个规格仍是三个独立进程，第二轮反转形状执行顺序。
+共 36 个计时子进程，逐例先验精度，失败即停。已有 AscendC vendor 不需重建；
+3584 的 TL kernel 首次需要 JIT。新规格的设备精度和性能尚待服务器验证。
+
+| 算子 | 原规模 | 7/8 规模 |
+|---|---|---|
+| MHA 序列 S，B1/H1/D128 | 4096 | 3584 |
+| mHC token N，旧 pre shifted H5120 | 64/128/256/512/8192 | 56/112/224/448/7168 |
+
+MHA 同时缩短 Q/K/V，Q tile 和 KV 循环数各从32变28，FLOPs比例49/64。
+mHC 只改N，投影FLOPs比例7/8；hidden、24输出通道、数值公式与预绑定三kernel保持原设置。
+尾块与投影 padding 不计有用 FLOPs；56 含非16整块，需本轮精度检查通过后才算新规格验证。
+28 AIC 的峰值分母仍是 BF16 378 / HF32按TF32档189 TFLOPS，不再次乘7/8。
+缩小输入本身不保证提高 MFU，尤其 mHC 仍受 tile 补齐、调用和向量操作影响。
+
+报告除各规格 MFU 外，新增 scaled/full 的 FLOPs、延迟和有效TFLOPS比值。
+不同输入的延迟比不是同工作量加速比；只有有效TFLOPS/MFU改善才表明该规模下效率改善。
+完整分析边界见 [7/8测试计划](../../reports/MFU_SEVEN_EIGHTHS.md)。
+
+仅测新规模用 `bash operators/mfu/run.sh all seven-eighths`；
+只测一种算子用 `bash operators/mfu/run.sh mha both` 或 `mhc both`。
+默认仍为 `all full`，现在自动读取已提供的28 AIC峰值配置。
+
 2026-11-02：已对照新增 `MFU计算.md` 和官方白皮书表3-1，添加
 `peaks/ascend950pr_28aic.json`：BF16 Cube 378 TFLOPS、TF32 Cube 189 TFLOPS。
 本项目 HF32 投影按 TF32 档归一化，配置中记录该映射条件。

@@ -1,9 +1,11 @@
 import json
+import shutil
 from pathlib import Path
 import tempfile
 import unittest
 
-from analyze import analyze,matrix_flops,peak_for,throughput
+from analyze import analyze,matrix_flops,peak_for,throughput,compare_sizes
+from run import make_groups
 
 
 MHA=dict(Q=[4096,128],K=[4096,128],V=[4096,128],batch=1,heads=1,
@@ -12,6 +14,28 @@ DEVICE=dict(name='test-device',cube_core_num=28,vector_core_num=56)
 
 
 class MFUTest(unittest.TestCase):
+    def test_scaled_plan_and_useful_flops(self):
+        groups=make_groups('all','both')
+        self.assertEqual(len(groups),12)
+        scaled=[g for g in groups if g['size_mode']=='seven-eighths']
+        self.assertEqual([g['tokens'] for g in scaled],[3584,56,112,224,448,7168])
+        self.assertEqual(len({(g['suite'],g['tokens']) for g in groups}),12)
+        contract={**MHA,**{key:[3584,128] for key in ('Q','K','V')}}
+        flops,mode=matrix_flops('mha_stats_split',contract)
+        self.assertEqual(flops,6576668672)
+        self.assertEqual(flops/8589934592,49/64)
+        self.assertEqual(mode,'bf16')
+
+    def test_shape_efficiency_accounts_for_less_work(self):
+        full=dict(suite='mha_stats_split',tokens=4096,implementation='tilelang_s2buf',
+                  useful_matrix_flops=8589934592,event_us=50,effective_tflops=8589934592/50/1e6)
+        scaled={**full,'tokens':3584,'useful_matrix_flops':6576668672,'event_us':40,
+                'effective_tflops':6576668672/40/1e6}
+        result=compare_sizes([full,scaled])[0]
+        self.assertEqual(result['latency_ratio'],.8)
+        self.assertLess(result['throughput_ratio'],1.)
+        self.assertEqual(result['useful_flops_ratio'],49/64)
+
     def test_useful_flops_and_precision_mode(self):
         self.assertEqual(matrix_flops('mha_stats_split',MHA),(8589934592,'bf16'))
         contract=dict(N=512,hidden=5120,hc_mult=4,flattened=20480,channels=24,hc_shifted=True,repeat=20)
@@ -74,6 +98,29 @@ class MFUTest(unittest.TestCase):
             folder=Path(temp);plan=self.fixture(folder)
             plan['cases'].pop();(folder/'plan.json').write_text(json.dumps(plan))
             with self.assertRaisesRegex(ValueError,'three replicas'):analyze(folder)
+
+    def test_full_and_scaled_capture_analyzed_with_actual_shapes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            folder=Path(temp);plan=self.fixture(folder)
+            for full in list(plan['cases']):
+                scaled={**full,'directory':full['directory']+'-scaled','tokens':3584}
+                plan['cases'].append(scaled)
+                path=folder/scaled['directory']
+                shutil.copytree(folder/full['directory'],path)
+                meta=json.loads((path/'metadata.json').read_text())
+                meta['arguments'].update(tokens=3584,mha_seqlen=3584)
+                meta['contract']={**MHA,**{key:[3584,128] for key in ('Q','K','V')}}
+                (path/'metadata.json').write_text(json.dumps(meta))
+            (folder/'plan.json').write_text(json.dumps(plan))
+            result=analyze(folder)
+            self.assertEqual(len(result['results']),2)
+            pair=result['size_comparisons'][0]
+            self.assertEqual(pair['latency_ratio'],1.)
+            self.assertAlmostEqual(pair['throughput_ratio'],49/64)
+            bad=folder/'case1-scaled/metadata.json'
+            meta=json.loads(bad.read_text());meta['arguments']['mha_seqlen']=4096
+            bad.write_text(json.dumps(meta))
+            with self.assertRaisesRegex(ValueError,'sequence argument mismatch'):analyze(folder)
 
 
 if __name__=='__main__':unittest.main()

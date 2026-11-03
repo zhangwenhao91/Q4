@@ -9,8 +9,9 @@ from mha_bf16 import native_runner
 
 class Output:
     # Deliberately exposes only view: output cast/numerical fallback would fail.
+    def __init__(self,seq_len=4096):self.seq_len=seq_len
     def view(self,*shape):
-        assert shape==(4096,128)
+        assert shape==(self.seq_len,128)
         return self
 
 
@@ -22,6 +23,14 @@ class Ops:
 
 
 class NativeBoundaryTest(unittest.TestCase):
+    def test_scaled_sequence_reaches_native_kernel_and_output_view(self):
+        ops=Ops();ops.output=Output(3584)
+        runner=native_runner(ops,'q','k','v',lambda:self.fail('cached metadata expected'),
+                             object(),'cached',seq_len=3584)
+        self.assertIs(runner()[0],ops.output)
+        kw=ops.calls[0][1]
+        self.assertEqual((kw['max_seqlen_q'],kw['max_seqlen_kv']),(3584,3584))
+
     def test_cached_metadata_and_native_call_contract(self):
         ops=Ops();metadata=object()
         def forbidden(): raise AssertionError('metadata generation leaked into cached call')

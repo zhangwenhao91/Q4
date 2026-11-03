@@ -9,12 +9,16 @@ import statistics
 
 def matrix_flops(suite,contract):
     if suite=='mha_stats_split':
-        expected={'Q':[4096,128],'K':[4096,128],'V':[4096,128],
+        q=contract.get('Q',[])
+        if not isinstance(q,list) or len(q)!=2 or q[0] not in (3584,4096):
+            raise ValueError('Expected MHA sequence length 3584 or 4096')
+        seq_len=q[0]
+        expected={'Q':[seq_len,128],'K':[seq_len,128],'V':[seq_len,128],
                   'batch':1,'heads':1,'input_dtype':'bfloat16','output_dtype':'bfloat16',
                   'causal':False,'dropout':0}
         if any(contract.get(k)!=v for k,v in expected.items()):
             raise ValueError('MHA contract differs from the validated BF16 dense core')
-        return 4*4096*4096*128,'bf16'
+        return 4*seq_len*seq_len*128,'bf16'
     if suite=='mhc_shifted_split':
         if any(contract.get(k)!=v for k,v in {'hidden':5120,'hc_mult':4,'flattened':20480,
                                               'channels':24,'hc_shifted':True,'repeat':20}.items()):
@@ -45,6 +49,23 @@ def peak_for(config,mode,properties):
     return entry
 
 
+def compare_sizes(results):
+    index={(r['suite'],r['tokens'],r['implementation']):r for r in results}
+    comparisons=[]
+    for row in results:
+        suite,n,label=row['suite'],row['tokens'],row['implementation']
+        if (suite=='mha_stats_split' and n!=4096) or (suite=='mhc_shifted_split' and n not in (64,128,256,512,8192)):
+            continue
+        scaled=index.get((suite,n*7//8,label))
+        if scaled is None:continue
+        comparisons.append(dict(suite=suite,implementation=label,full_tokens=n,scaled_tokens=n*7//8,
+            useful_flops_ratio=scaled['useful_matrix_flops']/row['useful_matrix_flops'],
+            latency_ratio=scaled['event_us']/row['event_us'],
+            throughput_ratio=scaled['effective_tflops']/row['effective_tflops'],
+            note='Different workloads; throughput ratio measures shape efficiency, not same-work speedup.'))
+    return comparisons
+
+
 def analyze(folder,peak_config=None):
     folder=Path(folder)
     plan=json.loads((folder/'plan.json').read_text(encoding='utf-8'))
@@ -58,6 +79,9 @@ def analyze(folder,peak_config=None):
         if not checks or not all(c.get('passed') is True for c in checks):
             raise ValueError('Missing/failed precision checks: '+str(path))
         arguments=meta['arguments']
+        if case['suite']=='mha_stats_split':
+            if meta['contract']['Q'][0]!=case['tokens'] or arguments.get('mha_seqlen',4096)!=case['tokens']:
+                raise ValueError('MHA plan/shape/sequence argument mismatch')
         if arguments['suite']!=case['suite'] or arguments['tokens']!=case['tokens']:
             raise ValueError('Plan and measured contract disagree')
         if meta['implementation_labels']!=case['labels'] or arguments['implementations']!=case['labels']:
@@ -109,7 +133,7 @@ def analyze(folder,peak_config=None):
             replica_effective_tflops_min=min(rates),replica_effective_tflops_max=max(rates),
             matrix_mfu_percent=100*effective/group['peak']['tflops'] if group['peak'] else None)
         results.append(group)
-    return dict(device_revision=list(identities)[0],results=results,
+    return dict(device_revision=list(identities)[0],results=results,size_comparisons=compare_sizes(results),
         definition='Useful matmul FLOPs / full API event latency / dense peak for the actual compute mode. Operator MFU proxy, not full-model MFU or hardware issue utilization.',
         omitted_flops='MHA softmax/scaling and mHC square-sum/RMS/apply/coefficient/Sinkhorn scalar-vector operations. Their execution time is INCLUDED. No padding/recompute FLOPs credited.')
 
@@ -127,6 +151,13 @@ def main():
     for r in result['results']:
         mfu=f"{r['matrix_mfu_percent']:.4f}" if r['matrix_mfu_percent'] is not None else 'pending peak'
         lines.append(f"| {r['suite']} | {r['tokens']} | {r['implementation']} | {r['event_us']:.6f} | {r['effective_tflops']:.6f} | {mfu} |")
+    if result['size_comparisons']:
+        lines.extend(['\n## Seven-eighths / full shape efficiency',
+            'Different workloads. A lower latency alone is not a same-work speedup.',
+            '| Suite | Implementation | Full -> scaled | FLOPs ratio | Latency ratio | TFLOPS ratio |',
+            '|---|---|---|---:|---:|---:|'])
+        for r in result['size_comparisons']:
+            lines.append(f"| {r['suite']} | {r['implementation']} | {r['full_tokens']} -> {r['scaled_tokens']} | {r['useful_flops_ratio']:.6f} | {r['latency_ratio']:.6f} | {r['throughput_ratio']:.6f} |")
     text='\n'.join(lines)+'\n'
     (a.input/'mfu.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     (a.input/'mfu.md').write_text(text,encoding='utf-8')
