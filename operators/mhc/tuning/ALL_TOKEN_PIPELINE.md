@@ -28,10 +28,19 @@ validation require the NPU server. Keep full traces even after sharing error.txt
   The original tail already requested Persistent pipelining; this change may
   generate equivalent scheduling and does not imply a new overlap benefit.
 
+The current runner first checks baseline and candidate on real NPU without
+msprof (10-minute timeout per process). If either fails it stops before profiling.
+Then it runs three separate simulation processes, filtering one target kernel
+per process and parsing core 0 by default (override MHC_SIM_CORE). Each process
+still runs a complete three-kernel call for valid dependencies and CPU checks.
+The collector guard stops its own process group on DBI transport failure rather
+than writing millions of identical errors. This isolates the failing capture;
+it does not establish the cause of a profiler receiver failure.
+
 Default N=2048 gives more work per core than N=128/512, particularly for the
 16-token coefficient tiles. Only positive multiples of 128 are accepted in this
 experiment. Override with MHC_SIM_TOKENS; comparisons with previous runs must
-use the same N. All cores are parsed so Cube/Vector core mapping is visible.
+use the same N. Core 0 parsing includes its available Cube/Vector subcores.
 
 The three files show instruction pipelines within each kernel, not concurrent
 execution of the three kernels. In Insight check MTE2/Vector/MTE3 for Apply and

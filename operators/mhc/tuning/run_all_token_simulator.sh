@@ -15,30 +15,56 @@ mkdir -p "$OUT"
 REPORT="$OUT/summary.txt"
 echo "Results: $OUT" | tee "$REPORT"
 git rev-parse HEAD > "$OUT/revision.txt"
-echo 'Collecting three kernels. Full console output is saved to console.log.'
-if msprof op simulator --soc-version="${MHC_SIM_SOC:-Ascend950PR_9579}" \
-  --kernel-name='mhc_pre_apply_flat_pipeline_asc|mhc_projection_token_pipeline|mhc_coeff_token_pipeline' \
-  --launch-count=3 --aic-metrics=PipeUtilization --dump=true \
-  --timeout=60 --output="$OUT/prof" \
-  "$CONDA_PREFIX/bin/python" "$ROOT/operators/mhc/tuning/simulate_all_token.py" \
-    --tokens "${MHC_SIM_TOKENS:-2048}" --output "$OUT/source" \
-    > "$OUT/console.log" 2>&1; then
-  "$CONDA_PREFIX/bin/python" "$ROOT/operators/mhc/tuning/diagnose_all_token.py" --input "$OUT"
-else
-  "$CONDA_PREFIX/bin/python" "$ROOT/operators/mhc/tuning/diagnose_all_token.py" --input "$OUT"
-  exit 1
-fi
-if grep -q '\[ERROR\]' "$OUT/console.log" || \
-   ! grep -q 'Profiling data parse finished' "$OUT/console.log" || \
-   ! test -f "$OUT/source/correctness.json"; then
-  echo 'Simulation incomplete or errors detected. See error.txt and full console.log.'
-  exit 1
-fi
-"$CONDA_PREFIX/bin/python" -c 'import json,sys; checks=json.load(open(sys.argv[1])); sys.exit(0 if len(checks)==4 and all(v["passed"] for v in checks) else 1)' "$OUT/source/correctness.json"
-if [[ "$(find "$OUT/prof" -name visualize_data.bin | wc -l)" -lt 3 ]]; then
-  echo 'Missing kernel visualization files. See error.txt and full console.log.'
-  exit 1
-fi
-find "$OUT" -name visualize_data.bin -print | tee -a "$REPORT"
-echo 'Inspect same-core N-iteration overlap in all three traces; actual overlap is not yet verified.' | tee -a "$REPORT"
-echo "Compact report: $ROOT/error.txt"
+PY="$CONDA_PREFIX/bin/python"
+TOKENS="${MHC_SIM_TOKENS:-2048}"
+touch "$OUT/console.log"
+diagnose() {
+  "$PY" "$ROOT/operators/mhc/tuning/diagnose_all_token.py" --input "$OUT"
+}
+echo 'Checking baseline and candidate on NPU without msprof first.'
+for variant in baseline candidate; do
+  echo "Preflight: $variant" | tee -a "$OUT/console.log"
+  if timeout 600 "$PY" "$ROOT/operators/mhc/tuning/simulate_all_token.py" \
+    --variant "$variant" --tokens "$TOKENS" --output "$OUT/preflight-$variant" \
+    > "$OUT/preflight-$variant.log" 2>&1; then
+    tail -n 3 "$OUT/preflight-$variant.log" >> "$OUT/console.log"
+  else
+    tail -n 100 "$OUT/preflight-$variant.log" >> "$OUT/console.log"
+    diagnose
+    exit 1
+  fi
+done
+echo 'Preflight passed. Collecting one target kernel per process; parsing core 0 by default.'
+for stage in apply projection tail; do
+  case "$stage" in
+    apply) kernel=mhc_pre_apply_flat_pipeline_asc_kernel ;;
+    projection) kernel=mhc_projection_token_pipeline_kernel ;;
+    tail) kernel=mhc_coeff_token_pipeline_kernel ;;
+  esac
+  mkdir -p "$OUT/$stage"
+  echo "Capture: $stage" | tee -a "$OUT/console.log"
+  if "$PY" "$ROOT/operators/mhc/tuning/collect_guarded.py" --log "$OUT/$stage/console.log" -- \
+    msprof op simulator --soc-version="${MHC_SIM_SOC:-Ascend950PR_9579}" \
+    --kernel-name="$kernel" --core-id="${MHC_SIM_CORE:-0}" \
+    --launch-count=1 --aic-metrics=PipeUtilization --dump=true \
+    --timeout=30 --output="$OUT/$stage/prof" \
+    "$PY" "$ROOT/operators/mhc/tuning/simulate_all_token.py" \
+      --tokens "$TOKENS" --output "$OUT/$stage/source"; then
+    cat "$OUT/$stage/console.log" >> "$OUT/console.log"
+  else
+    cat "$OUT/$stage/console.log" >> "$OUT/console.log"
+    diagnose
+    exit 1
+  fi
+  if grep -q '\[ERROR\]' "$OUT/$stage/console.log" || \
+     ! grep -q 'Profiling data parse finished' "$OUT/$stage/console.log" || \
+     ! test -f "$OUT/$stage/source/correctness.json" || \
+     [[ "$(find "$OUT/$stage/prof" -name visualize_data.bin | wc -l)" -lt 1 ]]; then
+    echo "Capture incomplete: $stage" >> "$OUT/console.log"
+    diagnose
+    exit 1
+  fi
+  "$PY" -c 'import json,sys; c=json.load(open(sys.argv[1])); sys.exit(0 if len(c)==4 and all(v["passed"] for v in c) else 1)' "$OUT/$stage/source/correctness.json"
+done
+echo 'All three captures and CPU checks passed; actual instruction overlap still needs inspection.' >> "$OUT/console.log"
+diagnose

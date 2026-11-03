@@ -9,6 +9,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--tokens', type=int, default=2048)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--variant', choices=('baseline', 'candidate'), default='candidate')
     a = p.parse_args()
     if a.tokens <= 0 or a.tokens % 128:
         p.error('tokens must be a positive multiple of 128')
@@ -31,13 +32,14 @@ def main():
     expected = shifted_reference(x0, prev0, phi0, alpha0, bias0)
     x, prev, phi, alpha, bias = [v.npu() for v in (x0, prev0, phi0, alpha0, bias0)]
     projector = DynamicHCProjection(x, phi)
-    run, meta = make_bound_candidate(projector, x, prev, alpha, bias,
-        split_apply=True, apply_pipeline=(5120, 3), flat_pipeline=True,
-        all_token_pipeline=True)
+    options = dict(split_apply=True)
+    if a.variant == 'candidate':
+        options.update(apply_pipeline=(5120, 3), flat_pipeline=True, all_token_pipeline=True)
+    run, meta = make_bound_candidate(projector, x, prev, alpha, bias, **options)
     a.output.mkdir(parents=True, exist_ok=True)
-    for name, source in meta.pop('generated_sources').items():
+    for name, source in meta.pop('generated_sources', {}).items():
         (a.output / f'{name}.cpp').write_text(source)
-    meta.update(tokens=a.tokens, projection_config=projector.config, target_calls=1)
+    meta.update(tokens=a.tokens, variant=a.variant, projection_config=projector.config, target_calls=1)
     (a.output / 'metadata.json').write_text(json.dumps(meta, indent=2))
     torch.npu.synchronize()
     with torch.no_grad():
