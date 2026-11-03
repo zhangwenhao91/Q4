@@ -32,7 +32,7 @@ def main():
         tl=statistics.median(d['tilelang']['event_us'] for d in runs)
         ac=statistics.median(d['ascendc']['event_us'] for d in runs)
         print('API MEDIAN',mode,'processes',len(runs),'TL_us',tl,'AC_us',ac,'AC/TL',ac/tl)
-    for folder in sorted(root.glob('profile-*')):
+    for folder in sorted(x for x in root.glob('profile-*') if x.is_dir()):
         files=list(folder.rglob('kernel_details.csv'));print('PROFILE',folder.name,'CSV',len(files))
         for file in files:
             durations=defaultdict(list)

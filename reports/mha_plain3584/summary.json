@@ -1,0 +1,117 @@
+{
+  "evidence": "1437c47:error.txt",
+  "run_revision": "661c44965a68d07e78aab30a7aa07b10ce9df6bd",
+  "source_revision": "80364b3d9758854a9692cc0f14089025f54d3f3f",
+  "checks": 48,
+  "failed": 0,
+  "processes": [
+    {
+      "tag": "bench-cached-rep1",
+      "data": {
+        "tilelang": {
+          "event_us": 24.5830500125885,
+          "wall_us": 24.922730517573655
+        },
+        "ascendc": {
+          "event_us": 26.580945253372192,
+          "wall_us": 26.921125245280564
+        },
+        "ratio": {
+          "numerator": "ascendc",
+          "denominator": "tilelang",
+          "event_ratio": 1.0812712515233305
+        }
+      }
+    },
+    {
+      "tag": "bench-cached-rep2",
+      "data": {
+        "tilelang": {
+          "event_us": 24.680955410003662,
+          "wall_us": 25.038960156962276
+        },
+        "ascendc": {
+          "event_us": 26.530214548110962,
+          "wall_us": 26.892140158452094
+        },
+        "ratio": {
+          "numerator": "ascendc",
+          "denominator": "tilelang",
+          "event_ratio": 1.0749265620956374
+        }
+      }
+    },
+    {
+      "tag": "bench-cached-rep3",
+      "data": {
+        "tilelang": {
+          "event_us": 24.723055362701416,
+          "wall_us": 25.08527017198503
+        },
+        "ascendc": {
+          "event_us": 26.557835340499878,
+          "wall_us": 26.93705551791936
+        },
+        "ratio": {
+          "numerator": "ascendc",
+          "denominator": "tilelang",
+          "event_ratio": 1.0742133183330775
+        }
+      }
+    },
+    {
+      "tag": "bench-per_call-rep1",
+      "data": {
+        "tilelang": {
+          "event_us": 24.775065183639526,
+          "wall_us": 25.16779990401119
+        },
+        "ascendc": {
+          "event_us": 64.87185478210449,
+          "wall_us": 65.26293989736587
+        },
+        "ratio": {
+          "numerator": "ascendc",
+          "denominator": "tilelang",
+          "event_ratio": 2.618433263495238
+        }
+      }
+    },
+    {
+      "tag": "bench-per_call-rep2",
+      "data": {
+        "tilelang": {
+          "event_us": 24.62452530860901,
+          "wall_us": 24.985825293697417
+        },
+        "ascendc": {
+          "event_us": 64.79619026184082,
+          "wall_us": 65.16358989756554
+        },
+        "ratio": {
+          "numerator": "ascendc",
+          "denominator": "tilelang",
+          "event_ratio": 2.6313680954161316
+        }
+      }
+    },
+    {
+      "tag": "bench-per_call-rep3",
+      "data": {
+        "tilelang": {
+          "event_us": 24.6206796169281,
+          "wall_us": 24.976115091703832
+        },
+        "ascendc": {
+          "event_us": 64.55282926559448,
+          "wall_us": 64.97060065157712
+        },
+        "ratio": {
+          "numerator": "ascendc",
+          "denominator": "tilelang",
+          "event_ratio": 2.6218946946212967
+        }
+      }
+    }
+  ]
+}
