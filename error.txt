@@ -1,30 +1,519 @@
-cd /home/z30086261/Q4
-source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+(zwh) root@ubuntu162:/home/z30086261/Q4# cd /home/z30086261/Q4
+(zwh) root@ubuntu162:/home/z30086261/Q4# source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_RT_VISIBLE_DEVICES=0
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_NPU_ARCH=dav-3510
+(zwh) root@ubuntu162:/home/z30086261/Q4# export CC="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-gcc"
+(zwh) root@ubuntu162:/home/z30086261/Q4# export CXX="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++"
+(zwh) root@ubuntu162:/home/z30086261/Q4# export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
+(zwh) root@ubuntu162:/home/z30086261/Q4# export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4mhcmatch-opp/vendors/q4mhcmatch_transformer"
+(zwh) root@ubuntu162:/home/z30086261/Q4# export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# OUT="$PWD/results/mhc-three-simulator/$(date +%Y%m%d-%H%M%S)-$$"
+(zwh) root@ubuntu162:/home/z30086261/Q4# mkdir -p "$OUT"
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
+(zwh) root@ubuntu162:/home/z30086261/Q4# set -o pipefail
+(zwh) root@ubuntu162:/home/z30086261/Q4# msprof op simulator \
+>   --soc-version=Ascend950PR_9579 \
+>   --kernel-name='mhc_pre_apply_mix_fwd_asc|tf32_hc_prenorm_gemm|mhc_coeff_tail_fwd_asc' \
+>   --launch-count=3 \
+>   --aic-metrics=PipeUtilization \
+>   --dump=true \
+>   --timeout=30 \
+>   --output="$OUT/prof" \
+>   "$CONDA_PREFIX/bin/python" operators/spec_v1/bench.py \
+>     --suite mhc_shifted_split \
+>     --implementations tilelang_coeff_bound \
+>     --tokens 128 \
+>     --check-only \
+>     --output "$OUT/check" \
+>   2>&1 | tee "$OUT/console.log"
+=================================================================
+                   >>>>>   MindStudio   <<<<<
+    THE END-TO-END TOOLCHAIN TO UNLEASH HUAWEI ASCEND COMPUTE
+=================================================================
 
-export ASCEND_RT_VISIBLE_DEVICES=0
-export ASCEND_NPU_ARCH=dav-3510
-export CC="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-gcc"
-export CXX="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++"
-export TORCH_EXTENSIONS_DIR="$PWD/third_party/torch-extensions-gcc13"
-export ASCEND_CUSTOM_OPP_PATH="$PWD/third_party/q4mhcmatch-opp/vendors/q4mhcmatch_transformer"
-export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
-
-OUT="$PWD/results/mhc-three-simulator/$(date +%Y%m%d-%H%M%S)-$$"
-mkdir -p "$OUT"
-
-set -o pipefail
-msprof op simulator \
-  --soc-version=Ascend950PR_9579 \
-  --kernel-name='mhc_pre_apply_mix_fwd_asc|tf32_hc_prenorm_gemm|mhc_coeff_tail_fwd_asc' \
-  --launch-count=3 \
-  --aic-metrics=PipeUtilization \
-  --dump=true \
-  --timeout=30 \
-  --output="$OUT/prof" \
-  "$CONDA_PREFIX/bin/python" operators/spec_v1/bench.py \
-    --suite mhc_shifted_split \
-    --implementations tilelang_coeff_bound \
-    --tokens 128 \
-    --check-only \
-    --output "$OUT/check" \
-  2>&1 | tee "$OUT/console.log"
+[WARN]  Currently, the root permission is used, which is unrecommended. Please ensure the security of the execution environment and programs.
+[INFO]  Op profiling analysis start.
+[INFO]  Ascend950 simulator library is loaded from camodel; real-time parsing is enabled with instruction callback dump
+[INFO]  Running simulation task: Binary Simulation Running, use simulator Ascend950PR 9579 by --soc-version
+[W1103 16:04:52.467249312 FunctionLoader.cpp:44] Warning: LD_PRELOAD detected, FunctionLoader prefers RTLD_DEFAULT for symbol resolution. (function operator())
+soc version: Ascend950PR
+[camodel_config] Using config from SO dir: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/tools/simulator/dav_3510/camodel/camodel_v100.json
+[camodel_config] Alias: sysconf -> soc_mp.cfg
+[camodel_config] Loaded config from: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/tools/simulator/dav_3510/camodel/camodel_v100.json (1 sections)
+[camodel_config] Override esl_top_thread_cnt = 32 (in soc_mp.cfg)
+chip type: 0 
+core count: 256
+thread count: 32
+rankId: 0 chipNum: 1
+rankId: 1 chipNum: 1
+rankId: 0 chipId Base: 0
+rankId: 1 chipId Base: 1
+rankId: 0 threadNum: 10
+rankId: 1 threadNum: 10
+DDR load checkpoint start, please specify the "DDR_offset_addr", "DDR_CheckPoint_Raw" and "DDR_CheckPoint_Guide"  in confgiuration file: 0x5603ab84b340
+ DIE0 HA TOP: 0x56033f1b5bc0
+== Loading public model file './parameter/public.ini' ==
+== Loading system model file './parameter/bailusystem.ini' ==
+== Loading device model file './parameter/lpddr5_6400M_bailu.ini' ==
+== lpddr5 1900 Mbps, 1 Channels, 1 Ranks, Gbuf false, IECC false ==
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore0] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000] init_new_core_cfg (274):: CoreWrapper [DvcCore0] init, mode=CA, core ver=5, config file=./etc/1982_cloud_config.toml
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore0] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore1] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore1] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore2] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore2] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore3] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore3] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore4] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore4] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore5] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore5] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore6] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore6] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore7] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore7] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore8] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore8] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore9] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore9] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore10] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore10] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore11] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore11] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore12] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore12] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore13] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore13] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore14] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore14] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore15] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore15] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+Module STARS_ChiWrapper_0_0_SCHE_Chn0 allocate thread Id : 0
+CONFIG STARS SIM_CFG: 1981_sim_ffts_plus.toml
+CONFIG STARS LOG_PATH: ./log_ca
+[INFO] [0000000000] sim_cfg: 1981_sim_ffts_plus.toml
+[INFO] [0000000000] model_cfg: 1981_model.toml
+[INFO] [0000000000] stars_cfg: 1981_stars_ffts_plus.toml
+[INFO] [0000000000] ffts_cfg: 1981_ffts.toml
+[TmSim]: Run in parallel esl_sim mode, concurrency num is: 32
+[TmSim]: Top module clk0 is assigned to thread 0
+[TmSim]: Top module core0 is assigned to thread 0
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore0] build, esl_idx=0, log_path=./log_ca
+[TmSim]: Top module clk1 is assigned to thread 1
+[TmSim]: Top module core1 is assigned to thread 1
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore1] build, esl_idx=1, log_path=./log_ca
+[TmSim]: Top module clk2 is assigned to thread 2
+[TmSim]: Top module core2 is assigned to thread 2
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore2] build, esl_idx=2, log_path=./log_ca
+[TmSim]: Top module clk3 is assigned to thread 3
+[TmSim]: Top module core3 is assigned to thread 3
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore3] build, esl_idx=3, log_path=./log_ca
+[TmSim]: Top module clk4 is assigned to thread 4
+[TmSim]: Top module core4 is assigned to thread 4
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore4] build, esl_idx=4, log_path=./log_ca
+[TmSim]: Top module clk5 is assigned to thread 5
+[TmSim]: Top module core5 is assigned to thread 5
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore5] build, esl_idx=5, log_path=./log_ca
+[TmSim]: Top module clk6 is assigned to thread 6
+[TmSim]: Top module core6 is assigned to thread 6
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore6] build, esl_idx=6, log_path=./log_ca
+[TmSim]: Top module clk7 is assigned to thread 7
+[TmSim]: Top module core7 is assigned to thread 7
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore7] build, esl_idx=7, log_path=./log_ca
+[TmSim]: Top module clk8 is assigned to thread 8
+[TmSim]: Top module core8 is assigned to thread 8
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore8] build, esl_idx=8, log_path=./log_ca
+[TmSim]: Top module clk9 is assigned to thread 9
+[TmSim]: Top module core9 is assigned to thread 9
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore9] build, esl_idx=9, log_path=./log_ca
+[TmSim]: Top module clk10 is assigned to thread 10
+[TmSim]: Top module core10 is assigned to thread 10
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore10] build, esl_idx=10, log_path=./log_ca
+[TmSim]: Top module clk11 is assigned to thread 11
+[TmSim]: Top module core11 is assigned to thread 11
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore11] build, esl_idx=11, log_path=./log_ca
+[TmSim]: Top module clk12 is assigned to thread 12
+[TmSim]: Top module core12 is assigned to thread 12
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore12] build, esl_idx=12, log_path=./log_ca
+[TmSim]: Top module clk13 is assigned to thread 13
+[TmSim]: Top module core13 is assigned to thread 13
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore13] build, esl_idx=13, log_path=./log_ca
+[TmSim]: Top module clk14 is assigned to thread 14
+[TmSim]: Top module core14 is assigned to thread 14
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore14] build, esl_idx=14, log_path=./log_ca
+[TmSim]: Top module clk15 is assigned to thread 15
+[TmSim]: Top module core15 is assigned to thread 15
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore15] build, esl_idx=15, log_path=./log_ca
+Start to build SMMU Page !
+SMMU Page build finished!
+Start simulation with m_socCycle: 0
+SoC unit rank0_chip0_die0 Created
+DDR load checkpoint start, please specify the "DDR_offset_addr", "DDR_CheckPoint_Raw" and "DDR_CheckPoint_Guide"  in confgiuration file: 0x56045ba312a0
+ DIE1 HA TOP: 0x5603ef399900
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore16] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore16] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore17] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore17] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore18] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore18] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore19] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore19] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore20] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore20] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore21] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore21] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore22] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore22] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore23] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore23] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore24] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore24] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore25] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore25] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore26] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore26] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore27] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore27] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore28] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore28] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore29] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore29] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore30] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore30] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+[CORE_WRAPPER] [INFO] [0000000000] core_wrapper ( 87):: CoreWrapper [DvcCore31] sim_type=CA (cycle-accurate)
+[CORE_WRAPPER] [INFO] [0000000000]         init (119):: CoreWrapper [DvcCore31] init, cube_subcore=1, vec_subccore=2, eff_cube_subcore=0, ref_period=0.40, self_period=0.61, debug_flags=1
+Module STARS_ChiWrapper_0_1_SCHE_Chn0 allocate thread Id : 1
+CONFIG STARS SIM_CFG: 1981_sim_ffts_plus.toml
+CONFIG STARS LOG_PATH: ./log_ca
+[TmSim]: Top module clk16 is assigned to thread 16
+[TmSim]: Top module core16 is assigned to thread 16
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore16] build, esl_idx=17, log_path=./log_ca
+[TmSim]: Top module clk17 is assigned to thread 17
+[TmSim]: Top module core17 is assigned to thread 17
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore17] build, esl_idx=18, log_path=./log_ca
+[TmSim]: Top module clk18 is assigned to thread 18
+[TmSim]: Top module core18 is assigned to thread 18
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore18] build, esl_idx=19, log_path=./log_ca
+[TmSim]: Top module clk19 is assigned to thread 19
+[TmSim]: Top module core19 is assigned to thread 19
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore19] build, esl_idx=20, log_path=./log_ca
+[TmSim]: Top module clk20 is assigned to thread 20
+[TmSim]: Top module core20 is assigned to thread 20
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore20] build, esl_idx=21, log_path=./log_ca
+[TmSim]: Top module clk21 is assigned to thread 21
+[TmSim]: Top module core21 is assigned to thread 21
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore21] build, esl_idx=22, log_path=./log_ca
+[TmSim]: Top module clk22 is assigned to thread 22
+[TmSim]: Top module core22 is assigned to thread 22
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore22] build, esl_idx=23, log_path=./log_ca
+[TmSim]: Top module clk23 is assigned to thread 23
+[TmSim]: Top module core23 is assigned to thread 23
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore23] build, esl_idx=24, log_path=./log_ca
+[TmSim]: Top module clk24 is assigned to thread 24
+[TmSim]: Top module core24 is assigned to thread 24
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore24] build, esl_idx=25, log_path=./log_ca
+[TmSim]: Top module clk25 is assigned to thread 25
+[TmSim]: Top module core25 is assigned to thread 25
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore25] build, esl_idx=26, log_path=./log_ca
+[TmSim]: Top module clk26 is assigned to thread 26
+[TmSim]: Top module core26 is assigned to thread 26
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore26] build, esl_idx=27, log_path=./log_ca
+[TmSim]: Top module clk27 is assigned to thread 27
+[TmSim]: Top module core27 is assigned to thread 27
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore27] build, esl_idx=28, log_path=./log_ca
+[TmSim]: Top module clk28 is assigned to thread 28
+[TmSim]: Top module core28 is assigned to thread 28
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore28] build, esl_idx=29, log_path=./log_ca
+[TmSim]: Top module clk29 is assigned to thread 29
+[TmSim]: Top module core29 is assigned to thread 29
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore29] build, esl_idx=30, log_path=./log_ca
+[TmSim]: Top module clk30 is assigned to thread 30
+[TmSim]: Top module core30 is assigned to thread 30
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore30] build, esl_idx=31, log_path=./log_ca
+[TmSim]: Top module clk31 is assigned to thread 31
+[TmSim]: Top module core31 is assigned to thread 31
+[CORE_WRAPPER] [INFO] [0000000000]        build (165):: CoreWrapper [DvcCore31] build, esl_idx=32, log_path=./log_ca
+Start to build SMMU Page !
+SMMU Page build finished!
+Start simulation with m_socCycle: 0
+SoC unit rank0_chip0_die1 Created
+can not find accessable port: 9 in chip: 0, die: 2
+Start simulation with m_socCycle: 0
+SoC unit rank0_chip0_die2 Created
+can not find accessable port: 9 in chip: 0, die: 3
+Start simulation with m_socCycle: 0
+SoC unit rank0_chip0_die3 Created
+Multi SoC in one chip Created
+SLLC CONNECT : 600 +++++  10609
+SLLC CONNECT : 601 +++++  10608
+SLLC CONNECT : 602 +++++  10607
+SLLC CONNECT : 604 +++++  10605
+SLLC CONNECT : 605 +++++  10604
+SLLC CONNECT : 607 +++++  10602
+SLLC CONNECT : 608 +++++  10601
+SLLC CONNECT : 609 +++++  10600
+SLLC CONNECT : 60a +++++  2060c
+SLLC CONNECT : 60b +++++  2060b
+SLLC CONNECT : 60c +++++  2060a
+SLLC CONNECT : 1060a +++++  3060c
+SLLC CONNECT : 1060b +++++  3060b
+SLLC CONNECT : 1060c +++++  3060a
+rank0_chip0 created!
+All Chip In Rank0 created!
+[Esl Top] Number of concurrent threads: 32
+[DRVSTUB_LOG] driver_api.c:601 sendSwapBuf:swapbuf_base_addr:9000000000
+[DRVSTUB_LOG] driver_api.c:602 sendSwapBuf:sq:0 swapbuf_addr:9000000000
+[DRVSTUB_LOG] driver_api.c:601 sendSwapBuf:swapbuf_base_addr:9000000000
+[DRVSTUB_LOG] driver_api.c:602 sendSwapBuf:sq:1 swapbuf_addr:9000000080
+SoC sub 0 1 all tasks are finished!
+[Hardware] parallel simulation finish. sim time: 2.7634s, cycle: 248, speed: 0.0897444KHz
+SoC sub 0 2 all tasks are finished!
+SoC sub 0 3 all tasks are finished!
+[Hardware] parallel simulation finish. sim time: 0.630743s, cycle: 420, speed: 0.665882KHz
+[Hardware] parallel simulation finish. sim time: 0.47771s, cycle: 420, speed: 0.879194KHz
+[INFO] Thread 32 is running. Cycle Count: 10000
+[INFO] Thread 32 is running. Cycle Count: 20000
+[DRVSTUB_LOG] driver_api.c:601 sendSwapBuf:swapbuf_base_addr:9000000000
+[DRVSTUB_LOG] driver_api.c:602 sendSwapBuf:sq:2 swapbuf_addr:9000000100
+[DRVSTUB_LOG] driver_api.c:601 sendSwapBuf:swapbuf_base_addr:9000000000
+[DRVSTUB_LOG] driver_api.c:602 sendSwapBuf:sq:3 swapbuf_addr:9000000180
+[INFO] Thread 32 is running. Cycle Count: 30000
+Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+ninja: no work to do.
+[2026-11-03 16:05:02] [255814] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: tf32_hc_prenorm_gemm_kernel_kernel
+[INFO] Thread 32 is running. Cycle Count: 40000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[0]: 0x40000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[1]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[2]: 0x20002
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[3]: 0x37f0000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[4]: 0x4df0d200
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[5]: 0x91
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[6]: 0x8090800
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[7]: 0x2120000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[8]: 0xd0d000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[9]: 0xd0d738
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[10]: 0x900090
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[11]: 0x40000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[12]: 0x22c000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[13]: 0x90
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[14]: 0x22c000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[15]: 0x90
+[DRVSTUB_LOG] driver_queue.c:188 sendStarsSQE:sq_addr: 9154b4d800
+[info] [0000016582] [TASK_BEGIN] RTSQ_2 ACSQ_0 stream_id:0, task_id:0 full_task_id:0 BEGIN
+[INFO] Thread 32 is running. Cycle Count: 50000
+[INFO] Thread 32 is running. Cycle Count: 60000
+[INFO] Thread 32 is running. Cycle Count: 70000
+[INFO] Thread 32 is running. Cycle Count: 80000
+[info] [0000035042] [TASK_DONE] RTSQ_2 ACSQ_0 stream_id:0, task_id:0 TASK_DONE
+[INFO] Thread 32 is running. Cycle Count: 90000
+[INFO] Thread 32 is running. Cycle Count: 100000
+[INFO] Thread 32 is running. Cycle Count: 110000
+[INFO] Thread 32 is running. Cycle Count: 120000
+[INFO] Thread 32 is running. Cycle Count: 130000
+[INFO]  Extract 1172 relations from kernel
+[WARN]  Failed to parse pc to code, maybe kernel missed debug_line information. If you need code call stack, please recompile kernel with -g option
+[2026-11-03 16:05:27] [255814] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: mhc_pre_apply_mix_fwd_asc_kernel
+[INFO] Thread 32 is running. Cycle Count: 140000
+[INFO] Thread 32 is running. Cycle Count: 150000
+[INFO] Thread 32 is running. Cycle Count: 160000
+[INFO] Thread 32 is running. Cycle Count: 170000
+[WARN]  Code call stack is empty
+[WARN]  Lack of code info of files
+[INFO]  Core operator results run in simulator as follow:
+core_name           duration_time(us)   running_time(us)    
+core0.cubecore0     15.9                15.9                
+core0.veccore0      15.58               15.58               
+core0.veccore1      15.55               15.55               
+core1.cubecore0     16.41               16.41               
+core1.veccore0      15.39               15.39               
+core1.veccore1      15.39               15.39               
+core16.cubecore0    16.37               16.37               
+core16.veccore0     15.52               15.52               
+core16.veccore1     15.51               15.51               
+core17.cubecore0    16.41               16.41               
+core17.veccore0     15.36               15.36               
+core17.veccore1     15.32               15.32               
+[INFO] Thread 32 is running. Cycle Count: 180000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[0]: 0x380001
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[1]: 0x1
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[2]: 0x1c0002
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[3]: 0x57f0000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[4]: 0x4df0d200
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[5]: 0x91
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[6]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[7]: 0x1120000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[8]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[9]: 0xd0f000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[10]: 0x900000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[11]: 0x40000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[12]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[13]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[14]: 0x22c000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[15]: 0x90
+[DRVSTUB_LOG] driver_queue.c:188 sendStarsSQE:sq_addr: 9154b4d840
+[info] [0000075460] [TASK_BEGIN] RTSQ_2 ACSQ_0 stream_id:1, task_id:0 full_task_id:1 BEGIN
+[INFO] Thread 32 is running. Cycle Count: 190000
+[INFO] Thread 32 is running. Cycle Count: 200000
+[info] [0000081248] [TASK_DONE] RTSQ_2 ACSQ_0 stream_id:1, task_id:0 TASK_DONE
+[INFO] Thread 32 is running. Cycle Count: 210000
+[INFO] Thread 32 is running. Cycle Count: 220000
+[INFO] Thread 32 is running. Cycle Count: 230000
+[INFO] Thread 32 is running. Cycle Count: 240000
+[INFO] Thread 32 is running. Cycle Count: 250000
+[INFO] Thread 32 is running. Cycle Count: 260000
+[INFO] Thread 32 is running. Cycle Count: 270000
+[INFO] Thread 32 is running. Cycle Count: 280000
+[2026-11-03 16:05:46] [255814] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: tf32_hc_prenorm_gemm_kernel_kernel
+[INFO] Thread 32 is running. Cycle Count: 290000
+[INFO] Thread 32 is running. Cycle Count: 300000
+[INFO]  Extract 247 relations from kernel
+[WARN]  Failed to parse pc to code, maybe kernel missed debug_line information. If you need code call stack, please recompile kernel with -g option
+[WARN]  Code call stack is empty
+[WARN]  Lack of code info of files
+[INFO]  Core operator results run in simulator as follow:
+core_name           duration_time(us)   running_time(us)    
+core0.veccore0      4.53                4.17                
+core0.veccore1      4.45                4.15                
+core1.veccore0      4.42                3.99                
+core1.veccore1      4.37                4.05                
+core10.veccore0     3.57                3.47                
+core10.veccore1     3.73                3.62                
+core11.veccore0     3                   2.83                
+core11.veccore1     4.12                3.74                
+core12.veccore0     3.43                3.31                
+core12.veccore1     4.07                3.73                
+core13.veccore0     4.16                3.95                
+core13.veccore1     3.89                3.71                
+core16.veccore0     3.49                2.96                
+core16.veccore1     2.99                2.62                
+core17.veccore0     3.65                3.12                
+core17.veccore1     4.03                3.4                 
+core18.veccore0     3.87                3.77                
+core18.veccore1     4.06                3.93                
+core19.veccore0     4.44                4.02                
+core19.veccore1     3.36                3.25                
+core2.veccore0      5.13                4.46                
+core2.veccore1      5                   4.5                 
+core20.veccore0     3.12                2.96                
+core20.veccore1     4.05                3.55                
+core21.veccore0     3.9                 3.79                
+core21.veccore1     4.21                4.11                
+core22.veccore0     4.34                3.96                
+core22.veccore1     4.22                3.9                 
+core23.veccore0     3.69                3.53                
+core23.veccore1     4.17                3.92                
+core24.veccore0     4.45                4.14                
+core24.veccore1     4.35                4.13                
+core25.veccore0     3.37                3.22                
+core25.veccore1     4.07                3.62                
+core26.veccore0     3.57                3.48                
+core26.veccore1     3.9                 3.68                
+core27.veccore0     4.05                3.75                
+core27.veccore1     4.37                3.88                
+core28.veccore0     3.26                3.03                
+core28.veccore1     2.77                2.68                
+core29.veccore0     3.82                3.36                
+core29.veccore1     3.11                2.92                
+core3.veccore0      5.08                4.42                
+core3.veccore1      4.53                4.06                
+core4.veccore0      4.45                4.27                
+core4.veccore1      4.58                4.33                
+core5.veccore0      5.16                4.46                
+core5.veccore1      4.72                4.11                
+core6.veccore0      4.99                4.28                
+core6.veccore1      4.29                3.99                
+core7.veccore0      4.07                3.93                
+core7.veccore1      4.62                3.93                
+core8.veccore0      4.02                3.91                
+core8.veccore1      3.91                3.8                 
+core9.veccore0      4.03                3.83                
+core9.veccore1      4.08                3.92                
+[INFO] Thread 32 is running. Cycle Count: 310000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[0]: 0x40000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[1]: 0x2
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[2]: 0x20002
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[3]: 0x37f0000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[4]: 0x4df0d200
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[5]: 0x91
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[6]: 0x8090800
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[7]: 0x2120000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[8]: 0xd0d000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[9]: 0xd0d738
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[10]: 0x900090
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[11]: 0x40000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[12]: 0x22c000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[13]: 0x90
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[14]: 0x22c000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[15]: 0x90
+[DRVSTUB_LOG] driver_queue.c:188 sendStarsSQE:sq_addr: 9154b4d880
+[info] [0000125022] [TASK_BEGIN] RTSQ_2 ACSQ_0 stream_id:2, task_id:0 full_task_id:2 BEGIN
+[INFO] Thread 32 is running. Cycle Count: 320000
+[INFO] Thread 32 is running. Cycle Count: 330000
+[INFO] Thread 32 is running. Cycle Count: 340000
+[INFO] Thread 32 is running. Cycle Count: 350000
+[info] [0000140148] [TASK_DONE] RTSQ_2 ACSQ_0 stream_id:2, task_id:0 TASK_DONE
+[INFO] Thread 32 is running. Cycle Count: 360000
+[INFO] Thread 32 is running. Cycle Count: 370000
+[INFO] Thread 32 is running. Cycle Count: 380000
+[INFO] Thread 32 is running. Cycle Count: 390000
+[INFO] Thread 32 is running. Cycle Count: 400000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[0]: 0x380001
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[1]: 0x3
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[2]: 0x1c0002
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[3]: 0x57f0000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[4]: 0x4df0d200
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[5]: 0x91
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[6]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[7]: 0x1120000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[8]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[9]: 0xd10000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[10]: 0x900000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[11]: 0x5000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[12]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[13]: 0x0
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[14]: 0x22c000
+[DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[15]: 0x90
+[DRVSTUB_LOG] driver_queue.c:188 sendStarsSQE:sq_addr: 9154b4d8c0
+[info] [0000163651] [TASK_BEGIN] RTSQ_2 ACSQ_0 stream_id:3, task_id:0 full_task_id:3 BEGIN
+[INFO] Thread 32 is running. Cycle Count: 410000
+[INFO] Thread 32 is running. Cycle Count: 420000
+[info] [0000169656] [TASK_DONE] RTSQ_2 ACSQ_0 stream_id:3, task_id:0 TASK_DONE
+2026-11-03 16:05:26  [TileLang:tilelang.cache.kernel_cache:WARNING] (kernel_cache.py:379): Found kernel 'tf32_hc_prenorm_gemm_kernel' in memory cache. For better performance, consider using `@tilelang.jit` instead of direct kernel caching.
+2026-11-03 16:05:26  [TileLang:tilelang.cache.kernel_cache:WARNING] (kernel_cache.py:379): Found kernel 'tf32_hc_prenorm_gemm_kernel' in memory cache. For better performance, consider using `@tilelang.jit` instead of direct kernel caching.
+{'implementation': 'tilelang_coeff_bound', 'output': 'layer_input', 'shape': [128, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 2.215548518326271e-05, 'relative_l2': 1.9314915095015055e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+{'implementation': 'tilelang_coeff_bound', 'output': 'next_pre_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.463859558105469e-06, 'rmse': 2.8096068056678374e-06, 'relative_l2': 5.597756617666854e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_coeff_bound', 'output': 'post_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.5497207641601562e-05, 'rmse': 5.595777269301738e-06, 'relative_l2': 5.596548087146414e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+{'implementation': 'tilelang_coeff_bound', 'output': 'comb_mix', 'shape': [128, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.255243301391602e-06, 'rmse': 2.1469906892880098e-06, 'relative_l2': 8.550276912579199e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+Correctness passed. Implementations: ['tilelang_coeff_bound']
+Parallel Simulation: All threads are joined.
+ESL_TOP: parallel threads joined
+[INFO]  Extract 1172 relations from kernel
+[WARN]  Failed to parse pc to code, maybe kernel missed debug_line information. If you need code call stack, please recompile kernel with -g option
+[WARN]  Code call stack is empty
+[WARN]  Lack of code info of files
+[INFO]  Core operator results run in simulator as follow:
+core_name           duration_time(us)   running_time(us)    
+core0.cubecore0     14.47               14.47               
+core0.veccore0      13.99               13.99               
+core0.veccore1      13.97               13.97               
+core1.cubecore0     14.96               14.96               
+core1.veccore0      14.01               14.01               
+core1.veccore1      13.99               13.99               
+core16.cubecore0    14.92               14.92               
+core16.veccore0     13.91               13.9                
+core16.veccore1     13.88               13.88               
+core17.cubecore0    14.91               14.91               
+core17.veccore0     13.88               13.87               
+core17.veccore1     13.86               13.85               
+ESL_TOP: system destructed
+[INFO] Model stopped successfully.
+[INFO]  Profiling running finished. All task success.
+[INFO]  Start parse dump file
+[INFO]  Profiling results saved in /home/z30086261/Q4/results/mhc-three-simulator/20261103-160449-2600770/prof/OPPROF_20261103160451_DMCPFLWNUOYCNLOV
+[INFO]  Profiling data parse finished.
+[INFO]  Op profiling finish. Welcome to next use.
+(zwh) root@ubuntu162:/home/z30086261/Q4#
