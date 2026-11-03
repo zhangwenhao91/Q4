@@ -1,819 +1,96 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# git pull origin main
-remote: Enumerating objects: 18, done.
-remote: Counting objects: 100% (18/18), done.
-remote: Compressing objects: 100% (7/7), done.
-remote: Total 12 (delta 5), reused 12 (delta 5), pack-reused 0 (from 0)
-Unpacking objects: 100% (12/12), 11.85 KiB | 11.85 MiB/s, done.
-From https://github.com/zhangwenhao91/Q4
- * branch            main       -> FETCH_HEAD
-   b63b126..46193b3  main       -> origin/main
-Merge made by the 'recursive' strategy.
- operators/mhc/tuning/ALL_TOKEN_PIPELINE.md        |  40 +++++++
- operators/mhc/tuning/LICENSE_DEEPGEMM             |  21 ++++
- operators/mhc/tuning/coeff_token_pipeline.py      | 386 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- operators/mhc/tuning/projection_token_pipeline.py | 367 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- operators/mhc/tuning/run_all_token_simulator.sh   |  36 ++++++
- operators/mhc/tuning/simulate_all_token.py        |  60 ++++++++++
- operators/spec_v1/mhc_bound.py                    |  21 +++-
- 7 files changed, 929 insertions(+), 2 deletions(-)
- create mode 100644 operators/mhc/tuning/ALL_TOKEN_PIPELINE.md
- create mode 100644 operators/mhc/tuning/LICENSE_DEEPGEMM
- create mode 100644 operators/mhc/tuning/coeff_token_pipeline.py
- create mode 100644 operators/mhc/tuning/projection_token_pipeline.py
- create mode 100644 operators/mhc/tuning/run_all_token_simulator.sh
- create mode 100644 operators/mhc/tuning/simulate_all_token.py
-(zwh) root@ubuntu162:/home/z30086261/Q4# source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh 
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_all_token_simulator.sh 
-Results: /home/z30086261/Q4/results/mhc-all-token-simulator/20261103-195231-543960
-Collecting three kernels. Full console output is saved to console.log.
-[2026-11-03 19:52:54] [543974] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: mhc_pre_apply_flat_pipeline_asc_kernel
-[2026-11-03 19:57:06] [543974] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: mhc_projection_token_pipeline_kernel
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-[2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
-/home/z30086261/Q4/results/mhc-all-token-simulator/20261103-195231-543960/prof/OPPROF_20261103195231_RIYBIPAJDZSXHKGZ/device0/mhc_pre_apply_flat_pipeline_asc_kernel/0/simulator/visualize_data.bin
-Inspect same-core N-iteration overlap in all three traces; actual overlap is not yet verified.
-Compact report: /home/z30086261/Q4/error.txt
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mhc/tuning/diagnose_all_token.py 
+Run: /home/z30086261/Q4/results/mhc-all-token-simulator/20261103-195231-543960
+=== Key events (last 30) ===
+266: [2026-11-03 19:52:54] [543974] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: mhc_pre_apply_flat_pipeline_asc_kernel
+466: [2026-11-03 19:57:06] [543974] [ProfDataCollect.cpp:499] [INFO] Start profiling on kernel: mhc_projection_token_pipeline_kernel
+=== First error context ===
+593: [INFO] Thread 32 is running. Cycle Count: 2600000
+594: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[0]: 0x1c0000
+595: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[1]: 0x1
+596: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[2]: 0xe0002
+597: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[3]: 0x37f0000
+598: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[4]: 0x4df0d200
+599: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[5]: 0x91
+600: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[6]: 0x8090800
+601: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[7]: 0x2120000
+602: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[8]: 0xd0e000
+603: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[9]: 0xd0e7e8
+604: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[10]: 0x900090
+605: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[11]: 0x40000
+606: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[12]: 0x22c000
+607: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[13]: 0x90
+608: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[14]: 0x22c000
+609: [DRVSTUB_LOG] driver_queue.c:186 sendStarsSQE:RTSQ_2 sqe_payload[15]: 0x90
+610: [DRVSTUB_LOG] driver_queue.c:188 sendStarsSQE:sq_addr: 9154b4d840
+611: [INFO] Thread 32 is running. Cycle Count: 2610000
+612: [info] [0001044020] [TASK_BEGIN] RTSQ_2 ACSQ_0 stream_id:1, task_id:0 full_task_id:1 BEGIN
+613: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+614: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+615: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+616: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+617: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+618: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+619: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+620: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+621: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+622: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+623: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+624: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+625: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+626: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+627: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+628: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+629: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+630: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+631: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+632: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+633: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+634: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+635: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+636: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+637: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+638: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+639: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+640: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+641: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+642: [2026-11-03 19:58:25] [544588] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+=== Repeated errors (top 8) ===
+16459631 occurrences: [id] [id] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+9 occurrences: [INFO] Thread [id] [id] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+7 occurrences: [INFO] Thread 32[id] [id] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+2 occurrences: [INFO] Thread 32 is running. Cycle Count: [id] [id] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+1 occurrences: [INFO] Thread 32 is running. Cycle Count: 4120000[id] [id] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+1 occurrences: [INFO] Thread 32 is running. Cycle Count: 4290000[id] [id] [ProfConfig.cpp:307] [ERROR] Send one DBI data failed, error ret=0
+1 occurrences: [id] [id] [ProfConfig.cpp:140] [ERROR] NotifyStopTransLog failed. send msg to server error ret=0
+=== Last 25 log lines ===
+16460618: [INFO] Thread 32 is running. Cycle Count: 6140000
+16460619: [INFO] Thread 32 is running. Cycle Count: 6150000
+16460620: [INFO] Thread 32 is running. Cycle Count: 6160000
+16460621: [INFO] Thread 32 is running. Cycle Count: 6170000
+16460622: [INFO] Thread 32 is running. Cycle Count: 6180000
+16460623: [INFO] Thread 32 is running. Cycle Count: 6190000
+16460624: [INFO] Thread 32 is running. Cycle Count: 6200000
+16460625: [INFO] Thread 32 is running. Cycle Count: 6210000
+16460626: [INFO] Thread 32 is running. Cycle Count: 6220000
+16460627: [INFO] Thread 32 is running. Cycle Count: 6230000
+16460628: [INFO] Thread 32 is running. Cycle Count: 6240000
+16460629: [INFO] Thread 32 is running. Cycle Count: 6250000
+16460630: [INFO] Thread 32 is running. Cycle Count: 6260000
+16460631: [INFO] Thread 32 is running. Cycle Count: 6270000
+16460632: [INFO] Thread 32 is running. Cycle Count: 6280000
+16460633: [INFO] Thread 32 is running. Cycle Count: 6290000
+16460634: [INFO] Thread 32 is running. Cycle Count: 6300000
+16460635: [INFO] Thread 32 is running. Cycle Count: 6310000
+16460636: [INFO] Thread 32 is running. Cycle Count: 6320000
+16460637: [INFO] Thread 32 is running. Cycle Count: 6330000
+16460638: [INFO] Thread 32 is running. Cycle Count: 6340000
+16460639: [INFO] Thread 32 is running. Cycle Count: 6350000
+16460640: [INFO] Thread 32 is running. Cycle Count: 6360000
+16460641: [INFO] Thread 32 is running. Cycle Count: 6370000
+16460642: [INFO] Thread 32 is running. Cycle Count: 6380000
+=== Output files ===
+correctness.json: MISSING
+source/metadata.json
+prof/OPPROF_20261103195231_RIYBIPAJDZSXHKGZ/device0/mhc_pre_apply_flat_pipeline_asc_kernel/0/simulator/visualize_data.bin
+Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
