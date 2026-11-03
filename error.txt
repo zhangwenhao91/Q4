@@ -2,73 +2,67 @@
 SELECTED results/mhc-simulator/20261103-093657-all-3856816
 Times below retain raw trace units; no conversion or pipeline attribution assumed.
 IMPL original trace_files 2 showing_first 2
-CORE core0.veccore0 events 7369 lanes 55 shown 8 phases {'M': 130, 'X': 7239}
+CORE core0.veccore0 events 7369 lanes 55 shown 4 phases {'M': 130, 'X': 7239}
  L 0 (60, 6) MTE2_6 count 1 busy 3.014545 span 3.014545 names [('MOV_SRC_TO_DST_ALIGNv2', 1)]
  L 1 (60, 4) MTE2_4 count 1 busy 2.707273 span 2.707273 names [('MOV_SRC_TO_DST_ALIGNv2', 1)]
  L 2 (60, 5) MTE2_5 count 1 busy 2.667273 span 2.667273 names [('MOV_SRC_TO_DST_ALIGNv2', 1)]
  L 3 (60, 2) MTE2_2 count 1 busy 1.573939 span 1.573939 names [('MOV_SRC_TO_DST_ALIGNv2', 1)]
- L 4 (60, 3) MTE2_3 count 1 busy 1.537576 span 1.537576 names [('MOV_SRC_TO_DST_ALIGNv2', 1)]
- L 5 (0, 33) PUSHQ_33 count 3 busy 0.976364 span 2.432121 names [('VF', 3)]
- L 6 (0, 7) RVECSU_7 count 180 busy 0.756364 span 2.404243 names [('RV_VCVT_F2F', 153), ('RV_VMUL', 12), ('RV_SMOVI', 3)]
- L 7 (0, 19) RVECLD_19 count 125 busy 0.753333 span 2.399395 names [('RV_VLDI', 52), ('RV_VMULA', 51), ('RV_VCVT_F2F', 10)]
- OVERLAP_TOP8 [(1, 2, 2.666061), (0, 2, 2.08303), (0, 1, 2.081818), (3, 4, 1.536364), (1, 4, 1.534545), (1, 3, 1.533333), (2, 4, 1.493333), (2, 3, 1.492121)]
- Units=raw_trace; lane IDs are local to this CORE; parent spans may overlap child instructions.
-CORE core0.veccore1 events 7369 lanes 55 shown 8 phases {'M': 130, 'X': 7239}
+ PIPE MTE2 events 6 union 3.683636 range (4.565454, 8.249091)
+ PIPE VECTOR_RV events 4671 union 0.925455 range (6.155151, 8.572122)
+ PIPE MTE3 events 3 union 0.726667 range (6.470909, 8.802424)
+ PIPE_OVERLAP [('MTE2', 'VECTOR_RV', 0.61697), ('VECTOR_RV', 'MTE3', 0.0), ('MTE2', 'MTE3', 0.501818)]
+ VF_QUEUE_PROXY 3 union 0.976364 NOTE raw trace units; spans may include stalls; VF queue is not Vector execution.
+CORE core0.veccore1 events 7369 lanes 55 shown 4 phases {'M': 130, 'X': 7239}
  L 0 (60, 6) MTE2_6 count 1 busy 3.323636 span 3.323636 names [('MOV_SRC_TO_DST_ALIGNv2', 1)]
  L 1 (60, 4) MTE2_4 count 1 busy 2.673939 span 2.673939 names [('MOV_SRC_TO_DST_ALIGNv2', 1)]
  L 2 (60, 5) MTE2_5 count 1 busy 2.63394 span 2.63394 names [('MOV_SRC_TO_DST_ALIGNv2', 1)]
  L 3 (60, 2) MTE2_2 count 1 busy 1.219394 span 1.219394 names [('MOV_SRC_TO_DST_ALIGNv2', 1)]
- L 4 (60, 3) MTE2_3 count 1 busy 1.18303 span 1.18303 names [('MOV_SRC_TO_DST_ALIGNv2', 1)]
- L 5 (0, 33) PUSHQ_33 count 3 busy 0.976364 span 2.766667 names [('VF', 3)]
- L 6 (60, 1) MTE2_1 count 2 busy 0.8 span 1.312121 names [('MOV_SPR_XN', 1), ('MOV_SRC_TO_DST_ALIGNv2', 1)]
- L 7 (0, 7) RVECSU_7 count 180 busy 0.756364 span 2.738788 names [('RV_VCVT_F2F', 153), ('RV_VMUL', 12), ('RV_SMOVI', 3)]
- OVERLAP_TOP8 [(1, 2, 2.632727), (0, 2, 2.378788), (0, 1, 2.377576), (3, 4, 1.181818), (1, 4, 1.18), (1, 3, 1.178788), (2, 4, 1.138788), (2, 3, 1.137576)]
- Units=raw_trace; lane IDs are local to this CORE; parent spans may overlap child instructions.
+ PIPE MTE2 events 6 union 3.663636 range (4.538788, 8.202424)
+ PIPE VECTOR_RV events 4671 union 0.925454 range (5.77394, 8.525455)
+ PIPE MTE3 events 3 union 0.684242 range (6.089697, 8.726061)
+ PIPE_OVERLAP [('MTE2', 'VECTOR_RV', 0.616969), ('VECTOR_RV', 'MTE3', 0.0), ('MTE2', 'MTE3', 0.489091)]
+ VF_QUEUE_PROXY 3 union 0.976364 NOTE raw trace units; spans may include stalls; VF queue is not Vector execution.
 IMPL nested trace_files 2 showing_first 2
-CORE core0.veccore0 events 8253 lanes 59 shown 8 phases {'M': 138, 'X': 8115}
+CORE core0.veccore0 events 8253 lanes 59 shown 4 phases {'M': 138, 'X': 8115}
  L 0 (60, 5) MTE2_5 count 4 busy 3.439394 span 3.922424 names [('MOV_SRC_TO_DST_ALIGNv2', 4)]
  L 1 (60, 2) MTE2_2 count 5 busy 3.18303 span 3.675152 names [('MOV_SRC_TO_DST_ALIGNv2', 5)]
  L 2 (60, 4) MTE2_4 count 4 busy 3.168485 span 3.65091 names [('MOV_SRC_TO_DST_ALIGNv2', 4)]
  L 3 (60, 3) MTE2_3 count 4 busy 2.912121 span 3.439394 names [('MOV_SRC_TO_DST_ALIGNv2', 4)]
- L 4 (60, 1) MTE2_1 count 7 busy 2.64 span 4.03697 names [('MOV_SRC_TO_DST_ALIGNv2', 6), ('MOV_SPR_XN', 1)]
- L 5 (70, 1) MTE3_1 count 10 busy 1.653333 span 4.84 names [('MOV_SRC_TO_DST_ALIGNv2', 9), ('MOV_SPR_XN', 1)]
- L 6 (0, 32) PUSHQ_32 count 11 busy 1.324848 span 3.159394 names [('VF', 11)]
- L 7 (60, 6) MTE2_6 count 1 busy 1.041212 span 1.041212 names [('MOV_SRC_TO_DST_ALIGNv2', 1)]
- OVERLAP_TOP8 [(0, 2, 2.898787), (0, 1, 2.776969), (2, 3, 2.678788), (1, 2, 2.676363), (1, 3, 2.664243), (0, 3, 2.533333), (1, 4, 2.388485), (2, 4, 2.291514)]
- Units=raw_trace; lane IDs are local to this CORE; parent spans may overlap child instructions.
-CORE core0.veccore1 events 8253 lanes 59 shown 8 phases {'M': 138, 'X': 8115}
+ PIPE MTE2 events 24 union 3.968485 range (5.210909, 9.179394)
+ PIPE VECTOR_RV events 4812 union 1.220607 range (6.152727, 9.296969)
+ PIPE MTE3 events 12 union 1.955757 range (6.263031, 9.477576)
+ PIPE_OVERLAP [('MTE2', 'VECTOR_RV', 1.118789), ('VECTOR_RV', 'MTE3', 0.430303), ('MTE2', 'MTE3', 1.780606)]
+ VF_QUEUE_PROXY 12 union 1.433333 NOTE raw trace units; spans may include stalls; VF queue is not Vector execution.
+CORE core0.veccore1 events 8253 lanes 59 shown 4 phases {'M': 138, 'X': 8115}
  L 0 (60, 5) MTE2_5 count 4 busy 3.787879 span 4.321212 names [('MOV_SRC_TO_DST_ALIGNv2', 4)]
  L 1 (60, 2) MTE2_2 count 5 busy 3.330303 span 3.647879 names [('MOV_SRC_TO_DST_ALIGNv2', 5)]
  L 2 (60, 4) MTE2_4 count 4 busy 3.208485 span 3.79394 names [('MOV_SRC_TO_DST_ALIGNv2', 4)]
  L 3 (60, 3) MTE2_3 count 4 busy 3.197576 span 3.79394 names [('MOV_SRC_TO_DST_ALIGNv2', 4)]
- L 4 (60, 1) MTE2_1 count 7 busy 2.904848 span 4.184242 names [('MOV_SRC_TO_DST_ALIGNv2', 6), ('MOV_SPR_XN', 1)]
- L 5 (70, 1) MTE3_1 count 8 busy 1.29697 span 5.17697 names [('MOV_SRC_TO_DST_ALIGNv2', 7), ('MOV_SPR_XN', 1)]
- L 6 (0, 32) PUSHQ_32 count 9 busy 1.108485 span 3.518788 names [('VF', 9)]
- L 7 (60, 6) MTE2_6 count 1 busy 1.040606 span 1.040606 names [('MOV_SRC_TO_DST_ALIGNv2', 1)]
- OVERLAP_TOP8 [(0, 2, 3.07697), (1, 3, 2.965454), (2, 3, 2.856364), (0, 1, 2.822425), (1, 2, 2.801212), (0, 3, 2.785455), (1, 4, 2.774546), (3, 4, 2.541212)]
- Units=raw_trace; lane IDs are local to this CORE; parent spans may overlap child instructions.
+ PIPE MTE2 events 24 union 4.363636 range (5.207273, 9.574545)
+ PIPE VECTOR_RV events 4811 union 1.218182 range (6.188485, 9.692122)
+ PIPE MTE3 events 12 union 1.718182 range (6.298788, 9.850303)
+ PIPE_OVERLAP [('MTE2', 'VECTOR_RV', 1.116364), ('VECTOR_RV', 'MTE3', 0.709091), ('MTE2', 'MTE3', 1.565455)]
+ VF_QUEUE_PROXY 12 union 1.39394 NOTE raw trace units; spans may include stalls; VF queue is not Vector execution.
 IMPL flat trace_files 2 showing_first 2
-CORE core0.veccore0 events 8613 lanes 57 shown 8 phases {'M': 134, 'X': 8479}
+CORE core0.veccore0 events 8613 lanes 57 shown 4 phases {'M': 134, 'X': 8479}
  L 0 (60, 5) MTE2_5 count 4 busy 3.342424 span 3.935152 names [('MOV_SRC_TO_DST_ALIGNv2', 4)]
  L 1 (60, 4) MTE2_4 count 4 busy 3.297576 span 3.78303 names [('MOV_SRC_TO_DST_ALIGNv2', 4)]
  L 2 (60, 1) MTE2_1 count 7 busy 3.175151 span 4.362424 names [('MOV_SRC_TO_DST_ALIGNv2', 6), ('MOV_SPR_XN', 1)]
  L 3 (60, 2) MTE2_2 count 5 busy 3.155152 span 3.653939 names [('MOV_SRC_TO_DST_ALIGNv2', 5)]
- L 4 (60, 3) MTE2_3 count 4 busy 3.13697 span 3.621818 names [('MOV_SRC_TO_DST_ALIGNv2', 4)]
- L 5 (70, 1) MTE3_1 count 10 busy 1.64 span 4.843031 names [('MOV_SRC_TO_DST_ALIGNv2', 9), ('MOV_SPR_XN', 1)]
- L 6 (0, 32) PUSHQ_32 count 11 busy 1.349697 span 3.263031 names [('VF', 11)]
- L 7 (0, 22) RVECLD_22 count 120 busy 0.855758 span 3.220606 names [('RV_VLDI', 47), ('RV_VMULA', 43), ('RV_VSTI', 20)]
- OVERLAP_TOP8 [(0, 1, 2.910909), (1, 2, 2.895151), (3, 4, 2.890909), (1, 3, 2.885454), (1, 4, 2.884242), (0, 2, 2.860606), (0, 3, 2.746061), (0, 4, 2.744848)]
- Units=raw_trace; lane IDs are local to this CORE; parent spans may overlap child instructions.
-CORE core0.veccore1 events 8613 lanes 57 shown 8 phases {'M': 134, 'X': 8479}
+ PIPE MTE2 events 24 union 3.936364 range (4.548485, 8.555758)
+ PIPE VECTOR_RV events 4824 union 1.219394 range (5.434546, 8.673333)
+ PIPE MTE3 events 12 union 1.884849 range (5.544242, 8.85394)
+ PIPE_OVERLAP [('MTE2', 'VECTOR_RV', 1.052121), ('VECTOR_RV', 'MTE3', 0.585454), ('MTE2', 'MTE3', 1.606668)]
+ VF_QUEUE_PROXY 12 union 1.425454 NOTE raw trace units; spans may include stalls; VF queue is not Vector execution.
+CORE core0.veccore1 events 8613 lanes 57 shown 4 phases {'M': 134, 'X': 8479}
  L 0 (60, 2) MTE2_2 count 5 busy 3.51697 span 4.007273 names [('MOV_SRC_TO_DST_ALIGNv2', 5)]
  L 1 (60, 5) MTE2_5 count 4 busy 3.3 span 3.966061 names [('MOV_SRC_TO_DST_ALIGNv2', 4)]
  L 2 (60, 4) MTE2_4 count 4 busy 3.296364 span 3.972727 names [('MOV_SRC_TO_DST_ALIGNv2', 4)]
  L 3 (60, 3) MTE2_3 count 4 busy 2.974545 span 3.450909 names [('MOV_SRC_TO_DST_ALIGNv2', 4)]
- L 4 (60, 1) MTE2_1 count 7 busy 2.92 span 4.006667 names [('MOV_SRC_TO_DST_ALIGNv2', 6), ('MOV_SPR_XN', 1)]
- L 5 (70, 1) MTE3_1 count 8 busy 1.367273 span 4.832728 names [('MOV_SRC_TO_DST_ALIGNv2', 7), ('MOV_SPR_XN', 1)]
- L 6 (0, 32) PUSHQ_32 count 8 busy 0.981212 span 3.292728 names [('VF', 8)]
- L 7 (0, 7) RVECSU_7 count 202 busy 0.843636 span 3.372727 names [('RV_VCVT_F2F', 127), ('RV_VMUL', 22), ('RV_SSHLI', 20)]
- OVERLAP_TOP8 [(1, 2, 3.155757), (0, 2, 3.144242), (0, 1, 3.00606), (0, 3, 2.728485), (0, 4, 2.667879), (3, 4, 2.646666), (2, 3, 2.498182), (1, 3, 2.476363)]
- Units=raw_trace; lane IDs are local to this CORE; parent spans may overlap child instructions.
+ PIPE MTE2 events 24 union 3.981819 range (4.570909, 8.609091)
+ PIPE VECTOR_RV events 4824 union 1.21697 range (5.424242, 8.809697)
+ PIPE MTE3 events 12 union 1.765454 range (5.533939, 8.972727)
+ PIPE_OVERLAP [('MTE2', 'VECTOR_RV', 0.973334), ('VECTOR_RV', 'MTE3', 0.707879), ('MTE2', 'MTE3', 1.499394)]
+ VF_QUEUE_PROXY 12 union 1.391515 NOTE raw trace units; spans may include stalls; VF queue is not Vector execution.
 Offline inspection complete. Lane overlaps need schema validation; nested parent spans are not execution proof.
 (zwh) root@ubuntu162:/home/z30086261/Q4#
