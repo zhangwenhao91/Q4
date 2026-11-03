@@ -7,7 +7,7 @@ from pathlib import Path
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--impl',choices=['original','nested','flat'],required=True)
+    p.add_argument('--impl',choices=['original','nested','flat','token'],required=True)
     p.add_argument('--tokens',type=int,default=128)
     p.add_argument('--output',type=Path,required=True)
     a = p.parse_args()
@@ -30,7 +30,8 @@ def main():
             from apply_pipeline import mhc_pre_apply_pipeline_asc as fn
         else:
             from apply_flat_pipeline import mhc_pre_apply_flat_pipeline_asc as fn
-        config = dict(h_blk=1280,num_vec_cores=get_num_vec_cores(),pipeline_stages=3)
+        config = dict(h_blk=5120 if a.impl == 'token' else 1280,
+                      num_vec_cores=get_num_vec_cores(),pipeline_stages=3)
     a.output.mkdir(parents=True,exist_ok=True)
     kernel = fn.compile(x,mix,out,**config)
     source = kernel.get_kernel_source()
