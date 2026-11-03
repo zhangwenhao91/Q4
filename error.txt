@@ -1,27 +1,42 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mha/collect_plain3584.py 
-SELECTED results/mha-plain3584/20261103-151933-all-216035
-CHECKS 48 FAILED 0
-IDENTITY bench-cached-rep1 661c44965a68d07e78aab30a7aa07b10ce9df6bd {'Q': [3584, 128], 'K': [3584, 128], 'V': [3584, 128], 'batch': 1, 'heads': 1, 'input_dtype': 'bfloat16', 'output_dtype': 'bfloat16', 'scale': 0.08838834764831843, 'causal': False, 'dropout': 0, 'attention_bias': False, 'return_lse': False} source 80364b3d9758854a9692cc0f14089025f54d3f3f
-API PROCESS bench-cached-rep1 {"tilelang": {"event_us": 24.5830500125885, "wall_us": 24.922730517573655}, "ascendc": {"event_us": 26.580945253372192, "wall_us": 26.921125245280564}, "ratio": {"numerator": "ascendc", "denominator": "tilelang", "event_ratio": 1.0812712515233305}}
-API PROCESS bench-cached-rep2 {"tilelang": {"event_us": 24.680955410003662, "wall_us": 25.038960156962276}, "ascendc": {"event_us": 26.530214548110962, "wall_us": 26.892140158452094}, "ratio": {"numerator": "ascendc", "denominator": "tilelang", "event_ratio": 1.0749265620956374}}
-API PROCESS bench-cached-rep3 {"tilelang": {"event_us": 24.723055362701416, "wall_us": 25.08527017198503}, "ascendc": {"event_us": 26.557835340499878, "wall_us": 26.93705551791936}, "ratio": {"numerator": "ascendc", "denominator": "tilelang", "event_ratio": 1.0742133183330775}}
-API PROCESS bench-per_call-rep1 {"tilelang": {"event_us": 24.775065183639526, "wall_us": 25.16779990401119}, "ascendc": {"event_us": 64.87185478210449, "wall_us": 65.26293989736587}, "ratio": {"numerator": "ascendc", "denominator": "tilelang", "event_ratio": 2.618433263495238}}
-API PROCESS bench-per_call-rep2 {"tilelang": {"event_us": 24.62452530860901, "wall_us": 24.985825293697417}, "ascendc": {"event_us": 64.79619026184082, "wall_us": 65.16358989756554}, "ratio": {"numerator": "ascendc", "denominator": "tilelang", "event_ratio": 2.6313680954161316}}
-API PROCESS bench-per_call-rep3 {"tilelang": {"event_us": 24.6206796169281, "wall_us": 24.976115091703832}, "ascendc": {"event_us": 64.55282926559448, "wall_us": 64.97060065157712}, "ratio": {"numerator": "ascendc", "denominator": "tilelang", "event_ratio": 2.6218946946212967}}
-API MEDIAN bench-cached processes 3 TL_us 24.680955410003662 AC_us 26.557835340499878 AC/TL 1.0760456756765373
-API MEDIAN bench-per_call processes 3 TL_us 24.62452530860901 AC_us 64.79619026184082 AC/TL 2.6313680954161316
-PROFILE profile-cached-ascendc CSV 1
-KERNEL FlashAttn count 30 mean_us 26.645666666666667
-PROFILE profile-cached-ascendc.log CSV 0
-PROFILE profile-cached-tilelang CSV 1
-KERNEL main_kernel count 30 mean_us 24.526
-PROFILE profile-cached-tilelang.log CSV 0
-PROFILE profile-per_call-ascendc CSV 1
-KERNEL aclnnFlashAttnMetadata_FlashAttnMetadata_FlashAttnMetadata count 30 mean_us 38.26886666666667
-KERNEL FlashAttn count 30 mean_us 26.549966666666666
-PROFILE profile-per_call-ascendc.log CSV 0
-PROFILE profile-per_call-tilelang CSV 1
-KERNEL main_kernel count 30 mean_us 24.599733333333333
-PROFILE profile-per_call-tilelang.log CSV 0
-Expected all: 16 correctness files, 6 API summaries, 4 profile directories; 48 output checks.
+(zwh) root@ubuntu162:/home/z30086261/Q4# source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
+(zwh) root@ubuntu162:/home/z30086261/Q4# msprof op simulator --help
+Description:
+  Profile Ascend C operators by running the application on the simulator.
+
+Usage:
+  msopprof simulator [options] (<application> [application-args] | --config <FILE> | --export <DIR>)
+
+Optional arguments:
+  Exactly one of <application>, --config, and --export must be specified.
+  -h, --help                                Show help message.
+  -V, --version                             Show version information.
+      --config <FILE>                       JSON operator configuration file.
+      --application <FILE>                  Application executable path.
+      --export <DIR>                        Simulator data directory to parse.
+      --output <DIR>                        Output directory [default: ./].
+      --kernel-name <NAME>                  Specify the kernel name to profile.
+                                              Not effective in config mode.
+      --launch-count <N>                    Kernel launches to collect (1-5000) [default: 1].
+      --aic-metrics <NAME>[,<NAME>...]      Enable collection ability type:
+                                              Supported values: PipeUtilization | ResourceConflictRatio |
+                                                | PMSampling | Overhead |
+                                              PMSampling and Overhead are not supported on Ascend950.
+                                              PipeUtilization is required.
+      --mstx {true,false}                       Enable mstx API [default: false].
+      --mstx-include <RANGE>                Specify the mstx range to collect.
+      --soc-version <VERSION>               Simulator version; required for Ascend950.
+      --core-id <ID>                        Specify the id of cores to parse.
+      --timeout <MINUTES>                   Application timeout (1-2880 minutes).
+      --dump {true,false}                       Enable native dump for A2/A3, or instruction dump from Ascend950 camodel real-time callbacks [default: false].
+
+Examples:
+  msopprof simulator ./my_operator
+  msopprof simulator --config ./op_config.json
+  msopprof simulator --export ./simulator_output
+
+Output:
+  Results are written to <output-dir>/OPPROF_{timestamp}_{random}.
+
+Troubleshooting:
+  Check that exactly one input is provided and option values are valid.
 (zwh) root@ubuntu162:/home/z30086261/Q4#
