@@ -19,7 +19,7 @@ npu-smi info > "$OUT/npu-smi.txt"
 run_case() {
   local mode="$1" tag="$2"
   shift 2
-  python operators/spec_v1/mha_plain3584.py --suite mha_bf16 --ac-metadata "$mode" \
+  python operators/spec_v1/mha_plain3584.py --suite mha_bf16 --mha-seqlen 3584 --ac-metadata "$mode" \
     --output "$OUT/$tag" "$@" 2>&1 | tee "$OUT/$tag.log"
 }
 if [[ "$MODE" == smoke ]]; then run_case cached smoke --check-only; fi
