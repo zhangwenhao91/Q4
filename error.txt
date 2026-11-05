@@ -1,65 +1,63 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh all
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-150817-all-3269952
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-151232-all-3275304
 Building isolated pinned upstream HcPre (details in build.log).
 Failed stage: build
-Log: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-150817-all-3269952/build.log
+Log: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-151232-all-3275304/build.log
 === First error contexts (up to 4) ===
-3: Successfully installed decorator-5.2.1
+1: Processing ./operators/mhc/vllm_v3/dependency_archives/scipy-1.15.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+2: Installing collected packages: scipy
+3: Successfully installed scipy-1.15.3
 4: WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
-5: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/classifier/transdata/transdata_classifier.py:223: SyntaxWarning: invalid escape sequence '\B'
-6:   Return BN\BH SCH Result
-7: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/transdata/common/graph/transdata_graph_info.py:146: SyntaxWarning: invalid escape sequence '\c'
-8:   2. In forward, tiling would not split c1 and c0, find c1\c0 based on t2.
-9: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/transdata/common/graph/transdata_graph_info.py:172: SyntaxWarning: invalid escape sequence '\c'
-10:   1. Forward: tiling would not split c1\c0\h0, find c1\c0\h1\h0 based on t2
-11: Traceback (most recent call last):
-12:   File "<string>", line 1, in <module>
-13:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/__init__.py", line 98, in <module>
-14:     from . import dsl
-15:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/__init__.py", line 20, in <module>
-16:     from .api import ceil
-17:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/api.py", line 27, in <module>
-18:     from .compute import cast
-19:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/compute/cast.py", line 34, in <module>
-20:     from tbe.dsl.unify_schedule.util import is_v220
-21:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/__init__.py", line 35, in <module>
-22:     from . import vector
-23:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/__init__.py", line 30, in <module>
-24:     from . import sparse_apply
-25:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/sparse_apply/__init__.py", line 20, in <module>
-26:     from . import sparse_apply_schedule
-27:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/sparse_apply/sparse_apply_schedule.py", line 23, in <module>
-28:     import te.platform as tbe_platform
-29:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/te/platform/__init__.py", line 125, in <module>
-30:     from .cce_util import get_type_bits
-43:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/transform/__init__.py", line 21, in <module>
-44:     from .recast import recast
-45:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/transform/recast.py", line 22, in <module>
-46:     from ..analysis import count_layers
-47:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/analysis/__init__.py", line 31, in <module>
-48:     from . import sparse_dense
-49:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/analysis/sparse_dense.py", line 25, in <module>
-50:     import scipy.sparse as sp
-51: ModuleNotFoundError: No module named 'scipy'
+5: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/analysis/sparse_dense.py:25: UserWarning: A NumPy version >=1.23.5 and <2.5.0 is required for this version of SciPy (detected version 2.5.4)
+6:   import scipy.sparse as sp
+7: Traceback (most recent call last):
+8:   File "<string>", line 1, in <module>
+9:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/__init__.py", line 98, in <module>
+10:     from . import dsl
+11:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/__init__.py", line 20, in <module>
+12:     from .api import ceil
+13:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/api.py", line 27, in <module>
+14:     from .compute import cast
+15:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/compute/cast.py", line 34, in <module>
+16:     from tbe.dsl.unify_schedule.util import is_v220
+17:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/__init__.py", line 35, in <module>
+18:     from . import vector
+19:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/__init__.py", line 30, in <module>
+20:     from . import sparse_apply
+21:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/sparse_apply/__init__.py", line 20, in <module>
+22:     from . import sparse_apply_schedule
+23:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/sparse_apply/sparse_apply_schedule.py", line 23, in <module>
+24:     import te.platform as tbe_platform
+25:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/te/platform/__init__.py", line 125, in <module>
+26:     from .cce_util import get_type_bits
+31:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/nn/__init__.py", line 35, in <module>
+32:     from .conv3d_transpose import *
+33:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/nn/conv3d_transpose.py", line 21, in <module>
+34:     from tvm import relay
+35:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/__init__.py", line 64, in <module>
+36:     from .transform import memory_plan
+37:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/transform/memory_plan.py", line 23, in <module>
+38:     import attr
+39: ModuleNotFoundError: No module named 'attr'
 === Final non-progress lines ===
-32:     from tvm.topi.utils import equal_const_int
-33:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/__init__.py", line 50, in <module>
-34:     from . import nn
-35:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/nn/__init__.py", line 35, in <module>
-36:     from .conv3d_transpose import *
-37:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/nn/conv3d_transpose.py", line 21, in <module>
-38:     from tvm import relay
-39:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/__init__.py", line 29, in <module>
-40:     from . import prelude
-41:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/prelude.py", line 21, in <module>
-42:     from tvm.relay.transform import ToANormalFormExpr
-43:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/transform/__init__.py", line 21, in <module>
-44:     from .recast import recast
-45:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/transform/recast.py", line 22, in <module>
-46:     from ..analysis import count_layers
-47:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/analysis/__init__.py", line 31, in <module>
-48:     from . import sparse_dense
-49:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/analysis/sparse_dense.py", line 25, in <module>
-50:     import scipy.sparse as sp
-51: ModuleNotFoundError: No module named 'scipy'
+20:     from . import sparse_apply
+21:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/sparse_apply/__init__.py", line 20, in <module>
+22:     from . import sparse_apply_schedule
+23:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/sparse_apply/sparse_apply_schedule.py", line 23, in <module>
+24:     import te.platform as tbe_platform
+25:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/te/platform/__init__.py", line 125, in <module>
+26:     from .cce_util import get_type_bits
+27:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/te/platform/cce_util.py", line 34, in <module>
+28:     from tvm.topi.utils import equal_const_int
+29:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/__init__.py", line 50, in <module>
+30:     from . import nn
+31:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/nn/__init__.py", line 35, in <module>
+32:     from .conv3d_transpose import *
+33:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/nn/conv3d_transpose.py", line 21, in <module>
+34:     from tvm import relay
+35:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/__init__.py", line 64, in <module>
+36:     from .transform import memory_plan
+37:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/transform/memory_plan.py", line 23, in <module>
+38:     import attr
+39: ModuleNotFoundError: No module named 'attr'
 Saved: /home/z30086261/Q4/error.txt
