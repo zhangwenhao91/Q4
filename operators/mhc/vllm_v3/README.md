@@ -11,6 +11,13 @@ Python packages. modes: build, smoke, bench, all (default). Full logs go to
 results/mhc-vllm-v3; error.txt is a compact result or failure report for copying
 manually to GitHub. The build may download upstream framework dependencies.
 
+Source download uses the fixed-commit GitHub codeload archive, SHA256
+98cef93d6983f9cb5b193e200a1e7b6b18ee11daef17eb35e2acfa432b8e82cc,
+then verifies relevant extracted files against the verified archive on every
+run. It avoids Git partial-clone lazy fetches that returned HTTP 403 on the NPU
+host. The earlier failed clone is preserved; the new source directory ends in
+`-archive`. This changes only source acquisition, not the pinned implementation.
+
 The AscendC kernel, tiling and ACLNN adapter are unchanged upstream files.
 prepare.py verifies their bytes against the fixed commit (allowing Git CRLF
 checkout normalization), extracts original HcPre helper functions, v3 function,

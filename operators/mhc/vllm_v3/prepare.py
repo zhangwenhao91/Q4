@@ -4,10 +4,13 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import tarfile
 
 REV = 'e838a32888113cd20e1b5bad2053d1b4a06bf935'
 ROOT = Path(__file__).resolve().parents[3]
-SOURCE = ROOT / 'third_party/vllm-ascend-q4-v3'
+SOURCE = ROOT / 'third_party/vllm-ascend-q4-v3-archive'
+ARCHIVE = ROOT / 'third_party/vllm-ascend-v3-e838a328.tar.gz'
+ARCHIVE_SHA256 = '98cef93d6983f9cb5b193e200a1e7b6b18ee11daef17eb35e2acfa432b8e82cc'
 RECORD = ROOT / 'third_party/vllm-v3-record'
 VENDOR = ROOT / 'third_party/q4vllmv3-opp/vendors/q4vllmv3_transformer'
 PREFIXES = ('csrc/moe/hc_pre/', 'csrc/aclnn_torch_adapter/')
@@ -18,6 +21,21 @@ def sha(path):
 
 
 def verify(source=SOURCE):
+    if (source / '.q4-pinned-archive').exists():
+        if sha(ARCHIVE) != ARCHIVE_SHA256:
+            raise RuntimeError('Pinned source archive checksum mismatch')
+        hashes = {}
+        with tarfile.open(ARCHIVE, 'r:gz') as archive:
+            for member in archive:
+                name = member.name.partition('/')[2]
+                if member.isfile() and (name.startswith(PREFIXES) or name in ('csrc/torch_binding.cpp', 'csrc/build.sh')):
+                    original = archive.extractfile(member).read()
+                    if (source / name).read_bytes() != original:
+                        raise RuntimeError('Upstream archive file changed: ' + name)
+                    hashes[name] = hashlib.sha256(original).hexdigest()
+        if not hashes:
+            raise RuntimeError('Empty source archive manifest')
+        return hashes
     rev = subprocess.check_output(['git', '-C', str(source), 'rev-parse', 'HEAD'], text=True).strip()
     if rev != REV:
         raise RuntimeError('Unexpected vLLM-Ascend revision: ' + rev)
@@ -77,7 +95,30 @@ def main():
     p.add_argument('--source', type=Path, default=SOURCE)
     p.add_argument('--record', type=Path, default=RECORD)
     p.add_argument('--installer', type=Path, help='record completed isolated build')
+    p.add_argument('--unpack', action='store_true')
     a = p.parse_args()
+    if a.unpack:
+        if sha(ARCHIVE) != ARCHIVE_SHA256:
+            raise RuntimeError('Pinned source archive checksum mismatch; refusing to unpack')
+        if not a.source.exists():
+            a.source.mkdir(parents=True)
+            with tarfile.open(ARCHIVE, 'r:gz') as archive:
+                for member in archive:
+                    name = member.name.partition('/')[2]
+                    if not name:
+                        continue
+                    target = (a.source / name).resolve()
+                    if not target.is_relative_to(a.source.resolve()):
+                        raise RuntimeError('Archive member escapes source directory')
+                    if member.isdir():
+                        target.mkdir(parents=True, exist_ok=True)
+                    elif member.isfile():
+                        target.parent.mkdir(parents=True, exist_ok=True)
+                        target.write_bytes(archive.extractfile(member).read())
+                        target.chmod(member.mode & 0o777)
+                    else:
+                        raise RuntimeError('Unexpected archive link/device: ' + member.name)
+            (a.source / '.q4-pinned-archive').write_text(REV)
     hashes = verify(a.source)
     text = (a.source / 'csrc/torch_binding.cpp').read_text(encoding='utf-8')
     bridge = extract(text)
