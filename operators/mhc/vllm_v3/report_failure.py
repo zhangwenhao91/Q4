@@ -17,7 +17,7 @@ def main():
         if not logs:
             p.error('No build.log found')
         log = max(logs, key=lambda v: v.stat().st_mtime)
-    error = re.compile(r'FAILED:|\bfatal error:|\berror:|CMake Error|Traceback \(most recent call last\)|ModuleNotFoundError|Could NOT find|Could not find|HTTP response code said error|SSL certificate|Error in cmake code|No such file or directory|Permission denied', re.I)
+    error = re.compile(r'FAILED:|\bfatal error:|\berror:|CMake Error|Traceback \(most recent call last\)|ModuleNotFoundError|HTTP response code said error|SSL certificate|Error in cmake code|No such file or directory|Permission denied', re.I)
     progress = re.compile(r'\[download \d+% complete\]')
     before, tail = deque(maxlen=8), deque(maxlen=20)
     contexts, seen, remaining, groups = [], set(), 0, 0
@@ -33,7 +33,7 @@ def main():
                     if entry not in seen:
                         contexts.append(entry)
                         seen.add(entry)
-                remaining = 16
+                remaining = 60 if 'FAILED:' in line or 'CMake Error' in line else 20
             if remaining:
                 if item not in seen:
                     contexts.append(item)

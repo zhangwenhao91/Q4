@@ -50,6 +50,20 @@ elif [[ ! -f "$ARCHIVE" ]]; then
   mv "$ARCHIVE.part" "$ARCHIVE"
 fi
 "$CONDA_PREFIX/bin/python" operators/mhc/vllm_v3/prepare.py --unpack
+# Conda's x86 flags must not leak into the upstream AArch64 tiling-sink build.
+# Keep explicit host CC/CXX; the upstream ExternalProject selects hcc itself.
+unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS ASMFLAGS CMAKE_ARGS
+"$CONDA_PREFIX/bin/python" - "$ROOT" "$SRC" <<'PY'
+from pathlib import Path
+import sys
+root, source = map(Path, sys.argv[1:])
+sys.path.insert(0, str(root / 'operators/mha'))
+from clean_build_flags import clean_cache
+clean_cache(source / 'csrc/build/CMakeCache.txt')
+for cache in (source / 'csrc/build/common').glob('tiling_sink_task-prefix/src/tiling_sink_task-build/CMakeCache.txt'):
+    clean_cache(cache)
+print('Host compiler paths preserved; inherited global x86 flags cleared before cross compilation.')
+PY
 cd "$SRC/csrc"
 # The upstream build entry accepts individual operators and a private vendor.
 # No kernel, tiling, adapter or upstream binding source is patched.

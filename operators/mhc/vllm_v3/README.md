@@ -26,6 +26,10 @@ If regex is missing, the build installs the bundled PyPI regex 2024.11.6 wheel
 for CPython 3.12/Linux x86_64, with SHA256 verification and --no-index --no-deps.
 An already importable regex package is kept. Other Python/platform versions
 stop with an explicit dependency message instead of installing an invalid wheel.
+The wrapper clears inherited Conda CFLAGS/CXXFLAGS/CPPFLAGS/LDFLAGS/ASMFLAGS
+before mixed host/AArch64 builds and backs up/resets global flag entries in
+root and tiling-sink CMake caches using Q4's existing clean_build_flags helper.
+Compiler paths, target-specific options and upstream source remain unchanged.
 
 The AscendC kernel, tiling and ACLNN adapter are unchanged upstream files.
 prepare.py verifies their bytes against the fixed commit (allowing Git CRLF
