@@ -22,8 +22,7 @@ git rev-parse HEAD > "$OUT/revision.txt"
 touch "$OUT/runner.log"
 echo "Results: $OUT"
 failure() {
-  { echo "Run: $OUT"; echo "Failed: $1"; tail -n 65 "$2"; } > "$ROOT/error.txt"
-  cat "$ROOT/error.txt"
+  "$PY" operators/mhc/vllm_v3/report_failure.py --stage "$1" --log "$2"
 }
 if [[ "$MODE" == build || "$MODE" == all ]]; then
   echo 'Building isolated pinned upstream HcPre (details in build.log).'
