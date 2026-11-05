@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"
 MODE="${1:-all}"
-case "$MODE" in build|smoke|bench|all|resume|projection|memory|l2|l2-v3) ;; *) echo 'Usage: run.sh [build|smoke|bench|all|resume|projection|memory|l2|l2-v3]'; exit 2 ;; esac
+case "$MODE" in build|smoke|bench|all|resume|projection|memory|l2|l2-v3|l2-v3-small) ;; *) echo 'Usage: run.sh [build|smoke|bench|all|resume|projection|memory|l2|l2-v3|l2-v3-small]'; exit 2 ;; esac
 : "${CONDA_PREFIX:?Activate zwh first}"
 : "${ASCEND_HOME_PATH:?Source CANN first}"
 export ASCEND_RT_VISIBLE_DEVICES="${ASCEND_RT_VISIBLE_DEVICES:-0}"
@@ -56,22 +56,26 @@ fi
 if [[ "$MODE" == memory ]]; then
   exec bash operators/mhc/vllm_v3/profile_memory.sh "$OUT"
 fi
-if [[ "$MODE" == l2-v3 ]]; then
+if [[ "$MODE" == l2-v3 || "$MODE" == l2-v3-small ]]; then
   reference=ascendc_vllm_v3
   candidate=tilelang_all_token_l2_default
+  tokens=(8192)
+  if [[ "$MODE" == l2-v3-small ]]; then tokens=(128 256 512 2048); fi
   printf 'Q4 revision: %s\n' "$(cat "$OUT/revision.txt")" > "$OUT/runner.log"
-  for rep in 1 2 3; do
-    name="N8192-rep$rep"
-    labels=("$reference" "$candidate")
-    if [[ "$rep" == 2 ]]; then labels=("$candidate" "$reference"); fi
-    echo "Timing Pre $name"
-    if ! "$PY" operators/spec_v1/bench.py --suite mhc_vllm_v3 --mhc-vllm-stage pre \
-      --mhc-projection-l2-ab --tokens 8192 --implementations "${labels[@]}" \
-      --warmup 100 --rounds 12 --iters 100 --output "$OUT/$name" > "$OUT/$name.log" 2>&1; then
-      failure "$name" "$OUT/$name.log"
-      exit 1
-    fi
-    echo "CPU and pairwise correctness passed for $name" >> "$OUT/runner.log"
+  for n in "${tokens[@]}"; do
+    for rep in 1 2 3; do
+      name="N$n-rep$rep"
+      labels=("$reference" "$candidate")
+      if [[ "$rep" == 2 ]]; then labels=("$candidate" "$reference"); fi
+      echo "Timing Pre $name"
+      if ! "$PY" operators/spec_v1/bench.py --suite mhc_vllm_v3 --mhc-vllm-stage pre \
+        --mhc-projection-l2-ab --tokens "$n" --implementations "${labels[@]}" \
+        --warmup 100 --rounds 12 --iters 100 --output "$OUT/$name" > "$OUT/$name.log" 2>&1; then
+        failure "$name" "$OUT/$name.log"
+        exit 1
+      fi
+      echo "CPU and pairwise correctness passed for $name" >> "$OUT/runner.log"
+    done
   done
   "$PY" operators/mhc/tuning/summarize_token_pipeline.py --input "$OUT" --output "$ROOT/error.txt" \
     --reference "$reference" --baseline "$candidate" --candidate ''
