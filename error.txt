@@ -1,37 +1,10 @@
-Run: /home/z30086261/Q4/results/mhc-all-token-bench/20261103-204313-615718
-Candidate: tilelang_all_token_h5120s3
-Event time: median across rounds (us); ratios > 1 mean TL is faster.
-case | AC us | TL original us | TL N-pipeline us | AC/TL original | AC/TL pipeline | original/pipeline
-N128-rep1 | 26.858 | 26.272 | 26.546 | 1.0223 | 1.0118 | 0.9897
-N128-rep2 | 27.786 | 25.887 | 25.827 | 1.0734 | 1.0758 | 1.0023
-N128-rep3 | 27.527 | 25.638 | 25.680 | 1.0737 | 1.0719 | 0.9983
-N2048-rep1 | 120.312 | 118.809 | 118.486 | 1.0127 | 1.0154 | 1.0027
-N2048-rep2 | 121.135 | 119.890 | 119.878 | 1.0104 | 1.0105 | 1.0001
-N2048-rep3 | 119.953 | 128.662 | 128.586 | 0.9323 | 0.9329 | 1.0006
-N256-rep1 | 27.786 | 26.223 | 26.214 | 1.0596 | 1.0600 | 1.0004
-N256-rep2 | 28.363 | 26.406 | 26.421 | 1.0741 | 1.0735 | 0.9994
-N256-rep3 | 27.386 | 26.153 | 26.215 | 1.0471 | 1.0446 | 0.9976
-N512-rep1 | 40.902 | 28.509 | 28.461 | 1.4347 | 1.4371 | 1.0017
-N512-rep2 | 40.874 | 28.524 | 28.454 | 1.4330 | 1.4365 | 1.0025
-N512-rep3 | 40.732 | 28.483 | 28.370 | 1.4300 | 1.4357 | 1.0040
-N8192-rep1 | 705.141 | 587.974 | 587.962 | 1.1993 | 1.1993 | 1.0000
-N8192-rep2 | 700.671 | 586.561 | 586.724 | 1.1945 | 1.1942 | 0.9997
-N8192-rep3 | 705.762 | 588.428 | 587.994 | 1.1994 | 1.2003 | 1.0007
-Cases with timing: 15
-Runner log tail (last 20 lines):
-Completed N=128 repeat=1
-Completed N=128 repeat=2
-Completed N=128 repeat=3
-Completed N=256 repeat=1
-Completed N=256 repeat=2
-Completed N=256 repeat=3
-Completed N=512 repeat=1
-Completed N=512 repeat=2
-Completed N=512 repeat=3
-Completed N=2048 repeat=1
-Completed N=2048 repeat=2
-Completed N=2048 repeat=3
-Completed N=8192 repeat=1
-Completed N=8192 repeat=2
-Completed N=8192 repeat=3
-All 15 cases completed.
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh all
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-112951-all-2891642
+Building isolated pinned upstream HcPre (details in build.log).
+Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-112951-all-2891642
+Failed: build
+Cloning into '/home/z30086261/Q4/third_party/vllm-ascend-q4-v3'...
+From https://github.com/vllm-project/vllm-ascend
+ * branch                e838a32888113cd20e1b5bad2053d1b4a06bf935 -> FETCH_HEAD
+error: RPC failed; HTTP 403 curl 22 The requested URL returned error: 403
+fatal: the remote end hung up unexpectedly
