@@ -1,10 +1,14 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh all
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-112951-all-2891642
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-113447-all-2897994
 Building isolated pinned upstream HcPre (details in build.log).
-Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-112951-all-2891642
+Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-113447-all-2897994
 Failed: build
-Cloning into '/home/z30086261/Q4/third_party/vllm-ascend-q4-v3'...
-From https://github.com/vllm-project/vllm-ascend
- * branch                e838a32888113cd20e1b5bad2053d1b4a06bf935 -> FETCH_HEAD
-error: RPC failed; HTTP 403 curl 22 The requested URL returned error: 403
-fatal: the remote end hung up unexpectedly
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+curl: (60) SSL certificate problem: self signed certificate in certificate chain
+More details here: https://curl.haxx.se/docs/sslcerts.html
+
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
