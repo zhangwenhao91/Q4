@@ -76,6 +76,20 @@ target = Path(sys.argv[1])
 clean_cache(target / 'build/CMakeCache.txt')
 seed(root / 'third_party/ops-transformer/third_party', target / 'third_party')
 PY
+if [[ "$VENDOR" == q4mhc5120 ]]; then
+  ops_tensor="$TARGET/third_party/ops-tensor"
+  tensor_api="$ops_tensor/include/tensor_api"
+  # A failed submodule checkout can leave untracked files that block retries.
+  if [[ -e "$ops_tensor/.git" && -d "$tensor_api" && ! -d "$tensor_api/impl/tensor_api" ]]; then
+    backup="$(mktemp -d "$TARGET/third_party/tensor-api-recovery.XXXXXX")"
+    mv -- "$tensor_api" "$backup/tensor_api"
+    echo "Saved incomplete tensor_api checkout to $backup/tensor_api"
+    if ! git -C "$ops_tensor" submodule update --init --recursive --no-fetch -- include/tensor_api; then
+      git -C "$ops_tensor" submodule update --init --recursive -- include/tensor_api
+    fi
+    test -d "$tensor_api/impl/tensor_api" || { echo 'tensor_api checkout still incomplete'; exit 1; }
+  fi
+fi
 cd "$TARGET"
 bash -o pipefail build.sh --incremental --pkg --soc=ascend950 --vendor_name="$VENDOR" \
   --ops="$OPS" "-j${Q4_BUILD_JOBS:-8}"
