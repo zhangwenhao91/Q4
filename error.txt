@@ -1,49 +1,20 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh l2
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-203527-l2-3969728
-N=8192 bench-1
-N=8192 bench-2
-N=8192 bench-3
-N=8192 latency-tilelang_all_token_h5120s3
-N=8192 L2Cache-tilelang_all_token_h5120s3
-N=8192 latency-tilelang_all_token_l2_default
-N=8192 L2Cache-tilelang_all_token_l2_default
-Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-203527-l2-3969728
-Q4 revision: 7e602bcbcc8c750f60002a5014b7bce5fd800d04
-N=8192 H=5120 all-N pipeline, full Pre; CPU and pairwise correctness passed in each timed process.
-Residual GM-to-UB policy: h5120s3=notalloc_keep; l2_default=no cache annotation.
-Full Pre event us | three process medians | median across processes
-tilelang_all_token_h5120s3 | 585.523, 586.026, 587.216 | 586.026
-tilelang_all_token_l2_default | 493.766, 494.582, 493.972 | 493.972
-bench-1 generated source equality: apply=True, tail=True, projection=False
-bench-2 generated source equality: apply=True, tail=True, projection=False
-bench-3 generated source equality: apply=True, tail=True, projection=False
-Kernel latency uses a separate default profiler capture. L2 counters are raw exporter fields.
-latency-tilelang_all_token_h5120s3: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 34.1660
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 280.7385
-mhc_projection_token_pipeline_kernel | 30 | 272.3230
-L2Cache-tilelang_all_token_h5120s3 | source=profile/ubuntu162_3976822_20261105203642490_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-stage | kernel | counter | median | numeric rows
-projection | mhc_projection_token_pipeline_kernel | aic_read_local_l2_hit | 92203 | 30
-projection | mhc_projection_token_pipeline_kernel | aic_read_local_l2_miss | 3840 | 30
-projection | mhc_projection_token_pipeline_kernel | aic_write_local_l2_hit | 1808 | 30
-projection | mhc_projection_token_pipeline_kernel | aic_write_local_l2_miss | 0 | 30
-projection | mhc_projection_token_pipeline_kernel | aiv_read_local_l2_hit | 520456 | 30
-projection | mhc_projection_token_pipeline_kernel | aiv_read_local_l2_miss | 791071 | 30
-projection | mhc_projection_token_pipeline_kernel | aiv_write_local_l2_hit | 167 | 30
-projection | mhc_projection_token_pipeline_kernel | aiv_write_local_l2_miss | 0 | 30
-latency-tilelang_all_token_l2_default: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 34.1450
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 262.5735
-mhc_projection_token_pipeline_kernel | 30 | 196.8355
-L2Cache-tilelang_all_token_l2_default | source=profile/ubuntu162_3979996_20261105203708448_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-stage | kernel | counter | median | numeric rows
-projection | mhc_projection_token_pipeline_kernel | aic_read_local_l2_hit | 92188 | 30
-projection | mhc_projection_token_pipeline_kernel | aic_read_local_l2_miss | 3842 | 30
-projection | mhc_projection_token_pipeline_kernel | aic_write_local_l2_hit | 1824.5 | 30
-projection | mhc_projection_token_pipeline_kernel | aic_write_local_l2_miss | 0 | 30
-projection | mhc_projection_token_pipeline_kernel | aiv_read_local_l2_hit | 124298 | 30
-projection | mhc_projection_token_pipeline_kernel | aiv_read_local_l2_miss | 0 | 30
-projection | mhc_projection_token_pipeline_kernel | aiv_write_local_l2_hit | 172 | 30
-projection | mhc_projection_token_pipeline_kernel | aiv_write_local_l2_miss | 0 | 30
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh l2-v3
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-205057-l2-v3-4004353
+Timing Pre N8192-rep1
+Timing Pre N8192-rep2
+Timing Pre N8192-rep3
+Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-205057-l2-v3-4004353
+AC reference: ascendc_vllm_v3
+Event time: median across rounds (us); ratios > 1 mean TL is faster.
+case | AC us | TL us | AC/TL
+N8192-rep1 | 499.405 | 497.909 | 1.0030
+N8192-rep2 | 502.594 | 498.402 | 1.0084
+N8192-rep3 | 502.235 | 495.238 | 1.0141
+Cases with timing: 3
+Runner log tail (last 20 lines):
+Q4 revision: 5780123104ec8bd959133446933eca309236752b
+CPU and pairwise correctness passed for N8192-rep1
+CPU and pairwise correctness passed for N8192-rep2
+CPU and pairwise correctness passed for N8192-rep3
+Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
