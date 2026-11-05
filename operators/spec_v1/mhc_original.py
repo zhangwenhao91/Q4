@@ -11,15 +11,21 @@ def make_case(a):
     import torch
     fused = a.suite == 'mhc_original_fused'
     big5120 = a.suite == 'mhc_original_big5120'
-    hidden = 4096 if fused else 5120
-    vendor = ROOT / 'third_party/q4mhc-opp/vendors/q4mhc_transformer'
+    fused5120 = fused and 'ascendc_adapted_fused_h5120' in (a.implementations or ())
+    hidden = 4096 if fused and not fused5120 else 5120
+    vendor_name = 'q4mhc5120' if fused5120 else 'q4mhc'
+    vendor = ROOT / 'third_party' / f'{vendor_name}-opp' / 'vendors' / f'{vendor_name}_transformer'
     if Path(os.environ.get('ASCEND_CUSTOM_OPP_PATH', '/missing')).resolve() != vendor.resolve():
-        raise RuntimeError('Select the original q4mhc vendor, in a separate process')
-    source = ROOT / 'third_party/ops-transformer-q4mhc'
+        raise RuntimeError(f'Select the {vendor_name} vendor in a separate process')
+    source = ROOT / 'third_party' / f'ops-transformer-{vendor_name}'
     revision = subprocess.check_output(['git', '-C', str(source), 'rev-parse', 'HEAD'], text=True).strip()
     dirty = subprocess.check_output(['git', '-C', str(source), 'status', '--porcelain', '--untracked-files=no'], text=True)
-    if revision != 'ba5162411c919e15fbabb28298e8b420c11ad905' or dirty.strip():
+    expected_dirty = ' M mhc/mhc_pre_sinkhorn/op_host/op_tiling/mhc_pre_sinkhorn_tiling_arch35.cpp' if fused5120 else ''
+    if revision != 'ba5162411c919e15fbabb28298e8b420c11ad905' or dirty.rstrip() != expected_dirty:
         raise RuntimeError('Original source revision mismatch or tracked source modified')
+    if fused5120:
+        patch = ROOT / 'operators/mhc/tuning/fused_h5120.patch'
+        subprocess.run(['git', '-C', str(source), 'apply', '--reverse', '--check', str(patch)], check=True)
     lib = vendor / 'op_api/lib/libcust_opapi.so'
     x0 = torch.randn(a.tokens, 4, hidden, dtype=torch.bfloat16)
     # Consume the same random draws as shifted_case, for identical benchmark data.
@@ -51,6 +57,8 @@ def make_case(a):
         return hi, post.unsqueeze(-1), comb.reshape(a.tokens, 4, 4)
 
     label = 'ascendc_original_fused_h4096' if fused else 'ascendc_original_pre_sinkhorn'
+    if fused5120:
+        label = 'ascendc_adapted_fused_h5120'
     refs = (hi_ref, post_ref, comb_ref) if fused or big5120 else (hi_ref, pre_ref, post_ref, comb_ref)
     names = ['current_pre_layer_input', 'post_mix', 'comb_mix'] if fused or big5120 else [
         'current_pre_layer_input', 'next_pre_mix', 'post_mix', 'comb_mix']
@@ -60,7 +68,7 @@ def make_case(a):
     if fused:
         from mhc_current_pre import make_candidate
         selected = a.implementations
-        pipeline_label = 'tilelang_current_pre_all_token_l2_default_h4096'
+        pipeline_label = f'tilelang_current_pre_all_token_l2_default_h{hidden}'
         if selected and pipeline_label in selected:
             tl, tl_meta = make_candidate(x, phi, alpha, bias, x0, phi0, all_token_pipeline=True)
             functions[pipeline_label] = tl
@@ -88,6 +96,7 @@ def make_case(a):
         projection_checks=(tl_meta or upstream_meta or {}).get('projection_checks'),
         hc_source_sha256=(tl_meta or upstream_meta or {}).get('hc_source_sha256'),
         comparison_available=True, original_source_revision=revision,
+        fused_hidden_allowlist_patch=fused5120,
         original_library_sha256=hashlib.sha256(lib.read_bytes()).hexdigest(),
         contract=dict(N=a.tokens, hidden=hidden, hc_mult=4, norm_eps=1e-20,
                       pre_eps=1e-6, sinkhorn_eps=1e-6, repeat=20, post_mult=2),

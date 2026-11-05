@@ -1,0 +1,13 @@
+diff --git a/mhc/mhc_pre_sinkhorn/op_host/op_tiling/mhc_pre_sinkhorn_tiling_arch35.cpp b/mhc/mhc_pre_sinkhorn/op_host/op_tiling/mhc_pre_sinkhorn_tiling_arch35.cpp
+--- a/mhc/mhc_pre_sinkhorn/op_host/op_tiling/mhc_pre_sinkhorn_tiling_arch35.cpp
++++ b/mhc/mhc_pre_sinkhorn/op_host/op_tiling/mhc_pre_sinkhorn_tiling_arch35.cpp
+@@ -403,6 +403,6 @@
+-    OP_CHECK_IF(d_ != C_VALID_VALUE_4096 && d_ != C_VALID_VALUE_7168,
++    OP_CHECK_IF(d_ != C_VALID_VALUE_4096 && d_ != 5120 && d_ != C_VALID_VALUE_7168,
+                 OP_LOGE(context_->GetNodeName(),
+-                        "On Ascend950, x last dim c only supports %ld or %ld, but is %ld. "
+-                        "Please set x last dim c to 4096 or 7168.",
++                        "On Ascend950, x last dim c only supports %ld, 5120 or %ld, but is %ld. "
++                        "Please set x last dim c to 4096, 5120 or 7168.",
+                         C_VALID_VALUE_4096, C_VALID_VALUE_7168, d_),
+                 return ge::GRAPH_FAILED);
