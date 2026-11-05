@@ -1,17 +1,66 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_original.sh h5120-fused-ab
-Results: /home/z30086261/Q4/results/mhc-original/20261105-211647-h5120-fused-ab-4087889
-Building isolated H=5120 fused vendor (details in /home/z30086261/Q4/results/mhc-original/20261105-211647-h5120-fused-ab-4087889/build.log)
+Results: /home/z30086261/Q4/results/mhc-original/20261105-211948-h5120-fused-ab-4090725
+Building isolated H=5120 fused vendor (details in /home/z30086261/Q4/results/mhc-original/20261105-211948-h5120-fused-ab-4090725/build.log)
 Failed stage: build
-Log: /home/z30086261/Q4/results/mhc-original/20261105-211647-h5120-fused-ab-4087889/build.log
+Log: /home/z30086261/Q4/results/mhc-original/20261105-211948-h5120-fused-ab-4090725/build.log
 === First error contexts (up to 4) ===
+517: Resolving deltas: 100% (4698/4698)
+518: Resolving deltas: 100% (4698/4698), done.
+519: HEAD is now at 6618ee2 [Blaze] support A4W4 BF16 WeightNZ SwiGLU epilogue
+520: Submodule 'include/tensor_api' (https://gitcode.com/cann/asc-devkit.git) registered for path 'include/tensor_api'
+521: Cloning into '/home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/ops-tensor/include/tensor_api'...
+522: git-lfs filter-process --skip: 1: git-lfs: not found
+523: fatal: the remote end hung up unexpectedly
+524: Unable to checkout 'fd51475d8ceb26eb21befffe4391528bc16726a3' in submodule path 'include/tensor_api'
+525: CMake Error at /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/build/prepare_build/_deps/ops-tensor-subbuild/ops-tensor-populate-prefix/tmp/ops-tensor-populate-gitclone.cmake:80 (message):
+526:   Failed to update submodules in:
+527:   '/home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/ops-tensor'
+528: 
+529: 
+530: make[2]: *** [CMakeFiles/ops-tensor-populate.dir/build.make:102: ops-tensor-populate-prefix/src/ops-tensor-populate-stamp/ops-tensor-populate-download] Error 1
+531: make[1]: *** [CMakeFiles/Makefile2:87: CMakeFiles/ops-tensor-populate.dir/all] Error 2
+532: make: *** [Makefile:91: all] Error 2
+533: 
+534: CMake Error at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1933 (message):
+535:   Build step for ops-tensor failed: 2
+536: Call Stack (most recent call first):
+537:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1622 (__FetchContent_populateSubbuild)
+538:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:2160:EVAL:2 (__FetchContent_doPopulation)
+539:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:2160 (cmake_language)
+540:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1993:EVAL:1 (__FetchContent_Populate)
+541:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1993 (cmake_language)
+542:   cmake/third_party/ops-tensor.cmake:117 (FetchContent_Populate)
+543:   CMakeLists.txt:194 (include)
+544: 
+545: 
+546: make: *** No rule to make target 'prepare_build'.  Stop.
+547: CMake Error at cmake/config.cmake:263 (message):
+548:   Error: ops prepare build failed.
+549: Call Stack (most recent call first):
+550:   CMakeLists.txt:167 (include)
+551: 
+552: 
+553: [2026-11-05 21:21:11] -- Configuring incomplete, errors occurred!
 === Final non-progress lines ===
-1: Recovery log: /home/z30086261/Q4/results/mhc-recovery/vendor-20261105-211647-4087894.log
-2: x86_64-conda-linux-gnu-g++ (conda-forge gcc 13.4.0-20) 13.4.0
-3: Copyright (C) 2023 Free Software Foundation, Inc.
-4: This is free software; see the source for copying conditions.  There is NO
-5: warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-6: 
-7: Preparing worktree (detached HEAD ba5162411)
-8: git-lfs filter-process --skip: 1: git-lfs: not found
-9: fatal: the remote end hung up unexpectedly
+534: CMake Error at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1933 (message):
+535:   Build step for ops-tensor failed: 2
+536: Call Stack (most recent call first):
+537:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1622 (__FetchContent_populateSubbuild)
+538:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:2160:EVAL:2 (__FetchContent_doPopulation)
+539:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:2160 (cmake_language)
+540:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1993:EVAL:1 (__FetchContent_Populate)
+541:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1993 (cmake_language)
+542:   cmake/third_party/ops-tensor.cmake:117 (FetchContent_Populate)
+543:   CMakeLists.txt:194 (include)
+544: 
+545: 
+546: make: *** No rule to make target 'prepare_build'.  Stop.
+547: CMake Error at cmake/config.cmake:263 (message):
+548:   Error: ops prepare build failed.
+549: Call Stack (most recent call first):
+550:   CMakeLists.txt:167 (include)
+551: 
+552: 
+553: [2026-11-05 21:21:11] -- Configuring incomplete, errors occurred!
 Saved: /home/z30086261/Q4/error.txt
+(zwh) root@ubuntu162:/home/z30086261/Q4#
