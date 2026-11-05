@@ -1,17 +1,55 @@
-Baseline: /home/z30086261/Q4/results/mhc-all-token-simulator/20261105-170329-3510470-baseline
-Candidate: /home/z30086261/Q4/results/mhc-all-token-simulator/20261103-201434-564836
-Time columns use raw trace units. Percentages divide by the second pipe busy time.
-stage	core	pair	baseline busy first/second	candidate busy first/second	baseline overlap	candidate overlap	baseline %	candidate %	delta pp
-apply	core0.veccore0	MTE2/VECTOR	70.4273/11.414	70.0352/11.4139	11.1055	11.1055	97.2973	97.2973	6.18747e-05
-apply	core0.veccore0	VECTOR/MTE3	11.414/9.42364	11.4139/9.58	0.130909	0.28606	1.38916	2.98601	1.59685
-apply	core0.veccore1	MTE2/VECTOR	70.2648/11.4139	69.623/11.4139	11.1055	11.1054	97.2973	97.2973	-2.70987e-06
-apply	core0.veccore1	VECTOR/MTE3	11.4139/9.70242	11.4139/9.86545	0.308486	0.308484	3.17947	3.12691	-0.0525614
-projection	core0.cubecore0	MTE1/CUBE	26.1266/24.3946	26.4836/25.0734	18.4655	19.5261	75.6949	77.8757	2.18078
-projection	core0.veccore0	MTE2/VECTOR	70.866/31.8455	62.2751/31.8455	28.9661	28.4727	90.9583	89.409	-1.54925
-projection	core0.veccore0	VECTOR/MTE3	31.8455/0.530312	31.8455/0.527281	0	0	0	0	0
-projection	core0.veccore1	MTE2/VECTOR	70.6576/31.8455	63.6303/31.8455	29.0837	29.3479	91.3274	92.1573	0.829914
-projection	core0.veccore1	VECTOR/MTE3	31.8455/0.530296	31.8455/0.536372	0	0	0	0	0
-tail	core0.veccore0	MTE2/VECTOR	0.773943/9.24542	1.13029/9.24665	0.268482	0.404234	2.90395	4.37168	1.46773
-tail	core0.veccore0	VECTOR/MTE3	9.24542/0.509086	9.24665/0.502435	0.232719	0.231507	45.7131	46.0771	0.363918
-tail	core0.veccore1	MTE2/VECTOR	0.741837/9.28422	0.844233/9.26543	0.261816	0.270894	2.82001	2.92371	0.103704
-tail	core0.veccore1	VECTOR/MTE3	9.28422/0.536359	9.26543/0.541223	0.26181	0.265458	48.8125	49.0477	0.235249
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh projection
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-190945-projection-3693085
+N=8192 bench-1
+N=8192 bench-2
+N=8192 bench-3
+N=8192 profile-tilelang_coeff_bound
+N=8192 profile-tilelang_all_token_h5120s3
+N=8192 device results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-190945-projection-3693085
+Full Pre event us by process and median:
+ascendc_vllm_v3: 482.062, 485.367, 485.588 | median 485.367
+tilelang_coeff_bound: 587.638, 587.053, 587.435 | median 587.435
+tilelang_all_token_h5120s3: 586.838, 586.944, 587.386 | median 586.944
+profile-tilelang_coeff_bound: kernel | calls | median us
+mhc_coeff_tail_fwd_asc_kernel | 30 | 34.5950
+mhc_pre_apply_mix_fwd_asc_kernel | 30 | 280.9485
+tf32_hc_prenorm_gemm_kernel_kernel | 30 | 272.9740
+profile-tilelang_all_token_h5120s3: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 34.3955
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 281.1290
+mhc_projection_token_pipeline_kernel | 30 | 273.9410
+N=8192 simulation projection baseline
+N=8192 simulation projection candidate
+N=8192 device results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-190945-projection-3693085
+Full Pre event us by process and median:
+ascendc_vllm_v3: 482.062, 485.367, 485.588 | median 485.367
+tilelang_coeff_bound: 587.638, 587.053, 587.435 | median 587.435
+tilelang_all_token_h5120s3: 586.838, 586.944, 587.386 | median 586.944
+profile-tilelang_coeff_bound: kernel | calls | median us
+mhc_coeff_tail_fwd_asc_kernel | 30 | 34.5950
+mhc_pre_apply_mix_fwd_asc_kernel | 30 | 280.9485
+tf32_hc_prenorm_gemm_kernel_kernel | 30 | 272.9740
+profile-tilelang_all_token_h5120s3: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 34.3955
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 281.1290
+mhc_projection_token_pipeline_kernel | 30 | 273.9410
+Simulator uses raw trace units. Gaps are between Cube instructions on one subcore. Concurrent MTE1 or wait events do not identify the blocking dependency.
+baseline simulator: /home/z30086261/Q4/results/mhc-all-token-simulator/20261105-191104-3696218-baseline
+Projection config: {'block_mhc_mult3': 32, 'num_aic_cores': 28, 'num_k_splits': 4, 'cores_per_split': 7, 'num_hidden_blocks_per_split': 20, 'num_l0b_stages': 2, 'num_l0c_stages': 16, 'num_token_blocks_per_chunk': 112}
+core0.cubecore0: Cube busy=82.2629, interior gaps=47.8456, gaps with MTE1=22.8111, gaps with observed wait events=0.191512
+Largest gaps | start relative to first Cube instruction | gap | MTE1 overlap | observed wait overlap
+93.5697 | 0.854569 | 0.0963745 | 0
+1.37575 | 0.851516 | 0.096344 | 0
+50.5994 | 0.801804 | 0.0963745 | 0
+102.896 | 0.784226 | 0.133942 | 0
+15.5467 | 0.732712 | 0.096344 | 0
+candidate simulator: /home/z30086261/Q4/results/mhc-all-token-simulator/20261105-194143-3776957
+Projection config: {'block_mhc_mult3': 32, 'num_aic_cores': 28, 'num_k_splits': 4, 'cores_per_split': 7, 'num_hidden_blocks_per_split': 20, 'num_l0b_stages': 2, 'num_l0c_stages': 16, 'num_token_blocks_per_chunk': 112}
+core0.cubecore0: Cube busy=81.9228, interior gaps=48.082, gaps with MTE1=26.0564, gaps with observed wait events=0.133312
+Largest gaps | start relative to first Cube instruction | gap | MTE1 overlap | observed wait overlap
+0.412124 | 1.1418 | 0.096344 | 0
+9.50304 | 1.07939 | 0.167267 | 0
+1.96605 | 0.809708 | 0.0963745 | 0
+56.1406 | 0.7115 | 0.096344 | 0
+16.9564 | 0.686048 | 0.0963745 | 0
+(zwh) root@ubuntu162:/home/z30086261/Q4# 
