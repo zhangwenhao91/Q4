@@ -1,5 +1,7 @@
 # 原版MHA：序列长度缩至7/8
 
+测试同学串讲、原理与验收流程见[原版MHA设计文档](../../docs/MHA_ORIGINAL_TEST_DESIGN.md)。
+
 用户确认：Q/K/V=[3584,128]，BF16；O=[3584,128]，BF16。
 batch=1、heads=1、scale=1/sqrt(128)、causal=False、dropout=0。
 只有序列长度从4096缩至3584；head_dim不变。输出BF16是相对原规格FP32的明确差异。
