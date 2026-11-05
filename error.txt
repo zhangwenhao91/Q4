@@ -1,70 +1,71 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh all
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-113742-all-2901545
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-114032-all-2907199
 Building isolated pinned upstream HcPre (details in build.log).
-Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-113742-all-2901545
+Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-114032-all-2907199
 Failed: build
-                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/continuous_vector.h:20,
-                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/runtime_attrs.h:16,
-                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/infer_shape_context.h:16,
-                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_impl_registry.h:19,
-                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_def.h:19,
-                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_def_registry.h:14,
-                 from /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/moe/hc_pre/op_host/hc_pre_def.cpp:17:
-/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
-   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
-      |                                                                                                                          ^
-In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:17:
-/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
-   15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
-      |                                                                                                                          ^
-/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/cmake/scripts/util/ascendc_impl_build.py:212: SyntaxWarning: invalid escape sequence '\d'
-  ascendc_api_version = re.findall(r"#define ASCENDC_API_VERSION (\d+)", ascendc_api_version_file.read())
-Traceback (most recent call last):
-  File "/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/cmake/scripts/util/ascendc_impl_build.py", line 21, in <module>
-    import regex as re
-ModuleNotFoundError: No module named 'regex'
-Traceback (most recent call last):
-  File "/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/cmake/scripts/util/ascendc_bin_param_build.py", line 23, in <module>
-    import regex as re
-ModuleNotFoundError: No module named 'regex'
-make[3]: *** [CMakeFiles/generate_transformer_adapt_py.dir/build.make:70: CMakeFiles/generate_transformer_adapt_py] Error 1
-make[2]: *** [CMakeFiles/Makefile2:798: CMakeFiles/generate_transformer_adapt_py.dir/all] Error 2
-make[2]: *** Waiting for unfinished jobs....
-make[3]: *** [CMakeFiles/generate_compile_cmd_ascend950.dir/build.make:71: CMakeFiles/generate_compile_cmd_ascend950] Error 1
-make[2]: *** [CMakeFiles/Makefile2:932: CMakeFiles/generate_compile_cmd_ascend950.dir/all] Error 2
-make[1]: *** [CMakeFiles/Makefile2:840: CMakeFiles/prepare_build.dir/rule] Error 2
-make: *** [Makefile:397: prepare_build] Error 2
-CMake Error at cmake/config.cmake:268 (message):
-  Error: ops prepare build failed.
-Call Stack (most recent call first):
-  CMakeLists.txt:109 (include)
-
-
-[2026-11-05 11:37:43] [2026-11-05 11:37:43] Info: use CMake generator Ninja
-[2026-11-05 11:37:43] [2026-11-05 11:37:43] Info: cmake config generator=-G Ninja -DBUILD_OPEN_PROJECT=ON -DVENDOR_NAME=q4vllmv3 -DASCEND_OP_NAME=hc_pre -DCANN_3RD_LIB_PATH=/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/third_party -DCUSTOM_ASCEND_CANN_PACKAGE_PATH=/home/CANN/9.3.0.weekly.20260930/cann-9.3.0 -DCHECK_COMPATIBLE=true -DASCEND_COMPUTE_UNIT=ascend950; -DENABLE_BUILT_IN=OFF -DENABLE_OPS_HOST=ON -DENABLE_OPS_KERNEL=ON -DENABLE_BUILD_PKG=ON build_cache=/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build_cache .
-[2026-11-05 11:37:44] -- The C compiler identification is GNU 13.4.0
-[2026-11-05 11:37:44] -- The CXX compiler identification is GNU 13.4.0
-[2026-11-05 11:37:44] -- Detecting C compiler ABI info
-[2026-11-05 11:37:44] -- Detecting C compiler ABI info - done
-[2026-11-05 11:37:44] -- Check for working C compiler: /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-gcc - skipped
-[2026-11-05 11:37:44] -- Detecting C compile features
-[2026-11-05 11:37:44] -- Detecting C compile features - done
-[2026-11-05 11:37:45] -- Detecting CXX compiler ABI info
-[2026-11-05 11:37:45] -- Detecting CXX compiler ABI info - done
-[2026-11-05 11:37:45] -- Check for working CXX compiler: /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ - skipped
-[2026-11-05 11:37:45] -- Detecting CXX compile features
-[2026-11-05 11:37:45] -- Detecting CXX compile features - done
-[2026-11-05 11:37:45] -- build with 3~8 packages........
-[2026-11-05 11:37:45] -- compile project with library
-[2026-11-05 11:37:46] -- Found Python3: /root/miniconda3/envs/zwh/bin/python3.12 (found version "3.12.15") found components: Interpreter
-[2026-11-05 11:37:46] -- ASCEND_CANN_PACKAGE_PATH=/home/CANN/9.3.0.weekly.20260930/cann-9.3.0
-[2026-11-05 11:37:46] -- ENABLE_CCACHE=ON, CUSTOM_CCACHE=
-[2026-11-05 11:37:46] -- CCACHE_PROGRAM=CCACHE_PROGRAM-NOTFOUND
-[2026-11-05 11:37:46] -- ASCEND_COMPUTE_UNIT=ascend950;
-[2026-11-05 11:37:46] -- ASCEND_OP_NAME=hc_pre
-[2026-11-05 11:37:46] -- TILING_KEY=
-[2026-11-05 11:37:46] -- TESTS_UT_OPS_TEST=
-[2026-11-05 11:37:46] -- TESTS_EXAMPLE_OPS_TEST=
-[2026-11-05 11:37:46] -- CMAKE_BUILD_TYPE=Release
-[2026-11-05 11:37:46] -- VERSION=
-[2026-11-05 11:37:51] -- Configuring incomplete, errors occurred!
+[2026-11-05 11:40:41] -- [download 42% complete]
+[2026-11-05 11:40:41] -- [download 43% complete]
+[2026-11-05 11:40:41] -- [download 44% complete]
+[2026-11-05 11:40:41] -- [download 45% complete]
+[2026-11-05 11:40:41] -- [download 46% complete]
+[2026-11-05 11:40:41] -- [download 47% complete]
+[2026-11-05 11:40:41] -- [download 48% complete]
+[2026-11-05 11:40:41] -- [download 49% complete]
+[2026-11-05 11:40:41] -- [download 50% complete]
+[2026-11-05 11:40:41] -- [download 51% complete]
+[2026-11-05 11:40:41] -- [download 52% complete]
+[2026-11-05 11:40:41] -- [download 53% complete]
+[2026-11-05 11:40:41] -- [download 54% complete]
+[2026-11-05 11:40:41] -- [download 55% complete]
+[2026-11-05 11:40:41] -- [download 56% complete]
+[2026-11-05 11:40:41] -- [download 57% complete]
+[2026-11-05 11:40:41] -- [download 58% complete]
+[2026-11-05 11:40:41] -- [download 59% complete]
+[2026-11-05 11:40:41] -- [download 60% complete]
+[2026-11-05 11:40:41] -- [download 61% complete]
+[2026-11-05 11:40:41] -- [download 62% complete]
+[2026-11-05 11:40:41] -- [download 63% complete]
+[2026-11-05 11:40:41] -- [download 64% complete]
+[2026-11-05 11:40:41] -- [download 65% complete]
+[2026-11-05 11:40:41] -- [download 66% complete]
+[2026-11-05 11:40:41] -- [download 67% complete]
+[2026-11-05 11:40:41] -- [download 68% complete]
+[2026-11-05 11:40:41] -- [download 69% complete]
+[2026-11-05 11:40:41] -- [download 70% complete]
+[2026-11-05 11:40:41] -- [download 71% complete]
+[2026-11-05 11:40:41] -- [download 72% complete]
+[2026-11-05 11:40:41] -- [download 73% complete]
+[2026-11-05 11:40:41] -- [download 74% complete]
+[2026-11-05 11:40:41] -- [download 75% complete]
+[2026-11-05 11:40:41] -- [download 76% complete]
+[2026-11-05 11:40:41] -- [download 77% complete]
+[2026-11-05 11:40:41] -- [download 78% complete]
+[2026-11-05 11:40:41] -- [download 79% complete]
+[2026-11-05 11:40:41] -- [download 80% complete]
+[2026-11-05 11:40:41] -- [download 81% complete]
+[2026-11-05 11:40:41] -- [download 82% complete]
+[2026-11-05 11:40:41] -- [download 86% complete]
+[2026-11-05 11:40:41] -- [download 87% complete]
+[2026-11-05 11:40:41] -- [download 88% complete]
+[2026-11-05 11:40:41] -- [download 89% complete]
+[2026-11-05 11:40:41] -- [download 90% complete]
+[2026-11-05 11:40:41] -- [download 91% complete]
+[2026-11-05 11:40:41] -- [download 93% complete]
+[2026-11-05 11:40:41] -- [download 94% complete]
+[2026-11-05 11:40:41] -- [download 95% complete]
+[2026-11-05 11:40:41] -- [download 96% complete]
+[2026-11-05 11:40:41] -- [download 97% complete]
+[2026-11-05 11:40:41] -- [download 98% complete]
+[2026-11-05 11:40:41] -- [download 99% complete]
+[2026-11-05 11:40:41] -- [download 100% complete]
+[2026-11-05 11:40:41] -- Downloading... done
+[2026-11-05 11:40:41] -- extracting...
+[2026-11-05 11:40:41]      src='/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/third_party/pkg/protobuf-25.1.tar.gz'
+[2026-11-05 11:40:41]      dst='/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/third_party/ascend_protobuf'
+[2026-11-05 11:40:41] -- extracting... [tar xf]
+[2026-11-05 11:40:41] -- extracting... [analysis]
+[2026-11-05 11:40:41] -- extracting... [rename]
+[2026-11-05 11:40:41] -- extracting... [clean up]
+[2026-11-05 11:40:41] -- extracting... done
+[2026-11-05 11:40:41] ninja: build stopped: subcommand failed.
+(zwh) root@ubuntu162:/home/z30086261/Q4#
