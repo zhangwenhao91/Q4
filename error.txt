@@ -1,63 +1,28 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh all
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-151232-all-3275304
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-152050-all-3287958
 Building isolated pinned upstream HcPre (details in build.log).
 Failed stage: build
-Log: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-151232-all-3275304/build.log
+Log: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-152050-all-3287958/build.log
 === First error contexts (up to 4) ===
-1: Processing ./operators/mhc/vllm_v3/dependency_archives/scipy-1.15.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-2: Installing collected packages: scipy
-3: Successfully installed scipy-1.15.3
-4: WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
-5: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/analysis/sparse_dense.py:25: UserWarning: A NumPy version >=1.23.5 and <2.5.0 is required for this version of SciPy (detected version 2.5.4)
-6:   import scipy.sparse as sp
-7: Traceback (most recent call last):
-8:   File "<string>", line 1, in <module>
-9:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/__init__.py", line 98, in <module>
-10:     from . import dsl
-11:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/__init__.py", line 20, in <module>
-12:     from .api import ceil
-13:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/api.py", line 27, in <module>
-14:     from .compute import cast
-15:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/compute/cast.py", line 34, in <module>
-16:     from tbe.dsl.unify_schedule.util import is_v220
-17:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/__init__.py", line 35, in <module>
-18:     from . import vector
-19:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/__init__.py", line 30, in <module>
-20:     from . import sparse_apply
-21:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/sparse_apply/__init__.py", line 20, in <module>
-22:     from . import sparse_apply_schedule
-23:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/sparse_apply/sparse_apply_schedule.py", line 23, in <module>
-24:     import te.platform as tbe_platform
-25:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/te/platform/__init__.py", line 125, in <module>
-26:     from .cce_util import get_type_bits
-31:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/nn/__init__.py", line 35, in <module>
-32:     from .conv3d_transpose import *
-33:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/nn/conv3d_transpose.py", line 21, in <module>
-34:     from tvm import relay
-35:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/__init__.py", line 64, in <module>
-36:     from .transform import memory_plan
-37:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/transform/memory_plan.py", line 23, in <module>
-38:     import attr
-39: ModuleNotFoundError: No module named 'attr'
 === Final non-progress lines ===
-20:     from . import sparse_apply
-21:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/sparse_apply/__init__.py", line 20, in <module>
-22:     from . import sparse_apply_schedule
-23:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/sparse_apply/sparse_apply_schedule.py", line 23, in <module>
-24:     import te.platform as tbe_platform
-25:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/te/platform/__init__.py", line 125, in <module>
-26:     from .cce_util import get_type_bits
-27:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/te/platform/cce_util.py", line 34, in <module>
-28:     from tvm.topi.utils import equal_const_int
-29:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/__init__.py", line 50, in <module>
-30:     from . import nn
-31:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/nn/__init__.py", line 35, in <module>
-32:     from .conv3d_transpose import *
-33:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/nn/conv3d_transpose.py", line 21, in <module>
-34:     from tvm import relay
-35:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/__init__.py", line 64, in <module>
-36:     from .transform import memory_plan
-37:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/transform/memory_plan.py", line 23, in <module>
-38:     import attr
-39: ModuleNotFoundError: No module named 'attr'
+843: [2026-11-05 15:27:11] [24/26] Run CPack packaging tool...
+844: [2026-11-05 15:27:11] CPack: Create package using External
+845: [2026-11-05 15:27:11] CPack: Install projects
+846: [2026-11-05 15:27:11] CPack: - Install project: cann_ops-transformer []
+847: [2026-11-05 15:27:11] CPack: Create package
+848: [2026-11-05 15:27:11]
+849: [2026-11-05 15:27:11] About to compress 2532 KB of data...
+850: [2026-11-05 15:27:11] Adding files to archive named "cann-ops-transformer-q4vllmv3_linux-x86_64.run"...
+851: [2026-11-05 15:27:12] CRC: 2191238598
+852: [2026-11-05 15:27:12] SHA256: a838b4e3795533acb2a2e1cf69d8086ca8f1425f1ecfd5fec20df5e2dc13191f
+853: [2026-11-05 15:27:12] Skipping md5sum at user request
+854: [2026-11-05 15:27:12]
+855: [2026-11-05 15:27:12] Self-extractable archive "cann-ops-transformer-q4vllmv3_linux-x86_64.run" successfully created.
+856: [2026-11-05 15:27:12] Copy /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/_CPack_Packages/Linux/External/cann-ops-transformer-q4vllmv3_linux-x86_64.run/cann-ops-transformer-q4vllmv3_linux-x86_64.run to /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/
+857: [2026-11-05 15:27:12] Copy /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/_CPack_Packages/Linux/External/cann-ops-transformer-q4vllmv3_linux-x86_64.run/cann-ops-transformer-q4vllmv3_linux-x86_64.run to /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build_out/
+858: [2026-11-05 15:27:12] CPack: - package: /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/cann-ops-transformer-q4vllmv3_linux-x86_64.run.json generated.
+859: [2026-11-05 15:27:12] CPack: - package: /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/cann-ops-transformer-q4vllmv3_linux-x86_64.run generated.
+860: Expected one q4vllmv3 installer, found 2
+861: build/cann-ops-transformer-q4vllmv3_linux-x86_64.run
+862: build_out/cann-ops-transformer-q4vllmv3_linux-x86_64.run
 Saved: /home/z30086261/Q4/error.txt
