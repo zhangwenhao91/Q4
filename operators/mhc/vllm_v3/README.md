@@ -22,6 +22,10 @@ The verified 19.6 MB archive is bundled in dependency_archives so NPU hosts
 can obtain it through their working Q4 git pull. build.sh prefers this copy;
 it does not invoke curl for upstream source or disable TLS checks. Additional
 build-framework dependencies may still need their existing CANN caches/network.
+If regex is missing, the build installs the bundled PyPI regex 2024.11.6 wheel
+for CPython 3.12/Linux x86_64, with SHA256 verification and --no-index --no-deps.
+An already importable regex package is kept. Other Python/platform versions
+stop with an explicit dependency message instead of installing an invalid wheel.
 
 The AscendC kernel, tiling and ACLNN adapter are unchanged upstream files.
 prepare.py verifies their bytes against the fixed commit (allowing Git CRLF

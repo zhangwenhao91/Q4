@@ -10,6 +10,22 @@ INSTALL="$ROOT/third_party/q4vllmv3-opp"
 export CC="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-gcc"
 export CXX="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++"
 export MAX_JOBS="${Q4_BUILD_JOBS:-8}"
+if ! "$CONDA_PREFIX/bin/python" -c 'import regex' >/dev/null 2>&1; then
+  WHEEL="$ROOT/operators/mhc/vllm_v3/dependency_archives/regex-2024.11.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+  "$CONDA_PREFIX/bin/python" - "$WHEEL" <<'PY'
+import hashlib
+from pathlib import Path
+import platform
+import sys
+wheel = Path(sys.argv[1])
+if sys.version_info[:2] != (3, 12) or platform.system() != 'Linux' or platform.machine() != 'x86_64':
+    raise RuntimeError('Missing regex; bundled wheel requires CPython 3.12/Linux x86_64')
+if hashlib.sha256(wheel.read_bytes()).hexdigest() != '70b7fa6606c2881c1db9479b0eaa11ed5dfa11c8d60a474ff0e095099f39d98e':
+    raise RuntimeError('regex wheel checksum mismatch')
+PY
+  "$CONDA_PREFIX/bin/python" -m pip install --no-index --no-deps "$WHEEL"
+  "$CONDA_PREFIX/bin/python" -c 'import regex; print("Build dependency regex:", regex.__version__)'
+fi
 ARCHIVE="$ROOT/third_party/vllm-ascend-v3-e838a328.tar.gz"
 BUNDLED="$ROOT/operators/mhc/vllm_v3/dependency_archives/vllm-ascend-e838a328.tar.gz"
 if [[ -f "$BUNDLED" ]]; then
