@@ -55,6 +55,8 @@ def read_core(file):
         pipe = pipe_for(label, name)
         if pipe:
             intervals[pipe].append((start, end))
+        elif re.match(r'^(?:WAIT_FLAG|WAIT_EVENT)(?:_|$)', name):
+            intervals['WAIT'].append((start, end))
     return intervals, names
 
 

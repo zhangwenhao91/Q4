@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"
 MODE="${1:-all}"
-case "$MODE" in build|smoke|bench|all|resume) ;; *) echo 'Usage: run.sh [build|smoke|bench|all|resume]'; exit 2 ;; esac
+case "$MODE" in build|smoke|bench|all|resume|projection) ;; *) echo 'Usage: run.sh [build|smoke|bench|all|resume|projection]'; exit 2 ;; esac
 : "${CONDA_PREFIX:?Activate zwh first}"
 : "${ASCEND_HOME_PATH:?Source CANN first}"
 export ASCEND_RT_VISIBLE_DEVICES="${ASCEND_RT_VISIBLE_DEVICES:-0}"
@@ -47,6 +47,9 @@ fi
 test -f "$ASCEND_CUSTOM_OPP_PATH/op_api/lib/libcust_opapi.so" || {
   echo 'Missing isolated vendor. Run: bash operators/mhc/vllm_v3/run.sh all' | tee "$ROOT/error.txt"; exit 1;
 }
+if [[ "$MODE" == projection ]]; then
+  exec bash operators/mhc/vllm_v3/profile_projection.sh "$OUT"
+fi
 stages=(pre post combined)
 # Every benchmark case also runs CPU checks and pairwise comparisons before timing.
 if [[ "$MODE" == smoke || "$MODE" == all || "$MODE" == resume ]]; then

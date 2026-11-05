@@ -7,6 +7,11 @@ cd "$ROOT"
 : "${ASCEND_HOME_PATH:?Source CANN first}"
 VARIANT="${1:-candidate}"
 COMPARE="${2:-}"
+case "${MHC_SIM_STAGE:-all}" in
+  all) stages=(apply projection tail) ;;
+  projection) stages=(projection) ;;
+  *) echo 'MHC_SIM_STAGE must be all or projection' >&2; exit 2 ;;
+esac
 case "$VARIANT" in
   candidate|baseline) ;;
   *) echo 'Usage: run_all_token_simulator.sh [candidate|baseline [candidate_run]]' >&2; exit 2 ;;
@@ -48,7 +53,7 @@ for variant in "${variants[@]}"; do
   fi
 done
 echo 'Preflight passed. Collecting one target kernel per process; parsing core 0 by default.'
-for stage in apply projection tail; do
+for stage in "${stages[@]}"; do
   case "$stage" in
     apply) kernel=mhc_pre_apply_flat_pipeline_asc_kernel ;;
     projection) kernel=mhc_projection_token_pipeline_kernel ;;
@@ -67,7 +72,7 @@ for stage in apply projection tail; do
     msprof op simulator --soc-version="${MHC_SIM_SOC:-Ascend950PR_9579}" \
     --kernel-name="$kernel" --core-id="${MHC_SIM_CORE:-0}" \
     --launch-count=1 --aic-metrics=PipeUtilization --dump=true \
-    --timeout=30 --output="$OUT/$stage/prof" \
+    --timeout="${MHC_SIM_TIMEOUT:-30}" --output="$OUT/$stage/prof" \
     "$PY" "$ROOT/operators/mhc/tuning/simulate_all_token.py" \
       --variant "$VARIANT" --tokens "$TOKENS" --output "$OUT/$stage/source"; then
     cat "$OUT/$stage/console.log" >> "$OUT/console.log"
@@ -86,7 +91,7 @@ for stage in apply projection tail; do
   fi
   "$PY" -c 'import json,sys; c=json.load(open(sys.argv[1])); sys.exit(0 if len(c)==4 and all(v["passed"] for v in c) else 1)' "$OUT/$stage/source/correctness.json"
 done
-echo 'All three captures and CPU checks passed; actual instruction overlap still needs inspection.' >> "$OUT/console.log"
+echo 'Selected captures and CPU checks passed.' >> "$OUT/console.log"
 diagnose
 if [[ -n "$COMPARE" ]]; then
   "$PY" "$ROOT/operators/mhc/tuning/summarize_all_token_trace.py" --input "$COMPARE" --baseline "$OUT"
