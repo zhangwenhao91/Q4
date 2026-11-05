@@ -1,232 +1,119 @@
-# 原版 MHA 算子对比测试设计与串讲
+# 【A5】【TileLang】原版MHA算子实践
 
-日期：2026-11-05。读者：负责环境准备、服务器执行、结果验收和汇报的测试同学。
-建议串讲20分钟：规格3分钟、实现与边界5分钟、测试流程5分钟、指标与结果5分钟、问题讨论2分钟。
+## 测试方法
 
-本文只使用固定上游的原版TileLang MHA与原生AscendC FlashAttn。
-主测试规格为S=3584、BF16输入输出。当前文档不要求运行其他优化候选。
+### 1. 配套环境要求
 
-## 1. 先说明我们要回答什么
+1. Ascend950PR_9579服务器，28个AIC、56个AIV；已有测试使用物理设备4、进程内逻辑设备0。
+2. CANN：9.3.0.weekly.20260930。
+3. Python：3.12，使用已有Conda环境`zwh`。
+4. torch_npu：2.13.0。
+5. torch：2.13.0+cpu。
+6. Ascend TileLang：0.1.15+cpu.gita7cb753d。
+7. 编译工具：已有Conda GCC 13；原生FlashAttn与FlashAttnMetadata已安装到Q4独立`q4fa` vendor。
 
-在相同输入、相同数学语义、相同输出类型下，比较两条完整调用路径：
+以上为本项目已验证环境。复测使用现有环境，记录实际设备、软件版本和代码提交。
 
-1. 原版TileLang的延迟是多少，相对AscendC的AC/TL加速比是多少？
-2. 使用当前28 AIC设备的Cube峰值，双方有效矩阵MFU是多少？
-3. 结论在独立计时进程中是否保持一致，原始记录是否能够复核？
+### 2. 测试算子规格
 
-串讲开场可以直接说：
+MHA规格：构建kernel时计算属性如下。
 
-> 本次测的是单head注意力核心，输入是已经准备好的Q、K、V。我们先证明双方算对，
-> 再在相同计时边界下比较延迟。固定shape的主结论使用metadata复用口径。
-
-## 2. 唯一一组主测试规格
-
-| 项目 | 本次取值 | 测试含义 |
+| 计算属性 | 静态或动态 | 取值 |
 |---|---|---|
-| batch / heads | 1 / 1 | 单batch、单head |
-| Q、K、V | [3584,128]，BF16 | 同一组设备张量供双方使用 |
-| O | [3584,128]，BF16 | 双方内核直接输出BF16 |
-| head_dim | 128 | 固定上游SIMD打包路径的约束 |
-| scale | 1/sqrt(128) | 约0.08838835 |
-| causal / dropout | False / 0 | 不使用三角mask，不做随机丢弃 |
-| bias / LSE输出 | 无 / 不返回 | 没有额外attention bias或LSE结果 |
-| TL分块 | Q128、KV128、stages3 | 使用固定上游默认配置 |
-| 精度参考 | CPU FP32分块计算，最后舍入BF16 | 与双方相同输出类型对齐 |
+| batch | 静态 | 1 |
+| heads | 静态 | 1 |
+| SEQ_LEN，Q/K/V序列长度 | 静态 | 3584，即原4096的7/8 |
+| head_dim，注意力头维度 | 静态 | 128 |
+| scaling，注意力分数缩放系数 | 静态 | 1/sqrt(128)，约0.08838835 |
+| out_dtype，输出数据类型 | 静态 | bfloat16 |
+| block_q / block_kv | 静态 | 128 / 128，原版默认值 |
+| num_stages | 静态 | 3，原版默认值 |
+| num_blocks，逻辑Q任务数 | 静态推导 | 3584/128=28，使用原版默认推导 |
+| causal，因果屏蔽 | 静态 | False |
+| dropout，随机丢弃概率 | 静态 | 0 |
+| attention bias / LSE输出 | 静态 | 无 / 不返回 |
 
-与[原规格表](../MHA和mHC规格表)有两项已经确认的差异：
+运行时动态shape：无；Q/K/V数据内容为运行时输入。
 
-- 序列长度4096按7/8改为3584；D仍为128。
-- 原表输出FP32已统一为BF16，使双方原生输出一致。
-
-本次数学操作为：
+使用kernel的输入输出：
 
 ```text
-scores = Q @ K.T / sqrt(128)
-P      = softmax(scores, dim=-1)
-O      = P @ V
+input:
+Q  shape:[SEQ_LEN,head_dim] = [3584,128]  dtype:BF16
+K  shape:[SEQ_LEN,head_dim] = [3584,128]  dtype:BF16
+V  shape:[SEQ_LEN,head_dim] = [3584,128]  dtype:BF16
+
+output:
+O  shape:[SEQ_LEN,head_dim] = [3584,128]  dtype:BF16
 ```
 
-完整MHA层还包含Q/K/V投影、多head组织和输出投影；这些都不在本次计时范围。
-当前规格表只有上述一组MHA场景。改变实现版本属于实验对照，不等于新增模型输入场景。
+计算为`O = softmax(Q @ K.T / sqrt(128)) @ V`，覆盖注意力核心；QKV投影及输出投影不在本次范围内。
+AC通过view使用同一组输入的BSND布局`[1,3584,1,128]`，不增加转置或数值补算。
+双方内核直接写BF16。原规格表中的FP32输出已按任务确认统一为BF16，原序列长度4096已缩为3584。
 
-## 3. “原版”如何界定
+TL调用固定上游`core.py::flash_attention_fwd`，使用原版默认tiling，编译fast-math沿用上游示例。
+AC使用固定上游原生FlashAttn。PyTorch负责张量分配、view、调用与计时。
 
-| 对象 | 固定来源 | 使用方式 |
-|---|---|---|
-| TL数值源码 | tile-ai/tilelang，提交80364b3d9758854a9692cc0f14089025f54d3f3f | core.py::flash_attention_fwd |
-| TL调用参数 | q_len=kv_len=3584，head_dim=128，out_dtype=bfloat16 | 其余tiling使用默认值；fast-math沿用上游示例 |
-| AC数值源码 | cann/ops-transformer，提交ba5162411c919e15fbabb28298e8b420c11ad905 | FlashAttn、FlashAttnMetadata |
-| AC构建范围 | flash_attn、flash_attn_metadata | 部分编译，安装到独立q4fa vendor |
+### 3. 算子性能
 
-“原版TL”指使用固定上游数值实现及默认分块，没有增加本项目的调优改造。
-由于序列长度和输出dtype已按任务要求配置，不能说它与原example_mha的FP32输出调用字节级完全一致。
-AC没有修改attention数值源码；构建环境处理与数值算法修改分开记录。
+性能目标：同规格下`AC/TL > 1.0`，表示TileLang完整调用快于AscendC。
+其中`AC/TL = AscendC API event延迟 / TileLang API event延迟`。
 
-本地核对上游源码manifest及SHA256，记录AC源版本和已安装库SHA256。
-源版本、库哈希与构建日志应一起保存；只看到某个库哈希不能单独证明它的构建来源。
+**测试口径**
 
-## 4. 原版 FlashAttention 在做什么
+- 精度：CPU FP32分块参考最终舍入BF16；双方各对参考校验，并相互比较。
+- 验收：shape、dtype一致，输出finite，relative L2≤1%，max abs≤0.02；失败停止计时。
+- 计时：每种metadata口径3个独立进程，每进程预热100次、10轮、每轮100次，双侧交替顺序。
+- 汇总：先取各进程轮次中位数，再取3进程中位数；计入attention及输出/临时分配，排除首次编译和输入准备。
+- cached：metadata计时外生成并复用，为固定shape的主比较口径。
+- per_call：每次AC调用重新生成metadata并计时，作为补充口径单独报告。
 
-原版TL按128行Q分块，每个逻辑Q任务遍历128行一块的K/V。
-S3584对应28个Q tile、28个KV循环块。
+**已验证结果**
 
-```mermaid
-flowchart LR
-    Q["Q tile: 128×128"] --> QK["Cube: QKᵀ"]
-    K["K block: 128×128"] --> QK
-    QK --> SM["Vector: 缩放与online softmax"]
-    SM --> PV["Cube: P×V"]
-    V["V block: 128×128"] --> PV
-    PV --> ACC["更新输出与归一化状态"]
-    ACC --> NEXT{"还有KV块?"}
-    NEXT -->|有| QK
-    NEXT -->|无| OUT["归一化并写出BF16 O"]
-```
+2026-11-03原版独立复测，48项输出检查通过。时间单位为微秒。
 
-它逐块维护每行最大值、指数和与输出累积，避免把完整S×S概率矩阵写回显存。
-Cube负责两次矩阵乘；Vector负责softmax、缩放和输出处理，搬运单元在存储层级间传数据。
-这解释了为什么MFU不是简单的“硬件忙碌百分比”：完整路径中还有必要的向量和搬运工作。
+| AC metadata口径 | TL event | AC event | AC/TL | TL矩阵MFU | AC矩阵MFU |
+|---|---:|---:|---:|---:|---:|
+| cached，主口径 | 24.681 | 26.558 | **1.076×** | **70.49%** | **65.51%** |
+| per_call，补充口径 | 24.625 | 64.796 | 2.631× | 70.66% | 26.85% |
 
-设备查询为28 AIC/56 AIV。28个逻辑Q任务与AIC数量相等是选择3584的动机，
-但“逻辑block数等于核数”本身不证明具体物理映射、无等待或最优调度。
-此外，4096→3584同时减少Q任务和KV循环，不能把所有收益单独归因于核数对齐。
+cached的三个进程AC/TL为1.0813、1.0749、1.0742，三个进程均TL更快，wall计时方向一致。
+主结论引用cached的1.076×。per_call的2.631×包含metadata生成成本，不能作为attention计算kernel本身的加速比。
 
-## 5. 双侧调用、数据布局与metadata
-
-TL直接使用Q/K/V的二维布局[3584,128]。
-AC使用BSND布局[1,3584,1,128]；本场景通过view共享同一连续存储，不增加转置或数值转换。
-PyTorch负责张量分配、view、调用、CPU参考与计时，没有用于补算attention或事后转换输出。
-
-```mermaid
-flowchart TD
-    INPUT["生成同一组BF16 Q/K/V"] --> TL["原版TL FlashAttention"]
-    INPUT --> VIEW["共享存储的BSND view"]
-    SHAPE["固定shape/布局参数"] --> META["原生FlashAttnMetadata"]
-    VIEW --> AC["原生FlashAttn"]
-    META --> AC
-    TL --> CHECK["双方对CPU参考及相互校验"]
-    AC --> CHECK
-    CHECK --> PASS{"精度通过?"}
-    PASS -->|通过| TIME["预热、交替计时、独立进程复测"]
-    PASS -->|失败| STOP["停止计时并保留日志"]
-```
-
-metadata是与shape/布局相关的调度描述，不是Q/K/V计算结果，也不是已缓存的输出。
-有两种必须分开报告的调用范围：
-
-| 口径 | metadata如何处理 | 适用解释 |
-|---|---|---|
-| cached，主口径 | 在计时前生成，固定shape重复使用 | 比较重复attention调用 |
-| per_call，补充口径 | 每次AC调用前重新生成，计入时间 | 比较包含调度信息生成的完整请求 |
-
-复用metadata时每次attention仍重新计算，输出和内部临时分配仍计时。
-不能将per_call的额外成本解释为FlashAttn计算kernel本身慢了同样多。
-
-## 6. 测试分层与通过条件
-
-| 层次 | 检查内容 | 通过条件 |
-|---|---|---|
-| 环境/来源 | 设备、CANN、Python包、固定源码、q4fa库 | 来源与本次配置可追溯，依赖可用 |
-| 单次冒烟 | 原版TL、AC各对CPU参考，再相互比较 | 形状、dtype、finite及误差门限全部通过 |
-| 多种子精度 | seed=42/43/44，两种metadata模式 | 每项均通过，失败即停止 |
-| API性能 | 各口径3个独立进程，双侧交替 | 数据完整，保留所有进程与轮次 |
-| 设备profile | 两口径×两实现，各30次目标调用 | CSV有效，kernel名称与数量匹配 |
-
-MHA验收门限：
+MFU按有效矩阵计算量与完整API延迟计算：
 
 ```text
-relative_L2 = ||O - reference||₂ / max(||reference||₂, 1e-30) <= 0.01
-max_abs     = max(abs(O - reference)) <= 0.02
-```
-
-此外必须shape、dtype一致且全部finite。BF16实现间不要求逐位相同。
-这些是当前算子测试的精度门限，不代表真实模型端到端精度认证。
-
-## 7. 如何保证计时可比较
-
-原版专用runner每个计时进程预热100次，执行10轮，每轮每侧100次。
-双侧轮次顺序交替，避免某个实现始终先运行；cached/per_call按独立进程分别测试。
-
-- **event_us**：NPU Event包围100次完整调用后除以100；作为主API指标。
-- **wall_us**：主机计时覆盖调用和完成等待；用于交叉检查。
-- **device Duration**：独立profile的kernel设备耗时；用于解释计算链。
-
-event包括stream上实际调用链及可能的提交间隙；它不是纯指令执行时间。
-不得将API与独立profile时间直接相减，声称获得精确主机开销。
-
-| 计时内 | 计时外 |
-|---|---|
-| 每次attention数值计算 | 输入随机生成与CPU参考 |
-| 每次输出/工作区分配 | 首次TL JIT与扩展编译 |
-| per_call模式的metadata生成 | 预热 |
-| 同步完成所需的Event边界 | cached模式首次metadata准备 |
-
-每个进程先取10轮中位数，再取3个进程中位数作为汇总延迟。
-AC/TL使用两个汇总延迟之比，同时保留逐进程配对比。不要以最快一次替代汇总。
-本轮重复使用同一组输入地址且没有主动冷却L2，结果适用于该预热重复调用方式。
-
-## 8. 加速比和MFU如何算
-
-### 8.1 AC/TL加速比
-
-```text
-AC/TL = AscendC API event延迟 / TileLang API event延迟
-```
-
-大于1表示TL更快。1.076×表示AC用时为TL的1.076倍，
-对应TL延迟降低约7.07%，不能直接说“延迟降低7.6%”。
-只对相同shape、dtype和metadata口径计算这一比值。
-
-### 8.2 算子级有效矩阵MFU
-
-无mask attention包含QKᵀ和PV，两次矩阵乘，乘加按2 FLOPs：
-
-```text
-FLOPs = 4 * B * H * S² * D
-      = 4 * 1 * 1 * 3584² * 128
+FLOPs = 4 * batch * heads * SEQ_LEN² * head_dim
       = 6,576,668,672
 
-effective_TFLOPS = FLOPs / event_us / 1e6
-MFU_percent     = effective_TFLOPS / 378 * 100
+有效TFLOPS = FLOPs / event_us / 1e6
+矩阵MFU(%) = 有效TFLOPS / 378 * 100
 ```
 
-28 AIC设备使用Cube BF16峰值378 TFLOPS，来源为官方白皮书表3-1，配置保存在
-[峰值文件](../operators/mfu/peaks/ascend950pr_28aic.json)。不使用32 AIC的432或Cube+Vector的425。
-该峰值是额定理论值，不是本轮实测持续算力。
-softmax等向量操作不计矩阵分子，但完整耗时计入分母；本指标不是完整模型MFU。
+分母使用28 AIC的Cube BF16峰值378 TFLOPS。softmax等操作不计矩阵FLOPs，但耗时计入完整调用。
+这是算子级有效矩阵MFU，不等于硬件忙碌比例。序列缩为7/8后，矩阵FLOPs为原来的49/64。
+上表MFU由本轮未舍入延迟离线计算；不同metadata口径或不同序列长度的时间不混算加速比。
 
-序列变为7/8后，矩阵计算量变为49/64，不能直接按7/8估算FLOPs。
-本场景非因果，无需按下三角减半。MFU较低也不能直接解释为同样比例的设备空闲时间。
+### 4. 代码仓
 
-## 9. 已验证的原版结果
+项目仓库：[zhangwenhao91/Q4](https://github.com/zhangwenhao91/Q4)。
 
-使用2026-11-03的独立原版复测，证据为1437c47:error.txt，
-运行版本661c44965a68d07e78aab30a7aa07b10ce9df6bd。
+| 内容 | 位置 |
+|---|---|
+| 原版TL数值源码 | [operators/spec_v1/upstream_mha/core.py](../operators/spec_v1/upstream_mha/core.py) |
+| 原版S3584对比入口 | [operators/spec_v1/mha_plain3584.py](../operators/spec_v1/mha_plain3584.py) |
+| 公共精度与计时框架 | [operators/spec_v1/bench.py](../operators/spec_v1/bench.py) |
+| 服务器执行脚本 | [operators/mha/run_plain3584.sh](../operators/mha/run_plain3584.sh) |
+| 离线结果汇总 | [operators/mha/collect_plain3584.py](../operators/mha/collect_plain3584.py) |
+| 测试结果与原始进程摘要 | [报告](../reports/mha_plain3584/report.md)、[summary.json](../reports/mha_plain3584/summary.json) |
 
-| metadata口径 | TL API us | AC API us | AC/TL | TL矩阵MFU | AC矩阵MFU |
-|---|---:|---:|---:|---:|---:|
-| cached，主结论 | 24.681 | 26.558 | **1.076×** | **70.49%** | **65.51%** |
-| per_call，补充 | 24.625 | 64.796 | 2.631× | 70.66% | 26.85% |
+源码版本固定：
 
-MFU由同轮[原始进程摘要](../reports/mha_plain3584/summary.json)的未舍入API中位数离线换算，
-未重新运行设备。per_call分子的有效矩阵FLOPs不变，但分母含metadata生成，需注明这一额外边界。
+- TileLang：`80364b3d9758854a9692cc0f14089025f54d3f3f`，来源为tile-ai/tilelang。
+- AscendC：`ba5162411c919e15fbabb28298e8b420c11ad905`，来源为cann/ops-transformer，仅编译flash_attn、flash_attn_metadata。
+- 上述复测运行版本：`661c44965a68d07e78aab30a7aa07b10ce9df6bd`；原始日志证据为`1437c47:error.txt`。
 
-cached逐进程AC/TL为1.0813、1.0749、1.0742，三进程均TL领先，wall方向一致。
-48项输出检查通过。三个进程方向一致不等于已经给出统计显著性或所有设备上的保证。
-
-设备profile的cached均值为TL 24.526us、AC 26.646us，设备AC/TL约1.086×，
-每类30次；per_call的AC另有约38.269us metadata kernel。
-这里的设备均值与上表API中位数是不同测量，不混成一个比值。
-
-串讲结论建议表述：
-
-> 在当前Ascend950PR的28 AIC、S3584/D128、BF16输入输出规格下，
-> 固定上游原版TL对复用metadata的原生AC，完整API加速约1.076倍。
-> 该轮原版TL有效矩阵MFU约70.49%，AC约65.51%。
-
-## 10. 测试同学照着执行
-
-### 10.1 已配置服务器：先冒烟，再完整执行
+**执行方法**
 
 ```bash
 cd /home/z30086261/Q4
@@ -236,74 +123,22 @@ source /home/CANN/9.3.0.weekly.20260930/ascend-toolkit/set_env.sh
 bash operators/mha/run_plain3584.sh smoke
 ```
 
-冒烟通过后再执行：
+冒烟通过后执行完整精度、计时和设备profile：
 
 ```bash
 bash operators/mha/run_plain3584.sh all
 ```
 
-runner自动加载q4fa环境、检查/准备固定TL源码；物理设备默认4，进程内逻辑设备0。
-若需换设备，在运行前显式设置ASCEND_RT_VISIBLE_DEVICES，并在记录中注明。
-它不重建AC库或升级Python环境。若缺失依赖，应先按日志定位缺项。
+已有原生AC算子包无需重建。all结果写入`results/mha-plain3584/<时间>-all-<进程号>`。
+正常应有16份correctness文件、6份API摘要、4个profile目录、48项输出检查；设备目标kernel各30条。
+独立smoke目录不计入all目录数量。
 
-也可以分别执行check、bench、profile模式。各次命令生成独立目录，
-不要把不同目录的计数当作一个完整all结果。
-
-### 10.2 汇总已完成的all结果
+汇总指定结果目录时执行：
 
 ```bash
 python operators/mha/collect_plain3584.py \
   --input results/mha-plain3584/20261103-151933-all-216035
 ```
 
-复测后将示例路径换为runner打印的新目录。这个命令只读结果，不执行NPU计算。
-正常all目录应有16份correctness文件、6份API摘要、4个profile目录、48项输出检查，
-且每个目标设备kernel为30条。独立smoke目录不加到all目录计数。
-汇总脚本打印计数，测试人员仍需对照预期逐项验收，不能只看命令退出码。
-
-### 10.3 结果交付包
-
-| 文件 | 测试/评审用途 |
-|---|---|
-| runner.log、各case的.log | 判断哪一步完成、失败与告警位置 |
-| revision.txt、pip-freeze.txt、npu-smi.txt | 运行代码、软件环境和设备状态 |
-| metadata.json | 实际shape/dtype、来源版本、库哈希和计时边界 |
-| correctness.json | 每项精度、finite和shape/dtype验证 |
-| timings.csv、summary.json | 逐轮延迟、单进程摘要、配对比 |
-| profile下的kernel_details.csv | 设备kernel名称、次数、Duration |
-| summary.txt | 汇总入口，便于粘贴至error.txt |
-
-results/和third_party/被Git忽略。把summary贴到error.txt只能保存摘要；
-复核稳定性还要保留原目录，必要时单独导出并提交相关小文件。
-推送失败应保留结果目录，不能通过删除仓库并重克隆恢复未上传的采集数据。
-
-## 11. 验收与常见问题
-
-| 现象或疑问 | 测试人员应如何处理 |
-|---|---|
-| relative L2或max abs不通过 | 停止性能结论，保留具体输出项、seed、版本与日志 |
-| 第一次运行出现编译 | 计时外首次JIT属于正常准备；等待完成后看精度与汇总 |
-| 缺q4fa目录、固定源码或库 | 检查恢复说明和环境变量，先补缺项，不全量升级环境 |
-| 稀疏算子converter导入告警 | 该告警此前未阻断本例；仍以本例精度、完整文件和实际结束状态为准 |
-| profile-*.log提示CSV=0 | .log不是profile目录；检查实际目录中的CSV及目标kernel数 |
-| event与wall差距变化 | 保留全部轮次与设备状态，核对调用/提交开销；不直接改结果 |
-| 三个进程有胜有负 | 如实列出配对比和分布，不只引用聚合加速比 |
-| 为什么不引用2.631×作主结论 | 它包含每次metadata生成；固定shape主体优先cached |
-| 原版TL为什么也用PyTorch | 张量/调用/计时框架由PyTorch提供，attention数值计算由原版内核完成 |
-| 28个Q tile是否证明每核一个且无尾部 | 不能；需要实际调度/时间轴证据 |
-| 能否推广到其他S、head或模型 | 不能直接推广，需增加明确规格及独立精度/性能验证 |
-
-重新运行不要求精确复现到某个小数位；重点是记录完整、口径一致、精度通过，
-并结合多进程分布判断与已验证基线是否出现需要解释的变化。
-
-## 12. 串讲时打开哪些文件
-
-1. [原规格表](../MHA和mHC规格表)：说明S和dtype的任务调整。
-2. [固定原版core.py](../operators/spec_v1/upstream_mha/core.py)：看FwdTiling和两次GEMM/online softmax。
-3. [原版专用case](../operators/spec_v1/mha_plain3584.py)：看双方同输入、BSND view和metadata边界。
-4. [公共bench](../operators/spec_v1/bench.py)：看validate、implementation_order和Event计时循环。
-5. [原版runner](../operators/mha/run_plain3584.sh)：看smoke/check/bench/profile/all及产物数量。
-6. [结果报告](../reports/mha_plain3584/report.md)：用cached三进程结果讲结论。
-
-新测试同学完成串讲后应能回答：测什么、何为原版、为什么缓存metadata、
-AC/TL分子分母是什么、MFU为什么用378、失败时保留什么，以及本次结果能推广到哪里。
+复测时将示例路径替换为实际新目录。交付时保留metadata、correctness、timings.csv、summary.json和profile，
+将summary.txt内容更新至error.txt。results/和third_party/被Git忽略，删除仓库前须另行保存未上传结果。
