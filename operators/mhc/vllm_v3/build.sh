@@ -49,7 +49,26 @@ if hashlib.sha256(Path(sys.argv[1]).read_bytes()).hexdigest() != '271e3713e64514
 PY
   "$CONDA_PREFIX/bin/python" -m pip install --no-index --no-deps "$WHEEL"
 fi
-PYTHONPATH="$ASCEND_HOME_PATH/python/site-packages${PYTHONPATH:+:$PYTHONPATH}" \
+BUILD_DEPS="$ROOT/third_party/vllm-v3-build-deps"
+"$CONDA_PREFIX/bin/python" - "$ROOT/operators/mhc/vllm_v3/dependency_archives" "$BUILD_DEPS" <<'PY'
+import hashlib
+from pathlib import Path
+import subprocess
+import sys
+
+archive_dir, target = map(Path, sys.argv[1:])
+wheels = {
+    'attrs-25.3.0-py3-none-any.whl': '427318ce031701fea540783410126f03899a97ffc6f61596ad581ac2e40e3bc3',
+    'numpy-2.2.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl': 'fd83c01228a688733f1ded5201c678f0c53ecc1006ffbc404db9f7a899ac6249',
+    'scipy-1.15.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl': '271e3713e645149ea5ea3e97b57fdab61ce61333f97cfae392c28ba786f9bb49',
+}
+for name, expected in wheels.items():
+    if hashlib.sha256((archive_dir / name).read_bytes()).hexdigest() != expected:
+        raise RuntimeError(f'Build dependency checksum mismatch: {name}')
+subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-index', '--no-deps',
+    '--upgrade', '--target', str(target), *(str(archive_dir / name) for name in wheels)], check=True)
+PY
+export PYTHONPATH="$BUILD_DEPS:$ASCEND_HOME_PATH/python/site-packages${PYTHONPATH:+:$PYTHONPATH}"
   "$CONDA_PREFIX/bin/python" -c 'from tbe.tikcpp import compile_op; print("CANN TBE compiler import passed")'
 ARCHIVE="$ROOT/third_party/vllm-ascend-v3-e838a328.tar.gz"
 BUNDLED="$ROOT/operators/mhc/vllm_v3/dependency_archives/vllm-ascend-e838a328.tar.gz"
