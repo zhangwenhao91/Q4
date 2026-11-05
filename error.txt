@@ -1,20 +1,47 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh l2-v3
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-205057-l2-v3-4004353
-Timing Pre N8192-rep1
-Timing Pre N8192-rep2
-Timing Pre N8192-rep3
-Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-205057-l2-v3-4004353
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh l2-v3-small
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-205459-l2-v3-small-4017682
+Timing Pre N128-rep1
+Timing Pre N128-rep2
+Timing Pre N128-rep3
+Timing Pre N256-rep1
+Timing Pre N256-rep2
+Timing Pre N256-rep3
+Timing Pre N512-rep1
+Timing Pre N512-rep2
+Timing Pre N512-rep3
+Timing Pre N2048-rep1
+Timing Pre N2048-rep2
+Timing Pre N2048-rep3
+Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-205459-l2-v3-small-4017682
 AC reference: ascendc_vllm_v3
 Event time: median across rounds (us); ratios > 1 mean TL is faster.
 case | AC us | TL us | AC/TL
-N8192-rep1 | 499.405 | 497.909 | 1.0030
-N8192-rep2 | 502.594 | 498.402 | 1.0084
-N8192-rep3 | 502.235 | 495.238 | 1.0141
-Cases with timing: 3
+N128-rep1 | 15.228 | 24.651 | 0.6177
+N128-rep2 | 16.978 | 24.726 | 0.6866
+N128-rep3 | 17.676 | 24.748 | 0.7142
+N2048-rep1 | 113.682 | 72.417 | 1.5698
+N2048-rep2 | 114.052 | 72.340 | 1.5766
+N2048-rep3 | 112.943 | 72.586 | 1.5560
+N256-rep1 | 21.757 | 26.176 | 0.8312
+N256-rep2 | 21.659 | 26.152 | 0.8282
+N256-rep3 | 21.696 | 26.108 | 0.8310
+N512-rep1 | 33.307 | 28.978 | 1.1494
+N512-rep2 | 33.238 | 28.927 | 1.1490
+N512-rep3 | 33.184 | 28.768 | 1.1535
+Cases with timing: 12
 Runner log tail (last 20 lines):
-Q4 revision: 5780123104ec8bd959133446933eca309236752b
-CPU and pairwise correctness passed for N8192-rep1
-CPU and pairwise correctness passed for N8192-rep2
-CPU and pairwise correctness passed for N8192-rep3
+Q4 revision: ab36e94588d7100dd7d80724c8c0c949156a895f
+CPU and pairwise correctness passed for N128-rep1
+CPU and pairwise correctness passed for N128-rep2
+CPU and pairwise correctness passed for N128-rep3
+CPU and pairwise correctness passed for N256-rep1
+CPU and pairwise correctness passed for N256-rep2
+CPU and pairwise correctness passed for N256-rep3
+CPU and pairwise correctness passed for N512-rep1
+CPU and pairwise correctness passed for N512-rep2
+CPU and pairwise correctness passed for N512-rep3
+CPU and pairwise correctness passed for N2048-rep1
+CPU and pairwise correctness passed for N2048-rep2
+CPU and pairwise correctness passed for N2048-rep3
 Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
