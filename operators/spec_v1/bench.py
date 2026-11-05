@@ -23,7 +23,7 @@ def implementation_order(labels,round_index):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--suite',choices=['mha','mha_scenarios','mha_bf16','mha_nostore','mha_stages','mha_finalize','mha_buffers','mha_stats_split','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_split','mhc_original','mhc_original_fused','mhc_original_big5120'],required=True)
+    p.add_argument('--suite',choices=['mha','mha_scenarios','mha_bf16','mha_nostore','mha_stages','mha_finalize','mha_buffers','mha_stats_split','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_split','mhc_original','mhc_original_fused','mhc_original_big5120','mhc_vllm_v3'],required=True)
     p.add_argument('--mhc-pipeline-flat',action='store_true',help='compare flat with nested apply pipeline')
     p.add_argument('--mhc-all-token-pipeline',action='store_true',help='three-kernel N-pipeline candidate; N must be divisible by 128')
     p.add_argument('--mhc-apply-pipeline',choices=[f'{b}:{s}' for b in (256,1024,1280,5120) for s in (1,3)],help='apply block:stages; use 5120 with --mhc-pipeline-flat for full-hidden token pipelining')
@@ -81,6 +81,11 @@ def main():
     with torch.no_grad():
         if a.suite in ('mhc_original','mhc_original_fused','mhc_original_big5120'):
             from mhc_original import make_case
+            functions,refs,names,meta=make_case(a)
+        elif a.suite=='mhc_vllm_v3':
+            import sys
+            sys.path.insert(0,str(ROOT/'operators/mhc/vllm_v3'))
+            from vllm_v3_case import make_case
             functions,refs,names,meta=make_case(a)
         elif a.suite=='mha_scenarios':
             from mha_scenarios import make_case

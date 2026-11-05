@@ -1,0 +1,100 @@
+"""Same-input full-API benchmark against pinned upstream HcPre v3."""
+import ctypes
+import hashlib
+import json
+import os
+from pathlib import Path
+
+from prepare import ROOT, SOURCE, RECORD, VENDOR, REV, verify, sha, extract
+
+
+def load_v3():
+    import torch
+    import torch_npu
+    from torch.utils.cpp_extension import load
+    if Path(os.environ.get('ASCEND_CUSTOM_OPP_PATH', '/missing')).resolve() != VENDOR.resolve():
+        raise RuntimeError('Select only the isolated q4vllmv3 vendor in a fresh process')
+    library = VENDOR / 'op_api/lib/libcust_opapi.so'
+    if not library.is_file():
+        raise RuntimeError('Run bash operators/mhc/vllm_v3/build.sh first')
+    manifest = json.loads((RECORD / 'source.json').read_text(encoding='utf-8'))
+    hashes = verify()
+    if manifest['revision'] != REV or manifest['files'] != hashes:
+        raise RuntimeError('Upstream manifest mismatch')
+    bridge = RECORD / 'v3_binding.cpp'
+    if bridge.read_text(encoding='utf-8') != extract((SOURCE / 'csrc/torch_binding.cpp').read_text(encoding='utf-8')):
+        raise RuntimeError('Extracted v3 binding changed')
+    if sha(bridge) != manifest['binding_sha256']:
+        raise RuntimeError('Extracted binding hash mismatch')
+    # Refuse a preloaded implementation whose provenance cannot be established.
+    if hasattr(torch.ops._C_ascend, 'npu_hc_pre_v3'):
+        raise RuntimeError('npu_hc_pre_v3 is already registered; run in a fresh process without importing vllm_ascend')
+    npu = Path(torch_npu.__file__).resolve().parent
+    cann = Path(os.environ['ASCEND_HOME_PATH'])
+    adapter = SOURCE / 'csrc/aclnn_torch_adapter'
+    binary = load(name='q4_vllm_hc_pre_v3_' + REV[:8],
+        sources=[str(bridge), str(adapter / 'NPUBridge.cpp'), str(adapter / 'NPUStorageImpl.cpp')],
+        extra_include_paths=[str(SOURCE / 'csrc'), str(npu / 'include'), str(npu.parent),
+                             str(npu / 'include/third_party/acl/inc'), str(cann / 'include')],
+        extra_cflags=['-O2', '-std=c++17'],
+        extra_ldflags=[f'-L{npu / "lib"}', '-ltorch_npu', f'-L{cann / "lib64"}',
+                       '-lascendcl', '-ldl', f'-Wl,-rpath,{npu / "lib"}'],
+        is_python_module=False, verbose=True)
+    lib = ctypes.CDLL(str(library))
+    expected_address = ctypes.cast(lib.aclnnHcPre, ctypes.c_void_p).value
+    address = torch.ops.q4_vllm_v3.api_address()
+    if address != expected_address:
+        raise RuntimeError('Upstream adapter resolved aclnnHcPre from an unexpected library')
+    build = json.loads((RECORD / 'build.json').read_text(encoding='utf-8'))
+    if sha(library) != build['library_sha256'] or build['revision'] != REV:
+        raise RuntimeError('Installed HcPre library differs from build record')
+    return torch.ops._C_ascend.npu_hc_pre_v3, dict(
+        upstream_revision=REV, upstream_source_hashes=hashes,
+        library=str(library), library_sha256=sha(library), binding_sha256=sha(bridge),
+        binding_binary=str(binary), resolved_api_matches_isolated_library=True,
+        note=manifest['binding_note'], hf32_rounding='Upstream HcPre uses HF32 RTZ; TL projection uses its original mode; original Q4 precision gates retained')
+
+
+def make_case(a):
+    import torch
+    import sys
+    sys.path.insert(0, str(ROOT / 'operators/mhc/matched'))
+    from projection import DynamicHCProjection
+    from mhc_bound import make_bound_candidate
+    from cases import shifted_reference
+    if a.tokens % 128:
+        raise ValueError('Three-kernel N-pipeline comparison requires N divisible by 128')
+    op, provenance = load_v3()
+    t = a.tokens
+    x0 = torch.randn(t, 4, 5120, dtype=torch.bfloat16)
+    prev0 = torch.rand(t, 4, 1) + 1e-6
+    phi0 = torch.empty(24, 20480).uniform_(-1, 1) / 20480**.5
+    alpha0 = torch.tensor([.1, .1, .1])
+    bias0 = torch.randn(24) * .1
+    refs = shifted_reference(x0, prev0, phi0, alpha0, bias0)
+    x, prev, phi, alpha, bias = [v.npu() for v in (x0, prev0, phi0, alpha0, bias0)]
+    prev2d = prev.view(t, 4)
+    projector = DynamicHCProjection(x, phi)
+    baseline, baseline_meta = make_bound_candidate(projector, x, prev, alpha, bias, split_apply=True)
+    candidate, candidate_meta = make_bound_candidate(projector, x, prev, alpha, bias,
+        split_apply=True, apply_pipeline=(5120, 3), flat_pipeline=True, all_token_pipeline=True)
+    for name, source in candidate_meta.pop('generated_sources').items():
+        (a.output / f'all_token_{name}.cpp').write_text(source, encoding='utf-8')
+
+    def ac():
+        # These are metadata-only views. All upstream output/workspace allocation
+        # and dispatch still occur on every timed invocation of the original op.
+        y, post, comb, pre = op(x, phi, alpha, bias, prev2d,
+            hc_mult=4, hc_sinkhorn_iters=20, norm_eps=1e-20, hc_eps=1e-6)
+        return y, pre.unsqueeze(-1), post.unsqueeze(-1), comb
+
+    return dict(ascendc_vllm_v3=ac, tilelang_coeff_bound=baseline,
+                tilelang_all_token_h5120s3=candidate), refs, [
+                    'layer_input', 'next_pre_mix', 'post_mix', 'comb_mix'], dict(
+        comparison_available=True, vllm_v3=provenance,
+        contract=dict(N=t, hidden=5120, hc_mult=4, shifted=True,
+            rms_eps=1e-20, hc_pre_eps=1e-6, hc_sinkhorn_eps=1e-6, sinkhorn_repeat=20, post_mult=2),
+        baseline=baseline_meta, candidate=candidate_meta, projection_config=projector.config,
+        timing_boundary='Full API including fresh output/workspace allocations and dispatch; input generation/CPU reference/compilation/source validation excluded',
+        expected_kernel_counts=dict(ascendc_vllm_v3='upstream HcPre fused op; verify device launches separately',
+            tilelang_coeff_bound=3, tilelang_all_token_h5120s3=3))

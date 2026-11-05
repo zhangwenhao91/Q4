@@ -12,6 +12,7 @@ def main():
     p.add_argument('--input', type=Path, help='run directory; default: latest bench run')
     p.add_argument('--output', type=Path, default=root / 'error.txt')
     p.add_argument('--candidate', default='tilelang_flat_h5120s3')
+    p.add_argument('--reference', default='ascendc_shifted_native')
     a = p.parse_args()
     runs = list((root / 'results/mhc-token-pipeline').glob('*-bench-*'))
     run = a.input if a.input else max(runs, key=lambda x: x.stat().st_mtime, default=None)
@@ -19,7 +20,8 @@ def main():
         p.error('No bench run found. Pass --input to select a smoke or other run.')
     lines = [f'Run: {run}', 'Event time: median across rounds (us); ratios > 1 mean TL is faster.',
              'case | AC us | TL original us | TL N-pipeline us | AC/TL original | AC/TL pipeline | original/pipeline']
-    labels = ('ascendc_shifted_native', 'tilelang_coeff_bound', a.candidate)
+    labels = (a.reference, 'tilelang_coeff_bound', a.candidate)
+    lines.insert(1, f'AC reference: {a.reference}')
     lines.insert(1, f'Candidate: {a.candidate}')
     count = 0
     for case in sorted(run.glob('N*-rep*')):
