@@ -38,6 +38,17 @@ if hashlib.sha256(wheel.read_bytes()).hexdigest() != 'd316bb415a2d9e2d2b3abcc408
 PY
   "$CONDA_PREFIX/bin/python" -m pip install --no-index --no-deps "$WHEEL"
 fi
+if ! "$CONDA_PREFIX/bin/python" -c 'import importlib.util, sys; sys.exit(importlib.util.find_spec("scipy") is None)' >/dev/null 2>&1; then
+  WHEEL="$ROOT/operators/mhc/vllm_v3/dependency_archives/scipy-1.15.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+  "$CONDA_PREFIX/bin/python" - "$WHEEL" <<'PY'
+import hashlib
+from pathlib import Path
+import sys
+if hashlib.sha256(Path(sys.argv[1]).read_bytes()).hexdigest() != '271e3713e645149ea5ea3e97b57fdab61ce61333f97cfae392c28ba786f9bb49':
+    raise RuntimeError('SciPy wheel checksum mismatch')
+PY
+  "$CONDA_PREFIX/bin/python" -m pip install --no-index --no-deps "$WHEEL"
+fi
 PYTHONPATH="$ASCEND_HOME_PATH/python/site-packages${PYTHONPATH:+:$PYTHONPATH}" \
   "$CONDA_PREFIX/bin/python" -c 'from tbe.tikcpp import compile_op; print("CANN TBE compiler import passed")'
 ARCHIVE="$ROOT/third_party/vllm-ascend-v3-e838a328.tar.gz"
