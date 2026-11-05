@@ -8,6 +8,8 @@ apply	core0.veccore0	MTE3	37	9.58
 apply	core0.veccore1	MTE2	74	69.623
 apply	core0.veccore1	VECTOR	41588	11.4139
 apply	core0.veccore1	MTE3	37	9.86545
+projection	core0.cubecore0	MTE1	320	26.4836
+projection	core0.cubecore0	CUBE	240	25.0734
 projection	core0.veccore0	MTE2	60	62.2751
 projection	core0.veccore0	VECTOR	88577	31.8455
 projection	core0.veccore0	MTE3	3	0.527281
@@ -34,7 +36,7 @@ apply	core0.veccore1	MTE2/CUBE	NA	NA	NA
 apply	core0.veccore1	CUBE/FIX	NA	NA	NA
 projection	core0.cubecore0	MTE2/VECTOR	NA	NA	NA
 projection	core0.cubecore0	VECTOR/MTE3	NA	NA	NA
-projection	core0.cubecore0	MTE1/CUBE	NA	NA	NA
+projection	core0.cubecore0	MTE1/CUBE	19.5261	73.73	77.88
 projection	core0.cubecore0	MTE2/CUBE	NA	NA	NA
 projection	core0.cubecore0	CUBE/FIX	NA	NA	NA
 projection	core0.veccore0	MTE2/VECTOR	28.4727	45.72	89.41
