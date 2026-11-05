@@ -13,6 +13,7 @@ def main():
     p.add_argument('--output', type=Path, default=root / 'error.txt')
     p.add_argument('--candidate', default='tilelang_flat_h5120s3')
     p.add_argument('--reference', default='ascendc_shifted_native')
+    p.add_argument('--baseline', default='tilelang_coeff_bound')
     a = p.parse_args()
     runs = list((root / 'results/mhc-token-pipeline').glob('*-bench-*'))
     run = a.input if a.input else max(runs, key=lambda x: x.stat().st_mtime, default=None)
@@ -20,9 +21,14 @@ def main():
         p.error('No bench run found. Pass --input to select a smoke or other run.')
     lines = [f'Run: {run}', 'Event time: median across rounds (us); ratios > 1 mean TL is faster.',
              'case | AC us | TL original us | TL N-pipeline us | AC/TL original | AC/TL pipeline | original/pipeline']
-    labels = (a.reference, 'tilelang_coeff_bound', a.candidate)
+    labels = (a.reference, a.baseline)
+    if a.candidate:
+        labels += (a.candidate,)
+    else:
+        lines[-1] = 'case | AC us | TL us | AC/TL'
     lines.insert(1, f'AC reference: {a.reference}')
-    lines.insert(1, f'Candidate: {a.candidate}')
+    if a.candidate:
+        lines.insert(1, f'Candidate: {a.candidate}')
     count = 0
     for case in sorted(run.glob('N*-rep*')):
         if not case.is_dir():
@@ -38,9 +44,13 @@ def main():
                         if r['implementation'] == label)} for label in labels
                        if any(r['implementation'] == label for r in rows)}
         if all(label in summary for label in labels):
-            ac, old, new = (summary[label]['event_us'] for label in labels)
+            ac, old = (summary[label]['event_us'] for label in labels[:2])
             status = '' if summary_path.exists() else ' [CSV recovered; run may be incomplete]'
-            lines.append(f'{case.name} | {ac:.3f} | {old:.3f} | {new:.3f} | {ac/old:.4f} | {ac/new:.4f} | {old/new:.4f}{status}')
+            if a.candidate:
+                new = summary[a.candidate]['event_us']
+                lines.append(f'{case.name} | {ac:.3f} | {old:.3f} | {new:.3f} | {ac/old:.4f} | {ac/new:.4f} | {old/new:.4f}{status}')
+            else:
+                lines.append(f'{case.name} | {ac:.3f} | {old:.3f} | {ac/old:.4f}{status}')
             count += 1
         else:
             lines.append(f'{case.name}: timing data incomplete')

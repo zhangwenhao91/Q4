@@ -1,5 +1,6 @@
 """Verify pinned upstream files and extract the original v3 binding verbatim."""
 import argparse
+import ctypes
 import hashlib
 import json
 from pathlib import Path
@@ -13,7 +14,7 @@ ARCHIVE = ROOT / 'third_party/vllm-ascend-v3-e838a328.tar.gz'
 ARCHIVE_SHA256 = '98cef93d6983f9cb5b193e200a1e7b6b18ee11daef17eb35e2acfa432b8e82cc'
 RECORD = ROOT / 'third_party/vllm-v3-record'
 VENDOR = ROOT / 'third_party/q4vllmv3-opp/vendors/q4vllmv3_transformer'
-PREFIXES = ('csrc/moe/hc_pre/', 'csrc/aclnn_torch_adapter/')
+PREFIXES = ('csrc/moe/hc_pre/', 'csrc/moe/hc_post/', 'csrc/aclnn_torch_adapter/')
 
 
 def sha(path):
@@ -51,7 +52,7 @@ def verify(source=SOURCE):
 
 
 def extract(text):
-    start = text.index('constexpr int64_t HC_PRE_HC_LIMIT = 4;')
+    start = text.index('at::Tensor construct_hc_post_output_tensor(')
     end = text.index('void inplace_partial_rotary_mul_npu(', start)
     functions = text[start:end]
     marker = '    ops.def(\n        "npu_hc_pre_v3("'
@@ -59,6 +60,11 @@ def extract(text):
     final = '    ops.impl("npu_hc_pre_v3", torch::kPrivateUse1, &vllm_ascend::npu_hc_pre_v3_npu);'
     end = text.index(final, start) + len(final)
     registration = text[start:end]
+    post_marker = '    ops.def(\n          "npu_hc_post("'
+    post_start = text.index(post_marker)
+    post_final = '    ops.impl("npu_hc_post", torch::kPrivateUse1, &vllm_ascend::npu_hc_post_npu);'
+    post_end = text.index(post_final, post_start) + len(post_final)
+    registration += '\n' + text[post_start:post_end]
     license_header = text[:text.index('#include')]
     header = '''#include <torch/extension.h>
 #include <torch/library.h>
@@ -84,6 +90,9 @@ TORCH_LIBRARY_FRAGMENT(_C_ascend, ops) {
 TORCH_LIBRARY(q4_vllm_v3, ops) {
     ops.def("api_address() -> int", []() -> int64_t {
         return reinterpret_cast<int64_t>(GetOpApiFuncAddr("aclnnHcPre"));
+    });
+    ops.def("post_api_address() -> int", []() -> int64_t {
+        return reinterpret_cast<int64_t>(GetOpApiFuncAddr("aclnnHcPost"));
     });
 }
 '''
@@ -127,13 +136,17 @@ def main():
     path.write_text(bridge, encoding='utf-8')
     meta = dict(upstream='https://github.com/vllm-project/vllm-ascend', revision=REV,
         files=hashes, binding_sha256=sha(path),
-        binding_note='Original HcPre helper functions, v3 function and torch registration copied verbatim; original EXEC_NPU_CMD header; only includes/namespace and diagnostic registration added')
+        binding_note='Original HcPre v3 and HcPost functions and registrations copied verbatim with upstream EXEC_NPU_CMD')
     (a.record / 'source.json').write_text(json.dumps(meta, indent=2))
     if a.installer:
         library = VENDOR / 'op_api/lib/libcust_opapi.so'
+        handle = ctypes.CDLL(str(library))
+        if not all(hasattr(handle, symbol) for symbol in ('aclnnHcPre', 'aclnnHcPost')):
+            raise RuntimeError('Installed package lacks Pre or Post. Run run.sh all to rebuild both.')
         build = dict(revision=REV, library=str(library), library_sha256=sha(library),
             installer=str(a.installer.resolve()), installer_sha256=sha(a.installer),
-            source_files=hashes, build_command='bash build.sh --pkg --soc=ascend950 --ops=hc_pre --vendor_name=q4vllmv3')
+            source_files=hashes, operators=['hc_pre', 'hc_post'],
+            build_command="bash build.sh --pkg --soc=ascend950 '--ops=hc_pre;hc_post' --vendor_name=q4vllmv3")
         (a.record / 'build.json').write_text(json.dumps(build, indent=2))
     print('Pinned unmodified kernel and adapter verified; original v3 binding extracted.')
 

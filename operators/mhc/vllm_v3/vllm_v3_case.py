@@ -17,6 +17,9 @@ def load_v3():
     library = VENDOR / 'op_api/lib/libcust_opapi.so'
     if not library.is_file():
         raise RuntimeError('Run bash operators/mhc/vllm_v3/build.sh first')
+    build = json.loads((RECORD / 'build.json').read_text(encoding='utf-8'))
+    if build.get('operators') != ['hc_pre', 'hc_post']:
+        raise RuntimeError('Run bash operators/mhc/vllm_v3/run.sh all to build Pre and Post')
     manifest = json.loads((RECORD / 'source.json').read_text(encoding='utf-8'))
     hashes = verify()
     if manifest['revision'] != REV or manifest['files'] != hashes:
@@ -41,11 +44,10 @@ def load_v3():
                        '-lascendcl', '-ldl', f'-Wl,-rpath,{npu / "lib"}'],
         is_python_module=False, verbose=True)
     lib = ctypes.CDLL(str(library))
-    expected_address = ctypes.cast(lib.aclnnHcPre, ctypes.c_void_p).value
-    address = torch.ops.q4_vllm_v3.api_address()
-    if address != expected_address:
-        raise RuntimeError('Upstream adapter resolved aclnnHcPre from an unexpected library')
-    build = json.loads((RECORD / 'build.json').read_text(encoding='utf-8'))
+    for symbol, address in (('aclnnHcPre', torch.ops.q4_vllm_v3.api_address()),
+                            ('aclnnHcPost', torch.ops.q4_vllm_v3.post_api_address())):
+        if address != ctypes.cast(getattr(lib, symbol), ctypes.c_void_p).value:
+            raise RuntimeError(f'Upstream adapter resolved {symbol} from an unexpected library')
     if sha(library) != build['library_sha256'] or build['revision'] != REV:
         raise RuntimeError('Installed HcPre library differs from build record')
     return torch.ops._C_ascend.npu_hc_pre_v3, dict(
@@ -73,6 +75,29 @@ def make_case(a):
     bias0 = torch.randn(24) * .1
     refs = shifted_reference(x0, prev0, phi0, alpha0, bias0)
     x, prev, phi, alpha, bias = [v.npu() for v in (x0, prev0, phi0, alpha0, bias0)]
+    stage = a.mhc_vllm_stage
+    if stage != 'pre':
+        from tile_kernels.mhc import mhc_post_fwd
+        post_op = torch.ops._C_ascend.npu_hc_post
+        layer0 = torch.randn(t, 5120, dtype=torch.bfloat16)
+        post0, comb0 = refs[2:]
+        residual_ref = (torch.einsum('nij,nih->njh', comb0, x0.float())
+                        + post0 * layer0.float().unsqueeze(1)).bfloat16()
+        layer, residual = layer0.npu().unsqueeze(0), x.unsqueeze(0)
+
+        def ac_post(post, comb):
+            return post_op(layer, residual, post.squeeze(-1).unsqueeze(0), comb.unsqueeze(0)).squeeze(0)
+
+        def tl_post(post, comb):
+            return mhc_post_fwd(layer, residual, post.unsqueeze(0), comb.unsqueeze(0)).squeeze(0)
+
+        if stage == 'post':
+            post, comb = post0.npu(), comb0.npu()
+            return dict(ascendc_vllm_post=lambda: (ac_post(post, comb),),
+                        tilelang_post=lambda: (tl_post(post, comb),)), (residual_ref,), ['new_residual'], dict(
+                comparison_available=True, vllm_v3=provenance, stage=stage,
+                contract=dict(N=t, hidden=5120, hc_mult=4),
+                timing_boundary='Post API on identical BF16 layer output and residual with shared CPU-reference FP32 coefficients')
     prev2d = prev.view(t, 4)
     projector = DynamicHCProjection(x, phi)
     baseline, baseline_meta = make_bound_candidate(projector, x, prev, alpha, bias, split_apply=True)
@@ -88,13 +113,27 @@ def make_case(a):
             hc_mult=4, hc_sinkhorn_iters=20, norm_eps=1e-20, hc_eps=1e-6)
         return y, pre.unsqueeze(-1), post.unsqueeze(-1), comb
 
-    return dict(ascendc_vllm_v3=ac, tilelang_coeff_bound=baseline,
-                tilelang_all_token_h5120s3=candidate), refs, [
-                    'layer_input', 'next_pre_mix', 'post_mix', 'comb_mix'], dict(
+    names = ['layer_input', 'next_pre_mix', 'post_mix', 'comb_mix']
+    functions = dict(ascendc_vllm_v3=ac, tilelang_coeff_bound=baseline,
+                     tilelang_all_token_h5120s3=candidate)
+    if stage == 'combined':
+        def chain(pre_fn, post_fn):
+            def run():
+                outputs = pre_fn()
+                return (*outputs, post_fn(outputs[2], outputs[3]))
+            return run
+
+        functions = {name: chain(fn, ac_post if name == 'ascendc_vllm_v3' else tl_post)
+                     for name, fn in functions.items()}
+        refs = (*refs, residual_ref)
+        names.append('new_residual')
+    return functions, refs, names, dict(
         comparison_available=True, vllm_v3=provenance,
+        stage=stage,
         contract=dict(N=t, hidden=5120, hc_mult=4, shifted=True,
             rms_eps=1e-20, hc_pre_eps=1e-6, hc_sinkhorn_eps=1e-6, sinkhorn_repeat=20, post_mult=2),
         baseline=baseline_meta, candidate=candidate_meta, projection_config=projector.config,
         timing_boundary='Full API including fresh output/workspace allocations and dispatch; input generation/CPU reference/compilation/source validation excluded',
-        expected_kernel_counts=dict(ascendc_vllm_v3='upstream HcPre fused op; verify device launches separately',
-            tilelang_coeff_bound=3, tilelang_all_token_h5120s3=3))
+        expected_kernel_counts=dict(ascendc_vllm_v3='verify device launches separately',
+            tilelang_coeff_bound=4 if stage == 'combined' else 3,
+            tilelang_all_token_h5120s3=4 if stage == 'combined' else 3))

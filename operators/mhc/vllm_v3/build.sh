@@ -135,5 +135,5 @@ PY
 cd "$SRC/csrc"
 # The upstream build entry accepts individual operators and a private vendor.
 # No kernel, tiling, adapter or upstream binding source is patched.
-bash build.sh --pkg --soc=ascend950 --ops=hc_pre --vendor_name=q4vllmv3 "-j${MAX_JOBS}"
+bash build.sh --pkg --soc=ascend950 '--ops=hc_pre;hc_post' --vendor_name=q4vllmv3 "-j${MAX_JOBS}"
 install_package

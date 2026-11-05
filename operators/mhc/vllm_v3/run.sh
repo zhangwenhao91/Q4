@@ -47,37 +47,51 @@ fi
 test -f "$ASCEND_CUSTOM_OPP_PATH/op_api/lib/libcust_opapi.so" || {
   echo 'Missing isolated vendor. Run: bash operators/mhc/vllm_v3/run.sh all' | tee "$ROOT/error.txt"; exit 1;
 }
-summarize() {
-  "$PY" operators/mhc/tuning/summarize_token_pipeline.py --input "$OUT" \
-    --reference ascendc_vllm_v3 --candidate tilelang_all_token_h5120s3
-}
+stages=(pre post combined)
 # Every benchmark case also runs CPU checks and pairwise comparisons before timing.
 if [[ "$MODE" == smoke || "$MODE" == all || "$MODE" == resume ]]; then
-  for n in 128 2048; do
-    echo "Checking N=$n"
-    if ! "$PY" operators/spec_v1/bench.py --suite mhc_vllm_v3 --tokens "$n" \
-      --check-only --output "$OUT/check-N$n" > "$OUT/check-N$n.log" 2>&1; then
-      failure "precision N=$n" "$OUT/check-N$n.log"
-      exit 1
-    fi
-    echo "Precision passed N=$n" | tee -a "$OUT/runner.log"
+  for stage in "${stages[@]}"; do
+    for n in 128 2048; do
+      echo "Checking $stage N=$n"
+      log="$OUT/check-$stage-N$n.log"
+      if ! "$PY" operators/spec_v1/bench.py --suite mhc_vllm_v3 --mhc-vllm-stage "$stage" --tokens "$n" \
+        --check-only --output "$OUT/check-$stage-N$n" > "$log" 2>&1; then
+        failure "precision $stage N=$n" "$log"
+        exit 1
+      fi
+      echo "Precision passed $stage N=$n" | tee -a "$OUT/runner.log"
+    done
   done
 fi
 if [[ "$MODE" == bench || "$MODE" == all || "$MODE" == resume ]]; then
-  for n in 128 256 512 2048 8192; do
-    for rep in 1 2 3; do
-      echo "Timing N=$n repeat=$rep"
-      if ! "$PY" operators/spec_v1/bench.py --suite mhc_vllm_v3 --tokens "$n" \
-        --warmup 100 --rounds 12 --iters 100 --output "$OUT/N$n-rep$rep" \
-        > "$OUT/N$n-rep$rep.log" 2>&1; then
-        failure "benchmark N=$n repeat=$rep" "$OUT/N$n-rep$rep.log"
-        exit 1
-      fi
-      echo "Completed N=$n repeat=$rep" >> "$OUT/runner.log"
+  for stage in "${stages[@]}"; do
+    mkdir -p "$OUT/$stage"
+    for n in 128 256 512 2048 8192; do
+      for rep in 1 2 3; do
+        echo "Timing $stage N=$n repeat=$rep"
+        case_dir="$OUT/$stage/N$n-rep$rep"
+        if ! "$PY" operators/spec_v1/bench.py --suite mhc_vllm_v3 --mhc-vllm-stage "$stage" --tokens "$n" \
+          --warmup 100 --rounds 12 --iters 100 --output "$case_dir" > "$case_dir.log" 2>&1; then
+          failure "benchmark $stage N=$n repeat=$rep" "$case_dir.log"
+          exit 1
+        fi
+        echo "Completed $stage N=$n repeat=$rep" >> "$OUT/runner.log"
+      done
     done
+    labels=(--reference ascendc_vllm_v3 --candidate tilelang_all_token_h5120s3)
+    if [[ "$stage" == post ]]; then
+      labels=(--reference ascendc_vllm_post --baseline tilelang_post --candidate '')
+    fi
+    "$PY" operators/mhc/tuning/summarize_token_pipeline.py --input "$OUT/$stage" \
+      --output "$OUT/$stage/summary.txt" "${labels[@]}" > "$OUT/$stage/summary.log"
   done
-  echo 'All 15 cases completed.' >> "$OUT/runner.log"
-  summarize
+  {
+    for stage in "${stages[@]}"; do
+      printf '\n=== %s ===\n' "$stage"
+      cat "$OUT/$stage/summary.txt"
+    done
+  } > "$ROOT/error.txt"
+  cat "$ROOT/error.txt"
 else
   { echo "Run: $OUT"; cat "$OUT/runner.log"; } > "$ROOT/error.txt"
   cat "$ROOT/error.txt"

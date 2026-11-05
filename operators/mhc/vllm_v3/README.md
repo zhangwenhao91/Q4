@@ -4,8 +4,8 @@
 bash operators/mhc/vllm_v3/run.sh all
 ```
 
-Requires the existing zwh/CANN/TileKernels/DeepGEMM environment. This builds only
-HcPre from vLLM-Ascend e838a32888113cd20e1b5bad2053d1b4a06bf935 using its own
+Requires the existing zwh/CANN/TileKernels/DeepGEMM environment. This builds
+HcPre and HcPost from vLLM-Ascend e838a32888113cd20e1b5bad2053d1b4a06bf935 using its own
 csrc/build.sh, in an isolated q4vllmv3 vendor. It does not install vLLM or upgrade
 Python packages. modes: build, smoke, bench, all (default). Full logs go to
 results/mhc-vllm-v3; error.txt is a compact result or failure report for copying
@@ -51,6 +51,13 @@ three processes each, 100 warmup calls, 12 rounds x 100 calls. Ordering rotates
 and reverses across rounds. Compilation/source validation/input prep/CPU
 reference are excluded; every call's output/workspace allocation and dispatch
 are included. No precomputed device result, output cache or graph replay.
+
+The runner reports Pre alone, Post alone and a directly timed Pre + Post call.
+Post alone receives identical CPU-reference post and comb coefficients on both
+sides. The combined call feeds each implementation's newly computed coefficients
+into its Post and checks the resulting residual in addition to all Pre outputs.
+Both modes use the same synthetic BF16 layer output, generated outside timing.
+The combined scope covers mHC only and excludes the intervening attention/MLP.
 
 Semantic contract: BF16 x[N,4,5120], FP32 old pre[N,4,1], fn[24,20480], scale[3],
 base[24]; old pre produces y while new pre/post/Sinkhorn coefficients are
