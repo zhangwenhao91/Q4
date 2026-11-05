@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"
 MODE="${1:-all}"
-case "$MODE" in build|smoke|bench|all) ;; *) echo 'Usage: run.sh [build|smoke|bench|all]'; exit 2 ;; esac
+case "$MODE" in build|smoke|bench|all|resume) ;; *) echo 'Usage: run.sh [build|smoke|bench|all|resume]'; exit 2 ;; esac
 : "${CONDA_PREFIX:?Activate zwh first}"
 : "${ASCEND_HOME_PATH:?Source CANN first}"
 export ASCEND_RT_VISIBLE_DEVICES="${ASCEND_RT_VISIBLE_DEVICES:-0}"
@@ -32,6 +32,14 @@ if [[ "$MODE" == build || "$MODE" == all ]]; then
   fi
   echo 'Build completed.' | tee -a "$OUT/runner.log"
 fi
+if [[ "$MODE" == resume ]]; then
+  echo 'Installing previously built upstream HcPre (details in install.log).'
+  if ! bash operators/mhc/vllm_v3/build.sh install-existing > "$OUT/install.log" 2>&1; then
+    failure install "$OUT/install.log"
+    exit 1
+  fi
+  echo 'Install completed.' | tee -a "$OUT/runner.log"
+fi
 if [[ "$MODE" == build ]]; then
   cp "$OUT/runner.log" "$ROOT/error.txt"
   exit 0
@@ -44,7 +52,7 @@ summarize() {
     --reference ascendc_vllm_v3 --candidate tilelang_all_token_h5120s3
 }
 # Every benchmark case also runs CPU checks and pairwise comparisons before timing.
-if [[ "$MODE" == smoke || "$MODE" == all ]]; then
+if [[ "$MODE" == smoke || "$MODE" == all || "$MODE" == resume ]]; then
   for n in 128 2048; do
     echo "Checking N=$n"
     if ! "$PY" operators/spec_v1/bench.py --suite mhc_vllm_v3 --tokens "$n" \
@@ -55,7 +63,7 @@ if [[ "$MODE" == smoke || "$MODE" == all ]]; then
     echo "Precision passed N=$n" | tee -a "$OUT/runner.log"
   done
 fi
-if [[ "$MODE" == bench || "$MODE" == all ]]; then
+if [[ "$MODE" == bench || "$MODE" == all || "$MODE" == resume ]]; then
   for n in 128 256 512 2048 8192; do
     for rep in 1 2 3; do
       echo "Timing N=$n repeat=$rep"
