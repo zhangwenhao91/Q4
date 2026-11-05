@@ -58,16 +58,71 @@ def read_core(file):
     return intervals, names
 
 
+def core_files(run, stage):
+    files = {}
+    for file in sorted((run / stage / 'prof').rglob('core*/trace.json')):
+        core = file.parent.name
+        if core in files:
+            raise ValueError(f'Multiple traces for {stage}/{core} in {run}')
+        files[core] = file
+    return files
+
+
+def compare(baseline, candidate):
+    lines = [f'Baseline: {baseline.resolve()}', f'Candidate: {candidate.resolve()}',
+             'Time columns use raw trace units. Percentages divide by the second pipe busy time.',
+             'stage\tcore\tpair\tbaseline busy first/second\tcandidate busy first/second\tbaseline overlap\tcandidate overlap\tbaseline %\tcandidate %\tdelta pp']
+    for stage in STAGES:
+        old_meta = json.loads((baseline / stage / 'source/metadata.json').read_text())
+        new_meta = json.loads((candidate / stage / 'source/metadata.json').read_text())
+        if (old_meta['variant'] != 'baseline' or new_meta['variant'] != 'candidate'
+                or old_meta['tokens'] != new_meta['tokens']
+                or old_meta['projection_config'] != new_meta['projection_config']):
+            raise ValueError(f'{stage}: expected matching N/config and baseline/candidate variants')
+        old_files, new_files = core_files(baseline, stage), core_files(candidate, stage)
+        if not old_files or old_files.keys() != new_files.keys():
+            raise ValueError(f'{stage}: core sets differ: {list(old_files)} vs {list(new_files)}')
+        for core in old_files:
+            tables = []
+            for file in (old_files[core], new_files[core]):
+                intervals, _ = read_core(file)
+                tables.append({pipe: merge(intervals[pipe]) for pipe in PIPES})
+            for first, second in PAIRS:
+                results = []
+                for table in tables:
+                    a, b = table[first], table[second]
+                    busy_a = sum(end - start for start, end in a)
+                    busy_b = sum(end - start for start, end in b)
+                    overlap = intersection(a, b) if busy_a and busy_b else None
+                    results.append((busy_a, busy_b, overlap, None if overlap is None else 100 * overlap / busy_b))
+                old, new = results
+                if old[2] is None and new[2] is None:
+                    continue
+                delta = None if old[3] is None or new[3] is None else new[3] - old[3]
+                def fmt(value):
+                    return 'NA' if value is None else f'{value:.6g}'
+                lines.append('\t'.join([stage, core, f'{first}/{second}',
+                    f'{fmt(old[0])}/{fmt(old[1])}', f'{fmt(new[0])}/{fmt(new[1])}',
+                    *(fmt(value) for value in (old[2], new[2], old[3], new[3], delta))]))
+    return '\n'.join(lines) + '\n'
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--input', type=Path, help='specific run directory')
+    p.add_argument('--baseline', type=Path, help='compare with a baseline run directory')
     p.add_argument('--output', type=Path, default=Path('error.txt'))
     a = p.parse_args()
-    runs = sorted(Path('results/mhc-all-token-simulator').glob('*/'))
+    runs = sorted(r for r in Path('results/mhc-all-token-simulator').glob('*/')
+                  if not r.name.endswith('-baseline'))
     run = a.input or next((r for r in reversed(runs) if all(
         any((r / s / 'prof').rglob('core*/trace.json')) for s in STAGES)), None)
     if run is None:
         p.error('No run with per-core traces for all three stages')
+    if a.baseline:
+        a.output.write_text(compare(a.baseline, run), encoding='utf-8')
+        print(f'Saved {a.output.resolve()}')
+        return
     lines = [f'Run: {run.resolve()}', 'Times use the raw trace unit. Busy is the union of recognized instruction intervals.',
              'NA means no recognized intervals on one or both pipes. Positive overlap only establishes concurrent trace intervals within one core file.',
              'stage\tcore\tpipe\tinstructions\tbusy']
