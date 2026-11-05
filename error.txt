@@ -1,95 +1,49 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh memory
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-201948-memory-3917530
-N=8192 Memory-tilelang_coeff_bound
-N=8192 Memory-tilelang_all_token_h5120s3
-N=8192 L2Cache-tilelang_coeff_bound
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh l2
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-203527-l2-3969728
+N=8192 bench-1
+N=8192 bench-2
+N=8192 bench-3
+N=8192 latency-tilelang_all_token_h5120s3
 N=8192 L2Cache-tilelang_all_token_h5120s3
-Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-201948-memory-3917530
-Logical residual bytes per full traversal: 335544320 (320 MiB).
-Apply and projection each consume residual; logical tensor size does not measure physical memory traffic.
-Counters preserve exporter fields and units. Missing fields do not imply zero traffic or zero hit rate.
-
-Memory-tilelang_coeff_bound | source=profile/ubuntu162_3917538_20261105201957318_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+N=8192 latency-tilelang_all_token_l2_default
+N=8192 L2Cache-tilelang_all_token_l2_default
+Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-203527-l2-3969728
+Q4 revision: 7e602bcbcc8c750f60002a5014b7bce5fd800d04
+N=8192 H=5120 all-N pipeline, full Pre; CPU and pairwise correctness passed in each timed process.
+Residual GM-to-UB policy: h5120s3=notalloc_keep; l2_default=no cache annotation.
+Full Pre event us | three process medians | median across processes
+tilelang_all_token_h5120s3 | 585.523, 586.026, 587.216 | 586.026
+tilelang_all_token_l2_default | 493.766, 494.582, 493.972 | 493.972
+bench-1 generated source equality: apply=True, tail=True, projection=False
+bench-2 generated source equality: apply=True, tail=True, projection=False
+bench-3 generated source equality: apply=True, tail=True, projection=False
+Kernel latency uses a separate default profiler capture. L2 counters are raw exporter fields.
+latency-tilelang_all_token_h5120s3: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 34.1660
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 280.7385
+mhc_projection_token_pipeline_kernel | 30 | 272.3230
+L2Cache-tilelang_all_token_h5120s3 | source=profile/ubuntu162_3976822_20261105203642490_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
 stage | kernel | counter | median | numeric rows
-apply | mhc_pre_apply_mix_fwd_asc_kernel | aic_main_mem_read_bw(GB/s) | 0 | 30
-apply | mhc_pre_apply_mix_fwd_asc_kernel | aic_main_mem_write_bw(GB/s) | 0 | 30
-apply | mhc_pre_apply_mix_fwd_asc_kernel | aiv_main_mem_read_bw(GB/s) | 20.147 | 30
-apply | mhc_pre_apply_mix_fwd_asc_kernel | aiv_main_mem_write_bw(GB/s) | 5.0205 | 30
-projection | tf32_hc_prenorm_gemm_kernel_kernel | aic_main_mem_read_bw(GB/s) | 1.6885 | 30
-projection | tf32_hc_prenorm_gemm_kernel_kernel | aic_main_mem_write_bw(GB/s) | 0.386 | 30
-projection | tf32_hc_prenorm_gemm_kernel_kernel | aiv_main_mem_read_bw(GB/s) | 20.598 | 30
-projection | tf32_hc_prenorm_gemm_kernel_kernel | aiv_main_mem_write_bw(GB/s) | 0.008 | 30
-tail | mhc_coeff_tail_fwd_asc_kernel | aic_main_mem_read_bw(GB/s) | 0 | 30
-tail | mhc_coeff_tail_fwd_asc_kernel | aic_main_mem_write_bw(GB/s) | 0 | 30
-tail | mhc_coeff_tail_fwd_asc_kernel | aiv_main_mem_read_bw(GB/s) | 0.514 | 30
-tail | mhc_coeff_tail_fwd_asc_kernel | aiv_main_mem_write_bw(GB/s) | 0.42 | 30
-
-Memory-tilelang_all_token_h5120s3 | source=profile/ubuntu162_3918719_20261105202011525_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-stage | kernel | counter | median | numeric rows
-apply | mhc_pre_apply_flat_pipeline_asc_kernel | aic_main_mem_read_bw(GB/s) | 0 | 30
-apply | mhc_pre_apply_flat_pipeline_asc_kernel | aic_main_mem_write_bw(GB/s) | 0 | 30
-apply | mhc_pre_apply_flat_pipeline_asc_kernel | aiv_main_mem_read_bw(GB/s) | 20.1465 | 30
-apply | mhc_pre_apply_flat_pipeline_asc_kernel | aiv_main_mem_write_bw(GB/s) | 5.0205 | 30
-projection | mhc_projection_token_pipeline_kernel | aic_main_mem_read_bw(GB/s) | 1.6955 | 30
-projection | mhc_projection_token_pipeline_kernel | aic_main_mem_write_bw(GB/s) | 0.387 | 30
-projection | mhc_projection_token_pipeline_kernel | aiv_main_mem_read_bw(GB/s) | 20.6635 | 30
-projection | mhc_projection_token_pipeline_kernel | aiv_main_mem_write_bw(GB/s) | 0.008 | 30
-tail | mhc_coeff_token_pipeline_kernel | aic_main_mem_read_bw(GB/s) | 0 | 30
-tail | mhc_coeff_token_pipeline_kernel | aic_main_mem_write_bw(GB/s) | 0 | 30
-tail | mhc_coeff_token_pipeline_kernel | aiv_main_mem_read_bw(GB/s) | 0.513 | 30
-tail | mhc_coeff_token_pipeline_kernel | aiv_main_mem_write_bw(GB/s) | 0.424 | 30
-
-L2Cache-tilelang_coeff_bound | source=profile/ubuntu162_3919708_20261105202025439_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-stage | kernel | counter | median | numeric rows
-apply | mhc_pre_apply_mix_fwd_asc_kernel | aic_read_local_l2_hit | 0 | 30
-apply | mhc_pre_apply_mix_fwd_asc_kernel | aic_read_local_l2_miss | 0 | 30
-apply | mhc_pre_apply_mix_fwd_asc_kernel | aic_write_local_l2_hit | 0 | 30
-apply | mhc_pre_apply_mix_fwd_asc_kernel | aic_write_local_l2_miss | 0 | 30
-apply | mhc_pre_apply_mix_fwd_asc_kernel | aiv_read_local_l2_hit | 7585.5 | 30
-apply | mhc_pre_apply_mix_fwd_asc_kernel | aiv_read_local_l2_miss | 1842 | 30
-apply | mhc_pre_apply_mix_fwd_asc_kernel | aiv_write_local_l2_hit | 81920 | 30
-apply | mhc_pre_apply_mix_fwd_asc_kernel | aiv_write_local_l2_miss | 0 | 30
-projection | tf32_hc_prenorm_gemm_kernel_kernel | aic_read_local_l2_hit | 92203 | 30
-projection | tf32_hc_prenorm_gemm_kernel_kernel | aic_read_local_l2_miss | 3840 | 30
-projection | tf32_hc_prenorm_gemm_kernel_kernel | aic_write_local_l2_hit | 1812.5 | 30
-projection | tf32_hc_prenorm_gemm_kernel_kernel | aic_write_local_l2_miss | 0 | 30
-projection | tf32_hc_prenorm_gemm_kernel_kernel | aiv_read_local_l2_hit | 520418 | 30
-projection | tf32_hc_prenorm_gemm_kernel_kernel | aiv_read_local_l2_miss | 791092 | 30
-projection | tf32_hc_prenorm_gemm_kernel_kernel | aiv_write_local_l2_hit | 169 | 30
-projection | tf32_hc_prenorm_gemm_kernel_kernel | aiv_write_local_l2_miss | 0 | 30
-tail | mhc_coeff_tail_fwd_asc_kernel | aic_read_local_l2_hit | 0 | 30
-tail | mhc_coeff_tail_fwd_asc_kernel | aic_read_local_l2_miss | 0 | 30
-tail | mhc_coeff_tail_fwd_asc_kernel | aic_write_local_l2_hit | 0 | 30
-tail | mhc_coeff_tail_fwd_asc_kernel | aic_write_local_l2_miss | 0 | 30
-tail | mhc_coeff_tail_fwd_asc_kernel | aiv_read_local_l2_hit | 4288 | 30
-tail | mhc_coeff_tail_fwd_asc_kernel | aiv_read_local_l2_miss | 4 | 30
-tail | mhc_coeff_tail_fwd_asc_kernel | aiv_write_local_l2_hit | 1024 | 30
-tail | mhc_coeff_tail_fwd_asc_kernel | aiv_write_local_l2_miss | 0 | 30
-
-L2Cache-tilelang_all_token_h5120s3 | source=profile/ubuntu162_3920832_20261105202039564_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
-stage | kernel | counter | median | numeric rows
-apply | mhc_pre_apply_flat_pipeline_asc_kernel | aic_read_local_l2_hit | 0 | 30
-apply | mhc_pre_apply_flat_pipeline_asc_kernel | aic_read_local_l2_miss | 0 | 30
-apply | mhc_pre_apply_flat_pipeline_asc_kernel | aic_write_local_l2_hit | 0 | 30
-apply | mhc_pre_apply_flat_pipeline_asc_kernel | aic_write_local_l2_miss | 0 | 30
-apply | mhc_pre_apply_flat_pipeline_asc_kernel | aiv_read_local_l2_hit | 7557 | 30
-apply | mhc_pre_apply_flat_pipeline_asc_kernel | aiv_read_local_l2_miss | 1842 | 30
-apply | mhc_pre_apply_flat_pipeline_asc_kernel | aiv_write_local_l2_hit | 81920 | 30
-apply | mhc_pre_apply_flat_pipeline_asc_kernel | aiv_write_local_l2_miss | 0 | 30
 projection | mhc_projection_token_pipeline_kernel | aic_read_local_l2_hit | 92203 | 30
 projection | mhc_projection_token_pipeline_kernel | aic_read_local_l2_miss | 3840 | 30
-projection | mhc_projection_token_pipeline_kernel | aic_write_local_l2_hit | 1813 | 30
+projection | mhc_projection_token_pipeline_kernel | aic_write_local_l2_hit | 1808 | 30
 projection | mhc_projection_token_pipeline_kernel | aic_write_local_l2_miss | 0 | 30
-projection | mhc_projection_token_pipeline_kernel | aiv_read_local_l2_hit | 520630 | 30
-projection | mhc_projection_token_pipeline_kernel | aiv_read_local_l2_miss | 790994 | 30
-projection | mhc_projection_token_pipeline_kernel | aiv_write_local_l2_hit | 168.5 | 30
+projection | mhc_projection_token_pipeline_kernel | aiv_read_local_l2_hit | 520456 | 30
+projection | mhc_projection_token_pipeline_kernel | aiv_read_local_l2_miss | 791071 | 30
+projection | mhc_projection_token_pipeline_kernel | aiv_write_local_l2_hit | 167 | 30
 projection | mhc_projection_token_pipeline_kernel | aiv_write_local_l2_miss | 0 | 30
-tail | mhc_coeff_token_pipeline_kernel | aic_read_local_l2_hit | 0 | 30
-tail | mhc_coeff_token_pipeline_kernel | aic_read_local_l2_miss | 0 | 30
-tail | mhc_coeff_token_pipeline_kernel | aic_write_local_l2_hit | 0 | 30
-tail | mhc_coeff_token_pipeline_kernel | aic_write_local_l2_miss | 0 | 30
-tail | mhc_coeff_token_pipeline_kernel | aiv_read_local_l2_hit | 4212 | 30
-tail | mhc_coeff_token_pipeline_kernel | aiv_read_local_l2_miss | 3 | 30
-tail | mhc_coeff_token_pipeline_kernel | aiv_write_local_l2_hit | 1024 | 30
-tail | mhc_coeff_token_pipeline_kernel | aiv_write_local_l2_miss | 0 | 30
-(zwh) root@ubuntu162:/home/z30086261/Q4# 
+latency-tilelang_all_token_l2_default: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 34.1450
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 262.5735
+mhc_projection_token_pipeline_kernel | 30 | 196.8355
+L2Cache-tilelang_all_token_l2_default | source=profile/ubuntu162_3979996_20261105203708448_ascend_pt/ASCEND_PROFILER_OUTPUT/kernel_details.csv
+stage | kernel | counter | median | numeric rows
+projection | mhc_projection_token_pipeline_kernel | aic_read_local_l2_hit | 92188 | 30
+projection | mhc_projection_token_pipeline_kernel | aic_read_local_l2_miss | 3842 | 30
+projection | mhc_projection_token_pipeline_kernel | aic_write_local_l2_hit | 1824.5 | 30
+projection | mhc_projection_token_pipeline_kernel | aic_write_local_l2_miss | 0 | 30
+projection | mhc_projection_token_pipeline_kernel | aiv_read_local_l2_hit | 124298 | 30
+projection | mhc_projection_token_pipeline_kernel | aiv_read_local_l2_miss | 0 | 30
+projection | mhc_projection_token_pipeline_kernel | aiv_write_local_l2_hit | 172 | 30
+projection | mhc_projection_token_pipeline_kernel | aiv_write_local_l2_miss | 0 | 30
+(zwh) root@ubuntu162:/home/z30086261/Q4#
