@@ -1,14 +1,70 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh all
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-113447-all-2897994
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-113742-all-2901545
 Building isolated pinned upstream HcPre (details in build.log).
-Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-113447-all-2897994
+Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-113742-all-2901545
 Failed: build
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-curl: (60) SSL certificate problem: self signed certificate in certificate chain
-More details here: https://curl.haxx.se/docs/sslcerts.html
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/continuous_vector.h:20,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/runtime_attrs.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/exe_graph/runtime/infer_shape_context.h:16,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_impl_registry.h:19,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_def.h:19,
+                 from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/register/op_def_registry.h:14,
+                 from /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/moe/hc_pre/op_host/hc_pre_def.cpp:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+   15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+      |                                                                                                                          ^
+In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:17:
+/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+   15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+      |                                                                                                                          ^
+/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/cmake/scripts/util/ascendc_impl_build.py:212: SyntaxWarning: invalid escape sequence '\d'
+  ascendc_api_version = re.findall(r"#define ASCENDC_API_VERSION (\d+)", ascendc_api_version_file.read())
+Traceback (most recent call last):
+  File "/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/cmake/scripts/util/ascendc_impl_build.py", line 21, in <module>
+    import regex as re
+ModuleNotFoundError: No module named 'regex'
+Traceback (most recent call last):
+  File "/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/cmake/scripts/util/ascendc_bin_param_build.py", line 23, in <module>
+    import regex as re
+ModuleNotFoundError: No module named 'regex'
+make[3]: *** [CMakeFiles/generate_transformer_adapt_py.dir/build.make:70: CMakeFiles/generate_transformer_adapt_py] Error 1
+make[2]: *** [CMakeFiles/Makefile2:798: CMakeFiles/generate_transformer_adapt_py.dir/all] Error 2
+make[2]: *** Waiting for unfinished jobs....
+make[3]: *** [CMakeFiles/generate_compile_cmd_ascend950.dir/build.make:71: CMakeFiles/generate_compile_cmd_ascend950] Error 1
+make[2]: *** [CMakeFiles/Makefile2:932: CMakeFiles/generate_compile_cmd_ascend950.dir/all] Error 2
+make[1]: *** [CMakeFiles/Makefile2:840: CMakeFiles/prepare_build.dir/rule] Error 2
+make: *** [Makefile:397: prepare_build] Error 2
+CMake Error at cmake/config.cmake:268 (message):
+  Error: ops prepare build failed.
+Call Stack (most recent call first):
+  CMakeLists.txt:109 (include)
 
-curl failed to verify the legitimacy of the server and therefore could not
-establish a secure connection to it. To learn more about this situation and
-how to fix it, please visit the web page mentioned above.
+
+[2026-11-05 11:37:43] [2026-11-05 11:37:43] Info: use CMake generator Ninja
+[2026-11-05 11:37:43] [2026-11-05 11:37:43] Info: cmake config generator=-G Ninja -DBUILD_OPEN_PROJECT=ON -DVENDOR_NAME=q4vllmv3 -DASCEND_OP_NAME=hc_pre -DCANN_3RD_LIB_PATH=/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/third_party -DCUSTOM_ASCEND_CANN_PACKAGE_PATH=/home/CANN/9.3.0.weekly.20260930/cann-9.3.0 -DCHECK_COMPATIBLE=true -DASCEND_COMPUTE_UNIT=ascend950; -DENABLE_BUILT_IN=OFF -DENABLE_OPS_HOST=ON -DENABLE_OPS_KERNEL=ON -DENABLE_BUILD_PKG=ON build_cache=/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build_cache .
+[2026-11-05 11:37:44] -- The C compiler identification is GNU 13.4.0
+[2026-11-05 11:37:44] -- The CXX compiler identification is GNU 13.4.0
+[2026-11-05 11:37:44] -- Detecting C compiler ABI info
+[2026-11-05 11:37:44] -- Detecting C compiler ABI info - done
+[2026-11-05 11:37:44] -- Check for working C compiler: /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-gcc - skipped
+[2026-11-05 11:37:44] -- Detecting C compile features
+[2026-11-05 11:37:44] -- Detecting C compile features - done
+[2026-11-05 11:37:45] -- Detecting CXX compiler ABI info
+[2026-11-05 11:37:45] -- Detecting CXX compiler ABI info - done
+[2026-11-05 11:37:45] -- Check for working CXX compiler: /root/miniconda3/envs/zwh/bin/x86_64-conda-linux-gnu-g++ - skipped
+[2026-11-05 11:37:45] -- Detecting CXX compile features
+[2026-11-05 11:37:45] -- Detecting CXX compile features - done
+[2026-11-05 11:37:45] -- build with 3~8 packages........
+[2026-11-05 11:37:45] -- compile project with library
+[2026-11-05 11:37:46] -- Found Python3: /root/miniconda3/envs/zwh/bin/python3.12 (found version "3.12.15") found components: Interpreter
+[2026-11-05 11:37:46] -- ASCEND_CANN_PACKAGE_PATH=/home/CANN/9.3.0.weekly.20260930/cann-9.3.0
+[2026-11-05 11:37:46] -- ENABLE_CCACHE=ON, CUSTOM_CCACHE=
+[2026-11-05 11:37:46] -- CCACHE_PROGRAM=CCACHE_PROGRAM-NOTFOUND
+[2026-11-05 11:37:46] -- ASCEND_COMPUTE_UNIT=ascend950;
+[2026-11-05 11:37:46] -- ASCEND_OP_NAME=hc_pre
+[2026-11-05 11:37:46] -- TILING_KEY=
+[2026-11-05 11:37:46] -- TESTS_UT_OPS_TEST=
+[2026-11-05 11:37:46] -- TESTS_EXAMPLE_OPS_TEST=
+[2026-11-05 11:37:46] -- CMAKE_BUILD_TYPE=Release
+[2026-11-05 11:37:46] -- VERSION=
+[2026-11-05 11:37:51] -- Configuring incomplete, errors occurred!
