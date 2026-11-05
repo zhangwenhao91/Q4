@@ -1,66 +1,113 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_original.sh h5120-fused-ab
-Results: /home/z30086261/Q4/results/mhc-original/20261105-211948-h5120-fused-ab-4090725
-Building isolated H=5120 fused vendor (details in /home/z30086261/Q4/results/mhc-original/20261105-211948-h5120-fused-ab-4090725/build.log)
+Results: /home/z30086261/Q4/results/mhc-original/20261105-212516-h5120-fused-ab-4097368
+Building isolated H=5120 fused vendor (details in /home/z30086261/Q4/results/mhc-original/20261105-212516-h5120-fused-ab-4097368/build.log)
 Failed stage: build
-Log: /home/z30086261/Q4/results/mhc-original/20261105-211948-h5120-fused-ab-4090725/build.log
+Log: /home/z30086261/Q4/results/mhc-original/20261105-212516-h5120-fused-ab-4097368/build.log
 === First error contexts (up to 4) ===
-517: Resolving deltas: 100% (4698/4698)
-518: Resolving deltas: 100% (4698/4698), done.
-519: HEAD is now at 6618ee2 [Blaze] support A4W4 BF16 WeightNZ SwiGLU epilogue
-520: Submodule 'include/tensor_api' (https://gitcode.com/cann/asc-devkit.git) registered for path 'include/tensor_api'
-521: Cloning into '/home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/ops-tensor/include/tensor_api'...
-522: git-lfs filter-process --skip: 1: git-lfs: not found
-523: fatal: the remote end hung up unexpectedly
-524: Unable to checkout 'fd51475d8ceb26eb21befffe4391528bc16726a3' in submodule path 'include/tensor_api'
-525: CMake Error at /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/build/prepare_build/_deps/ops-tensor-subbuild/ops-tensor-populate-prefix/tmp/ops-tensor-populate-gitclone.cmake:80 (message):
-526:   Failed to update submodules in:
-527:   '/home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/ops-tensor'
-528: 
-529: 
-530: make[2]: *** [CMakeFiles/ops-tensor-populate.dir/build.make:102: ops-tensor-populate-prefix/src/ops-tensor-populate-stamp/ops-tensor-populate-download] Error 1
-531: make[1]: *** [CMakeFiles/Makefile2:87: CMakeFiles/ops-tensor-populate.dir/all] Error 2
-532: make: *** [Makefile:91: all] Error 2
-533: 
-534: CMake Error at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1933 (message):
-535:   Build step for ops-tensor failed: 2
-536: Call Stack (most recent call first):
-537:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1622 (__FetchContent_populateSubbuild)
-538:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:2160:EVAL:2 (__FetchContent_doPopulation)
-539:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:2160 (cmake_language)
-540:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1993:EVAL:1 (__FetchContent_Populate)
-541:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1993 (cmake_language)
-542:   cmake/third_party/ops-tensor.cmake:117 (FetchContent_Populate)
-543:   CMakeLists.txt:194 (include)
-544: 
-545: 
-546: make: *** No rule to make target 'prepare_build'.  Stop.
-547: CMake Error at cmake/config.cmake:263 (message):
-548:   Error: ops prepare build failed.
-549: Call Stack (most recent call first):
-550:   CMakeLists.txt:167 (include)
-551: 
-552: 
-553: [2026-11-05 21:21:11] -- Configuring incomplete, errors occurred!
+115: Call Stack (most recent call first):
+116:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject.cmake:3283 (_ep_add_download_command)
+117:   build/prepare_build/_deps/cann-cmake-src/third_party/json.cmake:77 (ExternalProject_Add)
+118:   build/prepare_build/_deps/cann-cmake-src/function/prepare.cmake:314 (include)
+119:   CMakeLists.txt:168 (add_cann_third_party)
+120: This warning is for project developers.  Use -Wno-author to suppress it.
+121: 
+122: CMake Warning at cmake/third_party/ops-tensor.cmake:69 (message):
+123:   ops-tensor submodule update failed: error: The following untracked working
+124:   tree files would be overwritten by checkout:
+125: 
+126:    .clang-format
+127: 
+128:    .clangd
+129: 
+130:    .gitattributes
+131: 
+132:    .gitcode/ISSUE_TEMPLATE/bug-report.yml
+133: 
+134:    .gitcode/ISSUE_TEMPLATE/documentation.yml
+135: 
+136:    .gitcode/ISSUE_TEMPLATE/feature-request.yml
+137: 
+138:    .gitcode/ISSUE_TEMPLATE/question.yml
+139: 
+140:    .gitcode/PULL_REQUEST_TEMPLATE.zh-CN.md
+141: 
+142:    .gitignore
+459: [2026-11-05 21:25:36] -- Found tilingapi lib:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/lib64/libtiling_api.a
+460: [2026-11-05 21:25:36] -- Using AICPU include dirs: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment/cce;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment/msprof;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu_common/context;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu_common/context/common;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu_common/context/cpu_proto;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu_common/context/utils;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu_common/context;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu_common/context/common;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu_common/context/cpu_proto;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu_common/context/utils;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment/datagw/aicpu/common;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment/datagw/aicpu/common;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu
+461: [2026-11-05 21:25:36] -- Finding gen es pkg
+462: [2026-11-05 21:25:36] -- [add_es_library] Module loaded from: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/ge/cmake
+463: [2026-11-05 21:25:36] -- Find ops-tensor source dir: /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/ops-tensor
+464: [2026-11-05 21:25:40] -- ops-tensor fetched 6618ee2a91396f86c63a315c425523fe4e0f1773
+465: [2026-11-05 21:25:40] -- ops-tensor submodule: local cache insufficient, fetching from remote
+466: CMake Warning at cmake/third_party/ops-tensor.cmake:69 (message):
+467:   ops-tensor submodule update failed: error: The following untracked working
+468:   tree files would be overwritten by checkout:
+469: 
+470:    .clang-format
+471: 
+472:    .clangd
+473: 
+474:    .gitattributes
+475: 
+476:    .gitcode/ISSUE_TEMPLATE/bug-report.yml
+477: 
+478:    .gitcode/ISSUE_TEMPLATE/documentation.yml
+479: 
+480:    .gitcode/ISSUE_TEMPLATE/feature-request.yml
+481: 
+482:    .gitcode/ISSUE_TEMPLATE/question.yml
+483: 
+484:    .gitcode/PULL_REQUEST_TEMPLATE.zh-CN.md
+485: 
+486:    .gitignore
+1075:                  from /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/common/src/fallback/fallback_comm_2stages.cpp:16:
+1076: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+1077:    15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+1078:       |                                                                                                                          ^
+1079: In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/external/ge_common/api_error_codes.h:17:
+1080: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+1081:    15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+1082:       |                                                                                                                          ^
+1083: Error copying directory from "/home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/ops-tensor/include/tensor_api/impl/tensor_api" to "/home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/build/binary/ascend950/src/ascendc/common/tensor_api/impl/tensor_api": No such file or directory
+1084: make[2]: *** [CMakeFiles/ops_utils_inc_kernel_ascend950.dir/build.make:627: binary/ascend950/src/ascendc/common/.utils_copy.stamp] Error 1
+1085: make[1]: *** [CMakeFiles/Makefile2:1901: CMakeFiles/ops_utils_inc_kernel_ascend950.dir/all] Error 2
+1086: make[1]: *** Waiting for unfinished jobs....
+1087: [2026-11-05 21:25:41] [ 32%] Building CXX object mhc/mhc_pre_sinkhorn/op_host/CMakeFiles/opbase_tiling_objs.dir/__/__/__/third_party/opbase/src/op_common/atvoss/elewise/elewise_tiling.cpp.o
+1088: In file included from /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/opbase/include/op_common/log/log.h:25,
+1089:                  from /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/opbase/include/../pkg_inc/op_common/atvoss/broadcast/broadcast_tiling_base.h:20,
+1090:                  from /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/opbase/include/../pkg_inc/op_common/atvoss/broadcast/broadcast_tiling.h:18,
+1091:                  from /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/opbase/src/op_common/atvoss/broadcast/broadcast_tiling.cpp:17:
+1092: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/graph/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+1093:    15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+1094:       |                                                                                                                          ^
+1095: In file included from /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/common/include/fallback/fallback_comm_2stages.h:19:
+1096: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/exe_graph/runtime/tensor.h:14:111: note: '#pragma message: Warning: tensor.h is deprecated and will be removed after 2027-06. Include "runtime_tensor.h" instead.'
+1097:    14 |     "Warning: tensor.h is deprecated and will be removed after 2027-06. Include \"runtime_tensor.h\" instead.")
+1098:       |                                                                                                               ^
+1099: [2026-11-05 21:25:42] [ 32%] Building CXX object mhc/mhc_pre_sinkhorn/op_host/CMakeFiles/opbase_tiling_objs.dir/__/__/__/third_party/opbase/src/op_common/atvoss/reduce/reduce_tiling.cpp.o
+1100: In file included from /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/opbase/include/op_common/log/log.h:25,
+1101:                  from /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/common/src/fallback/fallback_comm_2stages.cpp:25:
+1102: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/graph/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
 === Final non-progress lines ===
-534: CMake Error at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1933 (message):
-535:   Build step for ops-tensor failed: 2
-536: Call Stack (most recent call first):
-537:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1622 (__FetchContent_populateSubbuild)
-538:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:2160:EVAL:2 (__FetchContent_doPopulation)
-539:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:2160 (cmake_language)
-540:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1993:EVAL:1 (__FetchContent_Populate)
-541:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/FetchContent.cmake:1993 (cmake_language)
-542:   cmake/third_party/ops-tensor.cmake:117 (FetchContent_Populate)
-543:   CMakeLists.txt:194 (include)
-544: 
-545: 
-546: make: *** No rule to make target 'prepare_build'.  Stop.
-547: CMake Error at cmake/config.cmake:263 (message):
-548:   Error: ops prepare build failed.
-549: Call Stack (most recent call first):
-550:   CMakeLists.txt:167 (include)
-551: 
-552: 
-553: [2026-11-05 21:21:11] -- Configuring incomplete, errors occurred!
+1170:    15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+1171:       |                                                                                                                          ^
+1172: In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:17:
+1173: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+1174:    15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+1175:       |                                                                                                                          ^
+1176: In file included from /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/opbase/include/op_common/log/log.h:25,
+1177:                  from /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/opbase/include/../pkg_inc/op_common/atvoss/elewise/elewise_tiling.h:22:
+1178: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/graph/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+1179:    15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+1180:       |                                                                                                                          ^
+1181: In file included from /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/opbase/include/op_common/log/log.h:25,
+1182:                  from /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/opbase/include/../pkg_inc/op_common/atvoss/reduce/reduce_tiling.h:24:
+1183: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/graph/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+1184:    15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+1185:       |                                                                                                                          ^
+1186: [2026-11-05 21:25:42] [ 32%] Linking CXX shared library ../../../liboptiling.so
+1187: [2026-11-05 21:25:42] [ 32%] Built target optiling
+1188: make: *** [Makefile:156: all] Error 2
+1189: [2026-11-05 21:25:42] [ 32%] Built target opbase_tiling_objs
 Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
