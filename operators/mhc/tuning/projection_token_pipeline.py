@@ -76,6 +76,7 @@ def mhc_projection_token_pipeline(
     num_l0c_stages: int,
     num_token_blocks_per_chunk: int,
     deterministic: bool = False,
+    residual_l2_cache_ctrl="notalloc_keep",
 ):
     block_num_tokens = 128
     block_hidden = 256
@@ -193,7 +194,7 @@ def mhc_projection_token_pipeline(
                                 hidden_begin : hidden_begin + block_hidden,
                             ],
                             x_ub[0:actual_aiv_num_tokens, :],
-                            l2_cache_ctrl='notalloc_keep',
+                            l2_cache_ctrl=residual_l2_cache_ctrl,
                             pad_value=0,
                         )
 

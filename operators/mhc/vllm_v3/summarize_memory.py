@@ -25,7 +25,7 @@ def selected(metric, column):
     return bool(re.search(r'(?:cache|l2).*(?:hit|miss)|(?:hit|miss).*(?:cache|l2)', key))
 
 
-def profile_lines(folder, metric):
+def profile_lines(folder, metric, stages=('apply', 'projection', 'tail')):
     files = sorted(path for path in folder.rglob('*.csv')
                    if path.name == 'kernel_details.csv' or path.name.startswith(('op_summary', 'l2_cache')))
     # Prefer the operator-level text export. Raw op_summary can be split across files.
@@ -44,7 +44,7 @@ def profile_lines(folder, metric):
             for row in reader:
                 kernel = row.get(name, '') or ''
                 stage = classify(kernel)
-                if stage is None:
+                if stage not in stages:
                     continue
                 for field in fields:
                     try:
@@ -60,7 +60,7 @@ def profile_lines(folder, metric):
         for (stage, kernel), metrics in sorted(groups.items()):
             for field, values in sorted(metrics.items()):
                 lines.append(f'{stage} | {kernel} | {field} | {median(values):.6g} | {len(values)}')
-        missing = {'apply', 'projection', 'tail'} - {stage for stage, _ in groups}
+        missing = set(stages) - {stage for stage, _ in groups}
         if missing:
             lines.append('No numeric counters attributed to ' + ', '.join(sorted(missing)))
         return lines

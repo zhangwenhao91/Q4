@@ -66,7 +66,9 @@ def make_case(a):
     from cases import shifted_reference
     if a.tokens % 128:
         raise ValueError('Three-kernel N-pipeline comparison requires N divisible by 128')
-    op, provenance = load_v3()
+    l2_ab = a.mhc_projection_l2_ab
+    if not l2_ab:
+        op, provenance = load_v3()
     t = a.tokens
     x0 = torch.randn(t, 4, 5120, dtype=torch.bfloat16)
     prev0 = torch.rand(t, 4, 1) + 1e-6
@@ -100,6 +102,20 @@ def make_case(a):
                 timing_boundary='Post API on identical BF16 layer output and residual with shared CPU-reference FP32 coefficients')
     prev2d = prev.view(t, 4)
     projector = DynamicHCProjection(x, phi)
+    if l2_ab:
+        functions, metadata = {}, {}
+        variants = (('tilelang_all_token_h5120s3', False), ('tilelang_all_token_l2_default', True))
+        for label, use_default in variants:
+            if a.implementations and label not in a.implementations:
+                continue
+            functions[label], meta = make_bound_candidate(projector, x, prev, alpha, bias,
+                split_apply=True, apply_pipeline=(5120, 3), flat_pipeline=True, all_token_pipeline=True,
+                projection_l2_default=use_default)
+            for name, source in meta.pop('generated_sources').items():
+                (a.output / f'{label}_{name}.cpp').write_text(source, encoding='utf-8')
+            metadata[label] = meta
+        return functions, refs, ['layer_input', 'next_pre_mix', 'post_mix', 'comb_mix'], dict(
+            comparison_available=True, stage=stage, projection_config=projector.config, variants=metadata)
     baseline, baseline_meta = make_bound_candidate(projector, x, prev, alpha, bias, split_apply=True)
     candidate, candidate_meta = make_bound_candidate(projector, x, prev, alpha, bias,
         split_apply=True, apply_pipeline=(5120, 3), flat_pipeline=True, all_token_pipeline=True)

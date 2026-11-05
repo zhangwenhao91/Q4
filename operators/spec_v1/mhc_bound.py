@@ -4,7 +4,7 @@ import hashlib
 from mhc_fusion import SOURCE, allocate_outputs
 
 
-def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, apply_h_blk=5120, tail_cores=None, tail_stages=2, apply_pipeline=None, flat_pipeline=False, all_token_pipeline=False):
+def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, apply_h_blk=5120, tail_cores=None, tail_stages=2, apply_pipeline=None, flat_pipeline=False, all_token_pipeline=False, projection_l2_default=False):
     if apply_h_blk <= 0 or apply_h_blk % 64 or 5120 % apply_h_blk:
         raise ValueError("apply_h_blk must divide 5120 and be a multiple of 64")
     import torch
@@ -28,6 +28,8 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, app
     sample_raw = torch.empty(1, t, 24, dtype=torch.float32, device=x.device)
     sample_sq = torch.empty(padded // 128, 2, 64, dtype=torch.float32, device=x.device)
     projection_fn = projector.kernel
+    if projection_l2_default and not all_token_pipeline:
+        raise ValueError('projection_l2_default requires all_token_pipeline')
     if all_token_pipeline:
         if not split_apply or apply_pipeline != (5120, 3) or not flat_pipeline:
             raise ValueError('all_token_pipeline requires split flat H5120 stages=3')
@@ -35,8 +37,9 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, app
             raise ValueError('Experimental all-token pipeline requires N divisible by 128')
         from projection_token_pipeline import mhc_projection_token_pipeline
         projection_fn = mhc_projection_token_pipeline
+    projection_options = dict(residual_l2_cache_ctrl=None) if projection_l2_default else {}
     projection = projection_fn.compile(projector.x, projector.phi, sample_raw[0], sample_sq,
-                                          deterministic=False, **projector.config)
+                                          deterministic=False, **projector.config, **projection_options)
     sample_valid_sq = sample_sq.view(1, padded)[:, :t]
     if split_apply:
         from coeff_tail import mhc_coeff_tail_fwd_asc
@@ -86,6 +89,7 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, app
 
     metadata = dict(
         all_token_pipeline=all_token_pipeline,
+        projection_l2_default=projection_l2_default,
         apply_pipeline=apply_pipeline, flat_pipeline=flat_pipeline,
         tail_settings=dict(settings),
         operation='public JITImpl.compile -> JITKernel call; no private cache access',

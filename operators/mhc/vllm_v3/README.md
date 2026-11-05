@@ -73,3 +73,12 @@ relaxing gates or silently substituting the previous Q4-modified AC library.
 The local Windows checks cover source extraction, Python/Shell syntax, and
 summary formatting. NPU build, H5120 execution, numerical checks and speedup
 must be verified on the server; no result is claimed before that run.
+### Projection residual L2 policy
+
+Run `bash operators/mhc/vllm_v3/run.sh l2` in the existing NPU environment.
+This compares the all-N Pre at N=8192 with `notalloc_keep` versus no cache
+annotation on the projection residual load. The vendor build is not required.
+The report includes paired correctness checks, full Pre event timings,
+separate kernel latency and L2 counter captures, and generated source hashes.
+The script writes the report to `error.txt` and keeps the raw exports under
+`results/mhc-vllm-v3/`.

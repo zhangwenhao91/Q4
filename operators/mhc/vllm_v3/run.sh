@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"
 MODE="${1:-all}"
-case "$MODE" in build|smoke|bench|all|resume|projection|memory) ;; *) echo 'Usage: run.sh [build|smoke|bench|all|resume|projection|memory]'; exit 2 ;; esac
+case "$MODE" in build|smoke|bench|all|resume|projection|memory|l2) ;; *) echo 'Usage: run.sh [build|smoke|bench|all|resume|projection|memory|l2]'; exit 2 ;; esac
 : "${CONDA_PREFIX:?Activate zwh first}"
 : "${ASCEND_HOME_PATH:?Source CANN first}"
 export ASCEND_RT_VISIBLE_DEVICES="${ASCEND_RT_VISIBLE_DEVICES:-0}"
@@ -43,6 +43,9 @@ fi
 if [[ "$MODE" == build ]]; then
   cp "$OUT/runner.log" "$ROOT/error.txt"
   exit 0
+fi
+if [[ "$MODE" == l2 ]]; then
+  exec bash operators/mhc/vllm_v3/profile_projection_l2.sh "$OUT"
 fi
 test -f "$ASCEND_CUSTOM_OPP_PATH/op_api/lib/libcust_opapi.so" || {
   echo 'Missing isolated vendor. Run: bash operators/mhc/vllm_v3/run.sh all' | tee "$ROOT/error.txt"; exit 1;
