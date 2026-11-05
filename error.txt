@@ -1,125 +1,65 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh all
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-150444-all-3264232
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-150817-all-3269952
 Building isolated pinned upstream HcPre (details in build.log).
 Failed stage: build
-Log: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-150444-all-3264232/build.log
+Log: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-150817-all-3269952/build.log
 === First error contexts (up to 4) ===
-429: [2026-11-05 15:04:52]   545 |     tilingData_.set_hcEps(hcEps_);
-430: [2026-11-05 15:04:52]       |                           ^~~~~~
-431: [2026-11-05 15:04:52] /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/moe/hc_pre/op_host/hc_pre_tiling.cpp:546:29: warning: conversion from 'double' to 'float' may change value [-Wfloat-conversion]
-432: [2026-11-05 15:04:52]   546 |     tilingData_.set_normEps(normEps_);
-433: [2026-11-05 15:04:52]       |                             ^~~~~~~~
-434: [2026-11-05 15:04:52] [36/55] Linking CXX shared library libcust_opmaster_rt2.0.so
-435: [2026-11-05 15:04:52] [37/55] Generating compat/liboptiling.so
-436: [2026-11-05 15:04:53] [38/55] cd /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/gen && /root/miniconda3/envs/zwh/bin/python3.12 /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/scripts/build_cache.py run --cache-root /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build_cache --domain custom_operator --unit hc_pre --output-dir /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/cache_actions/hc_pre/stages/HcPre-0 --environment-profile ascendc --publish-dir /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/bin/hc_pre --publish-state-dir /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/cache_actions/hc_pre/publish_state --soc ascend950 --operator hc_pre --action HcPre-0 --operator-source /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/moe/hc_pre --repo-root /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc --prepared-input /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/src/hc_pre --prepared-input /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/src/ascendc/common --prepared-input /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/common/include/cann_compat.h --recipe-file /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/gen/HcPre-hc_pre-0.sh --normalize-path /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc --normalize-path /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build --normalize-path /home/CANN/9.3.0.weekly.20260930/cann-9.3.0 --set-env HI_PYTHON=python3 --set-env TILINGKEY_PAR_COMPILE=1 --set-env BIN_FILENAME_HASHED=1 --set-e
-437: [2026-11-05 15:04:53] FAILED: [code=1] CMakeFiles/hc_pre_ascend950_0 /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/CMakeFiles/hc_pre_ascend950_0
-438: [2026-11-05 15:04:53] cd /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/gen && /root/miniconda3/envs/zwh/bin/python3.12 /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/scripts/build_cache.py run --cache-root /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build_cache --domain custom_operator --unit hc_pre --output-dir /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/cache_actions/hc_pre/stages/HcPre-0 --environment-profile ascendc --publish-dir /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/bin/hc_pre --publish-state-dir /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/cache_actions/hc_pre/publish_state --soc ascend950 --operator hc_pre --action HcPre-0 --operator-source /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/moe/hc_pre --repo-root /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc --prepared-input /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/src/hc_pre --prepared-input /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/src/ascendc/common --prepared-input /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/common/include/cann_compat.h --recipe-file /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/gen/HcPre-hc_pre-0.sh --normalize-path /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc --normalize-path /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build --normalize-path /home/CANN/9.3.0.weekly.20260930/cann-9.3.0 --set-env HI_PYTHON=python3 --set-env TILINGKEY_PAR_COMPILE=1 --set-env BIN_FILENAME_HASHED=1 --set-env ASCEN
-439: [2026-11-05 15:04:53] [build-cache] MISS domain=custom_operator unit=hc_pre key=3c9cc6435ad283618051632ec5c5162e2c4e8b76314c53df8c8ccfdbf8331554
-440: [2026-11-05 15:04:53] [ascend950] Generating HcPre_6c9f0fa710253eff38b1c0e6be6a67be ...
-441: [2026-11-05 15:04:53] Traceback (most recent call last):
-442: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/opc_tool/opc.py", line 25, in <module>
-443: [2026-11-05 15:04:53]     from tbe.common.utils import log as logger
-444: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/__init__.py", line 44, in <module>
-445: [2026-11-05 15:04:53]     import tvm
-446: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/__init__.py", line 41, in <module>
-447: [2026-11-05 15:04:53]     from .runtime import cce_runtime
-448: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/runtime/cce_runtime.py", line 29, in <module>
-449: [2026-11-05 15:04:53]     from ..contrib import ccec
-450: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/contrib/ccec.py", line 26, in <module>
-451: [2026-11-05 15:04:53]     from tvm.driver.cce_build_module import time_statistics
-452: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/driver/__init__.py", line 18, in <module>
-453: [2026-11-05 15:04:53]     from .build_module import lower, build
-454: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/driver/build_module.py", line 31, in <module>
-455: [2026-11-05 15:04:53]     from tvm.te import tensor
-456: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/te/__init__.py", line 42, in <module>
-457: [2026-11-05 15:04:53]     from . import hybrid
-458: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/te/hybrid/__init__.py", line 36, in <module>
-459: [2026-11-05 15:04:53]     from .module import HybridModule
-460: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/te/hybrid/module.py", line 29, in <module>
-461: [2026-11-05 15:04:53]     from .parser import source_to_op
-462: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/te/hybrid/parser.py", line 41, in <module>
-463: [2026-11-05 15:04:53]     from . import calls
-464: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/te/hybrid/calls.py", line 23, in <module>
-465: [2026-11-05 15:04:53]     from tvm.target import Target
-466: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/target/__init__.py", line 78, in <module>
-467: [2026-11-05 15:04:53]     from .generic_func import GenericFunc
-468: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/target/generic_func.py", line 22, in <module>
-469: [2026-11-05 15:04:53]     from decorator import decorate
-470: [2026-11-05 15:04:53] ModuleNotFoundError: No module named 'decorator'
-471: [2026-11-05 15:04:53]
-472: [2026-11-05 15:04:53] /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/cache_actions/hc_pre/stages/HcPre-0/HcPre_6c9f0fa710253eff38b1c0e6be6a67be.json not generated!
-473: [2026-11-05 15:04:53] [39/55] cd /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/gen && /root/miniconda3/envs/zwh/bin/python3.12 /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/scripts/build_cache.py run --cache-root /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build_cache --domain custom_operator --unit hc_pre --output-dir /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/cache_actions/hc_pre/stages/HcPre-1 --environment-profile ascendc --publish-dir /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/bin/hc_pre --publish-state-dir /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/cache_actions/hc_pre/publish_state --soc ascend950 --operator hc_pre --action HcPre-1 --operator-source /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/moe/hc_pre --repo-root /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc --prepared-input /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/src/hc_pre --prepared-input /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/src/ascendc/common --prepared-input /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/common/include/cann_compat.h --recipe-file /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/gen/HcPre-hc_pre-1.sh --normalize-path /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc --normalize-path /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build --normalize-path /home/CANN/9.3.0.weekly.20260930/cann-9.3.0 --set-env HI_PYTHON=python3 --set-env TILINGKEY_PAR_COMPILE=1 --set-env BIN_FILENAME_HASHED=1 --set-e
-474: [2026-11-05 15:04:53] FAILED: [code=1] CMakeFiles/hc_pre_ascend950_1 /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/CMakeFiles/hc_pre_ascend950_1
-475: [2026-11-05 15:04:53] cd /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/gen && /root/miniconda3/envs/zwh/bin/python3.12 /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/scripts/build_cache.py run --cache-root /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build_cache --domain custom_operator --unit hc_pre --output-dir /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/cache_actions/hc_pre/stages/HcPre-1 --environment-profile ascendc --publish-dir /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/bin/hc_pre --publish-state-dir /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/cache_actions/hc_pre/publish_state --soc ascend950 --operator hc_pre --action HcPre-1 --operator-source /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/moe/hc_pre --repo-root /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc --prepared-input /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/src/hc_pre --prepared-input /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/src/ascendc/common --prepared-input /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/common/include/cann_compat.h --recipe-file /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/gen/HcPre-hc_pre-1.sh --normalize-path /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc --normalize-path /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build --normalize-path /home/CANN/9.3.0.weekly.20260930/cann-9.3.0 --set-env HI_PYTHON=python3 --set-env TILINGKEY_PAR_COMPILE=1 --set-env BIN_FILENAME_HASHED=1 --set-env ASCEN
-476: [2026-11-05 15:04:53] [build-cache] MISS domain=custom_operator unit=hc_pre key=c81d485b9854f79430056018980aeae4ab149291ad67869c7a7df49187e5ab36
-477: [2026-11-05 15:04:53] [ascend950] Generating HcPre_6c9f0fa710253eff38b1c0e6be6a67be_relocatable ...
-478: [2026-11-05 15:04:53] Traceback (most recent call last):
-479: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/opc_tool/opc.py", line 25, in <module>
-480: [2026-11-05 15:04:53]     from tbe.common.utils import log as logger
-481: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/__init__.py", line 44, in <module>
-482: [2026-11-05 15:04:53]     import tvm
-483: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/__init__.py", line 41, in <module>
-484: [2026-11-05 15:04:53]     from .runtime import cce_runtime
-485: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/runtime/cce_runtime.py", line 29, in <module>
-486: [2026-11-05 15:04:53]     from ..contrib import ccec
-487: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/contrib/ccec.py", line 26, in <module>
-488: [2026-11-05 15:04:53]     from tvm.driver.cce_build_module import time_statistics
-489: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/driver/__init__.py", line 18, in <module>
-490: [2026-11-05 15:04:53]     from .build_module import lower, build
-491: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/driver/build_module.py", line 31, in <module>
-492: [2026-11-05 15:04:53]     from tvm.te import tensor
-493: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/te/__init__.py", line 42, in <module>
-494: [2026-11-05 15:04:53]     from . import hybrid
-495: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/te/hybrid/__init__.py", line 36, in <module>
-496: [2026-11-05 15:04:53]     from .module import HybridModule
-499: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/te/hybrid/parser.py", line 41, in <module>
-500: [2026-11-05 15:04:53]     from . import calls
-501: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/te/hybrid/calls.py", line 23, in <module>
-502: [2026-11-05 15:04:53]     from tvm.target import Target
-503: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/target/__init__.py", line 78, in <module>
-504: [2026-11-05 15:04:53]     from .generic_func import GenericFunc
-505: [2026-11-05 15:04:53]   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/target/generic_func.py", line 22, in <module>
-506: [2026-11-05 15:04:53]     from decorator import decorate
-507: [2026-11-05 15:04:53] ModuleNotFoundError: No module named 'decorator'
-508: [2026-11-05 15:04:53]
-509: [2026-11-05 15:04:53] /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/binary/ascend950/cache_actions/hc_pre/stages/HcPre-1/HcPre_6c9f0fa710253eff38b1c0e6be6a67be_relocatable.json not generated!
-510: [2026-11-05 15:04:53] [40/55] Performing configure step for 'ascend_protobuf_build_transformer'
-511: [2026-11-05 15:04:53] CMake Warning (deprecated) at CMakeLists.txt:7 (cmake_policy):
-512: [2026-11-05 15:04:53]   The OLD behavior for policy CMP0141 will be removed from a future version
-513: [2026-11-05 15:04:53]   of CMake.
-514: [2026-11-05 15:04:53]
-515: [2026-11-05 15:04:53]   The cmake-policies(7) manual explains that the OLD behaviors of all
-516: [2026-11-05 15:04:53]   policies are deprecated and that a policy should be set to OLD only under
-517: [2026-11-05 15:04:53]   specific short-term circumstances.  Projects should be ported to the NEW
-518: [2026-11-05 15:04:53]   behavior and not rely on setting a policy to OLD.
-519: [2026-11-05 15:04:53] This warning is for project developers.  Use -Wno-author or -Wno-deprecated
-520: [2026-11-05 15:04:53] to suppress it.
-521: [2026-11-05 15:04:53]
-522: [2026-11-05 15:04:53] CMake Warning (deprecated) at third_party/utf8_range/CMakeLists.txt:1 (cmake_minimum_required):
-523: [2026-11-05 15:04:53]   Compatibility with CMake < 3.10 will be removed from a future version of
-524: [2026-11-05 15:04:53]   CMake.
-525: [2026-11-05 15:04:53]
-526: [2026-11-05 15:04:53]   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+3: Successfully installed decorator-5.2.1
+4: WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+5: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/classifier/transdata/transdata_classifier.py:223: SyntaxWarning: invalid escape sequence '\B'
+6:   Return BN\BH SCH Result
+7: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/transdata/common/graph/transdata_graph_info.py:146: SyntaxWarning: invalid escape sequence '\c'
+8:   2. In forward, tiling would not split c1 and c0, find c1\c0 based on t2.
+9: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/transdata/common/graph/transdata_graph_info.py:172: SyntaxWarning: invalid escape sequence '\c'
+10:   1. Forward: tiling would not split c1\c0\h0, find c1\c0\h1\h0 based on t2
+11: Traceback (most recent call last):
+12:   File "<string>", line 1, in <module>
+13:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/__init__.py", line 98, in <module>
+14:     from . import dsl
+15:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/__init__.py", line 20, in <module>
+16:     from .api import ceil
+17:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/api.py", line 27, in <module>
+18:     from .compute import cast
+19:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/compute/cast.py", line 34, in <module>
+20:     from tbe.dsl.unify_schedule.util import is_v220
+21:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/__init__.py", line 35, in <module>
+22:     from . import vector
+23:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/__init__.py", line 30, in <module>
+24:     from . import sparse_apply
+25:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/sparse_apply/__init__.py", line 20, in <module>
+26:     from . import sparse_apply_schedule
+27:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/dsl/unify_schedule/vector/sparse_apply/sparse_apply_schedule.py", line 23, in <module>
+28:     import te.platform as tbe_platform
+29:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/te/platform/__init__.py", line 125, in <module>
+30:     from .cce_util import get_type_bits
+43:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/transform/__init__.py", line 21, in <module>
+44:     from .recast import recast
+45:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/transform/recast.py", line 22, in <module>
+46:     from ..analysis import count_layers
+47:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/analysis/__init__.py", line 31, in <module>
+48:     from . import sparse_dense
+49:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/analysis/sparse_dense.py", line 25, in <module>
+50:     import scipy.sparse as sp
+51: ModuleNotFoundError: No module named 'scipy'
 === Final non-progress lines ===
-522: [2026-11-05 15:04:53] CMake Warning (deprecated) at third_party/utf8_range/CMakeLists.txt:1 (cmake_minimum_required):
-523: [2026-11-05 15:04:53]   Compatibility with CMake < 3.10 will be removed from a future version of
-524: [2026-11-05 15:04:53]   CMake.
-525: [2026-11-05 15:04:53]
-526: [2026-11-05 15:04:53]   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
-527: [2026-11-05 15:04:53]   to tell CMake that the project requires at least <min> but has been updated
-528: [2026-11-05 15:04:53]   to work with policies introduced by <max> or earlier.
-529: [2026-11-05 15:04:53] This warning is for project developers.  Use -Wno-author or -Wno-deprecated
-530: [2026-11-05 15:04:53] to suppress it.
-531: [2026-11-05 15:04:53]
-532: [2026-11-05 15:04:53] -- Configuring done (2.4s)
-533: [2026-11-05 15:04:53] -- Generating done (0.1s)
-534: [2026-11-05 15:04:53] CMake Warning (unused-cli):
-535: [2026-11-05 15:04:53]   Manually-specified variables were not used by the project:
-536: [2026-11-05 15:04:53]
-537: [2026-11-05 15:04:53]     CMAKE_CXX_LDFLAGS
-538: [2026-11-05 15:04:53]
-539: [2026-11-05 15:04:53]
-540: [2026-11-05 15:04:53] -- Build files have been written to: /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/ascend_protobuf_build_transformer-prefix/src/ascend_protobuf_build_transformer-build
-541: [2026-11-05 15:04:53] ninja: build stopped: subcommand failed.
+32:     from tvm.topi.utils import equal_const_int
+33:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/__init__.py", line 50, in <module>
+34:     from . import nn
+35:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/nn/__init__.py", line 35, in <module>
+36:     from .conv3d_transpose import *
+37:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/topi/nn/conv3d_transpose.py", line 21, in <module>
+38:     from tvm import relay
+39:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/__init__.py", line 29, in <module>
+40:     from . import prelude
+41:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/prelude.py", line 21, in <module>
+42:     from tvm.relay.transform import ToANormalFormExpr
+43:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/transform/__init__.py", line 21, in <module>
+44:     from .recast import recast
+45:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/transform/recast.py", line 22, in <module>
+46:     from ..analysis import count_layers
+47:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/analysis/__init__.py", line 31, in <module>
+48:     from . import sparse_dense
+49:   File "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/python/site-packages/tbe/tvm/relay/analysis/sparse_dense.py", line 25, in <module>
+50:     import scipy.sparse as sp
+51: ModuleNotFoundError: No module named 'scipy'
 Saved: /home/z30086261/Q4/error.txt
-(zwh) root@ubuntu162:/home/z30086261/Q4#
