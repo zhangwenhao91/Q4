@@ -1,28 +1,66 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh all
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-152050-all-3287958
-Building isolated pinned upstream HcPre (details in build.log).
-Failed stage: build
-Log: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-152050-all-3287958/build.log
-=== First error contexts (up to 4) ===
-=== Final non-progress lines ===
-843: [2026-11-05 15:27:11] [24/26] Run CPack packaging tool...
-844: [2026-11-05 15:27:11] CPack: Create package using External
-845: [2026-11-05 15:27:11] CPack: Install projects
-846: [2026-11-05 15:27:11] CPack: - Install project: cann_ops-transformer []
-847: [2026-11-05 15:27:11] CPack: Create package
-848: [2026-11-05 15:27:11]
-849: [2026-11-05 15:27:11] About to compress 2532 KB of data...
-850: [2026-11-05 15:27:11] Adding files to archive named "cann-ops-transformer-q4vllmv3_linux-x86_64.run"...
-851: [2026-11-05 15:27:12] CRC: 2191238598
-852: [2026-11-05 15:27:12] SHA256: a838b4e3795533acb2a2e1cf69d8086ca8f1425f1ecfd5fec20df5e2dc13191f
-853: [2026-11-05 15:27:12] Skipping md5sum at user request
-854: [2026-11-05 15:27:12]
-855: [2026-11-05 15:27:12] Self-extractable archive "cann-ops-transformer-q4vllmv3_linux-x86_64.run" successfully created.
-856: [2026-11-05 15:27:12] Copy /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/_CPack_Packages/Linux/External/cann-ops-transformer-q4vllmv3_linux-x86_64.run/cann-ops-transformer-q4vllmv3_linux-x86_64.run to /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/
-857: [2026-11-05 15:27:12] Copy /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/_CPack_Packages/Linux/External/cann-ops-transformer-q4vllmv3_linux-x86_64.run/cann-ops-transformer-q4vllmv3_linux-x86_64.run to /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build_out/
-858: [2026-11-05 15:27:12] CPack: - package: /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/cann-ops-transformer-q4vllmv3_linux-x86_64.run.json generated.
-859: [2026-11-05 15:27:12] CPack: - package: /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/cann-ops-transformer-q4vllmv3_linux-x86_64.run generated.
-860: Expected one q4vllmv3 installer, found 2
-861: build/cann-ops-transformer-q4vllmv3_linux-x86_64.run
-862: build_out/cann-ops-transformer-q4vllmv3_linux-x86_64.run
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh resume
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-153002-resume-3303147
+Installing previously built upstream HcPre (details in install.log).
+Install completed.
+Checking N=128
+Precision passed N=128
+Checking N=2048
+Precision passed N=2048
+Timing N=128 repeat=1
+Timing N=128 repeat=2
+Timing N=128 repeat=3
+Timing N=256 repeat=1
+Timing N=256 repeat=2
+Timing N=256 repeat=3
+Timing N=512 repeat=1
+Timing N=512 repeat=2
+Timing N=512 repeat=3
+Timing N=2048 repeat=1
+Timing N=2048 repeat=2
+Timing N=2048 repeat=3
+Timing N=8192 repeat=1
+Timing N=8192 repeat=2
+Timing N=8192 repeat=3
+Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-153002-resume-3303147
+Candidate: tilelang_all_token_h5120s3
+AC reference: ascendc_vllm_v3
+Event time: median across rounds (us); ratios > 1 mean TL is faster.
+case | AC us | TL original us | TL N-pipeline us | AC/TL original | AC/TL pipeline | original/pipeline
+N128-rep1 | 22.228 | 24.220 | 24.318 | 0.9178 | 0.9141 | 0.9960
+N128-rep2 | 15.611 | 24.549 | 24.548 | 0.6359 | 0.6359 | 1.0000
+N128-rep3 | 25.394 | 35.471 | 29.232 | 0.7159 | 0.8687 | 1.2134
+N2048-rep1 | 113.966 | 116.075 | 116.019 | 0.9818 | 0.9823 | 1.0005
+N2048-rep2 | 114.239 | 114.573 | 114.152 | 0.9971 | 1.0008 | 1.0037
+N2048-rep3 | 114.033 | 115.315 | 115.263 | 0.9889 | 0.9893 | 1.0004
+N256-rep1 | 22.026 | 25.601 | 25.568 | 0.8604 | 0.8615 | 1.0013
+N256-rep2 | 22.542 | 25.664 | 25.645 | 0.8783 | 0.8790 | 1.0008
+N256-rep3 | 22.534 | 25.654 | 25.612 | 0.8784 | 0.8798 | 1.0016
+N512-rep1 | 33.532 | 28.494 | 28.432 | 1.1768 | 1.1794 | 1.0022
+N512-rep2 | 33.580 | 28.507 | 28.384 | 1.1780 | 1.1831 | 1.0043
+N512-rep3 | 33.440 | 28.421 | 28.371 | 1.1766 | 1.1786 | 1.0017
+N8192-rep1 | 486.758 | 587.617 | 587.111 | 0.8284 | 0.8291 | 1.0009
+N8192-rep2 | 487.054 | 586.363 | 585.875 | 0.8306 | 0.8313 | 1.0008
+N8192-rep3 | 492.990 | 586.576 | 586.003 | 0.8405 | 0.8413 | 1.0010
+Cases with timing: 15
+Runner log tail (last 20 lines):
+Install completed.
+Precision passed N=128
+Precision passed N=2048
+Completed N=128 repeat=1
+Completed N=128 repeat=2
+Completed N=128 repeat=3
+Completed N=256 repeat=1
+Completed N=256 repeat=2
+Completed N=256 repeat=3
+Completed N=512 repeat=1
+Completed N=512 repeat=2
+Completed N=512 repeat=3
+Completed N=2048 repeat=1
+Completed N=2048 repeat=2
+Completed N=2048 repeat=3
+Completed N=8192 repeat=1
+Completed N=8192 repeat=2
+Completed N=8192 repeat=3
+All 15 cases completed.
 Saved: /home/z30086261/Q4/error.txt
+(zwh) root@ubuntu162:/home/z30086261/Q4#
