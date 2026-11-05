@@ -32,7 +32,9 @@ if [[ ! -e "$SRC" ]]; then
 fi
 git -C "$SRC" cat-file -e "$REV^{commit}" 2>/dev/null || git -C "$SRC" fetch origin "$REV"
 if [[ ! -e "$TARGET" ]]; then
-  GIT_LFS_SKIP_SMUDGE=1 git -C "$SRC" worktree add --detach "$TARGET" "$REV"
+  # At REV only PNG assets use LFS. Keep their pointers without requiring git-lfs.
+  git -C "$SRC" -c filter.lfs.process= -c filter.lfs.smudge= -c filter.lfs.required=false \
+    worktree add --detach "$TARGET" "$REV"
 fi
 [[ "$(git -C "$TARGET" rev-parse HEAD)" == "$REV" ]] || { echo 'Unexpected mHC source revision'; exit 1; }
 status="$(git -C "$TARGET" status --porcelain --untracked-files=no)"
