@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"
 MODE="${1:-smoke}"
-case "$MODE" in smoke|check|bench|profile|all) ;; *) echo 'Usage: run_original.sh [smoke|check|bench|profile|all]'; exit 2 ;; esac
+case "$MODE" in smoke|check|bench|profile|all|h4096-ab) ;; *) echo 'Usage: run_original.sh [smoke|check|bench|profile|all|h4096-ab]'; exit 2 ;; esac
 : "${CONDA_PREFIX:?Activate zwh first}"
 : "${ASCEND_HOME_PATH:?Source CANN first}"
 export ASCEND_RT_VISIBLE_DEVICES="${ASCEND_RT_VISIBLE_DEVICES:-4}"
@@ -18,6 +18,29 @@ test -f "$ASCEND_CUSTOM_OPP_PATH/op_api/lib/libcust_opapi.so" || { echo "Origina
 OUT="$ROOT/results/mhc-original/$(date +%Y%m%d-%H%M%S)-$MODE-$$"
 mkdir -p "$OUT"
 echo "Results: $OUT"
+if [[ "$MODE" == h4096-ab ]]; then
+  reference=ascendc_original_fused_h4096
+  candidate=tilelang_current_pre_all_token_l2_default_h4096
+  printf 'Q4 revision: %s\n' "$(git rev-parse HEAD)" > "$OUT/runner.log"
+  for tokens in 128 256 512 2048 8192; do
+    for rep in 1 2 3; do
+      tag="N$tokens-rep$rep"
+      labels=("$reference" "$candidate")
+      if [[ "$rep" == 2 ]]; then labels=("$candidate" "$reference"); fi
+      echo "Timing H=4096 $tag"
+      if ! python operators/spec_v1/bench.py --suite mhc_original_fused --tokens "$tokens" \
+        --implementations "${labels[@]}" --warmup 100 --rounds 12 --iters 100 \
+        --output "$OUT/$tag" > "$OUT/$tag.log" 2>&1; then
+        python operators/mhc/vllm_v3/report_failure.py --stage "$tag" --log "$OUT/$tag.log"
+        exit 1
+      fi
+      echo "Raw TL projection, CPU and pairwise correctness passed for $tag" >> "$OUT/runner.log"
+    done
+  done
+  python operators/mhc/tuning/summarize_token_pipeline.py --input "$OUT" --output "$ROOT/error.txt" \
+    --reference "$reference" --baseline "$candidate" --candidate ''
+  exit 0
+fi
 exec > >(tee "$OUT/runner.log") 2>&1
 trap 'rc=$?; echo "Stopped ($rc). Logs: $OUT/runner.log"; exit "$rc"' ERR
 git rev-parse HEAD > "$OUT/revision.txt"

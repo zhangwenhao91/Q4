@@ -6,7 +6,7 @@ import sys
 from mhc_fusion import SOURCE
 
 
-def make_candidate(x, phi, alpha, bias, x_cpu, phi_cpu):
+def make_candidate(x, phi, alpha, bias, x_cpu, phi_cpu, *, all_token_pipeline=False):
     import torch
     from tile_kernels.config import get_num_vec_cores
     from tile_kernels.mhc.pre_apply_mix_asc import mhc_pre_apply_mix_fwd_asc
@@ -20,9 +20,22 @@ def make_candidate(x, phi, alpha, bias, x_cpu, phi_cpu):
     from coeff_tail import mhc_coeff_tail_fwd_asc
     t, _, hidden = x.shape
     projector = DynamicHCProjection(x, phi)
-    checks = check_projection(projector, x_cpu, phi_cpu, t, hidden)
-    if not all(item['passed'] for item in checks):
-        raise AssertionError('Raw projection check failed: ' + str(checks))
+    projection_fn = projector.kernel
+    tail_fn = mhc_coeff_tail_fwd_asc
+    apply_fn = mhc_pre_apply_mix_fwd_asc
+    projection_options = {}
+    apply_options = {}
+    if all_token_pipeline:
+        if t % 128:
+            raise ValueError('All-token current-pre pipeline requires N divisible by 128')
+        from apply_flat_pipeline import mhc_pre_apply_flat_pipeline_asc
+        from coeff_token_pipeline import mhc_coeff_token_pipeline
+        from projection_token_pipeline import mhc_projection_token_pipeline
+        projection_fn = mhc_projection_token_pipeline
+        tail_fn = mhc_coeff_token_pipeline
+        apply_fn = mhc_pre_apply_flat_pipeline_asc
+        projection_options['residual_l2_cache_ctrl'] = None
+        apply_options['pipeline_stages'] = 3
     padded = projector.padded
 
     def allocate():
@@ -38,13 +51,22 @@ def make_candidate(x, phi, alpha, bias, x_cpu, phi_cpu):
 
     hi, pre, post, comb, raw, sq = allocate()
     cores = get_num_vec_cores()
-    projection = projector.kernel.compile(projector.x, projector.phi, raw[0], sq,
-        deterministic=False, **projector.config)
-    tail = mhc_coeff_tail_fwd_asc.compile(raw, sq.view(1, padded)[:, :t], alpha, bias,
+    projection = projection_fn.compile(projector.x, projector.phi, raw[0], sq,
+        deterministic=False, **projector.config, **projection_options)
+
+    def checked_projection():
+        projection(projector.x, projector.phi, raw[0], sq)
+        return raw, sq.view(1, padded)[:, :t]
+
+    checks = check_projection(checked_projection, x_cpu, phi_cpu, t, hidden)
+    if not all(item['passed'] for item in checks):
+        raise AssertionError('Raw projection check failed: ' + str(checks))
+
+    tail = tail_fn.compile(raw, sq.view(1, padded)[:, :t], alpha, bias,
         pre, post, comb, rms_eps=1e-20, mhc_pre_eps=1e-6, mhc_sinkhorn_eps=1e-6,
         mhc_post_mult_value=2., sinkhorn_repeat=20, hidden=hidden, n_splits=1,
         token_block=16, num_stages=2, num_vec_cores=cores)
-    apply = mhc_pre_apply_mix_fwd_asc.compile(x, pre, hi, h_blk=hidden, num_vec_cores=cores)
+    apply = apply_fn.compile(x, pre, hi, h_blk=hidden, num_vec_cores=cores, **apply_options)
 
     def run():
         hi, pre, post, comb, raw, sq = allocate()
@@ -56,6 +78,7 @@ def make_candidate(x, phi, alpha, bias, x_cpu, phi_cpu):
 
     return run, dict(projection_checks=checks, hc_source_sha256=projector.source_sha256,
         source=manifest, hidden=hidden, expected_kernels_per_call=3,
+        all_token_pipeline=all_token_pipeline,
         semantics='projection -> coefficients/Sinkhorn -> NEW-pre apply; three main outputs',
         output_preallocation=False, per_call_allocations=4,
         device_source_sha256={name:hashlib.sha256(kernel.get_kernel_source().encode()).hexdigest()

@@ -59,13 +59,22 @@ def make_case(a):
     upstream_meta = None
     if fused:
         from mhc_current_pre import make_candidate
-        tl, tl_meta = make_candidate(x, phi, alpha, bias, x0, phi0)
-        functions = {'tilelang_current_pre_h4096': tl, **functions}
-        if a.tokens % 16 == 0:
+        selected = a.implementations
+        pipeline_label = 'tilelang_current_pre_all_token_l2_default_h4096'
+        if selected and pipeline_label in selected:
+            tl, tl_meta = make_candidate(x, phi, alpha, bias, x0, phi0, all_token_pipeline=True)
+            functions[pipeline_label] = tl
+        if not selected or 'tilelang_current_pre_h4096' in selected:
+            tl, meta = make_candidate(x, phi, alpha, bias, x0, phi0)
+            functions = {'tilelang_current_pre_h4096': tl, **functions}
+            if tl_meta is None:
+                tl_meta = meta
+        want_upstream = not selected or any(name.startswith('tilelang_upstream_big_fuse_') for name in selected)
+        if want_upstream and a.tokens % 16 == 0:
             from mhc_upstream_big_fuse import make_candidates
             upstream, upstream_meta = make_candidates(x, phi, alpha, bias)
             functions = {**functions, **upstream}
-        else:
+        elif want_upstream:
             upstream_meta = dict(skipped='Pinned upstream requires complete 16-token tiles; no padding adaptor added')
     if big5120:
         if a.tokens % 16:
