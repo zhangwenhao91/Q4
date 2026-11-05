@@ -5,3 +5,4 @@
 operators/spec_v1/upstream_mha/** text eol=lf
 operators/mha/dependency_archives/*.tar.gz -text
 operators/mha/dependency_archives/*.patch -text
+operators/mhc/vllm_v3/dependency_archives/*.tar.gz -text

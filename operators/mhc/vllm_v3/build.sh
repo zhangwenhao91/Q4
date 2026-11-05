@@ -11,7 +11,22 @@ export CC="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-gcc"
 export CXX="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++"
 export MAX_JOBS="${Q4_BUILD_JOBS:-8}"
 ARCHIVE="$ROOT/third_party/vllm-ascend-v3-e838a328.tar.gz"
-if [[ ! -f "$ARCHIVE" ]]; then
+BUNDLED="$ROOT/operators/mhc/vllm_v3/dependency_archives/vllm-ascend-e838a328.tar.gz"
+if [[ -f "$BUNDLED" ]]; then
+  mkdir -p "$ROOT/third_party"
+  "$CONDA_PREFIX/bin/python" - "$BUNDLED" "$ARCHIVE" <<'PY'
+import hashlib
+from pathlib import Path
+import shutil
+import sys
+source, target = map(Path, sys.argv[1:])
+expected = '98cef93d6983f9cb5b193e200a1e7b6b18ee11daef17eb35e2acfa432b8e82cc'
+if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
+    raise RuntimeError('Bundled upstream source checksum mismatch')
+shutil.copyfile(source, target)
+print('Using verified source archive from Q4; no external source download.')
+PY
+elif [[ ! -f "$ARCHIVE" ]]; then
   mkdir -p "$ROOT/third_party"
   curl --fail --location --retry 3 \
     "https://codeload.github.com/vllm-project/vllm-ascend/tar.gz/$REV" \

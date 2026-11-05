@@ -18,6 +18,11 @@ run. It avoids Git partial-clone lazy fetches that returned HTTP 403 on the NPU
 host. The earlier failed clone is preserved; the new source directory ends in
 `-archive`. This changes only source acquisition, not the pinned implementation.
 
+The verified 19.6 MB archive is bundled in dependency_archives so NPU hosts
+can obtain it through their working Q4 git pull. build.sh prefers this copy;
+it does not invoke curl for upstream source or disable TLS checks. Additional
+build-framework dependencies may still need their existing CANN caches/network.
+
 The AscendC kernel, tiling and ACLNN adapter are unchanged upstream files.
 prepare.py verifies their bytes against the fixed commit (allowing Git CRLF
 checkout normalization), extracts original HcPre helper functions, v3 function,
