@@ -27,14 +27,25 @@ echo "Recovery log: $LOG"
 export CC="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-gcc"
 export CXX="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++"
 "$CXX" --version
+# CMake fetches dependencies and nested submodules in child Git processes.
+export GIT_LFS_SKIP_SMUDGE=1
+if ! command -v git-lfs >/dev/null 2>&1; then
+  git_config_index="${GIT_CONFIG_COUNT:-0}"
+  for lfs_filter in process clean smudge required; do
+    lfs_value=
+    if [[ "$lfs_filter" == required ]]; then lfs_value=false; fi
+    export "GIT_CONFIG_KEY_$git_config_index=filter.lfs.$lfs_filter"
+    export "GIT_CONFIG_VALUE_$git_config_index=$lfs_value"
+    git_config_index=$((git_config_index + 1))
+  done
+  export GIT_CONFIG_COUNT="$git_config_index"
+fi
 if [[ ! -e "$SRC" ]]; then
-  GIT_LFS_SKIP_SMUDGE=1 git clone --no-checkout https://gitcode.com/cann/ops-transformer.git "$SRC"
+  git clone --no-checkout https://gitcode.com/cann/ops-transformer.git "$SRC"
 fi
 git -C "$SRC" cat-file -e "$REV^{commit}" 2>/dev/null || git -C "$SRC" fetch origin "$REV"
 if [[ ! -e "$TARGET" ]]; then
-  # At REV only PNG assets use LFS. Keep their pointers without requiring git-lfs.
-  git -C "$SRC" -c filter.lfs.process= -c filter.lfs.smudge= -c filter.lfs.required=false \
-    worktree add --detach "$TARGET" "$REV"
+  git -C "$SRC" worktree add --detach "$TARGET" "$REV"
 fi
 [[ "$(git -C "$TARGET" rev-parse HEAD)" == "$REV" ]] || { echo 'Unexpected mHC source revision'; exit 1; }
 status="$(git -C "$TARGET" status --porcelain --untracked-files=no)"
