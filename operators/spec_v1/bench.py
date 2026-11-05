@@ -47,12 +47,15 @@ def main():
     p.add_argument('--check-only',action='store_true')
     p.add_argument('--profile',help='exact implementation label printed by check')
     p.add_argument('--profile-pipe-metrics',action='store_true',help='explicit Level1 PipeUtilization counters; requires --profile')
+    p.add_argument('--profile-aic-metric', choices=('Memory', 'L2Cache'), help='collect one Level1 memory counter group')
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
     if a.mha_seqlen!=4096 and a.suite not in ('mha_bf16','mha_stats_split','mha_scenarios'):
         p.error('--mha-seqlen 3584 requires mha_bf16, mha_stats_split or mha_scenarios')
     if a.profile_pipe_metrics and (not a.profile or a.check_only):
         p.error('--profile-pipe-metrics requires --profile and cannot be combined with --check-only')
+    if a.profile_aic_metric and (not a.profile or a.check_only or a.profile_pipe_metrics):
+        p.error('--profile-aic-metric requires --profile without --check-only or --profile-pipe-metrics')
     if a.tokens<=0 or a.iters<=0 or a.rounds<=0 or a.warmup<0:
         p.error('tokens/iters/rounds > 0; warmup >= 0')
     if a.suite=='mhc_shifted' and a.tokens%128:
@@ -202,8 +205,8 @@ def main():
             if a.profile not in functions: p.error(f'profile implementation must be one of {list(functions)}')
             fn=functions[a.profile]
             from profiling_config import extra_profile_options
-            profile_options=extra_profile_options(torch_npu.profiler,a.profile_pipe_metrics)
-            print('Profiler metrics:', 'Level1 PipeUtilization' if a.profile_pipe_metrics else 'default',flush=True)
+            profile_options=extra_profile_options(torch_npu.profiler,a.profile_pipe_metrics,a.profile_aic_metric)
+            print('Profiler metrics:', a.profile_aic_metric or ('Level1 PipeUtilization' if a.profile_pipe_metrics else 'default'),flush=True)
             with torch_npu.profiler.profile(
                 activities=[torch_npu.profiler.ProfilerActivity.CPU,torch_npu.profiler.ProfilerActivity.NPU],
                 schedule=torch_npu.profiler.schedule(wait=1,warmup=1,active=3,repeat=1),

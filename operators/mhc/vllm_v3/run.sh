@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"
 MODE="${1:-all}"
-case "$MODE" in build|smoke|bench|all|resume|projection) ;; *) echo 'Usage: run.sh [build|smoke|bench|all|resume|projection]'; exit 2 ;; esac
+case "$MODE" in build|smoke|bench|all|resume|projection|memory) ;; *) echo 'Usage: run.sh [build|smoke|bench|all|resume|projection|memory]'; exit 2 ;; esac
 : "${CONDA_PREFIX:?Activate zwh first}"
 : "${ASCEND_HOME_PATH:?Source CANN first}"
 export ASCEND_RT_VISIBLE_DEVICES="${ASCEND_RT_VISIBLE_DEVICES:-0}"
@@ -49,6 +49,9 @@ test -f "$ASCEND_CUSTOM_OPP_PATH/op_api/lib/libcust_opapi.so" || {
 }
 if [[ "$MODE" == projection ]]; then
   exec bash operators/mhc/vllm_v3/profile_projection.sh "$OUT"
+fi
+if [[ "$MODE" == memory ]]; then
+  exec bash operators/mhc/vllm_v3/profile_memory.sh "$OUT"
 fi
 stages=(pre post combined)
 # Every benchmark case also runs CPU checks and pairwise comparisons before timing.
