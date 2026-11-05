@@ -18,8 +18,10 @@ PAIRS = (('MTE2', 'VECTOR'), ('VECTOR', 'MTE3'), ('MTE1', 'CUBE'),
 def pipe_for(label, name):
     if label.startswith('RVEC') and name.startswith('RV_'):
         return 'VECTOR'
-    if re.match(r'^(?:CUBE|M)(?:_|$)', label) and re.match(r'^(?:MAD|MMA)(?:_|$)', name):
+    if re.match(r'^(?:CUBE|M)(?:_|$)', label) and re.match(r'^(?:MMAD|MAD|MMA)(?:_|$)', name):
         return 'CUBE'
+    if re.match(r'^MTE1(?:_|$)', label) and name == 'LOAD_2Dv2':
+        return 'MTE1'
     for pipe in ('MTE1', 'MTE2', 'MTE3', 'FIX'):
         if re.match(rf'^{pipe}(?:_|$)', label) and name.startswith(('MOV_SRC_TO_DST', 'FIXPIPE')):
             return pipe
