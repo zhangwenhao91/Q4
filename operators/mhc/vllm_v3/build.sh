@@ -26,6 +26,20 @@ PY
   "$CONDA_PREFIX/bin/python" -m pip install --no-index --no-deps "$WHEEL"
   "$CONDA_PREFIX/bin/python" -c 'import regex; print("Build dependency regex:", regex.__version__)'
 fi
+if ! "$CONDA_PREFIX/bin/python" -c 'from decorator import decorate' >/dev/null 2>&1; then
+  WHEEL="$ROOT/operators/mhc/vllm_v3/dependency_archives/decorator-5.2.1-py3-none-any.whl"
+  "$CONDA_PREFIX/bin/python" - "$WHEEL" <<'PY'
+import hashlib
+from pathlib import Path
+import sys
+wheel = Path(sys.argv[1])
+if hashlib.sha256(wheel.read_bytes()).hexdigest() != 'd316bb415a2d9e2d2b3abcc4084c6502fc09240e292cd76a76afc106a1c8e04a':
+    raise RuntimeError('decorator wheel checksum mismatch')
+PY
+  "$CONDA_PREFIX/bin/python" -m pip install --no-index --no-deps "$WHEEL"
+fi
+PYTHONPATH="$ASCEND_HOME_PATH/python/site-packages${PYTHONPATH:+:$PYTHONPATH}" \
+  "$CONDA_PREFIX/bin/python" -c 'from tbe.tikcpp import compile_op; print("CANN TBE compiler import passed")'
 ARCHIVE="$ROOT/third_party/vllm-ascend-v3-e838a328.tar.gz"
 BUNDLED="$ROOT/operators/mhc/vllm_v3/dependency_archives/vllm-ascend-e838a328.tar.gz"
 if [[ -f "$BUNDLED" ]]; then
