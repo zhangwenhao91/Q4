@@ -30,15 +30,9 @@ export CXX="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++"
 # CMake fetches dependencies and nested submodules in child Git processes.
 export GIT_LFS_SKIP_SMUDGE=1
 if ! command -v git-lfs >/dev/null 2>&1; then
-  git_config_index="${GIT_CONFIG_COUNT:-0}"
-  for lfs_filter in process clean smudge required; do
-    lfs_value=
-    if [[ "$lfs_filter" == required ]]; then lfs_value=false; fi
-    export "GIT_CONFIG_KEY_$git_config_index=filter.lfs.$lfs_filter"
-    export "GIT_CONFIG_VALUE_$git_config_index=$lfs_value"
-    git_config_index=$((git_config_index + 1))
-  done
-  export GIT_CONFIG_COUNT="$git_config_index"
+  # Git forwards -c settings via GIT_CONFIG_PARAMETERS across submodule
+  # repository boundaries, where it can discard GIT_CONFIG_COUNT settings.
+  export GIT_CONFIG_PARAMETERS="${GIT_CONFIG_PARAMETERS:+$GIT_CONFIG_PARAMETERS }'filter.lfs.process=' 'filter.lfs.clean=' 'filter.lfs.smudge=' 'filter.lfs.required=false'"
 fi
 if [[ ! -e "$SRC" ]]; then
   git clone --no-checkout https://gitcode.com/cann/ops-transformer.git "$SRC"
