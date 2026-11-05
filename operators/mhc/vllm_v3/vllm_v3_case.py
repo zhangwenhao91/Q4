@@ -67,7 +67,8 @@ def make_case(a):
     if a.tokens % 128:
         raise ValueError('Three-kernel N-pipeline comparison requires N divisible by 128')
     l2_ab = a.mhc_projection_l2_ab
-    if not l2_ab:
+    include_v3 = not l2_ab or 'ascendc_vllm_v3' in (a.implementations or ())
+    if include_v3:
         op, provenance = load_v3()
     t = a.tokens
     x0 = torch.randn(t, 4, 5120, dtype=torch.bfloat16)
@@ -101,9 +102,18 @@ def make_case(a):
                 contract=dict(N=t, hidden=5120, hc_mult=4),
                 timing_boundary='Post API on identical BF16 layer output and residual with shared CPU-reference FP32 coefficients')
     prev2d = prev.view(t, 4)
+
+    def ac():
+        # These are metadata-only views. All upstream output/workspace allocation
+        # and dispatch still occur on every timed invocation of the original op.
+        y, post, comb, pre = op(x, phi, alpha, bias, prev2d,
+            hc_mult=4, hc_sinkhorn_iters=20, norm_eps=1e-20, hc_eps=1e-6)
+        return y, pre.unsqueeze(-1), post.unsqueeze(-1), comb
+
     projector = DynamicHCProjection(x, phi)
     if l2_ab:
-        functions, metadata = {}, {}
+        functions = {'ascendc_vllm_v3': ac} if include_v3 else {}
+        metadata = {}
         variants = (('tilelang_all_token_h5120s3', False), ('tilelang_all_token_l2_default', True))
         for label, use_default in variants:
             if a.implementations and label not in a.implementations:
@@ -115,19 +125,13 @@ def make_case(a):
                 (a.output / f'{label}_{name}.cpp').write_text(source, encoding='utf-8')
             metadata[label] = meta
         return functions, refs, ['layer_input', 'next_pre_mix', 'post_mix', 'comb_mix'], dict(
-            comparison_available=True, stage=stage, projection_config=projector.config, variants=metadata)
+            comparison_available=True, vllm_v3=provenance if include_v3 else None,
+            stage=stage, projection_config=projector.config, variants=metadata)
     baseline, baseline_meta = make_bound_candidate(projector, x, prev, alpha, bias, split_apply=True)
     candidate, candidate_meta = make_bound_candidate(projector, x, prev, alpha, bias,
         split_apply=True, apply_pipeline=(5120, 3), flat_pipeline=True, all_token_pipeline=True)
     for name, source in candidate_meta.pop('generated_sources').items():
         (a.output / f'all_token_{name}.cpp').write_text(source, encoding='utf-8')
-
-    def ac():
-        # These are metadata-only views. All upstream output/workspace allocation
-        # and dispatch still occur on every timed invocation of the original op.
-        y, post, comb, pre = op(x, phi, alpha, bias, prev2d,
-            hc_mult=4, hc_sinkhorn_iters=20, norm_eps=1e-20, hc_eps=1e-6)
-        return y, pre.unsqueeze(-1), post.unsqueeze(-1), comb
 
     names = ['layer_input', 'next_pre_mix', 'post_mix', 'comb_mix']
     functions = dict(ascendc_vllm_v3=ac, tilelang_coeff_bound=baseline,
