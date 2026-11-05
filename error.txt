@@ -1,47 +1,56 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh l2-v3-small
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-205459-l2-v3-small-4017682
-Timing Pre N128-rep1
-Timing Pre N128-rep2
-Timing Pre N128-rep3
-Timing Pre N256-rep1
-Timing Pre N256-rep2
-Timing Pre N256-rep3
-Timing Pre N512-rep1
-Timing Pre N512-rep2
-Timing Pre N512-rep3
-Timing Pre N2048-rep1
-Timing Pre N2048-rep2
-Timing Pre N2048-rep3
-Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-205459-l2-v3-small-4017682
-AC reference: ascendc_vllm_v3
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_original.sh h4096-ab
+Results: /home/z30086261/Q4/results/mhc-original/20261105-210646-h4096-ab-4037138
+Timing H=4096 N128-rep1
+Timing H=4096 N128-rep2
+Timing H=4096 N128-rep3
+Timing H=4096 N256-rep1
+Timing H=4096 N256-rep2
+Timing H=4096 N256-rep3
+Timing H=4096 N512-rep1
+Timing H=4096 N512-rep2
+Timing H=4096 N512-rep3
+Timing H=4096 N2048-rep1
+Timing H=4096 N2048-rep2
+Timing H=4096 N2048-rep3
+Timing H=4096 N8192-rep1
+Timing H=4096 N8192-rep2
+Timing H=4096 N8192-rep3
+Run: /home/z30086261/Q4/results/mhc-original/20261105-210646-h4096-ab-4037138
+AC reference: ascendc_original_fused_h4096
 Event time: median across rounds (us); ratios > 1 mean TL is faster.
 case | AC us | TL us | AC/TL
-N128-rep1 | 15.228 | 24.651 | 0.6177
-N128-rep2 | 16.978 | 24.726 | 0.6866
-N128-rep3 | 17.676 | 24.748 | 0.7142
-N2048-rep1 | 113.682 | 72.417 | 1.5698
-N2048-rep2 | 114.052 | 72.340 | 1.5766
-N2048-rep3 | 112.943 | 72.586 | 1.5560
-N256-rep1 | 21.757 | 26.176 | 0.8312
-N256-rep2 | 21.659 | 26.152 | 0.8282
-N256-rep3 | 21.696 | 26.108 | 0.8310
-N512-rep1 | 33.307 | 28.978 | 1.1494
-N512-rep2 | 33.238 | 28.927 | 1.1490
-N512-rep3 | 33.184 | 28.768 | 1.1535
-Cases with timing: 12
+N128-rep1 | 19.916 | 25.811 | 0.7716
+N128-rep2 | 20.310 | 25.791 | 0.7875
+N128-rep3 | 25.250 | 26.302 | 0.9600
+N2048-rep1 | 88.279 | 60.824 | 1.4514
+N2048-rep2 | 88.157 | 61.287 | 1.4384
+N2048-rep3 | 88.948 | 60.842 | 1.4619
+N256-rep1 | 20.518 | 26.014 | 0.7887
+N256-rep2 | 20.596 | 24.629 | 0.8363
+N256-rep3 | 20.533 | 24.740 | 0.8300
+N512-rep1 | 27.507 | 26.359 | 1.0435
+N512-rep2 | 27.349 | 26.194 | 1.0441
+N512-rep3 | 27.375 | 26.190 | 1.0453
+N8192-rep1 | 611.848 | 401.196 | 1.5251
+N8192-rep2 | 616.316 | 390.215 | 1.5794
+N8192-rep3 | 609.081 | 395.960 | 1.5382
+Cases with timing: 15
 Runner log tail (last 20 lines):
-Q4 revision: ab36e94588d7100dd7d80724c8c0c949156a895f
-CPU and pairwise correctness passed for N128-rep1
-CPU and pairwise correctness passed for N128-rep2
-CPU and pairwise correctness passed for N128-rep3
-CPU and pairwise correctness passed for N256-rep1
-CPU and pairwise correctness passed for N256-rep2
-CPU and pairwise correctness passed for N256-rep3
-CPU and pairwise correctness passed for N512-rep1
-CPU and pairwise correctness passed for N512-rep2
-CPU and pairwise correctness passed for N512-rep3
-CPU and pairwise correctness passed for N2048-rep1
-CPU and pairwise correctness passed for N2048-rep2
-CPU and pairwise correctness passed for N2048-rep3
+Q4 revision: 6c32edb062de87f25af97823ca878dc8d35fcda8
+Raw TL projection, CPU and pairwise correctness passed for N128-rep1
+Raw TL projection, CPU and pairwise correctness passed for N128-rep2
+Raw TL projection, CPU and pairwise correctness passed for N128-rep3
+Raw TL projection, CPU and pairwise correctness passed for N256-rep1
+Raw TL projection, CPU and pairwise correctness passed for N256-rep2
+Raw TL projection, CPU and pairwise correctness passed for N256-rep3
+Raw TL projection, CPU and pairwise correctness passed for N512-rep1
+Raw TL projection, CPU and pairwise correctness passed for N512-rep2
+Raw TL projection, CPU and pairwise correctness passed for N512-rep3
+Raw TL projection, CPU and pairwise correctness passed for N2048-rep1
+Raw TL projection, CPU and pairwise correctness passed for N2048-rep2
+Raw TL projection, CPU and pairwise correctness passed for N2048-rep3
+Raw TL projection, CPU and pairwise correctness passed for N8192-rep1
+Raw TL projection, CPU and pairwise correctness passed for N8192-rep2
+Raw TL projection, CPU and pairwise correctness passed for N8192-rep3
 Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
