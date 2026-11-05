@@ -1,57 +1,57 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_original.sh h5120-fused-ab
-Results: /home/z30086261/Q4/results/mhc-original/20261105-212924-h5120-fused-ab-4101928
-Building isolated H=5120 fused vendor (details in /home/z30086261/Q4/results/mhc-original/20261105-212924-h5120-fused-ab-4101928/build.log)
-Failed stage: build
-Log: /home/z30086261/Q4/results/mhc-original/20261105-212924-h5120-fused-ab-4101928/build.log
-=== First error contexts (up to 4) ===
-10: Verified existing cache: /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/abseil-cpp-20230802.1.tar.gz
-11: Verified existing cache: /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/protobuf-25.1.tar.gz
-12: Verified existing cache: /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/patch/backport-CVE-2025-0838.patch
-13: All dependency caches ready; no TLS bypass or upstream source changes.
-14: Saved incomplete tensor_api checkout to /home/z30086261/Q4/third_party/ops-transformer-q4mhc5120/third_party/tensor-api-recovery.EyowbT/tensor_api
-15: git-lfs filter-process --skip: 1: git-lfs: not found
-16: fatal: the remote end hung up unexpectedly
-17: Unable to checkout 'fd51475d8ceb26eb21befffe4391528bc16726a3' in submodule path 'include/tensor_api'
-18: error: The following untracked working tree files would be overwritten by checkout:
-19:     .clang-format
-20:     .clangd
-21:     .gitattributes
-22:     .gitcode/ISSUE_TEMPLATE/bug-report.yml
-23:     .gitcode/ISSUE_TEMPLATE/documentation.yml
-24:     .gitcode/ISSUE_TEMPLATE/feature-request.yml
-25:     .gitcode/ISSUE_TEMPLATE/question.yml
-26:     .gitcode/PULL_REQUEST_TEMPLATE.zh-CN.md
-27:     .gitignore
-28:     CMakeLists.txt
-29:     LICENSE
-30:     OAT.xml
-31:     build.sh
-32:     classify_rule.yaml
-33:     cmake/CMakeLists.txt
-34:     cmake/asc/aicpu-config.cmake
-35:     cmake/asc/aicpu_modules/CMakeAICPUCompiler.cmake.in
-36:     cmake/asc/aicpu_modules/CMakeAICPUInformation.cmake
-37:     cmake/asc/aicpu_modules/CMakeDetermineAICPUCompiler.cmake
-=== Final non-progress lines ===
-93:     cmake/asc/legacy_modules/util/copy_obj.sh
-94:     cmake/asc/legacy_modules/util/extract_host_stub.py
-95:     cmake/asc/legacy_modules/util/extract_src_template.py
-96:     cmake/asc/legacy_modules/util/extract_static_library.py
-97:     cmake/asc/legacy_modules/util/gen_host_stub.py
-98:     cmake/asc/legacy_modules/util/host_stub_util.py
-99:     cmake/asc/legacy_modules/util/merge_device_obj.py
-100:    cmake/asc/legacy_modules/util/merge_mix_obj.sh
-101:    cmake/asc/legacy_modules/util/merge_obj.sh
-102:    cmake/asc/legacy_modules/util/merge_obj_text.sh
-103:    cmake/asc/legacy_modules/util/process_dump_info.py
-104:    cmake/asc/legacy_modules/util/recompile_binary.py
-105:    cmake/asc/legacy_modules/util/struct_parser.py
-106:    cmake/asc/legacy_modules/util/test_data_host_stub.txt
-107:    cmake/asc/legacy_modules/util/test_struct_parser.py
-108:    cmake/asc/legacy_modules/util/update_host_stub.py
-109:    cmake/config.cmake
-110:    cmake/dependencies.c
-111: Aborting
-112: Unable to checkout 'fd51475d8ceb26eb21befffe4391528bc16726a3' in submodule path 'include/tensor_api'
+Results: /home/z30086261/Q4/results/mhc-original/20261105-213204-h5120-fused-ab-4109328
+Building isolated H=5120 fused vendor (details in /home/z30086261/Q4/results/mhc-original/20261105-213204-h5120-fused-ab-4109328/build.log)
+Timing H=5120 N128-rep1
+Timing H=5120 N128-rep2
+Timing H=5120 N128-rep3
+Timing H=5120 N256-rep1
+Timing H=5120 N256-rep2
+Timing H=5120 N256-rep3
+Timing H=5120 N512-rep1
+Timing H=5120 N512-rep2
+Timing H=5120 N512-rep3
+Timing H=5120 N2048-rep1
+Timing H=5120 N2048-rep2
+Timing H=5120 N2048-rep3
+Timing H=5120 N8192-rep1
+Timing H=5120 N8192-rep2
+Timing H=5120 N8192-rep3
+Run: /home/z30086261/Q4/results/mhc-original/20261105-213204-h5120-fused-ab-4109328
+AC reference: ascendc_adapted_fused_h5120
+Event time: median across rounds (us); ratios > 1 mean TL is faster.
+case | AC us | TL us | AC/TL
+N128-rep1 | 25.259 | 26.304 | 0.9603
+N128-rep2 | 14.874 | 25.427 | 0.5850
+N128-rep3 | 20.518 | 26.307 | 0.7800
+N2048-rep1 | 108.339 | 73.245 | 1.4791
+N2048-rep2 | 107.731 | 73.532 | 1.4651
+N2048-rep3 | 108.002 | 72.413 | 1.4915
+N256-rep1 | 25.237 | 26.822 | 0.9409
+N256-rep2 | 20.080 | 26.308 | 0.7632
+N256-rep3 | 24.880 | 26.351 | 0.9442
+N512-rep1 | 31.626 | 29.001 | 1.0905
+N512-rep2 | 31.467 | 28.920 | 1.0881
+N512-rep3 | 31.474 | 28.955 | 1.0870
+N8192-rep1 | 798.445 | 495.808 | 1.6104
+N8192-rep2 | 799.353 | 494.310 | 1.6171
+N8192-rep3 | 801.400 | 495.021 | 1.6189
+Cases with timing: 15
+Runner log tail (last 20 lines):
+Q4 revision: d6b2a37b2d7dc934c29beff6fc7d665f8b86ce7c
+Raw TL projection, CPU and pairwise correctness passed for N128-rep1
+Raw TL projection, CPU and pairwise correctness passed for N128-rep2
+Raw TL projection, CPU and pairwise correctness passed for N128-rep3
+Raw TL projection, CPU and pairwise correctness passed for N256-rep1
+Raw TL projection, CPU and pairwise correctness passed for N256-rep2
+Raw TL projection, CPU and pairwise correctness passed for N256-rep3
+Raw TL projection, CPU and pairwise correctness passed for N512-rep1
+Raw TL projection, CPU and pairwise correctness passed for N512-rep2
+Raw TL projection, CPU and pairwise correctness passed for N512-rep3
+Raw TL projection, CPU and pairwise correctness passed for N2048-rep1
+Raw TL projection, CPU and pairwise correctness passed for N2048-rep2
+Raw TL projection, CPU and pairwise correctness passed for N2048-rep3
+Raw TL projection, CPU and pairwise correctness passed for N8192-rep1
+Raw TL projection, CPU and pairwise correctness passed for N8192-rep2
+Raw TL projection, CPU and pairwise correctness passed for N8192-rep3
 Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
