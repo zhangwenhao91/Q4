@@ -3,8 +3,8 @@
 比较 TileLang 与 AscendC 实现，记录可复现的环境、正确性和性能数据。
 
 当前面向测试同学的串讲入口：[原版MHA测试设计文档](docs/MHA_ORIGINAL_TEST_DESIGN.md)。
-文档限定S3584、BF16输入输出，讲解原版TL/原生AC、metadata边界、复现流程及AC/TL、MFU。
-原版最新验证结果见[独立复测报告](reports/mha_plain3584/report.md)。下方保留项目历史入口。
+文档按规格表使用S4096、BF16输入/FP32输出，目标设备为32核950DT；列出原版TL测试与同规格AC待匹配状态。
+此前28核950PR、S3584/BF16输出的[独立复测报告](reports/mha_plain3584/report.md)作为历史结果保留，不作为新配置实测。下方保留项目历史入口。
 
 | 算子 | 说明 | 状态 |
 |---|---|---|

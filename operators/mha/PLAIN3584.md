@@ -1,6 +1,6 @@
 # 原版MHA：序列长度缩至7/8
 
-测试同学串讲、原理与验收流程见[原版MHA设计文档](../../docs/MHA_ORIGINAL_TEST_DESIGN.md)。
+按原规格表S4096/FP32输出、32核950DT的设计见[原版MHA设计文档](../../docs/MHA_ORIGINAL_TEST_DESIGN.md)。本页仍记录此前S3584/BF16输出实验。
 
 用户确认：Q/K/V=[3584,128]，BF16；O=[3584,128]，BF16。
 batch=1、heads=1、scale=1/sqrt(128)、causal=False、dropout=0。
