@@ -1,71 +1,123 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh all
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-114032-all-2907199
-Building isolated pinned upstream HcPre (details in build.log).
-Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-114032-all-2907199
-Failed: build
-[2026-11-05 11:40:41] -- [download 42% complete]
-[2026-11-05 11:40:41] -- [download 43% complete]
-[2026-11-05 11:40:41] -- [download 44% complete]
-[2026-11-05 11:40:41] -- [download 45% complete]
-[2026-11-05 11:40:41] -- [download 46% complete]
-[2026-11-05 11:40:41] -- [download 47% complete]
-[2026-11-05 11:40:41] -- [download 48% complete]
-[2026-11-05 11:40:41] -- [download 49% complete]
-[2026-11-05 11:40:41] -- [download 50% complete]
-[2026-11-05 11:40:41] -- [download 51% complete]
-[2026-11-05 11:40:41] -- [download 52% complete]
-[2026-11-05 11:40:41] -- [download 53% complete]
-[2026-11-05 11:40:41] -- [download 54% complete]
-[2026-11-05 11:40:41] -- [download 55% complete]
-[2026-11-05 11:40:41] -- [download 56% complete]
-[2026-11-05 11:40:41] -- [download 57% complete]
-[2026-11-05 11:40:41] -- [download 58% complete]
-[2026-11-05 11:40:41] -- [download 59% complete]
-[2026-11-05 11:40:41] -- [download 60% complete]
-[2026-11-05 11:40:41] -- [download 61% complete]
-[2026-11-05 11:40:41] -- [download 62% complete]
-[2026-11-05 11:40:41] -- [download 63% complete]
-[2026-11-05 11:40:41] -- [download 64% complete]
-[2026-11-05 11:40:41] -- [download 65% complete]
-[2026-11-05 11:40:41] -- [download 66% complete]
-[2026-11-05 11:40:41] -- [download 67% complete]
-[2026-11-05 11:40:41] -- [download 68% complete]
-[2026-11-05 11:40:41] -- [download 69% complete]
-[2026-11-05 11:40:41] -- [download 70% complete]
-[2026-11-05 11:40:41] -- [download 71% complete]
-[2026-11-05 11:40:41] -- [download 72% complete]
-[2026-11-05 11:40:41] -- [download 73% complete]
-[2026-11-05 11:40:41] -- [download 74% complete]
-[2026-11-05 11:40:41] -- [download 75% complete]
-[2026-11-05 11:40:41] -- [download 76% complete]
-[2026-11-05 11:40:41] -- [download 77% complete]
-[2026-11-05 11:40:41] -- [download 78% complete]
-[2026-11-05 11:40:41] -- [download 79% complete]
-[2026-11-05 11:40:41] -- [download 80% complete]
-[2026-11-05 11:40:41] -- [download 81% complete]
-[2026-11-05 11:40:41] -- [download 82% complete]
-[2026-11-05 11:40:41] -- [download 86% complete]
-[2026-11-05 11:40:41] -- [download 87% complete]
-[2026-11-05 11:40:41] -- [download 88% complete]
-[2026-11-05 11:40:41] -- [download 89% complete]
-[2026-11-05 11:40:41] -- [download 90% complete]
-[2026-11-05 11:40:41] -- [download 91% complete]
-[2026-11-05 11:40:41] -- [download 93% complete]
-[2026-11-05 11:40:41] -- [download 94% complete]
-[2026-11-05 11:40:41] -- [download 95% complete]
-[2026-11-05 11:40:41] -- [download 96% complete]
-[2026-11-05 11:40:41] -- [download 97% complete]
-[2026-11-05 11:40:41] -- [download 98% complete]
-[2026-11-05 11:40:41] -- [download 99% complete]
-[2026-11-05 11:40:41] -- [download 100% complete]
-[2026-11-05 11:40:41] -- Downloading... done
-[2026-11-05 11:40:41] -- extracting...
-[2026-11-05 11:40:41]      src='/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/third_party/pkg/protobuf-25.1.tar.gz'
-[2026-11-05 11:40:41]      dst='/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/third_party/ascend_protobuf'
-[2026-11-05 11:40:41] -- extracting... [tar xf]
-[2026-11-05 11:40:41] -- extracting... [analysis]
-[2026-11-05 11:40:41] -- extracting... [rename]
-[2026-11-05 11:40:41] -- extracting... [clean up]
-[2026-11-05 11:40:41] -- extracting... done
-[2026-11-05 11:40:41] ninja: build stopped: subcommand failed.
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mhc/vllm_v3/report_failure.py 
+Failed stage: build
+Log: /home/z30086261/Q4/results/mhc-vllm-v3/20261105-114032-all-2907199/build.log
+=== First error contexts (up to 4) ===
+63: [2026-11-05 11:40:33] -- CCACHE_PROGRAM=CCACHE_PROGRAM-NOTFOUND
+64: [2026-11-05 11:40:33] -- ASCEND_COMPUTE_UNIT=ascend950;
+65: [2026-11-05 11:40:33] -- ASCEND_OP_NAME=hc_pre
+66: [2026-11-05 11:40:33] -- TILING_KEY=
+67: [2026-11-05 11:40:33] -- TESTS_UT_OPS_TEST=
+68: [2026-11-05 11:40:33] -- TESTS_EXAMPLE_OPS_TEST=
+69: [2026-11-05 11:40:33] -- CMAKE_BUILD_TYPE=Release
+70: [2026-11-05 11:40:33] -- VERSION=
+71: [2026-11-05 11:40:37] -- Could NOT find json (missing: JSON_INCLUDE)
+72: [2026-11-05 11:40:37] -- Start building custom package.
+73: [2026-11-05 11:40:37] -- Search libs under install path /home/CANN/9.3.0.weekly.20260930/cann-9.3.0
+74: [2026-11-05 11:40:37] -- CMAKE_MODULE_PATH            :/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/cmake/modules
+75: [2026-11-05 11:40:37] -- compile option:-fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /root/miniconda3/envs/zwh/include   -Wall -Wextra -Wshadow -Wformat=2 -fno-common -fPIC -Wformat-signedness -Wno-missing-include-dirs -Wno-write-strings
+76: [2026-11-05 11:40:37] -- Found dlog: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/pkg_inc/base
+77: [2026-11-05 11:40:37] -- Transformer Variables in dlog module:
+78: [2026-11-05 11:40:37] -- dlog_TRANSFORMER_INCLUDE_DIR="/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/pkg_inc/base"
+79: [2026-11-05 11:40:37] -- dlog_SHARED_LIBRARY="/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libascendalog.so"
+80: [2026-11-05 11:40:37] --
+81: [2026-11-05 11:40:37]  Properties for TARGET dlog:
+82: [2026-11-05 11:40:37]    dlog.INTERFACE_COMPILE_DEFINITIONS = "LOG_CPP;PROCESS_LOG"
+83: [2026-11-05 11:40:37]    dlog.INTERFACE_LINK_LIBRARIES = "dlog_headers"
+84: [2026-11-05 11:40:37]    dlog.IMPORTED_LOCATION = "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libascendalog.so"
+85: [2026-11-05 11:40:37]
+86: [2026-11-05 11:40:37] --
+122: [2026-11-05 11:40:37] -- Found source acl include dir:  /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include
+123: [2026-11-05 11:40:37] -- Found source npuruntime include dir: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/runtime
+124: [2026-11-05 11:40:37] -- Found aclnn include dir:  /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include
+125: [2026-11-05 11:40:37] -- Found opdev include dir:  /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aclnn
+126: [2026-11-05 11:40:37] -- Found tilingapi include:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include
+127: [2026-11-05 11:40:37] -- TILINGAPI_INC_DIRS: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/ascendc;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/ascendc/include;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/ascendc/include/highlevel_api;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/ascendc/include/highlevel_api/lib;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/ascendc/include/highlevel_api/impl;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/ascendc/include/highlevel_api/tiling
+128: [2026-11-05 11:40:37] -- Found tilingapi lib:/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/lib64/libtiling_api.a
+129: [2026-11-05 11:40:37] -- Using AICPU include dirs: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment/cce;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment/msprof;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu_common/context;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu_common/context/common;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu_common/context/cpu_proto;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/pkg_inc/aicpu_common/context/utils;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu_common/context;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu_common/context/common;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu_common/context/cpu_proto;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/experiment/datagw/aicpu/common;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/x86_64-linux/include/aicpu_common/context/utils
+130: [2026-11-05 11:40:37] -- Could NOT find abseil-cpp (missing: ABSL_SOURCE_DIR)
+131: [2026-11-05 11:40:37] -- [ThirdPartyLib][abseil-cpp] https://gitcode.com/cann-src-third-party/abseil-cpp/releases/download/20230802.1/abseil-cpp-20230802.1.tar.gz not found, need download.
+132: [2026-11-05 11:40:37] -- Could NOT find ascend_protobuf_build_transformer (missing: ASCEND_PROTOBUF_SHARED_INCLUDE)
+133: [2026-11-05 11:40:37] -- [ThirdPartyLib][ascend protobuf] ascend protobuf shared not found, finding binary file.
+134: [2026-11-05 11:40:37] -- [ThirdPartyLib][ascend protobuf] https://gitcode.com/cann-CMake Warning (author) at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject/shared_internal_commands.cmake:1277 (message):
+135:   The DOWNLOAD_EXTRACT_TIMESTAMP option was not given and policy CMP0135 is
+136:   not set.  The policy's OLD behavior will be used.  When using a URL
+137:   download, the timestamps of extracted files should preferably be that of
+138:   the time of extraction, otherwise code that depends on the extracted
+139:   contents might not be rebuilt if the URL changes.  The OLD behavior
+140:   preserves the timestamps from the archive instead, but this is usually not
+141:   what you want.  Update your project to the NEW behavior or specify the
+142:   DOWNLOAD_EXTRACT_TIMESTAMP option with a value of true to avoid this
+143:   robustness issue.
+144: Call Stack (most recent call first):
+145:   /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/ExternalProject.cmake:3283 (_ep_add_download_command)
+164: [2026-11-05 11:40:37]    alog_a.INTERFACE_COMPILE_DEFINITIONS = "LOG_CPP;PROCESS_LOG"
+165: [2026-11-05 11:40:37]    alog_a.INTERFACE_LINK_LIBRARIES = "alog_headers"
+166: [2026-11-05 11:40:37]    alog_a.IMPORTED_LOCATION = "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/lib64/libascendalog.so"
+167: [2026-11-05 11:40:37]
+168: [2026-11-05 11:40:37] --
+169: [2026-11-05 11:40:37]  Properties for TARGET alog_headers:
+170: [2026-11-05 11:40:37]    alog_headers.INTERFACE_INCLUDE_DIRECTORIES = "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include;/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/base"
+171: [2026-11-05 11:40:37]
+172: [2026-11-05 11:40:37] -- Could NOT find unified_dlog (missing: _INCLUDE_ROOT_DIR)
+173: [2026-11-05 11:40:37] -- === Debug: BUILD is BUILD_OPEN_PROJECT
+174: [2026-11-05 11:40:37] -- === Debug: BUILD is NOT BUILD_OPS_RTY_KERNEL
+175: [2026-11-05 11:40:37] -- Detected architecture: x86_64
+176: [2026-11-05 11:40:37] -- End building custom package.
+177: [2026-11-05 11:40:37] -- create aclnn master header file: /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/aclnn_ops_transformer_q4vllmv3.h
+178: [2026-11-05 11:40:37] -- no operator info to generate
+179: [2026-11-05 11:40:37] -- Configuring done (5.0s)
+180: [2026-11-05 11:40:38] -- Generating done (0.1s)
+181: [2026-11-05 11:40:38] -- Build files have been written to: /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build
+182: [2026-11-05 11:40:38] [0/2] Re-checking globbed directories...
+183: [2026-11-05 11:40:38] [1/91] Generating op_host_aclnn_inner_stub.cpp
+184: [2026-11-05 11:40:38] [2/91] Generating op_host_aclnn_exc_stub.cpp
+185: [2026-11-05 11:40:38] [3/91] Building CXX object CMakeFiles/op_host_aclnnExc.dir/op_host_aclnn_exc_stub.cpp.o
+186: [2026-11-05 11:40:38] [4/91] Building CXX object CMakeFiles/op_host_aclnnInner.dir/op_host_aclnn_inner_stub.cpp.o
+187: [2026-11-05 11:40:38] [5/91] Generating tbe/graph/ops_proto_transformer.h
+533: [2026-11-05 11:40:39] /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_error_codes.h:15:122: note: '#pragma message: Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include "graph/error_codes.h" instead.'
+534: [2026-11-05 11:40:39]    15 |     "Warning: ge_error_codes.h is deprecated and will be removed after 2027-06. Include \"graph/error_codes.h\" instead.")
+535: [2026-11-05 11:40:39]       |                                                                                                                          ^
+536: [2026-11-05 11:40:39] In file included from /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/api_error_codes.h:17:
+537: [2026-11-05 11:40:39] /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/include/external/ge_common/ge_api_types.h:15:122: note: '#pragma message: Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include "ge_common_api_types.h" instead.'
+538: [2026-11-05 11:40:39]    15 |     "Warning: ge_api_types.h is deprecated and will be removed after 2027-06. Include \"ge_common_api_types.h\" instead.")
+539: [2026-11-05 11:40:39]       |                                                                                                                          ^
+540: [2026-11-05 11:40:40] [62/91] Performing configure step for 'tiling_sink_task'
+541: [2026-11-05 11:40:40] FAILED: [code=1] common/tiling_sink_task-prefix/src/tiling_sink_task-stamp/tiling_sink_task-configure /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/common/tiling_sink_task-prefix/src/tiling_sink_task-stamp/tiling_sink_task-configure
+542: [2026-11-05 11:40:40] cd /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/common/tiling_sink_task-prefix/src/tiling_sink_task-build && /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/bin/cmake -G Ninja -DBUILD_OPEN_PROJECT=ON -DCMAKE_BUILD_TYPE=Release -DASCEND_CANN_PACKAGE_PATH=/home/CANN/9.3.0.weekly.20260930/cann-9.3.0 -DCMAKE_C_COMPILER=/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/toolkit/toolchain/hcc/bin/aarch64-target-linux-gnu-gcc -DCMAKE_CXX_COMPILER=/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/toolkit/toolchain/hcc/bin/aarch64-target-linux-gnu-g++ -DCMAKE_C_COMPILER_LAUNCHER= -DCMAKE_CXX_COMPILER_LAUNCHER= -DSYS_VERSION=9.1 -DOPS_ADV_CMAKE_DIR=/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/cmake -DPRODUCT_SIDE=device -DENABLE_BUILT_IN=OFF /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/common/src/tiling_sink && /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/bin/cmake -E touch /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/build/common/tiling_sink_task-prefix/src/tiling_sink_task-stamp/tiling_sink_task-configure
+543: [2026-11-05 11:40:40] -- The C compiler identification is GNU 14.3.0
+544: [2026-11-05 11:40:40] -- The CXX compiler identification is GNU 14.3.0
+545: [2026-11-05 11:40:40] -- Detecting C compiler ABI info
+546: [2026-11-05 11:40:40] -- Detecting C compiler ABI info - failed
+547: [2026-11-05 11:40:40] -- Check for working C compiler: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/toolkit/toolchain/hcc/bin/aarch64-target-linux-gnu-gcc
+548: [2026-11-05 11:40:40] -- Check for working C compiler: /home/CANN/9.3.0.weekly.20260930/cann-9.3.0/toolkit/toolchain/hcc/bin/aarch64-target-linux-gnu-gcc - broken
+549: [2026-11-05 11:40:40] CMake Error at /root/miniconda3/envs/zwh/lib/python3.12/site-packages/cmake/data/share/cmake-4.4/Modules/CMakeTestCCompiler.cmake:65 (message):
+550: [2026-11-05 11:40:40]   The C compiler
+551: [2026-11-05 11:40:40]
+552: [2026-11-05 11:40:40]     "/home/CANN/9.3.0.weekly.20260930/cann-9.3.0/toolkit/toolchain/hcc/bin/aarch64-target-linux-gnu-gcc"
+553: [2026-11-05 11:40:40]
+554: [2026-11-05 11:40:40]   is not able to compile a simple test program.
+555: [2026-11-05 11:40:40]
+556: [2026-11-05 11:40:40]   It fails with the following output:
+=== Final non-progress lines ===
+636: [2026-11-05 11:40:41]       |                           ^~~~~~
+637: [2026-11-05 11:40:41] /home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/moe/hc_pre/op_host/hc_pre_tiling.cpp:546:29: warning: conversion from 'double' to 'float' may change value [-Wfloat-conversion]
+638: [2026-11-05 11:40:41]   546 |     tilingData_.set_normEps(normEps_);
+639: [2026-11-05 11:40:41]       |                             ^~~~~~~~
+640: [2026-11-05 11:40:41] [65/91] Performing download step (download, verify and extract) for 'ascend_protobuf_build_transformer'
+641: [2026-11-05 11:40:41] -- Downloading...
+642: [2026-11-05 11:40:41]    dst='/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/third_party/pkg/protobuf-25.1.tar.gz'
+643: [2026-11-05 11:40:41]    timeout='none'
+644: [2026-11-05 11:40:41]    inactivity timeout='none'
+645: [2026-11-05 11:40:41] -- Using src='https://gitcode.com/cann-src-third-party/protobuf/releases/download/v25.1/protobuf-25.1.tar.gz'
+743: [2026-11-05 11:40:41] -- Downloading... done
+744: [2026-11-05 11:40:41] -- extracting...
+745: [2026-11-05 11:40:41]      src='/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/third_party/pkg/protobuf-25.1.tar.gz'
+746: [2026-11-05 11:40:41]      dst='/home/z30086261/Q4/third_party/vllm-ascend-q4-v3-archive/csrc/third_party/ascend_protobuf'
+747: [2026-11-05 11:40:41] -- extracting... [tar xf]
+748: [2026-11-05 11:40:41] -- extracting... [analysis]
+749: [2026-11-05 11:40:41] -- extracting... [rename]
+750: [2026-11-05 11:40:41] -- extracting... [clean up]
+751: [2026-11-05 11:40:41] -- extracting... done
+752: [2026-11-05 11:40:41] ninja: build stopped: subcommand failed.
+Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
