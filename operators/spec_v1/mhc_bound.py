@@ -4,7 +4,8 @@ import hashlib
 from mhc_fusion import SOURCE, allocate_outputs
 
 
-def make_shifted_single_candidate(x, prev, phi, alpha, bias, *, reuse_apply=False, partial_check=None):
+def make_shifted_single_candidate(x, prev, phi, alpha, bias, *, reuse_apply=False,
+                                  reuse_token_stages=1, partial_check=None):
     import sys
     import torch
 
@@ -23,15 +24,19 @@ def make_shifted_single_candidate(x, prev, phi, alpha, bias, *, reuse_apply=Fals
         kernel_fn = mhc_shifted_single_reuse_kernel
         # Keep every mixed-core group active through the final barrier chunk.
         token_tiles = t // 128
+        if reuse_token_stages not in (1, 2) or token_tiles % reuse_token_stages:
+            raise ValueError('Reuse fusion requires complete one- or two-stage token chunks')
+        chunks_per_split = token_tiles // reuse_token_stages
         groups = config['cores_per_split']
-        while token_tiles % groups:
+        while chunks_per_split % groups:
             groups -= 1
         config['cores_per_split'] = groups
         config['num_aic_cores'] = groups * config['num_k_splits']
         if t < config['num_aic_cores'] * 32:
             raise ValueError('Reuse fusion requires a coefficient tile for every AIV barrier participant')
-        config['num_l0c_stages'] = 1
-        config['num_token_blocks_per_chunk'] = config['cores_per_split']
+        config['num_l0c_stages'] = reuse_token_stages
+        config['num_token_blocks_per_chunk'] = groups * reuse_token_stages
+        config['num_hidden_blocks_per_split'] *= reuse_token_stages
 
     def allocate_partials():
         if not reuse_apply:

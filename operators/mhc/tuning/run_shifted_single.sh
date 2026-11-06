@@ -15,6 +15,8 @@ printf 'Q4 revision: %s\n' "$(git rev-parse HEAD)" > "$OUT/runner.log"
 echo "Results: $OUT"
 
 baseline=tilelang_all_token_l2_default
+smoke_n=128
+shapes=(128 256 512 2048 8192)
 case "${1:-original}" in
   original)
     candidate=tilelang_shifted_single_h5120
@@ -24,7 +26,13 @@ case "${1:-original}" in
     candidate=tilelang_shifted_single_reuse_h5120
     kernel=mhc_shifted_single_reuse_kernel
     ;;
-  *) echo 'Usage: run_shifted_single.sh [original|reuse]'; exit 2 ;;
+  reuse-pipeline)
+    candidate=tilelang_shifted_single_reuse_pipeline_h5120
+    kernel=mhc_shifted_single_reuse_kernel
+    smoke_n=2048
+    shapes=(2048 8192)
+    ;;
+  *) echo 'Usage: run_shifted_single.sh [original|reuse|reuse-pipeline]'; exit 2 ;;
 esac
 printf 'Candidate: %s\n' "$candidate" >> "$OUT/runner.log"
 run_case() {
@@ -38,9 +46,9 @@ run_case() {
   fi
 }
 
-run_case check 128 --implementations "$baseline" "$candidate" --check-only
-run_case profile 128 --implementations "$candidate" --profile "$candidate"
-if ! "$PY" - "$OUT/profile" "$kernel" > "$OUT/launch-check.log" 2>&1 <<'PYTHON'
+run_case check "$smoke_n" --implementations "$baseline" "$candidate" --check-only
+run_case profile "$smoke_n" --implementations "$candidate" --profile "$candidate"
+if ! "$PY" - "$OUT/profile" "$kernel" "$smoke_n" > "$OUT/launch-check.log" 2>&1 <<'PYTHON'
 import csv
 from pathlib import Path
 import sys
@@ -56,7 +64,7 @@ with paths[0].open(encoding='utf-8-sig', newline='') as stream:
     names = [row[field] for row in rows if row.get(field)]
 if len(names) != 30 or not all(sys.argv[2] in name for name in names):
     raise RuntimeError(f'Expected 30 single-kernel launches, observed {len(names)}: {sorted(set(names))}')
-print(f'Profiler verified 30 launches for 30 Pre calls at N=128: {names[0]}')
+print(f'Profiler verified 30 launches for 30 Pre calls at N={sys.argv[3]}: {names[0]}')
 PYTHON
 then
   "$PY" operators/mhc/vllm_v3/report_failure.py --stage launch-check --log "$OUT/launch-check.log"
@@ -64,7 +72,7 @@ then
 fi
 cat "$OUT/launch-check.log" | tee -a "$OUT/runner.log"
 
-for n in 128 256 512 2048 8192; do
+for n in "${shapes[@]}"; do
   for rep in 1 2 3; do
     labels=("$baseline" "$candidate")
     if [[ "$rep" == 2 ]]; then labels=("$candidate" "$baseline"); fi

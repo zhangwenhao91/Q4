@@ -163,8 +163,10 @@ def make_case(a):
             for name, source in meta.pop('generated_sources').items():
                 (a.output / f'{label}_{name}.cpp').write_text(source, encoding='utf-8')
             metadata[label] = meta
-        for single_label, reuse_apply in (('tilelang_shifted_single_h5120', False),
-                                         ('tilelang_shifted_single_reuse_h5120', True)):
+        for single_label, reuse_apply, token_stages in (
+                ('tilelang_shifted_single_h5120', False, 1),
+                ('tilelang_shifted_single_reuse_h5120', True, 1),
+                ('tilelang_shifted_single_reuse_pipeline_h5120', True, 2)):
             if single_label not in (a.implementations or ()):
                 continue
             partial_check = None
@@ -172,7 +174,8 @@ def make_case(a):
                 from functools import partial
                 partial_check = partial(check_reuse_partials, x0, phi0, alpha0, bias0)
             functions[single_label], meta = make_shifted_single_candidate(
-                x, prev, phi, alpha, bias, reuse_apply=reuse_apply, partial_check=partial_check)
+                x, prev, phi, alpha, bias, reuse_apply=reuse_apply,
+                reuse_token_stages=token_stages, partial_check=partial_check)
             generated = meta.pop('generated_source')
             (a.output / f'{single_label}.cpp').write_text(generated, encoding='utf-8')
             if partial_check is not None:

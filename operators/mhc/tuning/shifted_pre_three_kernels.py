@@ -73,15 +73,16 @@ def _projection_body(
     reuse_apply=False,
 ):
     block_num_tokens = 128
-    block_hidden = 256
+    reuse_pipeline = reuse_apply and num_l0c_stages > 1
+    block_hidden = 128 if reuse_pipeline else 256
     mad_hidden = 64
     num_aivs = 2
     half_block_num_tokens = block_num_tokens // num_aivs
     num_mads_per_block = block_hidden // mad_hidden
-    # The reuse path also keeps the FP32 Apply accumulator and BF16 result
-    # in UB. Give up one 64x256 BF16 input slot to leave launch-time headroom.
-    num_load_stages = 1 if reuse_apply else (2 if fused_shifted else 3)
-    num_cast_stages = 1 if reuse_apply else 2
+    # The 256-wide reuse path needs one input slot to fit the Apply buffers.
+    # Two 128-wide slots have the same footprint in the pipelined variant.
+    num_load_stages = 2 if reuse_pipeline else (1 if reuse_apply else (2 if fused_shifted else 3))
+    num_cast_stages = 2 if reuse_pipeline or not reuse_apply else 1
     num_l1_x_stages = 3
     num_mad_stages = 2
 
@@ -106,11 +107,11 @@ def _projection_body(
         T.annotate_layout({x_nz_ub: make_ascend_compact_nz_layout(x_nz_ub)})
         sqrsum_ub = T.alloc_shared((num_l0c_stages, half_block_num_tokens), T.float32)
         if reuse_apply:
-            # Only one token tile is resident while its four-stream sum is live.
-            old_mix_ub = T.alloc_shared((64, 4), T.float32)
-            apply_acc = T.alloc_shared((64, 256), T.float32)
-            apply_out = T.alloc_shared((64, 256), T.bfloat16)
-            partial_ub = T.alloc_shared((64, 24), T.float32)
+            # Explicit slots keep each token tile's four-stream sum separate.
+            old_mix_ub = T.alloc_shared((num_l0c_stages, 64, 4), T.float32)
+            apply_acc = T.alloc_shared((num_l0c_stages, 64, block_hidden), T.float32)
+            apply_out = T.alloc_shared((64, block_hidden), T.bfloat16)
+            partial_ub = T.alloc_shared((num_l0c_stages, 64, 24), T.float32)
             T.annotate_buffer_versions({apply_acc: 1, apply_out: 1})
 
         x_l1 = T.alloc_l1((block_num_tokens, block_hidden), T.float32)
@@ -152,8 +153,9 @@ def _projection_body(
                 ),
             )
             if reuse_apply:
-                if num_valid_token_stages > 0:
-                    T.copy(prev_pre[aiv_token_begin_base : aiv_token_begin_base + 64, 0:4], old_mix_ub)
+                for mix_stage in T.Serial(num_valid_token_stages):
+                    mix_begin = aiv_token_begin_base + mix_stage * cores_per_split * 128
+                    T.copy(prev_pre[mix_begin : mix_begin + 64, 0:4], old_mix_ub[mix_stage, 0:64, 0:4])
 
             for local_hidden_block in T.Pipelined(num_hidden_blocks_per_split, num_stages=2):
                 if reuse_apply:
@@ -234,7 +236,7 @@ def _projection_body(
                                     unpacked_hi = T.reinterpret(hi_bits, 'float32x64')
 
                                     if reuse_apply:
-                                        mix_weight = S.vld(old_mix_ub[row, stream_idx], dist='BRC_B32')
+                                        mix_weight = S.vld(old_mix_ub[token_stage, row, stream_idx], dist='BRC_B32')
                                         band_col = pass_id * 128
                                         apply_lo = S.alloc_var(T.float32)
                                         apply_hi = S.alloc_var(T.float32)
@@ -242,16 +244,16 @@ def _projection_body(
                                             apply_lo = S.vmul(unpacked_lo, mix_weight)
                                             apply_hi = S.vmul(unpacked_hi, mix_weight)
                                         else:
-                                            apply_lo = S.vld(apply_acc[row, band_col])
-                                            apply_hi = S.vld(apply_acc[row, band_col + 64])
+                                            apply_lo = S.vld(apply_acc[token_stage, row, band_col])
+                                            apply_hi = S.vld(apply_acc[token_stage, row, band_col + 64])
                                             S.vmula(apply_lo, unpacked_lo, mix_weight)
                                             S.vmula(apply_hi, unpacked_hi, mix_weight)
                                         if stream_idx == 3:
                                             S.vsts(apply_out[row, band_col], S.vcvt(apply_lo, T.bfloat16), dist='PK_B32')
                                             S.vsts(apply_out[row, band_col + 64], S.vcvt(apply_hi, T.bfloat16), dist='PK_B32')
                                         else:
-                                            S.vsts(apply_acc[row, band_col], apply_lo)
-                                            S.vsts(apply_acc[row, band_col + 64], apply_hi)
+                                            S.vsts(apply_acc[token_stage, row, band_col], apply_lo)
+                                            S.vsts(apply_acc[token_stage, row, band_col + 64], apply_hi)
 
                                     row_acc = T.simd.vadd(
                                         row_acc,
@@ -298,7 +300,7 @@ def _projection_body(
                         if reuse_apply:
                             if stream_idx == 3:
                                 T.copy(apply_out, hi[aiv_token_begin : aiv_token_begin + 64,
-                                                     hidden_band * 256 : (hidden_band + 1) * 256])
+                                                     hidden_band * block_hidden : (hidden_band + 1) * block_hidden])
                         T.dual_copy(
                             x_nz_ub[0:half_block_num_tokens, 0:block_hidden],
                             x_l1[0:block_num_tokens, 0:block_hidden],
@@ -326,14 +328,15 @@ def _projection_body(
                         )
 
             if reuse_apply:
-                if num_valid_token_stages > 0:
-                    T.dual_copy(out_mul_l0[0, 0:128, 0:24], partial_ub, unit_flag_ctrl=3)
-                partial_start = token_block_base * 64
+                for drain_stage in T.Serial(num_valid_token_stages):
+                    T.dual_copy(out_mul_l0[drain_stage, 0:128, 0:24],
+                                partial_ub[drain_stage, 0:64, 0:24], unit_flag_ctrl=3)
                 with T.PerCoreTask():
-                    if num_valid_token_stages > 0:
+                    for store_stage in T.Serial(num_valid_token_stages):
+                        partial_start = (token_block_base + store_stage * cores_per_split) * 64
                         with T.Task():
-                            T.copy(partial_ub, out_mul[split_id, aiv_id, partial_start : partial_start + 64, 0:24])
-                            T.copy(sqrsum_ub[0, 0:64], sqrsum[split_id, aiv_id, partial_start : partial_start + 64])
+                            T.copy(partial_ub[store_stage, 0:64, 0:24], out_mul[split_id, aiv_id, partial_start : partial_start + 64, 0:24])
+                            T.copy(sqrsum_ub[store_stage, 0:64], sqrsum[split_id, aiv_id, partial_start : partial_start + 64])
                     # Every AIV signals from MTE3 after its last chunk, including
                     # workers with no tile in that chunk. The reader waits on MTE2.
                     for _ in T.Serial(T.if_then_else(chunk_idx + 1 == num_token_chunks, 1, 0)):
@@ -958,7 +961,7 @@ def mhc_shifted_single_reuse_kernel(
     comb: T.Tensor[(tokens, 16), T.float32]
     partial_proj: T.Tensor[(num_k_splits, 2, tokens // 2, 24), T.float32]
     partial_sq: T.Tensor[(num_k_splits, 2, tokens // 2), T.float32]
-    assert num_l0c_stages == 1 and num_hidden_blocks_per_split % 4 == 0
+    assert num_l0c_stages in (1, 2) and num_hidden_blocks_per_split % 4 == 0
     _projection_body(
         x, fn, partial_proj, partial_sq, prev_pre, alpha, bias, hi, pre, post, comb,
         tokens, 24, 20480, block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
