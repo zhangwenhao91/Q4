@@ -1,16 +1,22 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh refactor
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261106-171403-1514147
-N=128 N128-rep1
-N=128 N128-rep2
-N=128 N128-rep3
-N=256 N256-rep1
-N=256 N256-rep2
-N=256 N256-rep3
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261106-171403-1514147
-Q4 revision: 82968928cd557b3817f6ffe2d712a9e109ccdc4a
-CPU and pairwise checks passed. Both preallocated versions reuse their outputs.
-N | reference | candidate | reference event us | candidate event us | paired reference/candidate | reference wall us | candidate wall us | source match
-128 | tilelang_deferred_k8_batch_prealloc_reference | tilelang_deferred_k8_batch_prealloc | 18.532 | 18.486 | 1.0013 | 19.105 | 19.030 | True
-  Pair ratios: 1.0025, 1.0013, 1.0012
-256 | tilelang_deferred_k8_batch_prealloc_reference | tilelang_deferred_k8_batch_prealloc | 20.035 | 20.005 | 1.0015 | 20.398 | 20.401 | True
-  Pair ratios: 1.0015, 1.0008, 1.0021
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh fused-v3
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261106-173408-fused-v3-1545927
+Timing Pre N128-rep1
+Timing Pre N128-rep2
+Timing Pre N128-rep3
+Timing Pre N256-rep1
+Timing Pre N256-rep2
+Timing Pre N256-rep3
+Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261106-173408-fused-v3-1545927
+Q4 revision: 31e2ebb97feb49864307ef2987e1d26e33f3287a
+H=5120 shifted Pre; CPU and pairwise checks passed. Preallocated outputs alias across calls.
+N | implementation | event us (3 processes) | median us | paired v3/TL | paired preallocated K8/TL
+128 | ascendc_vllm_v3 | 17.172, 22.101, 15.302 | 17.172 | 1.0000 | 1.0766
+128 | tilelang_deferred_k8_batch_prealloc | 18.488, 18.556, 18.437 | 18.488 | 0.9288 | 1.0000
+128 | tilelang_fused_small | 22.319, 22.449, 22.387 | 22.387 | 0.7694 | 0.8266
+128 | tilelang_fused_small_prealloc | 22.225, 22.179, 22.167 | 22.179 | 0.7727 | 0.8319
+N=128 fused tiling: {'block_num_tokens': 64, 'num_k_splits': 4, 'num_aic_cores': 8, 'num_l0c_stages': 32}; tail: {'num_vec_cores': 56, 'num_stages': 2}
+256 | ascendc_vllm_v3 | 21.757, 21.707, 21.764 | 21.757 | 1.0000 | 0.9218
+256 | tilelang_deferred_k8_batch_prealloc | 20.055, 20.044, 20.043 | 20.044 | 1.0849 | 1.0000
+256 | tilelang_fused_small | 29.456, 29.411, 29.331 | 29.411 | 0.7386 | 0.6815
+256 | tilelang_fused_small_prealloc | 29.414, 29.401, 29.337 | 29.401 | 0.7397 | 0.6818
+N=256 fused tiling: {'block_num_tokens': 128, 'num_k_splits': 4, 'num_aic_cores': 8, 'num_l0c_stages': 16}; tail: {'num_vec_cores': 56, 'num_stages': 2}
