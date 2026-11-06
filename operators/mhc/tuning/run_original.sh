@@ -4,7 +4,27 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"
 MODE="${1:-smoke}"
-case "$MODE" in smoke|check|bench|profile|all|h4096-ab|h5120-fused-ab) ;; *) echo 'Usage: run_original.sh [smoke|check|bench|profile|all|h4096-ab|h5120-fused-ab]'; exit 2 ;; esac
+case "$MODE" in
+  smoke|check|bench|profile|all|h4096-ab|h5120-fused-ab|workspace-ab|h4096-workspace-ab|h5120-workspace-ab) ;;
+  *) echo 'Usage: run_original.sh [smoke|check|bench|profile|all|h4096-ab|h5120-fused-ab|workspace-ab|h4096-workspace-ab|h5120-workspace-ab]'; exit 2 ;;
+esac
+if [[ "$MODE" == workspace-ab ]]; then
+  mkdir -p "$ROOT/results/mhc-original"
+  combined="$(mktemp "$ROOT/results/mhc-original/workspace-summary.XXXXXX")"
+  for hidden in 4096 5120; do
+    printf '\n=== H=%s ===\n' "$hidden" >> "$combined"
+    if bash "$ROOT/operators/mhc/tuning/run_original.sh" "h$hidden-workspace-ab"; then
+      cat "$ROOT/error.txt" >> "$combined"
+    else
+      cat "$ROOT/error.txt" >> "$combined"
+      cp "$combined" "$ROOT/error.txt"
+      exit 1
+    fi
+  done
+  cp "$combined" "$ROOT/error.txt"
+  cat "$combined"
+  exit 0
+fi
 : "${CONDA_PREFIX:?Activate zwh first}"
 : "${ASCEND_HOME_PATH:?Source CANN first}"
 export ASCEND_RT_VISIBLE_DEVICES="${ASCEND_RT_VISIBLE_DEVICES:-4}"
@@ -13,15 +33,15 @@ export CC="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-gcc"
 export CXX="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++"
 export TORCH_EXTENSIONS_DIR="$ROOT/third_party/torch-extensions-gcc13"
 vendor=q4mhc
-if [[ "$MODE" == h5120-fused-ab ]]; then vendor=q4mhc5120; fi
+if [[ "$MODE" == h5120-fused-ab || "$MODE" == h5120-workspace-ab ]]; then vendor=q4mhc5120; fi
 export ASCEND_CUSTOM_OPP_PATH="$ROOT/third_party/$vendor-opp/vendors/${vendor}_transformer"
 export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
 OUT="$ROOT/results/mhc-original/$(date +%Y%m%d-%H%M%S)-$MODE-$$"
 mkdir -p "$OUT"
 echo "Results: $OUT"
 if [[ ! -f "$ASCEND_CUSTOM_OPP_PATH/op_api/lib/libcust_opapi.so" ]]; then
-  if [[ "$MODE" != h5120-fused-ab ]]; then
-    echo "Original vendor missing: run bash operators/mhc/restore_vendor.sh"
+  if [[ "$vendor" != q4mhc5120 ]]; then
+    echo "Original vendor missing: run bash operators/mhc/restore_vendor.sh" | tee "$ROOT/error.txt"
     exit 1
   fi
   echo "Building isolated H=5120 fused vendor (details in $OUT/build.log)"
@@ -30,16 +50,21 @@ if [[ ! -f "$ASCEND_CUSTOM_OPP_PATH/op_api/lib/libcust_opapi.so" ]]; then
     exit 1
   fi
 fi
-if [[ "$MODE" == h4096-ab || "$MODE" == h5120-fused-ab ]]; then
+if [[ "$MODE" == h4096-ab || "$MODE" == h5120-fused-ab || "$MODE" == *-workspace-ab ]]; then
   hidden=4096
   reference=ascendc_original_fused_h4096
-  if [[ "$MODE" == h5120-fused-ab ]]; then
+  if [[ "$vendor" == q4mhc5120 ]]; then
     hidden=5120
     reference=ascendc_adapted_fused_h5120
   fi
   candidate="tilelang_current_pre_all_token_l2_default_h$hidden"
+  token_shapes=(128 256 512 2048 8192)
+  if [[ "$MODE" == *-workspace-ab ]]; then
+    candidate="tilelang_current_pre_k8_batch_workspace_h$hidden"
+    token_shapes=(128 256)
+  fi
   printf 'Q4 revision: %s\n' "$(git rev-parse HEAD)" > "$OUT/runner.log"
-  for tokens in 128 256 512 2048 8192; do
+  for tokens in "${token_shapes[@]}"; do
     for rep in 1 2 3; do
       tag="N$tokens-rep$rep"
       labels=("$reference" "$candidate")

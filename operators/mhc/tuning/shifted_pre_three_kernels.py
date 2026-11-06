@@ -472,13 +472,14 @@ def mhc_projection_split_partials(
     num_token_blocks_per_chunk: int,
 ):
     tokens = T.dynamic('tokens')
-    x: T.Tensor[(tokens, 20480), T.bfloat16]
-    fn: T.Tensor[(24, 20480), T.float32]
+    flat_hidden = T.const('flat_hidden')
+    x: T.Tensor[(tokens, flat_hidden), T.bfloat16]
+    fn: T.Tensor[(24, flat_hidden), T.float32]
     out_mul: T.Tensor[(num_k_splits, tokens, 24), T.float32]
     sqrsum: T.Tensor[(num_k_splits, tokens), T.float32]
     _projection_body(
         x, fn, out_mul, sqrsum, None, None, None, None, None, None, None,
-        tokens, 24, 20480, block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
+        tokens, 24, flat_hidden, block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
         num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
         num_token_blocks_per_chunk, False, None, False, None, False, True)
 

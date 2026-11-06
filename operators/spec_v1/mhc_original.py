@@ -72,6 +72,11 @@ def make_case(a):
         if selected and pipeline_label in selected:
             tl, tl_meta = make_candidate(x, phi, alpha, bias, x0, phi0, all_token_pipeline=True)
             functions[pipeline_label] = tl
+        workspace_label = f'tilelang_current_pre_k8_batch_workspace_h{hidden}'
+        if selected and workspace_label in selected:
+            tl, tl_meta = make_candidate(
+                x, phi, alpha, bias, x0, phi0, all_token_pipeline=True, workspace_k8=True)
+            functions[workspace_label] = tl
         if not selected or 'tilelang_current_pre_h4096' in selected:
             tl, meta = make_candidate(x, phi, alpha, bias, x0, phi0)
             functions = {'tilelang_current_pre_h4096': tl, **functions}
