@@ -1,48 +1,12 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh batch
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261106-153710-1195897
-N=128 N128-profile-base
-N=256 N256-profile-base
-N=128 N128-rep1
-N=128 N128-rep2
-N=128 N128-rep3
-N=128 N128-profile-k8
-N=128 N128-profile-batch
-N=256 N256-rep1
-N=256 N256-rep2
-N=256 N256-rep3
-N=256 N256-profile-k8
-N=256 N256-profile-batch
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mhc/vllm_v3/summarize_small_split_timeline.py /home/z30086261/Q4/results/mhc-small-split-k/20261106-153710-1195897 --output /home/z30086261/Q4/error.txt 
 Run: /home/z30086261/Q4/results/mhc-small-split-k/20261106-153710-1195897
-Q4 revision: cebd4b4652e79f1f5c4f5485f1f50ba7b542b885
-N | implementation | Cube cores | Pre event us (3 processes) | median us | paired baseline/TL | paired sequential K8/TL
-128 | tilelang_all_token_l2_default | 4 | 25.398, 36.373, 25.898 | 25.898 | 1.0000 | 0.9666
-128 | tilelang_deferred_k8 | 8 | 24.551, 34.799, 25.159 | 25.159 | 1.0345 | 1.0000
-128 | tilelang_deferred_k8_batch | 8 | 24.695, 34.095, 25.083 | 25.083 | 1.0325 | 1.0030
-N128-profile-base: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 5.1395
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.0940
-mhc_projection_token_pipeline_kernel | 30 | 16.1610
-N128-profile-k8: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 7.4535
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.3180
-mhc_projection_split_partials_kernel | 30 | 10.0475
-N128-profile-batch: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 5.5260
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.1190
-mhc_projection_split_partials_kernel | 30 | 10.1250
-256 | tilelang_all_token_l2_default | 8 | 26.103, 26.253, 26.142 | 26.142 | 1.0000 | 0.9433
-256 | tilelang_deferred_k8 | 16 | 24.623, 24.756, 24.709 | 24.709 | 1.0601 | 1.0000
-256 | tilelang_deferred_k8_batch | 16 | 24.618, 24.777, 24.696 | 24.696 | 1.0595 | 1.0002
-N256-profile-base: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 5.2665
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.4205
-mhc_projection_token_pipeline_kernel | 30 | 16.4705
-N256-profile-k8: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 7.6720
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.3720
-mhc_projection_split_partials_kernel | 30 | 10.4170
-N256-profile-batch: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 5.4900
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.3485
-mhc_projection_split_partials_kernel | 30 | 10.4775
+Per-invocation device timeline medians (us), 30 complete calls per profile.
+Next gap and period use 27 adjacent calls within profiler steps. Profiles are separate captures.
+N | variant | Apply | projection | tail | Apply->projection gap | projection->tail gap | first start to last end | next-call gap | start-to-start period
+128 | base | 3.094 | 16.161 | 5.140 | 8.164 | 0.022 | 32.954 | 8.569 | 41.676
+128 | k8 | 3.318 | 10.048 | 7.454 | 10.548 | 0.022 | 32.261 | 38.390 | 70.632
+128 | batch | 3.119 | 10.125 | 5.526 | 5.854 | 0.022 | 25.214 | 13.626 | 38.264
+256 | base | 4.420 | 16.470 | 5.266 | 5.703 | 0.022 | 32.280 | 5.892 | 37.598
+256 | k8 | 4.372 | 10.417 | 7.672 | 3.749 | 0.022 | 26.242 | 8.885 | 34.972
+256 | batch | 4.348 | 10.478 | 5.490 | 4.146 | 0.022 | 24.781 | 11.099 | 35.667
 (zwh) root@ubuntu162:/home/z30086261/Q4#
