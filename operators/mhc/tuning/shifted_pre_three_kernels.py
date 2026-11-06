@@ -336,7 +336,7 @@ def _projection_body(
                             T.copy(sqrsum_ub[0, 0:64], sqrsum[split_id, aiv_id, partial_start : partial_start + 64])
                     # Every AIV signals from MTE3 after its last chunk, including
                     # workers with no tile in that chunk. The reader waits on MTE2.
-                    for _ in T.Serial(T.max(chunk_idx + 1 - num_token_chunks, 0)):
+                    for _ in T.Serial(T.if_then_else(chunk_idx + 1 == num_token_chunks, 1, 0)):
                         T.ascend_sync_inter_arrive('PIPE_MTE3', 8)
             elif fused_shifted:
                 for epilogue_stage in T.Serial(num_valid_token_stages):

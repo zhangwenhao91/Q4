@@ -173,7 +173,15 @@ def make_case(a):
                 partial_check = partial(check_reuse_partials, x0, phi0, alpha0, bias0)
             functions[single_label], meta = make_shifted_single_candidate(
                 x, prev, phi, alpha, bias, reuse_apply=reuse_apply, partial_check=partial_check)
-            (a.output / f'{single_label}.cpp').write_text(meta.pop('generated_source'), encoding='utf-8')
+            generated = meta.pop('generated_source')
+            (a.output / f'{single_label}.cpp').write_text(generated, encoding='utf-8')
+            if partial_check is not None:
+                import re
+                arrive = re.search(r'asc_sync_inter_arrive\(\s*PIPE_MTE3\s*,\s*8\s*\)', generated)
+                wait = re.search(r'asc_sync_inter_wait\(\s*PIPE_MTE2\s*,\s*8\s*\)', generated)
+                if not (arrive and wait):
+                    raise RuntimeError('Generated reuse kernel is missing the MTE3 arrival or MTE2 wait for flag 8')
+                print('Generated reuse kernel includes both arrival and wait for flag 8', flush=True)
             metadata[single_label] = meta
         return functions, refs, ['layer_input', 'next_pre_mix', 'post_mix', 'comb_mix'], dict(
             comparison_available=True, vllm_v3=provenance if include_v3 else None,
