@@ -1,32 +1,16 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh k8-alloc-v3
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261106-170007-k8-alloc-v3-1492702
-Timing Pre N128-rep1
-Timing Pre N128-rep2
-Timing Pre N128-rep3
-Timing Pre N256-rep1
-Timing Pre N256-rep2
-Timing Pre N256-rep3
-Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261106-170007-k8-alloc-v3-1492702
-TL baseline: tilelang_deferred_k8_batch_workspace
-TL candidate: tilelang_deferred_k8_batch_prealloc
-AC reference: ascendc_vllm_v3
-Event time: median across rounds (us); ratios > 1 mean TL is faster.
-case | AC us | TL baseline us | TL candidate us | AC/TL baseline | AC/TL candidate | baseline/candidate
-N128-rep1 | 17.503 | 20.719 | 18.508 | 0.8448 | 0.9457 | 1.1195
-N128-rep2 | 15.580 | 21.226 | 18.501 | 0.7340 | 0.8421 | 1.1473
-N128-rep3 | 15.608 | 22.475 | 18.576 | 0.6945 | 0.8402 | 1.2099
-N256-rep1 | 21.891 | 22.137 | 20.005 | 0.9889 | 1.0943 | 1.1066
-N256-rep2 | 21.845 | 22.261 | 20.001 | 0.9813 | 1.0922 | 1.1130
-N256-rep3 | 21.949 | 20.644 | 20.031 | 1.0632 | 1.0958 | 1.0306
-Cases with timing: 6
-Runner log tail (last 20 lines):
-Q4 revision: 898ff44eae4746f3402ff22da0ea4dd0fcd2b255
-TL candidate: tilelang_deferred_k8_batch_workspace
-CPU and pairwise correctness passed for N128-rep1
-CPU and pairwise correctness passed for N128-rep2
-CPU and pairwise correctness passed for N128-rep3
-CPU and pairwise correctness passed for N256-rep1
-CPU and pairwise correctness passed for N256-rep2
-CPU and pairwise correctness passed for N256-rep3
-Saved: /home/z30086261/Q4/error.txt
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh refactor
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261106-171403-1514147
+N=128 N128-rep1
+N=128 N128-rep2
+N=128 N128-rep3
+N=256 N256-rep1
+N=256 N256-rep2
+N=256 N256-rep3
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261106-171403-1514147
+Q4 revision: 82968928cd557b3817f6ffe2d712a9e109ccdc4a
+CPU and pairwise checks passed. Both preallocated versions reuse their outputs.
+N | reference | candidate | reference event us | candidate event us | paired reference/candidate | reference wall us | candidate wall us | source match
+128 | tilelang_deferred_k8_batch_prealloc_reference | tilelang_deferred_k8_batch_prealloc | 18.532 | 18.486 | 1.0013 | 19.105 | 19.030 | True
+  Pair ratios: 1.0025, 1.0013, 1.0012
+256 | tilelang_deferred_k8_batch_prealloc_reference | tilelang_deferred_k8_batch_prealloc | 20.035 | 20.005 | 1.0015 | 20.398 | 20.401 | True
+  Pair ratios: 1.0015, 1.0008, 1.0021
