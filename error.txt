@@ -1,61 +1,53 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_shifted_single.sh reuse
-Results: /home/z30086261/Q4/results/mhc-shifted-single/20261106-110212-693896
+Results: /home/z30086261/Q4/results/mhc-shifted-single/20261106-111023-714758
 H=5120 N=128 check
 Failed stage: check
-Log: /home/z30086261/Q4/results/mhc-shifted-single/20261106-110212-693896/check.log
+Log: /home/z30086261/Q4/results/mhc-shifted-single/20261106-111023-714758/check.log
 === Exception headlines (up to 8) ===
-93: tvm.error.InternalError: Check failed: (validator.has_dependency_task_) is false: T.PerCoreTask must contain at least one dependency-bearing task after task normalization
+94: tvm.error.InternalError: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV1.MTE3 -> AIV0.MTE2 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
 === First error contexts (up to 4) ===
-1: 2026-11-06 11:02:30  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_shifted_single_reuse_kernel` with `out_idx=None`
-2: Traceback (most recent call last):
-3:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
-4:     if __name__=='__main__': main()
-5:                              ^^^^^^
-6:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 96, in main
-7:     functions,refs,names,meta=make_case(a)
-8:                               ^^^^^^^^^^^^
-9:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 131, in make_case
-10:     functions[single_label], meta = make_shifted_single_candidate(
-11:                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-12:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 35, in make_shifted_single_candidate
-13:     kernel = kernel_fn.compile(flat, phi, prev2d, alpha, bias, *sample, *allocate_partials(), **config)
-14:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-15:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 470, in compile
-16:     kernel_result = compile(
-17:                     ^^^^^^^^
-18:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 166, in compile
-19:     return cached(
-20:            ^^^^^^^
-21:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/__init__.py", line 91, in cached
-85:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-86:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-87:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
-88:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-89:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-90:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-91:   File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
-92:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/materialize_schedule_units.cc", line 328, in static void tvm::tl::{anonymous}::PerCoreTaskBodyValidator::Validate(const tvm::tirx::Stmt&, uint16_t)
-93: tvm.error.InternalError: Check failed: (validator.has_dependency_task_) is false: T.PerCoreTask must contain at least one dependency-bearing task after task normalization
-94: [ERROR] 2026-11-06-11:02:32 (PID:693902, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+1: [11:10:37] /home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/insert_sync.cc:846: Fatal: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV1.MTE3 -> AIV0.MTE2 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
+2: 2026-11-06 11:10:28  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_shifted_single_reuse_kernel` with `out_idx=None`
+3: Traceback (most recent call last):
+4:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
+5:     if __name__=='__main__': main()
+6:                              ^^^^^^
+7:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 96, in main
+8:     functions,refs,names,meta=make_case(a)
+9:                               ^^^^^^^^^^^^
+10:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 131, in make_case
+11:     functions[single_label], meta = make_shifted_single_candidate(
+12:                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+13:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 35, in make_shifted_single_candidate
+14:     kernel = kernel_fn.compile(flat, phi, prev2d, alpha, bias, *sample, *allocate_partials(), **config)
+15:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+16:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 470, in compile
+17:     kernel_result = compile(
+18:                     ^^^^^^^^
+19:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 166, in compile
+20:     return cached(
+21:            ^^^^^^^
+22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/__init__.py", line 91, in cached
 === Final non-progress lines ===
-75:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-76:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-77:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-78:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-79:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-80:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-81:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-82:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-83:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-84:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-85:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-86:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-87:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
-88:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-89:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-90:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-91:   File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
-92:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/materialize_schedule_units.cc", line 328, in static void tvm::tl::{anonymous}::PerCoreTaskBodyValidator::Validate(const tvm::tirx::Stmt&, uint16_t)
-93: tvm.error.InternalError: Check failed: (validator.has_dependency_task_) is false: T.PerCoreTask must contain at least one dependency-bearing task after task normalization
-94: [ERROR] 2026-11-06-11:02:32 (PID:693902, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+76:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+77:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+78:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+79:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+80:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+81:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+82:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+83:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+84:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+85:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+86:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+87:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+88:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
+89:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+90:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+91:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+92:   File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
+93:   File "<unknown>", line 0, in tvm::runtime::detail::LogFatal::~LogFatal()
+94: tvm.error.InternalError: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV1.MTE3 -> AIV0.MTE2 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
+95: [ERROR] 2026-11-06-11:10:39 (PID:714764, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
 Saved: /home/z30086261/Q4/error.txt
+(zwh) root@ubuntu162:/home/z30086261/Q4#
