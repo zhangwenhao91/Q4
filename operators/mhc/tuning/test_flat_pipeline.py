@@ -29,4 +29,4 @@ class FlatPipelineContract(unittest.TestCase):
                         and isinstance(n.items[0].context_expr,ast.Call)
                         and getattr(n.items[0].context_expr.func,'attr',None)=='SimdVF')
         self.assertEqual(ast.dump(vf('apply_pipeline.py', 'mhc_pre_apply_pipeline_asc')),
-                         ast.dump(vf('shifted_pre_three_kernels.py', 'mhc_pre_apply_flat_pipeline_asc')))
+                         ast.dump(vf('shifted_pre_k8_preallocated.py', 'mhc_pre_apply_flat_pipeline_asc')))

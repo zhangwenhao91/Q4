@@ -74,6 +74,10 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, app
     if all_token_pipeline:
         if not split_apply or apply_pipeline != (5120, 3) or not flat_pipeline:
             raise ValueError('all_token_pipeline requires split flat H5120 stages=3')
+        if preallocate and batch_partials and deferred_splits == 8 and projection_l2_default:
+            from shifted_pre_k8_preallocated import bind_preallocated_k8
+            return bind_preallocated_k8(
+                x, prev, projector.phi, alpha, bias, tail_cores=tail_cores, tail_stages=tail_stages)
         from shifted_pre_three_kernels import bind_shifted_pre
         return bind_shifted_pre(
             x, prev, projector.phi, alpha, bias, projector.config,
