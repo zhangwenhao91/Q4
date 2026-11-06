@@ -1047,7 +1047,7 @@ def mhc_shifted_single_reuse_kernel(
 
 def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
                      projection_l2_default=True, tail_cores=None, tail_stages=2,
-                     deferred_splits=None, batch_partials=False, preallocate=False):
+                     deferred_splits=None, batch_partials=False, preallocate=False, reuse_workspace=False):
     """Compile the three launchers for the supplied tensors and return a callable."""
     import torch
     from tile_kernels.config import get_num_vec_cores
@@ -1100,7 +1100,7 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
     # Diagnostic only: outputs alias across calls and are overwritten on reuse.
     # Benchmark calls execute in order on the same stream.
     fixed_outputs = (hi, pre, post, comb) if preallocate else None
-    fixed_workspace = (raw, sq) if preallocate else None
+    fixed_workspace = (raw, sq) if preallocate or reuse_workspace else None
 
     def run():
         hi, pre, post, comb = fixed_outputs or allocate_outputs()
@@ -1120,10 +1120,12 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
         operation='public JITImpl.compile -> JITKernel call; no private cache access',
         projection_device_source_sha256=hashes['projection'], tail_device_source_sha256=hashes['tail'],
         numerical_kernel_changes=False, output_preallocation=preallocate,
-        per_call_allocations=0 if preallocate else 4, expected_kernels_per_call=3,
+        workspace_reuse=fixed_workspace is not None,
+        per_call_allocations=0 if preallocate else (2 if reuse_workspace else 4),
+        expected_kernels_per_call=3,
         note=('diagnostic single-stream reuse; returned outputs alias across calls; tensor views and device math timed'
-              if preallocate else
-              'compilation excluded; all device math, output/workspace allocation and views remain timed'),
+              if preallocate else 'single-stream workspace reuse; fresh outputs, views and device math timed'
+              if reuse_workspace else 'compilation excluded; all device math, output/workspace allocation and views remain timed'),
         generated_apply_source=sources['apply'], standalone_apply_source_sha256=hashes['apply'],
         standalone_apply_hidden_tile=hidden, generated_sources=sources,
         deferred_splits=deferred_splits, batch_partials=batch_partials, projection_config=projection_config)

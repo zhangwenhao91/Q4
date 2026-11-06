@@ -158,7 +158,8 @@ def make_case(a):
             variants.extend((f'tilelang_deferred_k{splits}', True, splits) for splits in (4, 8, 16))
             variants.append(('tilelang_deferred_k8_batch', True, 8))
             variants.extend((label, True, 8) for label in (
-                'tilelang_deferred_k8_prealloc', 'tilelang_deferred_k8_batch_prealloc'))
+                'tilelang_deferred_k8_prealloc', 'tilelang_deferred_k8_batch_prealloc',
+                'tilelang_deferred_k8_batch_workspace'))
         for label, use_default, deferred_splits in variants:
             if a.implementations and label not in a.implementations:
                 continue
@@ -166,7 +167,7 @@ def make_case(a):
                 split_apply=True, apply_pipeline=(5120, 3), flat_pipeline=True, all_token_pipeline=True,
                 projection_l2_default=use_default, deferred_splits=deferred_splits,
                 batch_partials=label.startswith('tilelang_deferred_k8_batch'),
-                preallocate=label.endswith('_prealloc'))
+                preallocate=label.endswith('_prealloc'), reuse_workspace=label.endswith('_workspace'))
             for name, source in meta.pop('generated_sources').items():
                 (a.output / f'{label}_{name}.cpp').write_text(source, encoding='utf-8')
             metadata[label] = meta
