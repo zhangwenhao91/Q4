@@ -9,21 +9,43 @@ export ASCEND_NPU_ARCH=dav-3510
 export CC="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-gcc"
 export CXX="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++"
 PY="$CONDA_PREFIX/bin/python"
-OUT="$ROOT/results/mhc-small-split-k/$(date +%Y%m%d-%H%M%S)-$$"
-mkdir -p "$OUT"
-git rev-parse HEAD > "$OUT/revision.txt"
-echo "Results: $OUT"
 base=tilelang_all_token_l2_default
 mode="${1:-scan}"
 case "$mode" in
   scan) shapes=(128 256 512) ;;
   batch|alloc|workspace) shapes=(128 256) ;;
-  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|workspace]'; exit 2 ;;
+  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|workspace [run-directory]]'; exit 2 ;;
 esac
+resume="${2:-}"
+results="$ROOT/results/mhc-small-split-k"
+if [[ -n "$resume" ]]; then
+  [[ "$mode" == workspace && $# == 2 ]] || { echo 'Only workspace supports resume'; exit 2; }
+  OUT="$(realpath -e -- "$resume")"
+  [[ "$OUT" == "$results/"* && -f "$OUT/revision.txt" ]] || { echo 'Invalid results directory'; exit 2; }
+  # The first workspace result predates the mode marker.
+  [[ "$(cat "$OUT/mode.txt" 2>/dev/null || true)" == workspace ||
+     -f "$OUT/N128-profile-batch-workspace/metadata.json" ]] || { echo 'Not a workspace run'; exit 2; }
+else
+  OUT="$results/$(date +%Y%m%d-%H%M%S)-$$"
+  mkdir -p "$OUT"
+  git rev-parse HEAD > "$OUT/revision.txt"
+fi
+printf '%s\n' "$mode" > "$OUT/mode.txt"
+echo "Results: $OUT"
 
 run_case() {
   local tag="$1" n="$2"
   shift 2
+  if [[ -n "$resume" ]]; then
+    if [[ -f "$OUT/$tag/summary.json" ]] ||
+       [[ "$tag" == *-profile-* && -n "$(find "$OUT/$tag" -type f -name kernel_details.csv -print -quit 2>/dev/null)" ]]; then
+      echo "N=$n $tag already complete"
+      return
+    fi
+    local saved="$OUT/$tag.failed-$(date +%Y%m%d-%H%M%S)-$$"
+    if [[ -e "$OUT/$tag" ]]; then mv -- "$OUT/$tag" "$saved"; fi
+    if [[ -e "$OUT/$tag.log" ]]; then mv -- "$OUT/$tag.log" "$saved.log"; fi
+  fi
   echo "N=$n $tag"
   if ! "$PY" operators/spec_v1/bench.py --suite mhc_vllm_v3 --mhc-vllm-stage pre \
     --mhc-projection-l2-ab --tokens "$n" --output "$OUT/$tag" "$@" > "$OUT/$tag.log" 2>&1; then
