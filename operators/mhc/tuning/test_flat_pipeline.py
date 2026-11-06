@@ -21,9 +21,12 @@ class FlatPipelineContract(unittest.TestCase):
                 self.assertTrue(all(v==1 for v in owned.values()))
 
     def test_vector_arithmetic_identical_to_nested_candidate(self):
-        def vf(name):
+        def vf(name, kernel):
             tree = ast.parse(Path(__file__).with_name(name).read_text(encoding='utf-8'))
-            return next(n for n in ast.walk(tree) if isinstance(n,ast.With)
+            function = next(node for node in tree.body
+                            if isinstance(node, ast.FunctionDef) and node.name == kernel)
+            return next(n for n in ast.walk(function) if isinstance(n,ast.With)
                         and isinstance(n.items[0].context_expr,ast.Call)
                         and getattr(n.items[0].context_expr.func,'attr',None)=='SimdVF')
-        self.assertEqual(ast.dump(vf('apply_pipeline.py')),ast.dump(vf('apply_flat_pipeline.py')))
+        self.assertEqual(ast.dump(vf('apply_pipeline.py', 'mhc_pre_apply_pipeline_asc')),
+                         ast.dump(vf('shifted_pre_three_kernels.py', 'mhc_pre_apply_flat_pipeline_asc')))

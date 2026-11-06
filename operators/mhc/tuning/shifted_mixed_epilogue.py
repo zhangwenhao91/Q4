@@ -2,7 +2,7 @@
 from tilelang.ascend import language as T
 from tilelang.ascend.language import simd as S
 
-from coeff_token_pipeline import compute_coefficients
+from shifted_pre_three_kernels import compute_coefficients
 
 
 @T.macro

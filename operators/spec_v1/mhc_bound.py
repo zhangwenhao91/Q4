@@ -36,6 +36,15 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, app
     import sys
     from tile_kernels.config import get_num_vec_cores
     sys.path.insert(0, str(SOURCE))
+    if all_token_pipeline:
+        if not split_apply or apply_pipeline != (5120, 3) or not flat_pipeline:
+            raise ValueError('all_token_pipeline requires split flat H5120 stages=3')
+        from shifted_pre_three_kernels import bind_shifted_pre
+        return bind_shifted_pre(
+            x, prev, projector.phi, alpha, bias, projector.config,
+            projection_l2_default=projection_l2_default, tail_cores=tail_cores, tail_stages=tail_stages)
+    if projection_l2_default:
+        raise ValueError('projection_l2_default requires all_token_pipeline')
     from apply_tail import mhc_shifted_tail_apply_fwd_asc
     t, padded = projector.t, projector.padded
     prev2d = prev.view(t, 4)
@@ -52,24 +61,11 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, app
     sample_hi, sample_pre, sample_post, sample_comb = allocate_outputs(torch, t, x)
     sample_raw = torch.empty(1, t, 24, dtype=torch.float32, device=x.device)
     sample_sq = torch.empty(padded // 128, 2, 64, dtype=torch.float32, device=x.device)
-    projection_fn = projector.kernel
-    if projection_l2_default and not all_token_pipeline:
-        raise ValueError('projection_l2_default requires all_token_pipeline')
-    if all_token_pipeline:
-        if not split_apply or apply_pipeline != (5120, 3) or not flat_pipeline:
-            raise ValueError('all_token_pipeline requires split flat H5120 stages=3')
-        if t % 128:
-            raise ValueError('Experimental all-token pipeline requires N divisible by 128')
-        from projection_token_pipeline import mhc_projection_token_pipeline
-        projection_fn = mhc_projection_token_pipeline
-    projection_options = dict(residual_l2_cache_ctrl=None) if projection_l2_default else {}
-    projection = projection_fn.compile(projector.x, projector.phi, sample_raw[0], sample_sq,
-                                          deterministic=False, **projector.config, **projection_options)
+    projection = projector.kernel.compile(projector.x, projector.phi, sample_raw[0], sample_sq,
+                                          deterministic=False, **projector.config)
     sample_valid_sq = sample_sq.view(1, padded)[:, :t]
     if split_apply:
         from coeff_tail import mhc_coeff_tail_fwd_asc
-        if all_token_pipeline:
-            from coeff_token_pipeline import mhc_coeff_token_pipeline as mhc_coeff_tail_fwd_asc
         from tile_kernels.mhc.pre_apply_mix_asc import mhc_pre_apply_mix_fwd_asc
         if apply_pipeline is not None:
             from apply_pipeline import mhc_pre_apply_pipeline_asc
@@ -128,10 +124,4 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, app
             metadata['generated_apply_source'] = standalone_apply.get_kernel_source()
         metadata['standalone_apply_source_sha256'] = hashlib.sha256(standalone_apply.get_kernel_source().encode()).hexdigest()
         metadata['standalone_apply_hidden_tile'] = apply_pipeline[0] if apply_pipeline else apply_h_blk
-    if all_token_pipeline:
-        metadata['generated_sources'] = {
-            'apply': standalone_apply.get_kernel_source(),
-            'projection': projection.get_kernel_source(),
-            'tail': tail.get_kernel_source(),
-        }
     return (run_split if split_apply else run), metadata
