@@ -180,6 +180,17 @@ def make_case(a):
             for name, source in meta.pop('generated_sources').items():
                 (a.output / f'{reference}_{name}.cpp').write_text(source, encoding='utf-8')
             metadata[reference] = meta
+        for label, preallocated in (('tilelang_fused_small', False),
+                                    ('tilelang_fused_small_prealloc', True)):
+            if label not in (a.implementations or ()):
+                continue
+            from deep_gemm import _C
+            from tile_kernels.config import get_num_vec_cores
+            sys.path.insert(0, str(ROOT / 'operators/mhc/tuning'))
+            from shifted_pre_fused import bind_shifted_pre
+            functions[label], metadata[label] = bind_shifted_pre(
+                x, prev, phi, alpha, bias, num_aic_cores=_C.get_num_sms(),
+                num_vec_cores=get_num_vec_cores(), preallocate=preallocated)
         for single_label, reuse_apply, token_stages in (
                 ('tilelang_shifted_single_h5120', False, 1),
                 ('tilelang_shifted_single_reuse_h5120', True, 1),

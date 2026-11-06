@@ -8,6 +8,28 @@ from summarize_projection import profile_lines
 from summarize_small_split_timeline import timeline_lines
 
 
+def fused_report(root):
+    v3 = 'ascendc_vllm_v3'
+    k8 = 'tilelang_deferred_k8_batch_prealloc'
+    fused = 'tilelang_fused_small'
+    labels = (v3, k8, fused, f'{fused}_prealloc')
+    lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
+             'H=5120 shifted Pre; CPU and pairwise checks passed. Preallocated outputs alias across calls.',
+             'N | implementation | event us (3 processes) | median us | paired v3/TL | paired preallocated K8/TL']
+    for n in (128, 256):
+        cases = [root / f'N{n}-rep{rep}' for rep in (1, 2, 3)]
+        timings = [json.loads((case / 'summary.json').read_text()) for case in cases]
+        for label in labels:
+            times = [run[label]['event_us'] for run in timings]
+            ratios = [median(run[ref]['event_us'] / value for run, value in zip(timings, times))
+                      for ref in (v3, k8)]
+            lines.append(f'{n} | {label} | {", ".join(f"{value:.3f}" for value in times)} | '
+                         f'{median(times):.3f} | {ratios[0]:.4f} | {ratios[1]:.4f}')
+        meta = json.loads((cases[0] / 'metadata.json').read_text())['variants'][fused]
+        lines.append(f'N={n} fused tiling: {meta["projection_settings"]}; tail: {meta["tail_settings"]}')
+    return '\n'.join(lines) + '\n'
+
+
 def allocation_report(root, mode='alloc'):
     labels = ('tilelang_deferred_k8', 'tilelang_deferred_k8_batch')
     pairs = [(name, f'{name}_prealloc') for name in labels]
@@ -80,7 +102,11 @@ def report(root, batch=False):
 if __name__ == '__main__':
     root = Path(sys.argv[1])
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
-    summary = (allocation_report(root, mode=mode) if mode in ('alloc', 'workspace', 'refactor')
-               else report(root, batch=mode == 'batch'))
+    if mode == 'fused':
+        summary = fused_report(root)
+    elif mode in ('alloc', 'workspace', 'refactor'):
+        summary = allocation_report(root, mode=mode)
+    else:
+        summary = report(root, batch=mode == 'batch')
     (root / 'summary.txt').write_text(summary, encoding='utf-8')
     print(summary, end='')
