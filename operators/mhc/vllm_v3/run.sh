@@ -5,8 +5,8 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"
 MODE="${1:-all}"
 case "$MODE" in
-  build|smoke|bench|all|resume|projection|memory|l2|l2-v3|l2-v3-small|k8-workspace-v3) ;;
-  *) echo 'Usage: run.sh [build|smoke|bench|all|resume|projection|memory|l2|l2-v3|l2-v3-small|k8-workspace-v3]'; exit 2 ;;
+  build|smoke|bench|all|resume|projection|memory|l2|l2-v3|l2-v3-small|k8-workspace-v3|k8-alloc-v3) ;;
+  *) echo 'Usage: run.sh [build|smoke|bench|all|resume|projection|memory|l2|l2-v3|l2-v3-small|k8-workspace-v3|k8-alloc-v3]'; exit 2 ;;
 esac
 : "${CONDA_PREFIX:?Activate zwh first}"
 : "${ASCEND_HOME_PATH:?Source CANN first}"
@@ -59,14 +59,18 @@ fi
 if [[ "$MODE" == memory ]]; then
   exec bash operators/mhc/vllm_v3/profile_memory.sh "$OUT"
 fi
-if [[ "$MODE" == l2-v3 || "$MODE" == l2-v3-small || "$MODE" == k8-workspace-v3 ]]; then
+if [[ "$MODE" == l2-v3 || "$MODE" == l2-v3-small || "$MODE" == k8-workspace-v3 || "$MODE" == k8-alloc-v3 ]]; then
   reference=ascendc_vllm_v3
   candidate=tilelang_all_token_l2_default
+  preallocated=''
   tokens=(8192)
   if [[ "$MODE" == l2-v3-small ]]; then tokens=(128 256 512 2048); fi
-  if [[ "$MODE" == k8-workspace-v3 ]]; then
+  if [[ "$MODE" == k8-workspace-v3 || "$MODE" == k8-alloc-v3 ]]; then
     candidate=tilelang_deferred_k8_batch_workspace
     tokens=(128 256)
+  fi
+  if [[ "$MODE" == k8-alloc-v3 ]]; then
+    preallocated=tilelang_deferred_k8_batch_prealloc
   fi
   printf 'Q4 revision: %s\nTL candidate: %s\n' "$(cat "$OUT/revision.txt")" "$candidate" > "$OUT/runner.log"
   for n in "${tokens[@]}"; do
@@ -74,6 +78,7 @@ if [[ "$MODE" == l2-v3 || "$MODE" == l2-v3-small || "$MODE" == k8-workspace-v3 ]
       name="N$n-rep$rep"
       labels=("$reference" "$candidate")
       if [[ "$rep" == 2 ]]; then labels=("$candidate" "$reference"); fi
+      if [[ -n "$preallocated" ]]; then labels+=("$preallocated"); fi
       echo "Timing Pre $name"
       if ! "$PY" operators/spec_v1/bench.py --suite mhc_vllm_v3 --mhc-vllm-stage pre \
         --mhc-projection-l2-ab --tokens "$n" --implementations "${labels[@]}" \
@@ -85,7 +90,7 @@ if [[ "$MODE" == l2-v3 || "$MODE" == l2-v3-small || "$MODE" == k8-workspace-v3 ]
     done
   done
   "$PY" operators/mhc/tuning/summarize_token_pipeline.py --input "$OUT" --output "$ROOT/error.txt" \
-    --reference "$reference" --baseline "$candidate" --candidate ''
+    --reference "$reference" --baseline "$candidate" --candidate "$preallocated"
   exit 0
 fi
 stages=(pre post combined)

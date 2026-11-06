@@ -20,7 +20,7 @@ def main():
     if run is None:
         p.error('No bench run found. Pass --input to select a smoke or other run.')
     lines = [f'Run: {run}', 'Event time: median across rounds (us); ratios > 1 mean TL is faster.',
-             'case | AC us | TL original us | TL N-pipeline us | AC/TL original | AC/TL pipeline | original/pipeline']
+             'case | AC us | TL baseline us | TL candidate us | AC/TL baseline | AC/TL candidate | baseline/candidate']
     labels = (a.reference, a.baseline)
     if a.candidate:
         labels += (a.candidate,)
@@ -28,7 +28,7 @@ def main():
         lines[-1] = 'case | AC us | TL us | AC/TL'
     lines.insert(1, f'AC reference: {a.reference}')
     if a.candidate:
-        lines.insert(1, f'Candidate: {a.candidate}')
+        lines[1:1] = [f'TL baseline: {a.baseline}', f'TL candidate: {a.candidate}']
     count = 0
     for case in sorted(run.glob('N*-rep*')):
         if not case.is_dir():
