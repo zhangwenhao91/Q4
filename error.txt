@@ -1,24 +1,26 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh k8-workspace-v3
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261106-163626-k8-workspace-v3-1438943
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh k8-alloc-v3
+Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261106-164811-k8-alloc-v3-1458853
 Timing Pre N128-rep1
 Timing Pre N128-rep2
 Timing Pre N128-rep3
 Timing Pre N256-rep1
 Timing Pre N256-rep2
 Timing Pre N256-rep3
-Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261106-163626-k8-workspace-v3-1438943
+Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261106-164811-k8-alloc-v3-1458853
+TL baseline: tilelang_deferred_k8_batch_workspace
+TL candidate: tilelang_deferred_k8_batch_prealloc
 AC reference: ascendc_vllm_v3
 Event time: median across rounds (us); ratios > 1 mean TL is faster.
-case | AC us | TL us | AC/TL
-N128-rep1 | 15.262 | 20.628 | 0.7398
-N128-rep2 | 15.333 | 20.561 | 0.7458
-N128-rep3 | 17.428 | 22.297 | 0.7816
-N256-rep1 | 21.753 | 20.580 | 1.0570
-N256-rep2 | 21.623 | 22.210 | 0.9736
-N256-rep3 | 21.733 | 20.530 | 1.0586
+case | AC us | TL baseline us | TL candidate us | AC/TL baseline | AC/TL candidate | baseline/candidate
+N128-rep1 | 21.663 | 20.889 | 18.503 | 1.0370 | 1.1708 | 1.1290
+N128-rep2 | 22.257 | 22.932 | 18.558 | 0.9706 | 1.1993 | 1.2357
+N128-rep3 | 22.351 | 22.631 | 18.517 | 0.9876 | 1.2071 | 1.2222
+N256-rep1 | 21.955 | 20.500 | 20.005 | 1.0710 | 1.0975 | 1.0247
+N256-rep2 | 21.882 | 20.696 | 19.992 | 1.0573 | 1.0946 | 1.0352
+N256-rep3 | 21.917 | 20.427 | 20.069 | 1.0730 | 1.0921 | 1.0178
 Cases with timing: 6
 Runner log tail (last 20 lines):
-Q4 revision: cfce668b21523f2fdbb27cec1b8c002c09b4fb3d
+Q4 revision: 3923698e98d4b471af354a5e7ba033d7df5dd390
 TL candidate: tilelang_deferred_k8_batch_workspace
 CPU and pairwise correctness passed for N128-rep1
 CPU and pairwise correctness passed for N128-rep2
