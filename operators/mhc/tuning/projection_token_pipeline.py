@@ -12,9 +12,10 @@ from tilelang.ascend import language as T
 from tilelang.layout import make_ascend_compact_nz_layout
 
 from deep_gemm import _C
+from shifted_mixed_epilogue import shifted_epilogue
 
 
-def get_config(mhc_hidden_size: int, mhc_mult3: int, num_tokens: int, deterministic: bool = False) -> dict:
+def get_config(mhc_hidden_size: int, mhc_mult3: int, num_tokens: int, deterministic: bool = False, *, token_owned=False) -> dict:
     """Return optimal kernel parameters for a given shape."""
     block_num_tokens = 128
     block_hidden = 256
@@ -43,7 +44,7 @@ def get_config(mhc_hidden_size: int, mhc_mult3: int, num_tokens: int, determinis
     num_k_splits_by_hidden = num_hidden_blocks & -num_hidden_blocks
     num_k_splits_by_cores = num_aic_cores & -num_aic_cores
     split_limit = min(num_k_splits_by_workload, num_k_splits_by_hidden, num_k_splits_by_cores)
-    num_k_splits = 1 << (split_limit.bit_length() - 1)
+    num_k_splits = 1 if token_owned else 1 << (split_limit.bit_length() - 1)
 
     active_aic_cores = num_k_splits * min(num_aic_cores // num_k_splits, num_token_blocks)
     cores_per_split = active_aic_cores // num_k_splits
@@ -61,22 +62,13 @@ def get_config(mhc_hidden_size: int, mhc_mult3: int, num_tokens: int, determinis
         'num_token_blocks_per_chunk': num_token_blocks_per_chunk,
     }
 
-@tilelang.jit
-def mhc_projection_token_pipeline(
-    x,
-    fn,
-    out_mul,
-    sqrsum,
-    block_mhc_mult3: int,
-    num_aic_cores: int,
-    num_k_splits: int,
-    cores_per_split: int,
-    num_hidden_blocks_per_split: int,
-    num_l0b_stages: int,
-    num_l0c_stages: int,
-    num_token_blocks_per_chunk: int,
-    deterministic: bool = False,
-    residual_l2_cache_ctrl="notalloc_keep",
+@T.macro
+def _projection_body(
+    x, fn, out_mul, sqrsum, prev_pre, alpha, bias, hi, pre, post, comb,
+    num_tokens, mhc_mult3, mhc_hidden_size,
+    block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
+    num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
+    num_token_blocks_per_chunk, deterministic, residual_l2_cache_ctrl, fused_shifted,
 ):
     block_num_tokens = 128
     block_hidden = 256
@@ -84,19 +76,10 @@ def mhc_projection_token_pipeline(
     num_aivs = 2
     half_block_num_tokens = block_num_tokens // num_aivs
     num_mads_per_block = block_hidden // mad_hidden
-    num_load_stages = 3
+    num_load_stages = 2 if fused_shifted else 3
     num_cast_stages = 2
     num_l1_x_stages = 3
     num_mad_stages = 2
-
-    num_tokens = T.dynamic('num_tokens')
-    mhc_mult3 = T.const('mhc_mult3')
-    mhc_hidden_size = T.const('mhc_hidden_size')
-
-    x: T.Tensor[(num_tokens, mhc_hidden_size), T.bfloat16]
-    fn: T.Tensor[(mhc_mult3, mhc_hidden_size), T.float32]
-    out_mul: T.Tensor[(num_tokens, mhc_mult3), T.float32]
-    sqrsum: T.Tensor[(T.ceildiv(num_tokens, block_num_tokens), num_aivs, half_block_num_tokens), T.float32]
 
     num_store_phases = num_k_splits if deterministic else (2 if num_k_splits > 1 else 1)
     # In non-deterministic mode, phase 0 separates split 0's non-atomic store
@@ -298,71 +281,137 @@ def mhc_projection_token_pipeline(
                             ),
                         )
 
-            with T.PerCoreTask():
-                for store_phase in T.Serial(num_store_phases):
-                    store_this_phase = T.if_then_else(
-                        deterministic,
-                        split_id == store_phase,
-                        T.if_then_else(store_phase == 0, split_id == 0, split_id != 0),
-                    )
-                    out_mul_flag = (chunk_idx * num_store_phases + store_phase) % 4
+            if fused_shifted:
+                for token_stage in T.Serial(num_valid_token_stages):
+                    token_begin = (token_block_base + token_stage * cores_per_split) * block_num_tokens
+                    shifted_epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
+                                     out_mul_l0, sqrsum_ub, token_begin, token_stage,
+                                     aiv_id, mhc_hidden_size // 4, num_l0c_stages)
+            else:
+                with T.PerCoreTask():
+                    for store_phase in T.Serial(num_store_phases):
+                        store_this_phase = T.if_then_else(
+                            deterministic,
+                            split_id == store_phase,
+                            T.if_then_else(store_phase == 0, split_id == 0, split_id != 0),
+                        )
+                        out_mul_flag = (chunk_idx * num_store_phases + store_phase) % 4
 
-                    if store_this_phase:
-                        with T.Task():
-                            for token_stage in T.Serial(num_valid_token_stages):
-                                token_block = token_block_base + token_stage * cores_per_split
-                                token_begin = token_block * block_num_tokens
-                                actual_num_tokens = T.min(num_tokens - token_begin, block_num_tokens)
-                                T.copy(
-                                    out_mul_l0[token_stage, 0:actual_num_tokens, 0:mhc_mult3],
-                                    out_mul[
-                                        token_begin : token_begin + actual_num_tokens,
-                                        0:mhc_mult3,
-                                    ],
-                                    unit_flag_ctrl=3,
-                                )
-                    num_store_syncs = T.if_then_else(
-                        store_phase < num_always_synced_store_phases,
-                        1,
-                        T.min(num_token_chunks - chunk_idx - 1, num_chunk_end_syncs),
-                    )
-                    for _ in T.Serial(num_store_syncs):
-                        T.ascend_sync_inter_arrive('PIPE_FIX', out_mul_flag)
-                        T.ascend_sync_inter_wait('PIPE_FIX', out_mul_flag)
+                        if store_this_phase:
+                            with T.Task():
+                                for token_stage in T.Serial(num_valid_token_stages):
+                                    token_block = token_block_base + token_stage * cores_per_split
+                                    token_begin = token_block * block_num_tokens
+                                    actual_num_tokens = T.min(num_tokens - token_begin, block_num_tokens)
+                                    T.copy(
+                                        out_mul_l0[token_stage, 0:actual_num_tokens, 0:mhc_mult3],
+                                        out_mul[
+                                            token_begin : token_begin + actual_num_tokens,
+                                            0:mhc_mult3,
+                                        ],
+                                        unit_flag_ctrl=3,
+                                    )
+                        num_store_syncs = T.if_then_else(
+                            store_phase < num_always_synced_store_phases,
+                            1,
+                            T.min(num_token_chunks - chunk_idx - 1, num_chunk_end_syncs),
+                        )
+                        for _ in T.Serial(num_store_syncs):
+                            T.ascend_sync_inter_arrive('PIPE_FIX', out_mul_flag)
+                            T.ascend_sync_inter_wait('PIPE_FIX', out_mul_flag)
 
-            with T.PerCoreTask():
-                for store_phase in T.Serial(num_store_phases):
-                    store_this_phase = T.if_then_else(
-                        deterministic,
-                        split_id == store_phase,
-                        T.if_then_else(store_phase == 0, split_id == 0, split_id != 0),
-                    )
-                    sqrsum_flag = 4 + (chunk_idx * num_store_phases + store_phase) % 4
+                with T.PerCoreTask():
+                    for store_phase in T.Serial(num_store_phases):
+                        store_this_phase = T.if_then_else(
+                            deterministic,
+                            split_id == store_phase,
+                            T.if_then_else(store_phase == 0, split_id == 0, split_id != 0),
+                        )
+                        sqrsum_flag = 4 + (chunk_idx * num_store_phases + store_phase) % 4
 
-                    if store_this_phase:
-                        with T.Task():
-                            for token_stage in T.Serial(num_valid_sqrsum_stages):
-                                token_block = token_block_base + token_stage * cores_per_split
-                                token_begin = token_block * block_num_tokens + aiv_id * half_block_num_tokens
-                                actual_aiv_num_tokens = T.min(
-                                    num_tokens - token_begin,
-                                    half_block_num_tokens,
-                                )
-                                T.copy(
-                                    sqrsum_ub[token_stage, 0:actual_aiv_num_tokens],
-                                    sqrsum[token_block, aiv_id, 0:actual_aiv_num_tokens],
-                                    l2_cache_ctrl='normal_fv',
-                                )
-                    num_store_syncs = T.if_then_else(
-                        store_phase < num_always_synced_store_phases,
-                        1,
-                        T.min(num_token_chunks - chunk_idx - 1, num_chunk_end_syncs),
-                    )
-                    for _ in T.Serial(num_store_syncs):
-                        T.ascend_sync_inter_arrive('PIPE_MTE3', sqrsum_flag)
-                        T.ascend_sync_inter_wait('PIPE_MTE3', sqrsum_flag)
+                        if store_this_phase:
+                            with T.Task():
+                                for token_stage in T.Serial(num_valid_sqrsum_stages):
+                                    token_block = token_block_base + token_stage * cores_per_split
+                                    token_begin = token_block * block_num_tokens + aiv_id * half_block_num_tokens
+                                    actual_aiv_num_tokens = T.min(
+                                        num_tokens - token_begin,
+                                        half_block_num_tokens,
+                                    )
+                                    T.copy(
+                                        sqrsum_ub[token_stage, 0:actual_aiv_num_tokens],
+                                        sqrsum[token_block, aiv_id, 0:actual_aiv_num_tokens],
+                                        l2_cache_ctrl='normal_fv',
+                                    )
+                        num_store_syncs = T.if_then_else(
+                            store_phase < num_always_synced_store_phases,
+                            1,
+                            T.min(num_token_chunks - chunk_idx - 1, num_chunk_end_syncs),
+                        )
+                        for _ in T.Serial(num_store_syncs):
+                            T.ascend_sync_inter_arrive('PIPE_MTE3', sqrsum_flag)
+                            T.ascend_sync_inter_wait('PIPE_MTE3', sqrsum_flag)
 
         if split_id != 0:
             T.set_atomic_none()
 
+@tilelang.jit
+def mhc_projection_token_pipeline(
+    x, fn, out_mul, sqrsum,
+    block_mhc_mult3: int,
+    num_aic_cores: int,
+    num_k_splits: int,
+    cores_per_split: int,
+    num_hidden_blocks_per_split: int,
+    num_l0b_stages: int,
+    num_l0c_stages: int,
+    num_token_blocks_per_chunk: int,
+    deterministic: bool = False,
+    residual_l2_cache_ctrl="notalloc_keep",
+):
+    num_tokens = T.dynamic('num_tokens')
+    mhc_mult3 = T.const('mhc_mult3')
+    mhc_hidden_size = T.const('mhc_hidden_size')
+    x: T.Tensor[(num_tokens, mhc_hidden_size), T.bfloat16]
+    fn: T.Tensor[(mhc_mult3, mhc_hidden_size), T.float32]
+    out_mul: T.Tensor[(num_tokens, mhc_mult3), T.float32]
+    sqrsum: T.Tensor[(T.ceildiv(num_tokens, 128), 2, 64), T.float32]
+    _projection_body(
+        x, fn, out_mul, sqrsum, None, None, None, None, None, None, None,
+        num_tokens, mhc_mult3, mhc_hidden_size,
+        block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
+        num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
+        num_token_blocks_per_chunk, deterministic, residual_l2_cache_ctrl, False)
 
+
+@tilelang.jit
+def mhc_shifted_single_kernel(
+    x, fn, prev_pre, alpha, bias, hi, pre, post, comb,
+    block_mhc_mult3: int,
+    num_aic_cores: int,
+    num_k_splits: int,
+    cores_per_split: int,
+    num_hidden_blocks_per_split: int,
+    num_l0b_stages: int,
+    num_l0c_stages: int,
+    num_token_blocks_per_chunk: int,
+):
+    num_tokens = T.dynamic('num_tokens')
+    mhc_mult3 = T.const('mhc_mult3')
+    mhc_hidden_size = T.const('mhc_hidden_size')
+    x: T.Tensor[(num_tokens, mhc_hidden_size), T.bfloat16]
+    fn: T.Tensor[(mhc_mult3, mhc_hidden_size), T.float32]
+    prev_pre: T.Tensor[(num_tokens, 4), T.float32]
+    alpha: T.Tensor[(3,), T.float32]
+    bias: T.Tensor[(24,), T.float32]
+    hi: T.Tensor[(num_tokens, mhc_hidden_size // 4), T.bfloat16]
+    pre: T.Tensor[(num_tokens, 4), T.float32]
+    post: T.Tensor[(num_tokens, 4), T.float32]
+    comb: T.Tensor[(num_tokens, 16), T.float32]
+    assert num_k_splits == 1
+    _projection_body(
+        x, fn, None, None, prev_pre, alpha, bias, hi, pre, post, comb,
+        num_tokens, mhc_mult3, mhc_hidden_size,
+        block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
+        num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
+        num_token_blocks_per_chunk, False, None, True)

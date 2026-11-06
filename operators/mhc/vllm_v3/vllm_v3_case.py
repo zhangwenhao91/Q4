@@ -62,7 +62,7 @@ def make_case(a):
     import sys
     sys.path.insert(0, str(ROOT / 'operators/mhc/matched'))
     from projection import DynamicHCProjection
-    from mhc_bound import make_bound_candidate
+    from mhc_bound import make_bound_candidate, make_shifted_single_candidate
     from cases import shifted_reference
     if a.tokens % 128:
         raise ValueError('Three-kernel N-pipeline comparison requires N divisible by 128')
@@ -124,6 +124,11 @@ def make_case(a):
             for name, source in meta.pop('generated_sources').items():
                 (a.output / f'{label}_{name}.cpp').write_text(source, encoding='utf-8')
             metadata[label] = meta
+        single_label = 'tilelang_shifted_single_h5120'
+        if single_label in (a.implementations or ()):
+            functions[single_label], meta = make_shifted_single_candidate(x, prev, phi, alpha, bias)
+            (a.output / f'{single_label}.cpp').write_text(meta.pop('generated_source'), encoding='utf-8')
+            metadata[single_label] = meta
         return functions, refs, ['layer_input', 'next_pre_mix', 'post_mix', 'comb_mix'], dict(
             comparison_available=True, vllm_v3=provenance if include_v3 else None,
             stage=stage, projection_config=projector.config, variants=metadata)

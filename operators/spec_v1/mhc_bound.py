@@ -4,6 +4,31 @@ import hashlib
 from mhc_fusion import SOURCE, allocate_outputs
 
 
+def make_shifted_single_candidate(x, prev, phi, alpha, bias):
+    import sys
+    import torch
+
+    t = x.shape[0]
+    if x.shape[1:] != (4, 5120) or not t or t % 128:
+        raise ValueError('Single-kernel shifted Pre requires H=5120 and positive N divisible by 128')
+    sys.path.insert(0, str(SOURCE))
+    from projection_token_pipeline import get_config, mhc_shifted_single_kernel
+
+    flat = x.flatten(1)
+    prev2d = prev.view(t, 4)
+    config = get_config(4 * 5120, 24, t, token_owned=True)
+    sample = allocate_outputs(torch, t, x)
+    kernel = mhc_shifted_single_kernel.compile(flat, phi, prev2d, alpha, bias, *sample, **config)
+
+    def run():
+        hi, pre, post, comb = allocate_outputs(torch, t, x)
+        kernel(flat, phi, prev2d, alpha, bias, hi, pre, post, comb)
+        return hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(t, 4, 4)
+
+    return run, dict(expected_kernels_per_call=1, projection_config=config,
+                     per_call_allocations=2, generated_source=kernel.get_kernel_source())
+
+
 def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, apply_h_blk=5120, tail_cores=None, tail_stages=2, apply_pipeline=None, flat_pipeline=False, all_token_pipeline=False, projection_l2_default=False):
     if apply_h_blk <= 0 or apply_h_blk % 64 or 5120 % apply_h_blk:
         raise ValueError("apply_h_blk must divide 5120 and be a multiple of 64")
