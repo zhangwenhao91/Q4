@@ -19,7 +19,7 @@ def main():
         log = max(logs, key=lambda v: v.stat().st_mtime)
     error = re.compile(r'FAILED:|\bfatal error:|\berror:|CMake Error|Traceback \(most recent call last\)|ModuleNotFoundError|HTTP response code said error|SSL certificate|Error in cmake code|No such file or directory|Permission denied', re.I)
     progress = re.compile(r'\[download \d+% complete\]')
-    exception = re.compile(r'^(?:[\w.]+(?:Error|Exception)|Error):')
+    exception = re.compile(r'^(?:[\w.]+(?:Error|Exception)|Error|Split-K diagnostic):')
     before, tail = deque(maxlen=8), deque(maxlen=20)
     contexts, seen, remaining, groups = [], set(), 0, 0
     exceptions = deque(maxlen=8)

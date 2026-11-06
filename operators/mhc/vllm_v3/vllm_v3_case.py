@@ -57,6 +57,45 @@ def load_v3():
         note=manifest['binding_note'], hf32_rounding='Upstream HcPre uses HF32 RTZ; TL projection uses its original mode; original Q4 precision gates retained')
 
 
+def check_reuse_partials(x, phi, alpha, bias, raw, sums, pre, post, comb):
+    import torch
+    from bench_forward import sinkhorn_ref
+
+    n = x.shape[0]
+    splits = raw.shape[0]
+    x = x.float().reshape(n, 4, splits, -1)
+    phi = phi.reshape(24, 4, splits, -1)
+
+    def unpack(values):
+        return values.reshape(splits, 2, n // 128, 64, -1).transpose(1, 2).reshape(splits, n, -1)
+
+    def errors(actual, expected):
+        finite_actual = torch.isfinite(actual)
+        finite_expected = torch.isfinite(expected)
+        valid = finite_actual & finite_expected
+        relative = ((actual[valid] - expected[valid]).norm() /
+                    expected[valid].norm().clamp_min(1e-30)).item()
+        return dict(nonfinite=int((~finite_actual).sum()), expected_nonfinite=int((~finite_expected).sum()),
+                    rel_l2=round(relative, 7) if valid.any() else None)
+
+    raw, sums = unpack(raw), unpack(sums).squeeze(-1)
+    split_errors = []
+    for split in range(splits):
+        sub_x = x[:, :, split].flatten(1)
+        sub_phi = phi[:, :, split].flatten(1)
+        split_errors.append(dict(projection=errors(raw[split], sub_x @ sub_phi.T),
+                                 square_sum=errors(sums[split], sub_x.square().sum(-1))))
+    mix = raw.sum(0) * (sums.sum(0).unsqueeze(-1) / 20480 + 1e-20).rsqrt()
+    rebuilt_pre = (mix[:, :4] * alpha[0] + bias[:4]).sigmoid() + 1e-6
+    rebuilt_post = 2 * (mix[:, 4:8] * alpha[1] + bias[4:8]).sigmoid()
+    rebuilt_comb = sinkhorn_ref((mix[:, 8:] * alpha[2] + bias[8:]).reshape(n, 4, 4), 20, 1e-6)
+    print('Split-K diagnostic:', dict(
+        partials=split_errors,
+        device_vs_rebuilt=dict(pre=errors(pre, rebuilt_pre), post=errors(post, rebuilt_post),
+                               comb=errors(comb, rebuilt_comb.reshape(n, 16)))),
+        flush=True)
+
+
 def make_case(a):
     import torch
     import sys
@@ -128,8 +167,12 @@ def make_case(a):
                                          ('tilelang_shifted_single_reuse_h5120', True)):
             if single_label not in (a.implementations or ()):
                 continue
+            partial_check = None
+            if reuse_apply and a.check_only:
+                from functools import partial
+                partial_check = partial(check_reuse_partials, x0, phi0, alpha0, bias0)
             functions[single_label], meta = make_shifted_single_candidate(
-                x, prev, phi, alpha, bias, reuse_apply=reuse_apply)
+                x, prev, phi, alpha, bias, reuse_apply=reuse_apply, partial_check=partial_check)
             (a.output / f'{single_label}.cpp').write_text(meta.pop('generated_source'), encoding='utf-8')
             metadata[single_label] = meta
         return functions, refs, ['layer_input', 'next_pre_mix', 'post_mix', 'comb_mix'], dict(

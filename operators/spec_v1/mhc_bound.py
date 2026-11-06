@@ -4,7 +4,7 @@ import hashlib
 from mhc_fusion import SOURCE, allocate_outputs
 
 
-def make_shifted_single_candidate(x, prev, phi, alpha, bias, *, reuse_apply=False):
+def make_shifted_single_candidate(x, prev, phi, alpha, bias, *, reuse_apply=False, partial_check=None):
     import sys
     import torch
 
@@ -36,7 +36,13 @@ def make_shifted_single_candidate(x, prev, phi, alpha, bias, *, reuse_apply=Fals
 
     def run():
         hi, pre, post, comb = allocate_outputs(torch, t, x)
-        kernel(flat, phi, prev2d, alpha, bias, hi, pre, post, comb, *allocate_partials())
+        partials = allocate_partials()
+        if partial_check is not None:
+            for partial in partials:
+                partial.fill_(float('nan'))
+        kernel(flat, phi, prev2d, alpha, bias, hi, pre, post, comb, *partials)
+        if partial_check is not None:
+            partial_check(*(partial.cpu() for partial in partials), pre.cpu(), post.cpu(), comb.cpu())
         return hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(t, 4, 4)
 
     return run, dict(expected_kernels_per_call=1, projection_config=config,
