@@ -334,11 +334,10 @@ def _projection_body(
                         with T.Task():
                             T.copy(partial_ub, out_mul[split_id, aiv_id, partial_start : partial_start + 64, 0:24])
                             T.copy(sqrsum_ub[0, 0:64], sqrsum[split_id, aiv_id, partial_start : partial_start + 64])
-                    # All AIVs reach this barrier after the last chunk, including
-                    # workers with no tile in that chunk. Both partials use MTE3.
+                    # Every AIV signals from MTE3 after its last chunk, including
+                    # workers with no tile in that chunk. The reader waits on MTE2.
                     for _ in T.Serial(T.max(chunk_idx + 1 - num_token_chunks, 0)):
                         T.ascend_sync_inter_arrive('PIPE_MTE3', 8)
-                        T.ascend_sync_inter_wait('PIPE_MTE3', 8)
             elif fused_shifted:
                 for epilogue_stage in T.Serial(num_valid_token_stages):
                     epilogue_begin = (token_block_base + epilogue_stage * cores_per_split) * block_num_tokens
@@ -915,8 +914,12 @@ def _reduce_split_coefficients(partial_proj, partial_sq, alpha, bias, pre, post,
     for job in T.Serial(jobs):
         start = (cube_id + job * cube_cores) * 16
         output_start = start // 64 * 128 + vector_id * 64 + start % 64
-        T.copy(partial_proj[0, vector_id, start : start + 16, 0:24], T.view(proj, (16, 24)))
-        T.copy(partial_sq[0, vector_id, start : start + 16], sq)
+        with T.PerCoreTask():
+            for _ in T.Serial(T.max(1 - job, 0)):
+                T.ascend_sync_inter_wait('PIPE_MTE2', 8)
+            with T.Task():
+                T.copy(partial_proj[0, vector_id, start : start + 16, 0:24], T.view(proj, (16, 24)))
+                T.copy(partial_sq[0, vector_id, start : start + 16], sq)
         for k in T.Serial(1, splits):
             T.copy(partial_proj[k, vector_id, start : start + 16, 0:24], T.view(proj_next, (16, 24)))
             T.copy(partial_sq[k, vector_id, start : start + 16], sq_next)

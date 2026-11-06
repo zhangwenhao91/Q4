@@ -21,6 +21,8 @@ def make_shifted_single_candidate(x, prev, phi, alpha, bias, *, reuse_apply=Fals
     if reuse_apply:
         from shifted_pre_three_kernels import mhc_shifted_single_reuse_kernel
         kernel_fn = mhc_shifted_single_reuse_kernel
+        if t < config['num_aic_cores'] * 32:
+            raise ValueError('Reuse fusion requires a coefficient tile for every AIV barrier participant')
         config['num_l0c_stages'] = 1
         config['num_token_blocks_per_chunk'] = config['cores_per_split']
 
