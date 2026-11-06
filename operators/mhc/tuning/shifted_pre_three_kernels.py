@@ -15,7 +15,8 @@ from tilelang.ascend.language import simd as S
 from tilelang.layout import make_ascend_compact_nz_layout
 
 
-def get_config(mhc_hidden_size: int, mhc_mult3: int, num_tokens: int, deterministic: bool = False, *, token_owned=False) -> dict:
+def get_config(mhc_hidden_size: int, mhc_mult3: int, num_tokens: int, deterministic: bool = False, *,
+               token_owned=False, split_override=None) -> dict:
     """Return optimal kernel parameters for a given shape."""
     from deep_gemm import _C
     block_num_tokens = 128
@@ -46,6 +47,11 @@ def get_config(mhc_hidden_size: int, mhc_mult3: int, num_tokens: int, determinis
     num_k_splits_by_cores = num_aic_cores & -num_aic_cores
     split_limit = min(num_k_splits_by_workload, num_k_splits_by_hidden, num_k_splits_by_cores)
     num_k_splits = 1 if token_owned else 1 << (split_limit.bit_length() - 1)
+    if split_override is not None:
+        if (token_owned or split_override not in (4, 8, 16) or
+                num_hidden_blocks % split_override or split_override > num_aic_cores):
+            raise ValueError(f'Unsupported deferred split-K count: {split_override}')
+        num_k_splits = split_override
 
     active_aic_cores = num_k_splits * min(num_aic_cores // num_k_splits, num_token_blocks)
     cores_per_split = active_aic_cores // num_k_splits
@@ -70,7 +76,7 @@ def _projection_body(
     block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
     num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
     num_token_blocks_per_chunk, deterministic, residual_l2_cache_ctrl, fused_shifted, epilogue,
-    reuse_apply=False,
+    reuse_apply=False, defer_reduce=False,
 ):
     block_num_tokens = 128
     reuse_pipeline = reuse_apply and num_l0c_stages > 1
@@ -131,7 +137,7 @@ def _projection_body(
             }
         )
 
-        if not reuse_apply:
+        if not reuse_apply and not defer_reduce:
             if split_id != 0:
                 T.set_atomic('add', 'float32')
         T.set_hf32_mode('nearest_even')
@@ -327,7 +333,15 @@ def _projection_body(
                             ),
                         )
 
-            if reuse_apply:
+            if defer_reduce:
+                for partial_slot in T.Serial(num_valid_token_stages):
+                    partial_token = (token_block_base + partial_slot * cores_per_split) * block_num_tokens
+                    T.copy(out_mul_l0[partial_slot, 0:128, 0:24],
+                           out_mul[split_id, partial_token : partial_token + 128, 0:24], unit_flag_ctrl=3)
+                for sum_slot in T.Serial(num_valid_sqrsum_stages):
+                    sum_token = aiv_token_begin_base + sum_slot * cores_per_split * block_num_tokens
+                    T.copy(sqrsum_ub[sum_slot, 0:64], sqrsum[split_id, sum_token : sum_token + 64])
+            elif reuse_apply:
                 for drain_stage in T.Serial(num_valid_token_stages):
                     T.dual_copy(out_mul_l0[drain_stage, 0:128, 0:24],
                                 partial_ub[drain_stage, 0:64, 0:24], unit_flag_ctrl=3)
@@ -417,7 +431,7 @@ def _projection_body(
         if reuse_apply:
             epilogue(out_mul, sqrsum, alpha, bias, pre, post, comb,
                      num_tokens, num_k_splits, num_aic_cores, core_id, aiv_id)
-        else:
+        elif not defer_reduce:
             if split_id != 0:
                 T.set_atomic_none()
 
@@ -448,6 +462,25 @@ def mhc_projection_token_pipeline(
         block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
         num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
         num_token_blocks_per_chunk, deterministic, residual_l2_cache_ctrl, False, None)
+
+
+@tilelang.jit
+def mhc_projection_split_partials(
+    x, fn, out_mul, sqrsum,
+    block_mhc_mult3: int, num_aic_cores: int, num_k_splits: int, cores_per_split: int,
+    num_hidden_blocks_per_split: int, num_l0b_stages: int, num_l0c_stages: int,
+    num_token_blocks_per_chunk: int,
+):
+    tokens = T.dynamic('tokens')
+    x: T.Tensor[(tokens, 20480), T.bfloat16]
+    fn: T.Tensor[(24, 20480), T.float32]
+    out_mul: T.Tensor[(num_k_splits, tokens, 24), T.float32]
+    sqrsum: T.Tensor[(num_k_splits, tokens), T.float32]
+    _projection_body(
+        x, fn, out_mul, sqrsum, None, None, None, None, None, None, None,
+        tokens, 24, 20480, block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
+        num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
+        num_token_blocks_per_chunk, False, None, False, None, False, True)
 
 
 def _u32_index(index_i32):
@@ -758,7 +791,6 @@ def mhc_coeff_token_pipeline(
     mhc2 = mhc * mhc
     mhc3 = mhc * 2 + mhc2
     assert mhc3 == 24
-    assert n_splits == 1, 'Ascend pre_big_fuse expects the GEMM to reduce split-K internally (n_splits=1)'
 
     gemm_out_mul: T.Tensor[(n_splits, num_tokens, mhc3), T.float32]
     gemm_out_sqrsum: T.Tensor[(n_splits, num_tokens), T.float32]
@@ -783,6 +815,9 @@ def mhc_coeff_token_pipeline(
         post_ub = T.alloc_shared((tb, mhc), T.float32)
         comb_in_ub = T.alloc_shared((tb, mhc2), T.float32)
         comb_out_ub = T.alloc_shared((tb, mhc2), T.float32)
+        if n_splits > 1:
+            partial_mul_ub = T.alloc_shared((tb * mhc3,), T.float32)
+            partial_sq_ub = T.alloc_shared((tb,), T.float32)
         T.annotate_buffer_versions(
             {
                 mul_flat_ub: num_stages,
@@ -808,7 +843,19 @@ def mhc_coeff_token_pipeline(
             if token_base + tb <= num_tokens:
                 T.copy(gemm_out_mul[0:1, token_base : token_base + tb, 0:mhc3], T.view(mul_flat_ub, (tb, mhc3)))
                 T.copy(gemm_out_sqrsum[0:1, token_base : token_base + tb], sq_ub)
-            else:
+                if n_splits > 1:
+                    for k in T.Serial(1, n_splits):
+                        T.copy(gemm_out_mul[k, token_base : token_base + tb, 0:mhc3], T.view(partial_mul_ub, (tb, mhc3)))
+                        T.copy(gemm_out_sqrsum[k, token_base : token_base + tb], partial_sq_ub)
+                        with T.SimdVF():
+                            mask = S.pset(32)
+                            for vec in T.unroll(tb * mhc3 // 64, explicit=True):
+                                offset = vec * 64
+                                S.vsts(mul_flat_ub[offset], S.vadd(S.vld(mul_flat_ub[offset]), S.vld(partial_mul_ub[offset]), mask))
+                        with T.SimtVF(threads=32):
+                            for row in T.Parallel(tb):
+                                sq_ub[row] = sq_ub[row] + partial_sq_ub[row]
+            elif n_splits == 1:
                 # DMA pad_value pads a row's width, not missing token rows.
                 # Use bounded scalar loads for the final partial token tile.
                 with T.SimtVF(threads=32):
@@ -972,7 +1019,7 @@ def mhc_shifted_single_reuse_kernel(
 
 
 def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
-                     projection_l2_default=True, tail_cores=None, tail_stages=2):
+                     projection_l2_default=True, tail_cores=None, tail_stages=2, deferred_splits=None):
     """Compile the three launchers for the supplied tensors and return a callable."""
     import torch
     from tile_kernels.config import get_num_vec_cores
@@ -980,15 +1027,18 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
     n, streams, hidden = x.shape
     if (streams, hidden) != (4, 5120) or not n or n % 128:
         raise ValueError('Expected residual[N,4,5120] with positive N divisible by 128')
-    if projection_config is None:
+    if deferred_splits is not None:
+        projection_config = get_config(streams * hidden, 24, n, split_override=deferred_splits)
+    elif projection_config is None:
         projection_config = get_config(streams * hidden, 24, n)
     flat = x.flatten(1)
     prev = prev_pre.view(n, 4)
     vec_cores = get_num_vec_cores()
     if tail_stages not in (1, 2, 3, 4) or (tail_cores is not None and not 0 < tail_cores <= vec_cores):
         raise ValueError('Invalid tail core/stage configuration')
+    splits = deferred_splits or 1
     settings = dict(rms_eps=1e-20, mhc_pre_eps=1e-6, mhc_sinkhorn_eps=1e-6,
-                    mhc_post_mult_value=2., sinkhorn_repeat=20, hidden=hidden, n_splits=1,
+                    mhc_post_mult_value=2., sinkhorn_repeat=20, hidden=hidden, n_splits=splits,
                     token_block=16, num_stages=tail_stages, num_vec_cores=tail_cores or vec_cores)
 
     def allocate_outputs():
@@ -998,18 +1048,22 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
         return hi, pre.view(n, 4), post.view(n, 4), comb.view(n, 16)
 
     def allocate_projection():
-        raw = torch.empty(1, n, 24, dtype=torch.float32, device=x.device)
-        sq = torch.empty(n // 128, 2, 64, dtype=torch.float32, device=x.device)
+        raw = torch.empty(splits, n, 24, dtype=torch.float32, device=x.device)
+        sq_shape = (splits, n) if deferred_splits else (n // 128, 2, 64)
+        sq = torch.empty(sq_shape, dtype=torch.float32, device=x.device)
         return raw, sq
 
     hi, pre, post, comb = allocate_outputs()
     raw, sq = allocate_projection()
-    projection = mhc_projection_token_pipeline.compile(
-        flat, phi, raw[0], sq, deterministic=False,
-        residual_l2_cache_ctrl=None if projection_l2_default else 'notalloc_keep',
-        **projection_config)
+    if deferred_splits:
+        projection = mhc_projection_split_partials.compile(flat, phi, raw, sq, **projection_config)
+    else:
+        projection = mhc_projection_token_pipeline.compile(
+            flat, phi, raw[0], sq, deterministic=False,
+            residual_l2_cache_ctrl=None if projection_l2_default else 'notalloc_keep',
+            **projection_config)
     coefficients = mhc_coeff_token_pipeline.compile(
-        raw, sq.view(1, n), alpha, bias, pre, post, comb, **settings)
+        raw, sq.view(splits, n), alpha, bias, pre, post, comb, **settings)
     apply = mhc_pre_apply_flat_pipeline_asc.compile(
         x, prev, hi, h_blk=hidden, num_vec_cores=vec_cores, pipeline_stages=3)
 
@@ -1017,8 +1071,8 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
         hi, pre, post, comb = allocate_outputs()
         apply(x, prev, hi)
         raw, sq = allocate_projection()
-        projection(flat, phi, raw[0], sq)
-        coefficients(raw, sq.view(1, n), alpha, bias, pre, post, comb)
+        projection(flat, phi, raw if deferred_splits else raw[0], sq)
+        coefficients(raw, sq.view(splits, n), alpha, bias, pre, post, comb)
         return hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(n, 4, 4)
 
     sources = {name: kernel.get_kernel_source() for name, kernel in
@@ -1034,4 +1088,5 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
         per_call_allocations=4, expected_kernels_per_call=3,
         note='compilation excluded for all sides; all device math, output/workspace allocation and views remain timed',
         generated_apply_source=sources['apply'], standalone_apply_source_sha256=hashes['apply'],
-        standalone_apply_hidden_tile=hidden, generated_sources=sources)
+        standalone_apply_hidden_tile=hidden, generated_sources=sources,
+        deferred_splits=deferred_splits, projection_config=projection_config)

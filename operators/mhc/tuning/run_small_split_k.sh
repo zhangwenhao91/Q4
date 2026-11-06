@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+cd "$ROOT"
+: "${CONDA_PREFIX:?Activate zwh first}"
+: "${ASCEND_HOME_PATH:?Source CANN first}"
+export ASCEND_RT_VISIBLE_DEVICES="${ASCEND_RT_VISIBLE_DEVICES:-0}"
+export ASCEND_NPU_ARCH=dav-3510
+export CC="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-gcc"
+export CXX="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++"
+PY="$CONDA_PREFIX/bin/python"
+OUT="$ROOT/results/mhc-small-split-k/$(date +%Y%m%d-%H%M%S)-$$"
+mkdir -p "$OUT"
+git rev-parse HEAD > "$OUT/revision.txt"
+echo "Results: $OUT"
+base=tilelang_all_token_l2_default
+
+run_case() {
+  local tag="$1" n="$2"
+  shift 2
+  echo "N=$n $tag"
+  if ! "$PY" operators/spec_v1/bench.py --suite mhc_vllm_v3 --mhc-vllm-stage pre \
+    --mhc-projection-l2-ab --tokens "$n" --output "$OUT/$tag" "$@" > "$OUT/$tag.log" 2>&1; then
+    "$PY" operators/mhc/vllm_v3/report_failure.py --stage "$tag" --log "$OUT/$tag.log"
+    exit 1
+  fi
+}
+
+for n in 128 256 512; do
+  run_case "N$n-profile-base" "$n" --implementations "$base" --profile "$base"
+done
+for n in 128 256 512; do
+  labels=("$base" tilelang_deferred_k4 tilelang_deferred_k8)
+  if [[ "$n" == 128 ]]; then labels+=(tilelang_deferred_k16); fi
+  for rep in 1 2 3; do
+    run_case "N$n-rep$rep" "$n" --implementations "${labels[@]}" \
+      --warmup 100 --rounds 24 --iters 100
+  done
+  run_case "N$n-profile-k8" "$n" --implementations tilelang_deferred_k8 --profile tilelang_deferred_k8
+done
+"$PY" operators/mhc/vllm_v3/summarize_small_split_k.py "$OUT" | tee "$ROOT/error.txt"

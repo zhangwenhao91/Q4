@@ -153,13 +153,15 @@ def make_case(a):
     if l2_ab:
         functions = {'ascendc_vllm_v3': ac} if include_v3 else {}
         metadata = {}
-        variants = (('tilelang_all_token_h5120s3', False), ('tilelang_all_token_l2_default', True))
-        for label, use_default in variants:
+        variants = [('tilelang_all_token_h5120s3', False, None), ('tilelang_all_token_l2_default', True, None)]
+        if a.implementations:
+            variants.extend((f'tilelang_deferred_k{splits}', True, splits) for splits in (4, 8, 16))
+        for label, use_default, deferred_splits in variants:
             if a.implementations and label not in a.implementations:
                 continue
             functions[label], meta = make_bound_candidate(projector, x, prev, alpha, bias,
                 split_apply=True, apply_pipeline=(5120, 3), flat_pipeline=True, all_token_pipeline=True,
-                projection_l2_default=use_default)
+                projection_l2_default=use_default, deferred_splits=deferred_splits)
             for name, source in meta.pop('generated_sources').items():
                 (a.output / f'{label}_{name}.cpp').write_text(source, encoding='utf-8')
             metadata[label] = meta
