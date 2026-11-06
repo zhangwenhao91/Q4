@@ -324,11 +324,18 @@ def _projection_body(
                         )
 
             if reuse_apply:
-                for partial_stage in T.Serial(num_valid_token_stages):
-                    partial_begin = aiv_token_begin_base + partial_stage * cores_per_split * 128
-                    T.dual_copy(out_mul_l0[partial_stage, 0:128, 0:24], partial_ub, unit_flag_ctrl=3)
-                    T.copy(partial_ub, out_mul[split_id, partial_begin : partial_begin + 64, 0:24])
-                    T.copy(sqrsum_ub[partial_stage, 0:64], sqrsum[split_id, partial_begin : partial_begin + 64])
+                if num_valid_token_stages > 0:
+                    T.dual_copy(out_mul_l0[0, 0:128, 0:24], partial_ub, unit_flag_ctrl=3)
+                with T.PerCoreTask():
+                    if num_valid_token_stages > 0:
+                        with T.Task():
+                            T.copy(partial_ub, out_mul[split_id, aiv_token_begin_base : aiv_token_begin_base + 64, 0:24])
+                            T.copy(sqrsum_ub[0, 0:64], sqrsum[split_id, aiv_token_begin_base : aiv_token_begin_base + 64])
+                    # All AIVs reach this barrier after the last chunk, including
+                    # workers with no tile in that chunk. Both partials use MTE3.
+                    for _ in T.Serial(T.max(chunk_idx + 1 - num_token_chunks, 0)):
+                        T.ascend_sync_inter_arrive('PIPE_MTE3', 8)
+                        T.ascend_sync_inter_wait('PIPE_MTE3', 8)
             elif fused_shifted:
                 for epilogue_stage in T.Serial(num_valid_token_stages):
                     epilogue_begin = (token_block_base + epilogue_stage * cores_per_split) * block_num_tokens
@@ -401,11 +408,6 @@ def _projection_body(
                             T.ascend_sync_inter_wait('PIPE_MTE3', sqrsum_flag)
 
         if reuse_apply:
-            # Both partials are now written by MTE3, so one uniform Vector
-            # barrier suffices before any AIV reads another group's partials.
-            with T.PerCoreTask():
-                T.ascend_sync_inter_arrive('PIPE_MTE3', 8)
-                T.ascend_sync_inter_wait('PIPE_MTE3', 8)
             epilogue(out_mul, sqrsum, alpha, bias, pre, post, comb,
                      num_tokens, num_k_splits, num_aic_cores, core_id, aiv_id)
         else:
