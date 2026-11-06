@@ -210,28 +210,28 @@ def _projection_body(
                                 for pass_id in T.Serial(block_hidden // 128):
                                     packed = T.simd.vld(x_ub[row, pass_id * 128])
                                     lo_bits, hi_bits = T.simd.vintlv(zero_bf16, packed)
-                                    lo = T.reinterpret(lo_bits, 'float32x64')
-                                    hi = T.reinterpret(hi_bits, 'float32x64')
+                                    unpacked_lo = T.reinterpret(lo_bits, 'float32x64')
+                                    unpacked_hi = T.reinterpret(hi_bits, 'float32x64')
 
                                     row_acc = T.simd.vadd(
                                         row_acc,
-                                        T.simd.vmul(lo, lo, f32_mask),
+                                        T.simd.vmul(unpacked_lo, unpacked_lo, f32_mask),
                                         f32_mask,
                                     )
                                     row_acc = T.simd.vadd(
                                         row_acc,
-                                        T.simd.vmul(hi, hi, f32_mask),
+                                        T.simd.vmul(unpacked_hi, unpacked_hi, f32_mask),
                                         f32_mask,
                                     )
                                     nz_ptr = T.simd.vsstb(
-                                        lo,
+                                        unpacked_lo,
                                         nz_ptr,
                                         nz_stride,
                                         f32_mask,
                                         update=True,
                                     )
                                     nz_ptr = T.simd.vsstb(
-                                        hi,
+                                        unpacked_hi,
                                         nz_ptr,
                                         nz_stride,
                                         f32_mask,
