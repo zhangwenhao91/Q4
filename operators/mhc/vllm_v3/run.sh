@@ -4,7 +4,10 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"
 MODE="${1:-all}"
-case "$MODE" in build|smoke|bench|all|resume|projection|memory|l2|l2-v3|l2-v3-small) ;; *) echo 'Usage: run.sh [build|smoke|bench|all|resume|projection|memory|l2|l2-v3|l2-v3-small]'; exit 2 ;; esac
+case "$MODE" in
+  build|smoke|bench|all|resume|projection|memory|l2|l2-v3|l2-v3-small|k8-workspace-v3) ;;
+  *) echo 'Usage: run.sh [build|smoke|bench|all|resume|projection|memory|l2|l2-v3|l2-v3-small|k8-workspace-v3]'; exit 2 ;;
+esac
 : "${CONDA_PREFIX:?Activate zwh first}"
 : "${ASCEND_HOME_PATH:?Source CANN first}"
 export ASCEND_RT_VISIBLE_DEVICES="${ASCEND_RT_VISIBLE_DEVICES:-0}"
@@ -56,12 +59,16 @@ fi
 if [[ "$MODE" == memory ]]; then
   exec bash operators/mhc/vllm_v3/profile_memory.sh "$OUT"
 fi
-if [[ "$MODE" == l2-v3 || "$MODE" == l2-v3-small ]]; then
+if [[ "$MODE" == l2-v3 || "$MODE" == l2-v3-small || "$MODE" == k8-workspace-v3 ]]; then
   reference=ascendc_vllm_v3
   candidate=tilelang_all_token_l2_default
   tokens=(8192)
   if [[ "$MODE" == l2-v3-small ]]; then tokens=(128 256 512 2048); fi
-  printf 'Q4 revision: %s\n' "$(cat "$OUT/revision.txt")" > "$OUT/runner.log"
+  if [[ "$MODE" == k8-workspace-v3 ]]; then
+    candidate=tilelang_deferred_k8_batch_workspace
+    tokens=(128 256)
+  fi
+  printf 'Q4 revision: %s\nTL candidate: %s\n' "$(cat "$OUT/revision.txt")" "$candidate" > "$OUT/runner.log"
   for n in "${tokens[@]}"; do
     for rep in 1 2 3; do
       name="N$n-rep$rep"
