@@ -1,61 +1,48 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_shifted_single.sh reuse
-Results: /home/z30086261/Q4/results/mhc-shifted-single/20261106-111427-722985
+Results: /home/z30086261/Q4/results/mhc-shifted-single/20261106-111727-732017
 H=5120 N=128 check
 Failed stage: check
-Log: /home/z30086261/Q4/results/mhc-shifted-single/20261106-111427-722985/check.log
+Log: /home/z30086261/Q4/results/mhc-shifted-single/20261106-111727-732017/check.log
 === Exception headlines (up to 8) ===
-26: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_shifted_single_reuse_kernel_kernel with ACL error 107000, grid=4, dyn_ubuf_bytes=245984: [PID: 722991] 2026-11-06-11:14:55.570.744 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
+22: AssertionError: Correctness failed; timing skipped
 === First error contexts (up to 4) ===
-1: 2026-11-06 11:14:45  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_shifted_single_reuse_kernel` with `out_idx=None`
-2: 2026-11-06 11:14:55  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_shifted_single_reuse_kernel`
-3: {'implementation': 'tilelang_all_token_l2_default', 'output': 'layer_input', 'shape': [128, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 2.215548518326271e-05, 'relative_l2': 1.9314915095015055e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
-4: {'implementation': 'tilelang_all_token_l2_default', 'output': 'next_pre_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.463859558105469e-06, 'rmse': 2.809809314002512e-06, 'relative_l2': 5.598160087778142e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-5: {'implementation': 'tilelang_all_token_l2_default', 'output': 'post_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.5497207641601562e-05, 'rmse': 5.595777269301738e-06, 'relative_l2': 5.596548087146414e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-6: {'implementation': 'tilelang_all_token_l2_default', 'output': 'comb_mix', 'shape': [128, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.255243301391602e-06, 'rmse': 2.1468799428045695e-06, 'relative_l2': 8.549835870563863e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-7: Traceback (most recent call last):
-8:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
-9:     if __name__=='__main__': main()
-10:                              ^^^^^^
-11:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 184, in main
-12:     outputs=tuple(fn());torch.npu.synchronize()
-13:                   ^^^^
-14:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 39, in run
-15:     kernel(flat, phi, prev2d, alpha, bias, hi, pre, post, comb, *allocate_partials())
-16:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 228, in __call__
-17:     return self.torch_function(*args, **kwds)
-18:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-19:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/adapter/tvm_ffi.py", line 348, in func
-20:     executable(*tensor_list)
-21:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm/runtime/executable.py", line 46, in __call__
-22:     return self.jit().main(*args, **kwargs)
-23:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-24:   File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
-25:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/runtime/ascend_module.cc", line 697, in void tvm::ascend::AscendWrappedFunc<LaunchPolicy>::operator()(tvm::ffi::PackedArgs, tvm::ffi::Any*, void*, size_t) const [with LaunchPolicy = tvm::ascend::DirectLaunchPolicy; size_t = long unsigned int]
-26: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_shifted_single_reuse_kernel_kernel with ACL error 107000, grid=4, dyn_ubuf_bytes=245984: [PID: 722991] 2026-11-06-11:14:55.570.744 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
-27: TraceBack (most recent call last):
-28:         The argument is invalid. Reason: rtsLaunchKernelWithHostArgs execution failed.
-29: 
-30: [ERROR] 2026-11-06-11:14:57 (PID:722991, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+7: {'implementation': 'tilelang_shifted_single_reuse_h5120', 'output': 'layer_input', 'shape': [128, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 2.215548518326271e-05, 'relative_l2': 1.9314915095015055e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+8: {'implementation': 'tilelang_shifted_single_reuse_h5120', 'output': 'next_pre_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.01791420578956604, 'rmse': 0.0034630310155343478, 'relative_l2': 0.006899614830547487, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': False}
+9: {'implementation': 'tilelang_shifted_single_reuse_h5120', 'output': 'post_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.049073636531829834, 'rmse': 0.007300893714584894, 'relative_l2': 0.007301899412075422, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': False}
+10: {'implementation': 'tilelang_shifted_single_reuse_h5120', 'output': 'comb_mix', 'shape': [128, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.020011156797409058, 'rmse': 0.0026131491834324046, 'relative_l2': 0.010406728470553711, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': False}
+11: {'implementation': 'pairwise', 'output': 'layer_input', 'shape': [128, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+12: {'implementation': 'pairwise', 'output': 'next_pre_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.017913728952407837, 'rmse': 0.003463111580492117, 'relative_l2': 0.006897785242486918, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': False}
+13: {'implementation': 'pairwise', 'output': 'post_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.04906660318374634, 'rmse': 0.007300797114741991, 'relative_l2': 0.007306233733022324, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': False}
+14: {'implementation': 'pairwise', 'output': 'comb_mix', 'shape': [128, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.02001100778579712, 'rmse': 0.0026131436920402216, 'relative_l2': 0.010407100068132027, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': False}
+15: Traceback (most recent call last):
+16:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
+17:     if __name__=='__main__': main()
+18:                              ^^^^^^
+19:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 195, in main
+20:     if not all(r['passed'] for r in records): raise AssertionError('Correctness failed; timing skipped')
+21:                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+22: AssertionError: Correctness failed; timing skipped
+23: [ERROR] 2026-11-06-11:17:46 (PID:732023, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
 === Final non-progress lines ===
-11:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 184, in main
-12:     outputs=tuple(fn());torch.npu.synchronize()
-13:                   ^^^^
-14:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 39, in run
-15:     kernel(flat, phi, prev2d, alpha, bias, hi, pre, post, comb, *allocate_partials())
-16:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 228, in __call__
-17:     return self.torch_function(*args, **kwds)
-18:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-19:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/adapter/tvm_ffi.py", line 348, in func
-20:     executable(*tensor_list)
-21:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm/runtime/executable.py", line 46, in __call__
-22:     return self.jit().main(*args, **kwargs)
-23:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-24:   File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
-25:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/runtime/ascend_module.cc", line 697, in void tvm::ascend::AscendWrappedFunc<LaunchPolicy>::operator()(tvm::ffi::PackedArgs, tvm::ffi::Any*, void*, size_t) const [with LaunchPolicy = tvm::ascend::DirectLaunchPolicy; size_t = long unsigned int]
-26: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_shifted_single_reuse_kernel_kernel with ACL error 107000, grid=4, dyn_ubuf_bytes=245984: [PID: 722991] 2026-11-06-11:14:55.570.744 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
-27: TraceBack (most recent call last):
-28:         The argument is invalid. Reason: rtsLaunchKernelWithHostArgs execution failed.
-29: 
-30: [ERROR] 2026-11-06-11:14:57 (PID:722991, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+4: {'implementation': 'tilelang_all_token_l2_default', 'output': 'next_pre_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.463859558105469e-06, 'rmse': 2.8097673317665533e-06, 'relative_l2': 5.598076443924956e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+5: {'implementation': 'tilelang_all_token_l2_default', 'output': 'post_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.5497207641601562e-05, 'rmse': 5.595777269301738e-06, 'relative_l2': 5.596548087146414e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+6: {'implementation': 'tilelang_all_token_l2_default', 'output': 'comb_mix', 'shape': [128, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.255243301391602e-06, 'rmse': 2.1469745296463964e-06, 'relative_l2': 8.550212557660803e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+7: {'implementation': 'tilelang_shifted_single_reuse_h5120', 'output': 'layer_input', 'shape': [128, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 2.215548518326271e-05, 'relative_l2': 1.9314915095015055e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+8: {'implementation': 'tilelang_shifted_single_reuse_h5120', 'output': 'next_pre_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.01791420578956604, 'rmse': 0.0034630310155343478, 'relative_l2': 0.006899614830547487, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': False}
+9: {'implementation': 'tilelang_shifted_single_reuse_h5120', 'output': 'post_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.049073636531829834, 'rmse': 0.007300893714584894, 'relative_l2': 0.007301899412075422, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': False}
+10: {'implementation': 'tilelang_shifted_single_reuse_h5120', 'output': 'comb_mix', 'shape': [128, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.020011156797409058, 'rmse': 0.0026131491834324046, 'relative_l2': 0.010406728470553711, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': False}
+11: {'implementation': 'pairwise', 'output': 'layer_input', 'shape': [128, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+12: {'implementation': 'pairwise', 'output': 'next_pre_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.017913728952407837, 'rmse': 0.003463111580492117, 'relative_l2': 0.006897785242486918, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': False}
+13: {'implementation': 'pairwise', 'output': 'post_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.04906660318374634, 'rmse': 0.007300797114741991, 'relative_l2': 0.007306233733022324, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': False}
+14: {'implementation': 'pairwise', 'output': 'comb_mix', 'shape': [128, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 0.02001100778579712, 'rmse': 0.0026131436920402216, 'relative_l2': 0.010407100068132027, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': False}
+15: Traceback (most recent call last):
+16:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
+17:     if __name__=='__main__': main()
+18:                              ^^^^^^
+19:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 195, in main
+20:     if not all(r['passed'] for r in records): raise AssertionError('Correctness failed; timing skipped')
+21:                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+22: AssertionError: Correctness failed; timing skipped
+23: [ERROR] 2026-11-06-11:17:46 (PID:732023, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
 Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
