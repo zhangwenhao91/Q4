@@ -1,43 +1,55 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_shifted_single.sh reuse-pipeline
-Results: /home/z30086261/Q4/results/mhc-shifted-single/20261106-150902-1097558
-H=5120 N=2048 check
-H=5120 N=2048 profile
-Profiler verified 30 launches for 30 Pre calls at N=2048: mhc_shifted_single_reuse_kernel_kernel
-H=5120 N=2048 N2048-rep1
-H=5120 N=2048 N2048-rep2
-H=5120 N=2048 N2048-rep3
-H=5120 N=8192 N8192-rep1
-H=5120 N=8192 N8192-rep2
-H=5120 N=8192 N8192-rep3
-Run: /home/z30086261/Q4/results/mhc-shifted-single/20261106-150902-1097558
-AC reference: tilelang_all_token_l2_default
-Event time: median across rounds (us); ratios > 1 mean TL is faster.
-case | AC us | TL us | AC/TL
-N2048-rep1 | 71.968 | 404.850 | 0.1778
-N2048-rep2 | 71.849 | 404.817 | 0.1775
-N2048-rep3 | 71.943 | 404.866 | 0.1777
-N8192-rep1 | 494.775 | 1612.156 | 0.3069
-N8192-rep2 | 493.094 | 1612.694 | 0.3058
-N8192-rep3 | 492.952 | 1611.943 | 0.3058
-Cases with timing: 6
-Runner log tail (last 20 lines):
-Q4 revision: 00ee4247f627062d31740c5cf6ca565d723dd8cc
-Candidate: tilelang_shifted_single_reuse_pipeline_h5120
-Profiler verified 30 launches for 30 Pre calls at N=2048: mhc_shifted_single_reuse_kernel_kernel
-Saved: /home/z30086261/Q4/results/mhc-shifted-single/20261106-150902-1097558/summary.txt
-Run: /home/z30086261/Q4/results/mhc-shifted-single/20261106-150902-1097558
-Three-kernel reference: tilelang_all_token_l2_default
-Event time: median across rounds (us); ratios > 1 mean single kernel is faster.
-case | three-kernel TL us | single-kernel TL us | three/single
-N2048-rep1 | 71.968 | 404.850 | 0.1778
-N2048-rep2 | 71.849 | 404.817 | 0.1775
-N2048-rep3 | 71.943 | 404.866 | 0.1777
-N8192-rep1 | 494.775 | 1612.156 | 0.3069
-N8192-rep2 | 493.094 | 1612.694 | 0.3058
-N8192-rep3 | 492.952 | 1611.943 | 0.3058
-Cases with timing: 6
-Runner log tail (last 20 lines):
-Q4 revision: 00ee4247f627062d31740c5cf6ca565d723dd8cc
-Candidate: tilelang_shifted_single_reuse_pipeline_h5120
-Profiler verified 30 launches for 30 Pre calls at N=2048: mhc_shifted_single_reuse_kernel_kernel
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh 
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261106-152038-1127986
+N=128 N128-profile-base
+N=256 N256-profile-base
+N=512 N512-profile-base
+N=128 N128-rep1
+N=128 N128-rep2
+N=128 N128-rep3
+N=128 N128-profile-k8
+N=256 N256-rep1
+N=256 N256-rep2
+N=256 N256-rep3
+N=256 N256-profile-k8
+N=512 N512-rep1
+N=512 N512-rep2
+N=512 N512-rep3
+N=512 N512-profile-k8
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261106-152038-1127986
+Q4 revision: ed93d9210fb93334e804c307d9386e8bf80a87a5
+N | implementation | Cube cores | Pre event us (3 processes) | median us | paired baseline/TL
+128 | tilelang_all_token_l2_default | 4 | 25.355, 25.424, 25.392 | 25.392 | 1.0000
+128 | tilelang_deferred_k4 | 4 | 24.982, 24.989, 24.948 | 24.982 | 1.0174
+128 | tilelang_deferred_k8 | 8 | 24.745, 24.645, 24.556 | 24.645 | 1.0316
+128 | tilelang_deferred_k16 | 16 | 24.680, 24.617, 24.588 | 24.617 | 1.0327
+N128-profile-base: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 5.1765
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.1010
+mhc_projection_token_pipeline_kernel | 30 | 16.0505
+N128-profile-k8: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 7.4325
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.3865
+mhc_projection_split_partials_kernel | 30 | 9.9920
+256 | tilelang_all_token_l2_default | 8 | 26.167, 26.058, 26.183 | 26.167 | 1.0000
+256 | tilelang_deferred_k4 | 8 | 26.453, 26.500, 26.501 | 26.500 | 0.9880
+256 | tilelang_deferred_k8 | 16 | 23.469, 24.646, 24.968 | 24.646 | 1.0573
+N256-profile-base: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 5.2015
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.4160
+mhc_projection_token_pipeline_kernel | 30 | 16.5570
+N256-profile-k8: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 7.8065
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.3295
+mhc_projection_split_partials_kernel | 30 | 10.3940
+512 | tilelang_all_token_l2_default | 16 | 28.895, 28.769, 28.912 | 28.895 | 1.0000
+512 | tilelang_deferred_k4 | 16 | 29.323, 29.202, 29.334 | 29.323 | 0.9854
+512 | tilelang_deferred_k8 | 24 | 29.305, 29.092, 29.200 | 29.200 | 0.9889
+N512-profile-base: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 5.6555
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.5075
+mhc_projection_token_pipeline_kernel | 30 | 16.7820
+N512-profile-k8: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 7.9350
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.7740
+mhc_projection_split_partials_kernel | 30 | 15.0000
 (zwh) root@ubuntu162:/home/z30086261/Q4#
