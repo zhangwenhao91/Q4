@@ -92,8 +92,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('run', type=Path)
     parser.add_argument('--output', type=Path)
+    parser.add_argument('--prealloc-only', action='store_true', help='read only the full preallocation captures')
     args = parser.parse_args()
-    lines, errors = timeline_lines(args.run)
+    tags = ('batch-prealloc',) if args.prealloc_only else ('base', 'k8', 'batch')
+    lines, errors = timeline_lines(args.run, tags)
     result = '\n'.join([*lines, *errors]) + '\n'
     if args.output:
         args.output.write_text(result, encoding='utf-8')

@@ -13,8 +13,8 @@ base=tilelang_all_token_l2_default
 mode="${1:-scan}"
 case "$mode" in
   scan) shapes=(128 256 512) ;;
-  batch|alloc|workspace|refactor) shapes=(128 256) ;;
-  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|workspace [run-directory]]'; exit 2 ;;
+  batch|alloc|workspace|refactor|timeline) shapes=(128 256) ;;
+  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|timeline|workspace [run-directory]]'; exit 2 ;;
 esac
 resume="${2:-}"
 results="$ROOT/results/mhc-small-split-k"
@@ -53,6 +53,22 @@ run_case() {
     exit 1
   fi
 }
+
+if [[ "$mode" == timeline ]]; then
+  label=tilelang_deferred_k8_batch_prealloc
+  for n in "${shapes[@]}"; do
+    run_case "N$n-profile-batch-prealloc" "$n" --implementations "$label" --profile "$label"
+  done
+  status=0
+  "$PY" operators/mhc/vllm_v3/summarize_small_split_timeline.py "$OUT" --prealloc-only \
+    --output "$OUT/timeline-summary.txt" || status=$?
+  {
+    cat "$OUT/timeline-summary.txt"
+    echo 'Profiler timeline and CSV files:'
+    find "$OUT" -type f \( -name 'trace_view.json' -o -name 'kernel_details.csv' \) -print
+  } | tee "$ROOT/error.txt"
+  exit "$status"
+fi
 
 if [[ "$mode" == scan || "$mode" == batch ]]; then
   for n in "${shapes[@]}"; do
