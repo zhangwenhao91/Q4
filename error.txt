@@ -1,44 +1,57 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh alloc
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261106-155640-1304305
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh workspace
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261106-160648-1359486
 N=128 N128-rep1
 N=128 N128-rep2
 N=128 N128-rep3
-N=128 N128-profile-k8
 N=128 N128-profile-batch
-N=128 N128-profile-k8-prealloc
+N=128 N128-profile-batch-workspace
 N=128 N128-profile-batch-prealloc
 N=256 N256-rep1
-N=256 N256-rep2
-N=256 N256-rep3
-N=256 N256-profile-k8
-N=256 N256-profile-batch
-N=256 N256-profile-k8-prealloc
-N=256 N256-profile-batch-prealloc
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261106-155640-1304305
-Q4 revision: 9961e43e7267b5b03918d883a179202601f41d32
-Diagnostic only: preallocated outputs alias across calls. CPU and pairwise checks passed.
-N | K8 variant | fresh event us | preallocated event us | paired fresh/reuse | fresh wall us | preallocated wall us | source match
-128 | tilelang_deferred_k8 | 23.564 | 20.442 | 1.1527 | 24.022 | 20.871 | True
-  Pair ratios: 1.1527, 1.1340, 1.2077
-128 | tilelang_deferred_k8_batch | 23.482 | 18.541 | 1.2665 | 23.984 | 18.956 | True
-  Pair ratios: 1.2665, 1.2540, 1.3288
-128 | preallocated sequential/batch K8 event ratio: 1.1025
-256 | tilelang_deferred_k8 | 24.688 | 22.245 | 1.1113 | 25.128 | 22.567 | True
-  Pair ratios: 1.1220, 1.1113, 1.0918
-256 | tilelang_deferred_k8_batch | 24.654 | 20.022 | 1.2307 | 25.063 | 20.377 | True
-  Pair ratios: 1.2457, 1.2307, 1.2153
-256 | preallocated sequential/batch K8 event ratio: 1.1110
-
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261106-155640-1304305
-Per-invocation device timeline medians (us), 30 complete calls per profile.
-Next gap and period use 27 adjacent calls within profiler steps. Profiles are separate captures.
-N | variant | Apply | projection | tail | Apply->projection gap | projection->tail gap | first start to last end | next-call gap | start-to-start period
-128 | k8 | 3.313 | 9.994 | 7.452 | 5.418 | 0.022 | 26.815 | 10.792 | 36.664
-128 | k8-prealloc | 3.190 | 9.928 | 7.294 | 0.022 | 0.022 | 20.644 | 0.022 | 20.736
-128 | batch | 3.118 | 10.103 | 5.490 | 4.812 | 0.022 | 24.328 | 12.721 | 37.742
-128 | batch-prealloc | 3.177 | 10.130 | 5.476 | 0.920 | 0.022 | 20.060 | 0.022 | 20.165
-256 | k8 | 4.288 | 10.446 | 7.724 | 3.563 | 0.022 | 26.201 | 8.299 | 34.702
-256 | k8-prealloc | 4.326 | 10.238 | 7.653 | 0.022 | 0.022 | 22.391 | 0.022 | 22.366
-256 | batch | 4.374 | 10.590 | 5.507 | 3.634 | 0.022 | 24.668 | 10.705 | 34.941
-256 | batch-prealloc | 4.402 | 10.368 | 5.583 | 0.022 | 0.022 | 20.946 | 0.022 | 21.160
+Failed stage: N256-rep1
+Log: /home/z30086261/Q4/results/mhc-small-split-k/20261106-160648-1359486/N256-rep1.log
+=== Exception headlines (up to 8) ===
+10: RuntimeError: ExchangeDevice:../torch_npu/csrc/core/npu/sys_ctrl/npu_sys_ctrl.cpp:337 NPU function error: c10_npu::SetDevice(device), error code is 507033
+=== First error contexts (up to 4) ===
+1: Traceback (most recent call last):
+2:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
+3:     if __name__=='__main__': main()
+4:                              ^^^^^^
+5:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 86, in main
+6:     torch.manual_seed(a.seed);torch.npu.set_device(0)
+7:                               ^^^^^^^^^^^^^^^^^^^^^^^
+8:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/npu/utils.py", line 94, in set_device
+9:     torch_npu._C._npu_setDevice(device_id)
+10: RuntimeError: ExchangeDevice:../torch_npu/csrc/core/npu/sys_ctrl/npu_sys_ctrl.cpp:337 NPU function error: c10_npu::SetDevice(device), error code is 507033
+11: [ERROR] 2026-11-06-16:10:39 (PID:1364791, Device:0, RankID:-1) ERR00100 PTA call acl api failed
+12: [Error]: Failed to start the device.
+13:         Rectify the fault based on the error information in the ascend log.
+14: [PID: 1364791] 2026-11-06-16:10:23.313.341 Inner_Error_Device_Subprocess_Startup_Timeout(E39007): Starting a subprocess on the device timed out.
+15:         Possible Cause: 1.Failed to start the subprocess. 2. The HDC link is faulty.
+16:         Solution: Obtain the host and device logs, and contact technical support at https://www.hiascend.com/support.
+17: TraceBack (most recent call last):
+18:         tsd client wait response fail, hostpid:1364791, receive device response data failed, check hdc service.[FUNC:WaitRsp][FILE:tsd_process_controller.cpp][LINE:197]
+19:         Starting a subprocess on the device timed out.
+20:         TsdOpen failed. devId=0, tdt error=31.[FUNC:PrintfTsdError][FILE:runtime.cc][LINE:2206]
+=== Final non-progress lines ===
+4:                              ^^^^^^
+5:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 86, in main
+6:     torch.manual_seed(a.seed);torch.npu.set_device(0)
+7:                               ^^^^^^^^^^^^^^^^^^^^^^^
+8:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/npu/utils.py", line 94, in set_device
+9:     torch_npu._C._npu_setDevice(device_id)
+10: RuntimeError: ExchangeDevice:../torch_npu/csrc/core/npu/sys_ctrl/npu_sys_ctrl.cpp:337 NPU function error: c10_npu::SetDevice(device), error code is 507033
+11: [ERROR] 2026-11-06-16:10:39 (PID:1364791, Device:0, RankID:-1) ERR00100 PTA call acl api failed
+12: [Error]: Failed to start the device.
+13:         Rectify the fault based on the error information in the ascend log.
+14: [PID: 1364791] 2026-11-06-16:10:23.313.341 Inner_Error_Device_Subprocess_Startup_Timeout(E39007): Starting a subprocess on the device timed out.
+15:         Possible Cause: 1.Failed to start the subprocess. 2. The HDC link is faulty.
+16:         Solution: Obtain the host and device logs, and contact technical support at https://www.hiascend.com/support.
+17: TraceBack (most recent call last):
+18:         tsd client wait response fail, hostpid:1364791, receive device response data failed, check hdc service.[FUNC:WaitRsp][FILE:tsd_process_controller.cpp][LINE:197]
+19:         Starting a subprocess on the device timed out.
+20:         TsdOpen failed. devId=0, tdt error=31.[FUNC:PrintfTsdError][FILE:runtime.cc][LINE:2206]
+21:         Check param failed, dev can not be NULL![FUNC:DeviceRetain][FILE:runtime.cc][LINE:3250]
+22:         rtSetDevice execution failed, reason=device retain error[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+23: 
+Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
