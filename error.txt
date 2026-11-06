@@ -1,53 +1,61 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_shifted_single.sh reuse
-Results: /home/z30086261/Q4/results/mhc-shifted-single/20261106-111023-714758
+Results: /home/z30086261/Q4/results/mhc-shifted-single/20261106-111427-722985
 H=5120 N=128 check
 Failed stage: check
-Log: /home/z30086261/Q4/results/mhc-shifted-single/20261106-111023-714758/check.log
+Log: /home/z30086261/Q4/results/mhc-shifted-single/20261106-111427-722985/check.log
 === Exception headlines (up to 8) ===
-94: tvm.error.InternalError: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV1.MTE3 -> AIV0.MTE2 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
+26: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_shifted_single_reuse_kernel_kernel with ACL error 107000, grid=4, dyn_ubuf_bytes=245984: [PID: 722991] 2026-11-06-11:14:55.570.744 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
 === First error contexts (up to 4) ===
-1: [11:10:37] /home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/insert_sync.cc:846: Fatal: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV1.MTE3 -> AIV0.MTE2 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
-2: 2026-11-06 11:10:28  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_shifted_single_reuse_kernel` with `out_idx=None`
-3: Traceback (most recent call last):
-4:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
-5:     if __name__=='__main__': main()
-6:                              ^^^^^^
-7:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 96, in main
-8:     functions,refs,names,meta=make_case(a)
-9:                               ^^^^^^^^^^^^
-10:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 131, in make_case
-11:     functions[single_label], meta = make_shifted_single_candidate(
-12:                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-13:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 35, in make_shifted_single_candidate
-14:     kernel = kernel_fn.compile(flat, phi, prev2d, alpha, bias, *sample, *allocate_partials(), **config)
-15:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-16:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 470, in compile
-17:     kernel_result = compile(
-18:                     ^^^^^^^^
-19:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 166, in compile
-20:     return cached(
-21:            ^^^^^^^
-22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/__init__.py", line 91, in cached
+1: 2026-11-06 11:14:45  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_shifted_single_reuse_kernel` with `out_idx=None`
+2: 2026-11-06 11:14:55  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_shifted_single_reuse_kernel`
+3: {'implementation': 'tilelang_all_token_l2_default', 'output': 'layer_input', 'shape': [128, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 2.215548518326271e-05, 'relative_l2': 1.9314915095015055e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+4: {'implementation': 'tilelang_all_token_l2_default', 'output': 'next_pre_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.463859558105469e-06, 'rmse': 2.809809314002512e-06, 'relative_l2': 5.598160087778142e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+5: {'implementation': 'tilelang_all_token_l2_default', 'output': 'post_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.5497207641601562e-05, 'rmse': 5.595777269301738e-06, 'relative_l2': 5.596548087146414e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+6: {'implementation': 'tilelang_all_token_l2_default', 'output': 'comb_mix', 'shape': [128, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.255243301391602e-06, 'rmse': 2.1468799428045695e-06, 'relative_l2': 8.549835870563863e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+7: Traceback (most recent call last):
+8:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
+9:     if __name__=='__main__': main()
+10:                              ^^^^^^
+11:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 184, in main
+12:     outputs=tuple(fn());torch.npu.synchronize()
+13:                   ^^^^
+14:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 39, in run
+15:     kernel(flat, phi, prev2d, alpha, bias, hi, pre, post, comb, *allocate_partials())
+16:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 228, in __call__
+17:     return self.torch_function(*args, **kwds)
+18:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+19:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/adapter/tvm_ffi.py", line 348, in func
+20:     executable(*tensor_list)
+21:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm/runtime/executable.py", line 46, in __call__
+22:     return self.jit().main(*args, **kwargs)
+23:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+24:   File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
+25:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/runtime/ascend_module.cc", line 697, in void tvm::ascend::AscendWrappedFunc<LaunchPolicy>::operator()(tvm::ffi::PackedArgs, tvm::ffi::Any*, void*, size_t) const [with LaunchPolicy = tvm::ascend::DirectLaunchPolicy; size_t = long unsigned int]
+26: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_shifted_single_reuse_kernel_kernel with ACL error 107000, grid=4, dyn_ubuf_bytes=245984: [PID: 722991] 2026-11-06-11:14:55.570.744 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
+27: TraceBack (most recent call last):
+28:         The argument is invalid. Reason: rtsLaunchKernelWithHostArgs execution failed.
+29: 
+30: [ERROR] 2026-11-06-11:14:57 (PID:722991, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
 === Final non-progress lines ===
-76:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-77:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-78:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-79:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-80:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-81:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-82:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-83:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-84:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-85:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-86:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-87:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-88:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
-89:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-90:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-91:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-92:   File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
-93:   File "<unknown>", line 0, in tvm::runtime::detail::LogFatal::~LogFatal()
-94: tvm.error.InternalError: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV1.MTE3 -> AIV0.MTE2 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
-95: [ERROR] 2026-11-06-11:10:39 (PID:714764, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+11:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 184, in main
+12:     outputs=tuple(fn());torch.npu.synchronize()
+13:                   ^^^^
+14:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 39, in run
+15:     kernel(flat, phi, prev2d, alpha, bias, hi, pre, post, comb, *allocate_partials())
+16:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 228, in __call__
+17:     return self.torch_function(*args, **kwds)
+18:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+19:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/adapter/tvm_ffi.py", line 348, in func
+20:     executable(*tensor_list)
+21:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm/runtime/executable.py", line 46, in __call__
+22:     return self.jit().main(*args, **kwargs)
+23:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+24:   File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
+25:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/runtime/ascend_module.cc", line 697, in void tvm::ascend::AscendWrappedFunc<LaunchPolicy>::operator()(tvm::ffi::PackedArgs, tvm::ffi::Any*, void*, size_t) const [with LaunchPolicy = tvm::ascend::DirectLaunchPolicy; size_t = long unsigned int]
+26: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_shifted_single_reuse_kernel_kernel with ACL error 107000, grid=4, dyn_ubuf_bytes=245984: [PID: 722991] 2026-11-06-11:14:55.570.744 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
+27: TraceBack (most recent call last):
+28:         The argument is invalid. Reason: rtsLaunchKernelWithHostArgs execution failed.
+29: 
+30: [ERROR] 2026-11-06-11:14:57 (PID:722991, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
 Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
