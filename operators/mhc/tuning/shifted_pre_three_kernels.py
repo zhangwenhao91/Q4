@@ -332,9 +332,11 @@ def _projection_body(
                     T.dual_copy(out_mul_l0[drain_stage, 0:128, 0:24],
                                 partial_ub[drain_stage, 0:64, 0:24], unit_flag_ctrl=3)
                 with T.PerCoreTask():
-                    for store_stage in T.Serial(num_valid_token_stages):
-                        partial_start = (token_block_base + store_stage * cores_per_split) * 64
-                        with T.Task():
+                    # Fixpipe publishes the whole drain loop as one task.
+                    # Consume its notification once, then store all UB slots.
+                    with T.Task():
+                        for store_stage in T.Serial(num_valid_token_stages):
+                            partial_start = (token_block_base + store_stage * cores_per_split) * 64
                             T.copy(partial_ub[store_stage, 0:64, 0:24], out_mul[split_id, aiv_id, partial_start : partial_start + 64, 0:24])
                             T.copy(sqrsum_ub[store_stage, 0:64], sqrsum[split_id, aiv_id, partial_start : partial_start + 64])
                     # Every AIV signals from MTE3 after its last chunk, including
