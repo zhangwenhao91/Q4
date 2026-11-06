@@ -8,18 +8,24 @@ from summarize_projection import profile_lines
 from summarize_small_split_timeline import timeline_lines
 
 
-def allocation_report(root, workspace=False):
+def allocation_report(root, mode='alloc'):
     labels = ('tilelang_deferred_k8', 'tilelang_deferred_k8_batch')
     pairs = [(name, f'{name}_prealloc') for name in labels]
     tags = ('k8', 'k8-prealloc', 'batch', 'batch-prealloc')
-    if workspace:
+    if mode == 'workspace':
         batch = labels[1]
         pairs = [(batch, f'{batch}_workspace'), (batch, f'{batch}_prealloc'),
                  (f'{batch}_workspace', f'{batch}_prealloc')]
         tags = ('batch', 'batch-workspace', 'batch-prealloc')
+    elif mode == 'refactor':
+        batch = labels[1]
+        pairs = [(f'{batch}_prealloc_reference', f'{batch}_prealloc')]
+        tags = ()
     hashes = ('standalone_apply_source_sha256', 'projection_device_source_sha256', 'tail_device_source_sha256')
     lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
-             'CPU and pairwise checks passed. Workspace-only returns fresh outputs; full preallocation aliases.',
+             ('CPU and pairwise checks passed. Both preallocated versions reuse their outputs.'
+              if mode == 'refactor' else
+              'CPU and pairwise checks passed. Workspace-only returns fresh outputs; full preallocation aliases.'),
              'N | reference | candidate | reference event us | candidate event us | paired reference/candidate | '
              'reference wall us | candidate wall us | source match']
     for n in (128, 256):
@@ -34,11 +40,11 @@ def allocation_report(root, workspace=False):
             lines.append(f'{n} | {name} | {reused} | {median(fresh):.3f} | {median(reuse):.3f} | {median(ratios):.4f} | '
                          f'{wall[0]:.3f} | {wall[1]:.3f} | {same}')
             lines.append(f'  Pair ratios: {", ".join(f"{ratio:.4f}" for ratio in ratios)}')
-        if not workspace:
+        if mode == 'alloc':
             batch_ratios = [run[labels[0] + '_prealloc']['event_us'] / run[labels[1] + '_prealloc']['event_us']
                             for run in timings]
             lines.append(f'{n} | preallocated sequential/batch K8 event ratio: {median(batch_ratios):.4f}')
-    timeline, errors = timeline_lines(root, tags)
+    timeline, errors = timeline_lines(root, tags) if tags else ([], [])
     return '\n'.join([*lines, '', *timeline, *errors]) + '\n'
 
 
@@ -74,7 +80,7 @@ def report(root, batch=False):
 if __name__ == '__main__':
     root = Path(sys.argv[1])
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
-    summary = (allocation_report(root, workspace=mode == 'workspace') if mode in ('alloc', 'workspace')
+    summary = (allocation_report(root, mode=mode) if mode in ('alloc', 'workspace', 'refactor')
                else report(root, batch=mode == 'batch'))
     (root / 'summary.txt').write_text(summary, encoding='utf-8')
     print(summary, end='')

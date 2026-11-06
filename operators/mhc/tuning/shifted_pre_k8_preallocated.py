@@ -74,35 +74,16 @@ def get_config(mhc_hidden_size: int, mhc_mult3: int, num_tokens: int, determinis
 
 @T.macro
 def _projection_body(
-    x, fn, out_mul, sqrsum, prev_pre, alpha, bias, hi, pre, post, comb,
-    num_tokens, mhc_mult3, mhc_hidden_size,
+    x, fn, out_mul, sqrsum, num_tokens, mhc_mult3,
     block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
     num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
-    num_token_blocks_per_chunk, deterministic, residual_l2_cache_ctrl, fused_shifted, epilogue,
-    reuse_apply=False, defer_reduce=False,
+    num_token_blocks_per_chunk,
 ):
     block_num_tokens = 128
-    reuse_pipeline = reuse_apply and num_l0c_stages > 1
-    block_hidden = 128 if reuse_pipeline else 256
+    block_hidden = 256
     mad_hidden = 64
-    num_aivs = 2
-    half_block_num_tokens = block_num_tokens // num_aivs
+    half_block_num_tokens = block_num_tokens // 2
     num_mads_per_block = block_hidden // mad_hidden
-    # The 256-wide reuse path needs one input slot to fit the Apply buffers.
-    # Two 128-wide slots have the same footprint in the pipelined variant.
-    num_load_stages = 2 if reuse_pipeline else (1 if reuse_apply else (2 if fused_shifted else 3))
-    num_cast_stages = 2 if reuse_pipeline or not reuse_apply else 1
-    num_l1_x_stages = 3
-    num_mad_stages = 2
-
-    num_store_phases = num_k_splits if deterministic else (2 if num_k_splits > 1 else 1)
-    # In non-deterministic mode, phase 0 separates split 0's non-atomic store
-    # from the remaining splits' atomic adds. The last phase only needs a
-    # barrier when another token chunk follows. Encode that optional barrier
-    # as a uniform 0/1-trip loop because AutoSchedule rejects inter-core waits
-    # under conditional control flow inside T.PerCoreTask.
-    num_always_synced_store_phases = num_store_phases if deterministic else (1 if num_k_splits > 1 else 0)
-    num_chunk_end_syncs = 0 if deterministic or num_k_splits == 1 else 1
     nz_stage_rows = half_block_num_tokens + 1
 
     with T.MixedKernel(num_aic_cores) as (core_id, aiv_id):
@@ -115,13 +96,6 @@ def _projection_body(
         x_nz_ub = T.alloc_shared((nz_stage_rows, block_hidden), T.float32)
         T.annotate_layout({x_nz_ub: make_ascend_compact_nz_layout(x_nz_ub)})
         sqrsum_ub = T.alloc_shared((num_l0c_stages, half_block_num_tokens), T.float32)
-        if reuse_apply:
-            # Explicit slots keep each token tile's four-stream sum separate.
-            old_mix_ub = T.alloc_shared((num_l0c_stages, 64, 4), T.float32)
-            apply_acc = T.alloc_shared((num_l0c_stages, 64, block_hidden), T.float32)
-            apply_out = T.alloc_shared((64, block_hidden), T.bfloat16)
-            partial_ub = T.alloc_shared((num_l0c_stages, 64, 24), T.float32)
-            T.annotate_buffer_versions({apply_acc: 1, apply_out: 1})
 
         x_l1 = T.alloc_l1((block_num_tokens, block_hidden), T.float32)
         fn_l1 = T.alloc_l1((block_mhc_mult3, block_hidden), T.float32)
@@ -131,18 +105,15 @@ def _projection_body(
 
         T.annotate_buffer_versions(
             {
-                x_ub: num_load_stages,
-                x_nz_ub: num_cast_stages,
-                x_l1: num_l1_x_stages,
+                x_ub: 3,
+                x_nz_ub: 2,
+                x_l1: 3,
                 fn_l1: num_l0b_stages,
-                x_l0: num_mad_stages,
+                x_l0: 2,
                 fn_l0: num_l0b_stages,
             }
         )
 
-        if not reuse_apply and not defer_reduce:
-            if split_id != 0:
-                T.set_atomic('add', 'float32')
         T.set_hf32_mode('nearest_even')
         for chunk_idx in T.Serial(num_token_chunks):
             token_block_base = chunk_idx * num_token_blocks_per_chunk + core_in_split
@@ -161,18 +132,9 @@ def _projection_body(
                     0,
                 ),
             )
-            if reuse_apply:
-                for mix_stage in T.Serial(num_valid_token_stages):
-                    mix_begin = aiv_token_begin_base + mix_stage * cores_per_split * 128
-                    T.copy(prev_pre[mix_begin : mix_begin + 64, 0:4], old_mix_ub[mix_stage, 0:64, 0:4])
 
             for local_hidden_block in T.Pipelined(num_hidden_blocks_per_split, num_stages=2):
-                if reuse_apply:
-                    stream_idx = local_hidden_block % 4
-                    hidden_band = split_id * (num_hidden_blocks_per_split // 4) + local_hidden_block // 4
-                    global_hidden_block = stream_idx * (mhc_hidden_size // (4 * block_hidden)) + hidden_band
-                else:
-                    global_hidden_block = split_id * num_hidden_blocks_per_split + local_hidden_block
+                global_hidden_block = split_id * num_hidden_blocks_per_split + local_hidden_block
                 hidden_begin = global_hidden_block * block_hidden
 
                 # Keep physical buffers block_mhc_mult3-aligned, but restrict
@@ -208,7 +170,7 @@ def _projection_body(
                                 hidden_begin : hidden_begin + block_hidden,
                             ],
                             x_ub[0:actual_aiv_num_tokens, :],
-                            l2_cache_ctrl=residual_l2_cache_ctrl,
+                            l2_cache_ctrl=None,
                             pad_value=0,
                         )
 
@@ -244,25 +206,6 @@ def _projection_body(
                                     unpacked_lo = T.reinterpret(lo_bits, 'float32x64')
                                     unpacked_hi = T.reinterpret(hi_bits, 'float32x64')
 
-                                    if reuse_apply:
-                                        mix_weight = S.vld(old_mix_ub[token_stage, row, stream_idx], dist='BRC_B32')
-                                        band_col = pass_id * 128
-                                        apply_lo = S.alloc_var(T.float32)
-                                        apply_hi = S.alloc_var(T.float32)
-                                        if stream_idx == 0:
-                                            apply_lo = S.vmul(unpacked_lo, mix_weight)
-                                            apply_hi = S.vmul(unpacked_hi, mix_weight)
-                                        else:
-                                            apply_lo = S.vld(apply_acc[token_stage, row, band_col])
-                                            apply_hi = S.vld(apply_acc[token_stage, row, band_col + 64])
-                                            S.vmula(apply_lo, unpacked_lo, mix_weight)
-                                            S.vmula(apply_hi, unpacked_hi, mix_weight)
-                                        if stream_idx == 3:
-                                            S.vsts(apply_out[row, band_col], S.vcvt(apply_lo, T.bfloat16), dist='PK_B32')
-                                            S.vsts(apply_out[row, band_col + 64], S.vcvt(apply_hi, T.bfloat16), dist='PK_B32')
-                                        else:
-                                            S.vsts(apply_acc[token_stage, row, band_col], apply_lo)
-                                            S.vsts(apply_acc[token_stage, row, band_col + 64], apply_hi)
 
                                     row_acc = T.simd.vadd(
                                         row_acc,
@@ -306,10 +249,6 @@ def _projection_body(
                                 sqr_sums = T.simd.vadd(sqr_sums, previous, f32_mask)
                             T.simd.vsts(sqrsum_ub[token_stage, 0], sqr_sums, f32_mask)
 
-                        if reuse_apply:
-                            if stream_idx == 3:
-                                T.copy(apply_out, hi[aiv_token_begin : aiv_token_begin + 64,
-                                                     hidden_band * block_hidden : (hidden_band + 1) * block_hidden])
                         T.dual_copy(
                             x_nz_ub[0:half_block_num_tokens, 0:block_hidden],
                             x_l1[0:block_num_tokens, 0:block_hidden],
@@ -336,107 +275,13 @@ def _projection_body(
                             ),
                         )
 
-            if defer_reduce:
-                for partial_slot in T.Serial(num_valid_token_stages):
-                    partial_token = (token_block_base + partial_slot * cores_per_split) * block_num_tokens
-                    T.copy(out_mul_l0[partial_slot, 0:128, 0:24],
-                           out_mul[split_id, partial_token : partial_token + 128, 0:24], unit_flag_ctrl=3)
-                for sum_slot in T.Serial(num_valid_sqrsum_stages):
-                    sum_token = aiv_token_begin_base + sum_slot * cores_per_split * block_num_tokens
-                    T.copy(sqrsum_ub[sum_slot, 0:64], sqrsum[split_id, sum_token : sum_token + 64])
-            elif reuse_apply:
-                for drain_stage in T.Serial(num_valid_token_stages):
-                    T.dual_copy(out_mul_l0[drain_stage, 0:128, 0:24],
-                                partial_ub[drain_stage, 0:64, 0:24], unit_flag_ctrl=3)
-                with T.PerCoreTask():
-                    # Fixpipe publishes the whole drain loop as one task.
-                    # Consume its notification once, then store all UB slots.
-                    with T.Task():
-                        for store_stage in T.Serial(num_valid_token_stages):
-                            partial_start = (token_block_base + store_stage * cores_per_split) * 64
-                            T.copy(partial_ub[store_stage, 0:64, 0:24], out_mul[split_id, aiv_id, partial_start : partial_start + 64, 0:24])
-                            T.copy(sqrsum_ub[store_stage, 0:64], sqrsum[split_id, aiv_id, partial_start : partial_start + 64])
-                    # Every AIV signals from MTE3 after its last chunk, including
-                    # workers with no tile in that chunk. The reader waits on MTE2.
-                    for _ in T.Serial(T.if_then_else(chunk_idx + 1 == num_token_chunks, 1, 0)):
-                        T.ascend_sync_inter_arrive('PIPE_MTE3', 8)
-            elif fused_shifted:
-                for epilogue_stage in T.Serial(num_valid_token_stages):
-                    epilogue_begin = (token_block_base + epilogue_stage * cores_per_split) * block_num_tokens
-                    epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
-                                     out_mul_l0, sqrsum_ub, epilogue_begin, epilogue_stage,
-                                     aiv_id, mhc_hidden_size // 4, num_l0c_stages)
-            else:
-                with T.PerCoreTask():
-                    for store_phase in T.Serial(num_store_phases):
-                        store_this_phase = T.if_then_else(
-                            deterministic,
-                            split_id == store_phase,
-                            T.if_then_else(store_phase == 0, split_id == 0, split_id != 0),
-                        )
-                        out_mul_flag = (chunk_idx * num_store_phases + store_phase) % 4
-
-                        if store_this_phase:
-                            with T.Task():
-                                for token_stage in T.Serial(num_valid_token_stages):
-                                    token_block = token_block_base + token_stage * cores_per_split
-                                    token_begin = token_block * block_num_tokens
-                                    actual_num_tokens = T.min(num_tokens - token_begin, block_num_tokens)
-                                    T.copy(
-                                        out_mul_l0[token_stage, 0:actual_num_tokens, 0:mhc_mult3],
-                                        out_mul[
-                                            token_begin : token_begin + actual_num_tokens,
-                                            0:mhc_mult3,
-                                        ],
-                                        unit_flag_ctrl=3,
-                                    )
-                        num_store_syncs = T.if_then_else(
-                            store_phase < num_always_synced_store_phases,
-                            1,
-                            T.min(num_token_chunks - chunk_idx - 1, num_chunk_end_syncs),
-                        )
-                        for _ in T.Serial(num_store_syncs):
-                            T.ascend_sync_inter_arrive('PIPE_FIX', out_mul_flag)
-                            T.ascend_sync_inter_wait('PIPE_FIX', out_mul_flag)
-
-                with T.PerCoreTask():
-                    for store_phase in T.Serial(num_store_phases):
-                        store_this_phase = T.if_then_else(
-                            deterministic,
-                            split_id == store_phase,
-                            T.if_then_else(store_phase == 0, split_id == 0, split_id != 0),
-                        )
-                        sqrsum_flag = 4 + (chunk_idx * num_store_phases + store_phase) % 4
-
-                        if store_this_phase:
-                            with T.Task():
-                                for token_stage in T.Serial(num_valid_sqrsum_stages):
-                                    token_block = token_block_base + token_stage * cores_per_split
-                                    token_begin = token_block * block_num_tokens + aiv_id * half_block_num_tokens
-                                    actual_aiv_num_tokens = T.min(
-                                        num_tokens - token_begin,
-                                        half_block_num_tokens,
-                                    )
-                                    T.copy(
-                                        sqrsum_ub[token_stage, 0:actual_aiv_num_tokens],
-                                        sqrsum[token_block, aiv_id, 0:actual_aiv_num_tokens],
-                                        l2_cache_ctrl='normal_fv',
-                                    )
-                        num_store_syncs = T.if_then_else(
-                            store_phase < num_always_synced_store_phases,
-                            1,
-                            T.min(num_token_chunks - chunk_idx - 1, num_chunk_end_syncs),
-                        )
-                        for _ in T.Serial(num_store_syncs):
-                            T.ascend_sync_inter_arrive('PIPE_MTE3', sqrsum_flag)
-                            T.ascend_sync_inter_wait('PIPE_MTE3', sqrsum_flag)
-
-        if reuse_apply:
-            epilogue(out_mul, sqrsum, alpha, bias, pre, post, comb,
-                     num_tokens, num_k_splits, num_aic_cores, core_id, aiv_id)
-        elif not defer_reduce:
-            if split_id != 0:
-                T.set_atomic_none()
+            for partial_slot in T.Serial(num_valid_token_stages):
+                partial_token = (token_block_base + partial_slot * cores_per_split) * block_num_tokens
+                T.copy(out_mul_l0[partial_slot, 0:128, 0:24],
+                       out_mul[split_id, partial_token : partial_token + 128, 0:24], unit_flag_ctrl=3)
+            for sum_slot in T.Serial(num_valid_sqrsum_stages):
+                sum_token = aiv_token_begin_base + sum_slot * cores_per_split * block_num_tokens
+                T.copy(sqrsum_ub[sum_slot, 0:64], sqrsum[split_id, sum_token : sum_token + 64])
 
 @tilelang.jit
 def mhc_projection_split_partials(
@@ -452,10 +297,9 @@ def mhc_projection_split_partials(
     out_mul: T.Tensor[(num_k_splits, tokens, 24), T.float32]
     sqrsum: T.Tensor[(num_k_splits, tokens), T.float32]
     _projection_body(
-        x, fn, out_mul, sqrsum, None, None, None, None, None, None, None,
-        tokens, 24, flat_hidden, block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
+        x, fn, out_mul, sqrsum, tokens, 24, block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
         num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
-        num_token_blocks_per_chunk, False, None, False, None, False, True)
+        num_token_blocks_per_chunk)
 
 
 def _u32_index(index_i32):
@@ -759,7 +603,6 @@ def mhc_coeff_token_pipeline(
     token_block: int,
     num_stages: int,
     num_vec_cores: int,
-    batch_partials: bool = False,
 ):
     """RMS + split + Sinkhorn; emit next_pre/post/comb, with no feature apply."""
     num_tokens = T.dynamic('num_tokens')
@@ -791,14 +634,10 @@ def mhc_coeff_token_pipeline(
         post_ub = T.alloc_shared((tb, mhc), T.float32)
         comb_in_ub = T.alloc_shared((tb, mhc2), T.float32)
         comb_out_ub = T.alloc_shared((tb, mhc2), T.float32)
-        if batch_partials:
-            batch_mul_ub = T.alloc_shared((n_splits, tb * mhc3), T.float32)
-            # Pad the UB row to a full SIMD vector. DMA and arithmetic use
-            # only the first tb lanes.
-            batch_sq_ub = T.alloc_shared((n_splits, 64), T.float32)
-        elif n_splits > 1:
-            partial_mul_ub = T.alloc_shared((tb * mhc3,), T.float32)
-            partial_sq_ub = T.alloc_shared((tb,), T.float32)
+        batch_mul_ub = T.alloc_shared((n_splits, tb * mhc3), T.float32)
+        # Pad the UB row to a full SIMD vector. DMA and arithmetic use
+        # only the first tb lanes.
+        batch_sq_ub = T.alloc_shared((n_splits, 64), T.float32)
         T.annotate_buffer_versions(
             {
                 mul_flat_ub: num_stages,
@@ -821,56 +660,26 @@ def mhc_coeff_token_pipeline(
         for step in T.Pipelined(jobs, num_stages=num_stages):
             pid = core_id + step * num_vec_cores
             token_base = pid * tb
-            if batch_partials:
-                raw_rows = T.view(gemm_out_mul, (n_splits, num_tokens * mhc3))
-                raw_begin = token_base * mhc3
-                T.copy(raw_rows[0:n_splits, raw_begin : raw_begin + tb * mhc3], batch_mul_ub)
-                T.copy(gemm_out_sqrsum[0:n_splits, token_base : token_base + tb],
-                       batch_sq_ub[0:n_splits, 0:tb])
-                with T.SimdVF():
-                    mask = S.pset(32)
-                    sq_mask = S.vcmps(S.vci(T.int32(0), T.int32), T.int32(tb), mask, 'lt')
-                    for vec in T.unroll(tb * mhc3 // 64, explicit=True):
-                        offset = vec * 64
-                        sum_mul = S.alloc_var(T.float32)
-                        sum_mul = S.vld(batch_mul_ub[0, offset])
-                        for k in T.unroll(n_splits - 1, explicit=True):
-                            sum_mul = S.vadd(sum_mul, S.vld(batch_mul_ub[k + 1, offset]), mask)
-                        S.vsts(mul_flat_ub[offset], sum_mul, mask)
-                    sum_sq = S.alloc_var(T.float32)
-                    sum_sq = S.vld(batch_sq_ub[0, 0])
+            raw_rows = T.view(gemm_out_mul, (n_splits, num_tokens * mhc3))
+            raw_begin = token_base * mhc3
+            T.copy(raw_rows[0:n_splits, raw_begin : raw_begin + tb * mhc3], batch_mul_ub)
+            T.copy(gemm_out_sqrsum[0:n_splits, token_base : token_base + tb],
+                   batch_sq_ub[0:n_splits, 0:tb])
+            with T.SimdVF():
+                mask = S.pset(32)
+                sq_mask = S.vcmps(S.vci(T.int32(0), T.int32), T.int32(tb), mask, 'lt')
+                for vec in T.unroll(tb * mhc3 // 64, explicit=True):
+                    offset = vec * 64
+                    sum_mul = S.alloc_var(T.float32)
+                    sum_mul = S.vld(batch_mul_ub[0, offset])
                     for k in T.unroll(n_splits - 1, explicit=True):
-                        sum_sq = S.vadd(sum_sq, S.vld(batch_sq_ub[k + 1, 0]), sq_mask)
-                    S.vsts(sq_ub[0], sum_sq, sq_mask, extent=tb)
-            elif token_base + tb <= num_tokens:
-                T.copy(gemm_out_mul[0:1, token_base : token_base + tb, 0:mhc3], T.view(mul_flat_ub, (tb, mhc3)))
-                T.copy(gemm_out_sqrsum[0:1, token_base : token_base + tb], sq_ub)
-                if n_splits > 1:
-                    for k in T.Serial(1, n_splits):
-                        T.copy(gemm_out_mul[k, token_base : token_base + tb, 0:mhc3], T.view(partial_mul_ub, (tb, mhc3)))
-                        T.copy(gemm_out_sqrsum[k, token_base : token_base + tb], partial_sq_ub)
-                        with T.SimdVF():
-                            mask = S.pset(32)
-                            for vec in T.unroll(tb * mhc3 // 64, explicit=True):
-                                offset = vec * 64
-                                S.vsts(mul_flat_ub[offset], S.vadd(S.vld(mul_flat_ub[offset]), S.vld(partial_mul_ub[offset]), mask))
-                        with T.SimtVF(threads=32):
-                            for row in T.Parallel(tb):
-                                sq_ub[row] = sq_ub[row] + partial_sq_ub[row]
-            elif n_splits == 1:
-                # DMA pad_value pads a row's width, not missing token rows.
-                # Use bounded scalar loads for the final partial token tile.
-                with T.SimtVF(threads=32):
-                    for tail_t, tail_c in T.Parallel(tb, mhc3):
-                        if token_base + tail_t < num_tokens:
-                            mul_flat_ub[tail_t * mhc3 + tail_c] = gemm_out_mul[0, token_base + tail_t, tail_c]
-                        else:
-                            mul_flat_ub[tail_t * mhc3 + tail_c] = T.float32(0)
-                    for tail_t in T.Parallel(tb):
-                        if token_base + tail_t < num_tokens:
-                            sq_ub[tail_t] = gemm_out_sqrsum[0, token_base + tail_t]
-                        else:
-                            sq_ub[tail_t] = T.float32(0)
+                        sum_mul = S.vadd(sum_mul, S.vld(batch_mul_ub[k + 1, offset]), mask)
+                    S.vsts(mul_flat_ub[offset], sum_mul, mask)
+                sum_sq = S.alloc_var(T.float32)
+                sum_sq = S.vld(batch_sq_ub[0, 0])
+                for k in T.unroll(n_splits - 1, explicit=True):
+                    sum_sq = S.vadd(sum_sq, S.vld(batch_sq_ub[k + 1, 0]), sq_mask)
+                S.vsts(sq_ub[0], sum_sq, sq_mask, extent=tb)
 
             ##################################################################
             # _mhc_reduce_partials_and_rmsnorm_fwd + _mhc_pre_split_mixes_fwd
@@ -941,96 +750,55 @@ def mhc_pre_apply_flat_pipeline_asc(x, mix, o, h_blk, num_vec_cores: int, pipeli
             T.copy(o_ub, o[pid_n, pid_h * h_blk])
 
 
-def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
-                     projection_l2_default=True, tail_cores=None, tail_stages=2,
-                     deferred_splits=None, batch_partials=False, preallocate=False,
-                     reuse_workspace=False, projection_kernel=None):
-    """Compile the three launchers for the supplied tensors and return a callable."""
+def bind_preallocated_k8(x, prev_pre, phi, alpha, bias, *, tail_cores=None, tail_stages=2):
+    """Compile once and return a single-stream launcher with reusable outputs."""
     import torch
     from tile_kernels.config import get_num_vec_cores
 
     n, streams, hidden = x.shape
     if (streams, hidden) != (4, 5120) or not n or n % 128:
         raise ValueError('Expected residual[N,4,5120] with positive N divisible by 128')
-    if batch_partials and deferred_splits != 8:
-        raise ValueError('Batch reduction is only enabled for deferred K8')
-    if deferred_splits is not None:
-        projection_config = get_config(streams * hidden, 24, n, split_override=deferred_splits)
-    elif projection_config is None:
-        projection_config = get_config(streams * hidden, 24, n)
-    flat = x.flatten(1)
-    prev = prev_pre.view(n, 4)
     vec_cores = get_num_vec_cores()
     if tail_stages not in (1, 2, 3, 4) or (tail_cores is not None and not 0 < tail_cores <= vec_cores):
         raise ValueError('Invalid tail core/stage configuration')
-    splits = deferred_splits or 1
+
+    splits = 8
+    config = get_config(streams * hidden, 24, n, split_override=splits)
     settings = dict(rms_eps=1e-20, mhc_pre_eps=1e-6, mhc_sinkhorn_eps=1e-6,
                     mhc_post_mult_value=2., sinkhorn_repeat=20, hidden=hidden, n_splits=splits,
                     token_block=16, num_stages=tail_stages, num_vec_cores=tail_cores or vec_cores)
+    flat = x.flatten(1)
+    prev = prev_pre.view(n, 4)
+    hi = torch.empty(n, hidden, dtype=x.dtype, device=x.device)
+    packed = torch.empty(n * 24, dtype=torch.float32, device=x.device)
+    pre, post, comb = packed.split((n * 4, n * 4, n * 16))
+    pre, post, comb = pre.view(n, 4), post.view(n, 4), comb.view(n, 16)
+    raw = torch.empty(splits, n, 24, dtype=torch.float32, device=x.device)
+    sq = torch.empty(splits, n, dtype=torch.float32, device=x.device)
+    outputs = (hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(n, 4, 4))
 
-    def allocate_outputs():
-        hi = torch.empty(n, hidden, dtype=x.dtype, device=x.device)
-        packed = torch.empty(n * 24, dtype=torch.float32, device=x.device)
-        pre, post, comb = packed.split((n * 4, n * 4, n * 16))
-        return hi, pre.view(n, 4), post.view(n, 4), comb.view(n, 16)
-
-    def allocate_projection():
-        raw = torch.empty(splits, n, 24, dtype=torch.float32, device=x.device)
-        sq_shape = (splits, n) if deferred_splits else (n // 128, 2, 64)
-        sq = torch.empty(sq_shape, dtype=torch.float32, device=x.device)
-        return raw, sq
-
-    hi, pre, post, comb = allocate_outputs()
-    raw, sq = allocate_projection()
-    if deferred_splits:
-        projection = mhc_projection_split_partials.compile(flat, phi, raw, sq, **projection_config)
-    else:
-        if projection_kernel is None:
-            raise ValueError('The non-deferred path requires a projection kernel')
-        projection = projection_kernel.compile(
-            flat, phi, raw[0], sq, deterministic=False,
-            residual_l2_cache_ctrl=None if projection_l2_default else 'notalloc_keep',
-            **projection_config)
-    coefficients = mhc_coeff_token_pipeline.compile(
-        raw, sq.view(splits, n), alpha, bias, pre, post, comb, batch_partials=batch_partials, **settings)
+    projection = mhc_projection_split_partials.compile(flat, phi, raw, sq, **config)
+    coefficients = mhc_coeff_token_pipeline.compile(raw, sq, alpha, bias, pre, post, comb, **settings)
     apply = mhc_pre_apply_flat_pipeline_asc.compile(
         x, prev, hi, h_blk=hidden, num_vec_cores=vec_cores, pipeline_stages=3)
 
-    # Diagnostic only: outputs alias across calls and are overwritten on reuse.
-    # Benchmark calls execute in order on the same stream.
-    fixed_outputs = (hi, pre, post, comb) if preallocate else None
-    fixed_workspace = (raw, sq) if preallocate or reuse_workspace else None
-
     def run():
-        hi, pre, post, comb = fixed_outputs or allocate_outputs()
         apply(x, prev, hi)
-        raw, sq = fixed_workspace or allocate_projection()
-        projection(flat, phi, raw if deferred_splits else raw[0], sq)
-        coefficients(raw, sq.view(splits, n), alpha, bias, pre, post, comb)
-        return hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(n, 4, 4)
+        projection(flat, phi, raw, sq)
+        coefficients(raw, sq, alpha, bias, pre, post, comb)
+        return outputs
 
     sources = {name: kernel.get_kernel_source() for name, kernel in
                (('apply', apply), ('projection', projection), ('tail', coefficients))}
     hashes = {name: hashlib.sha256(source.encode()).hexdigest() for name, source in sources.items()}
     return run, dict(
-        all_token_pipeline=True, projection_l2_default=projection_l2_default,
-        apply_pipeline=(hidden, 3), flat_pipeline=True,
+        all_token_pipeline=True, projection_l2_default=True, apply_pipeline=(hidden, 3), flat_pipeline=True,
         tail_settings={key: value for key, value in settings.items() if key != 'hidden'},
         operation='public JITImpl.compile -> JITKernel call; no private cache access',
         projection_device_source_sha256=hashes['projection'], tail_device_source_sha256=hashes['tail'],
-        numerical_kernel_changes=False, output_preallocation=preallocate,
-        workspace_reuse=fixed_workspace is not None,
-        per_call_allocations=0 if preallocate else (2 if reuse_workspace else 4),
-        expected_kernels_per_call=3,
-        note=('diagnostic single-stream reuse; returned outputs alias across calls; tensor views and device math timed'
-              if preallocate else 'single-stream workspace reuse; fresh outputs, views and device math timed'
-              if reuse_workspace else 'compilation excluded; all device math, output/workspace allocation and views remain timed'),
+        numerical_kernel_changes=False, output_preallocation=True, workspace_reuse=True,
+        per_call_allocations=0, expected_kernels_per_call=3,
+        note='Single-stream reuse; returned outputs alias across calls; views are bound once',
         generated_apply_source=sources['apply'], standalone_apply_source_sha256=hashes['apply'],
         standalone_apply_hidden_tile=hidden, generated_sources=sources,
-        deferred_splits=deferred_splits, batch_partials=batch_partials, projection_config=projection_config)
-
-def bind_preallocated_k8(x, prev_pre, phi, alpha, bias, *, tail_cores=None, tail_stages=2):
-    """Return a bound launcher and metadata for the preallocated batch-K8 Pre."""
-    return bind_shifted_pre(
-        x, prev_pre, phi, alpha, bias, tail_cores=tail_cores, tail_stages=tail_stages,
-        deferred_splits=8, batch_partials=True, preallocate=True)
+        deferred_splits=splits, batch_partials=True, projection_config=config)

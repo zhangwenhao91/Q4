@@ -171,6 +171,15 @@ def make_case(a):
             for name, source in meta.pop('generated_sources').items():
                 (a.output / f'{label}_{name}.cpp').write_text(source, encoding='utf-8')
             metadata[label] = meta
+        reference = 'tilelang_deferred_k8_batch_prealloc_reference'
+        if reference in (a.implementations or ()):
+            sys.path.insert(0, str(ROOT / 'operators/mhc/tuning'))
+            from shifted_pre_three_kernels import bind_shifted_pre
+            functions[reference], meta = bind_shifted_pre(
+                x, prev, phi, alpha, bias, deferred_splits=8, batch_partials=True, preallocate=True)
+            for name, source in meta.pop('generated_sources').items():
+                (a.output / f'{reference}_{name}.cpp').write_text(source, encoding='utf-8')
+            metadata[reference] = meta
         for single_label, reuse_apply, token_stages in (
                 ('tilelang_shifted_single_h5120', False, 1),
                 ('tilelang_shifted_single_reuse_h5120', True, 1),
