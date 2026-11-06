@@ -784,6 +784,7 @@ def mhc_coeff_token_pipeline(
     token_block: int,
     num_stages: int,
     num_vec_cores: int,
+    batch_partials: bool = False,
 ):
     """RMS + split + Sinkhorn; emit next_pre/post/comb, with no feature apply."""
     num_tokens = T.dynamic('num_tokens')
@@ -815,7 +816,12 @@ def mhc_coeff_token_pipeline(
         post_ub = T.alloc_shared((tb, mhc), T.float32)
         comb_in_ub = T.alloc_shared((tb, mhc2), T.float32)
         comb_out_ub = T.alloc_shared((tb, mhc2), T.float32)
-        if n_splits > 1:
+        if batch_partials:
+            batch_mul_ub = T.alloc_shared((n_splits, tb * mhc3), T.float32)
+            # Pad the UB row to a full SIMD vector. DMA and arithmetic use
+            # only the first tb lanes.
+            batch_sq_ub = T.alloc_shared((n_splits, 64), T.float32)
+        elif n_splits > 1:
             partial_mul_ub = T.alloc_shared((tb * mhc3,), T.float32)
             partial_sq_ub = T.alloc_shared((tb,), T.float32)
         T.annotate_buffer_versions(
@@ -840,7 +846,27 @@ def mhc_coeff_token_pipeline(
         for step in T.Pipelined(jobs, num_stages=num_stages):
             pid = core_id + step * num_vec_cores
             token_base = pid * tb
-            if token_base + tb <= num_tokens:
+            if batch_partials:
+                raw_tiles = T.view(gemm_out_mul, (n_splits, num_tokens // tb, tb * mhc3))
+                T.copy(raw_tiles[0:n_splits, pid, 0:tb * mhc3], batch_mul_ub)
+                T.copy(gemm_out_sqrsum[0:n_splits, token_base : token_base + tb],
+                       batch_sq_ub[0:n_splits, 0:tb])
+                with T.SimdVF():
+                    mask = S.pset(32)
+                    sq_mask = S.vcmps(S.vci(T.int32(0), T.int32), T.int32(tb), mask, 'lt')
+                    for vec in T.unroll(tb * mhc3 // 64, explicit=True):
+                        offset = vec * 64
+                        sum_mul = S.alloc_var(T.float32)
+                        sum_mul = S.vld(batch_mul_ub[0, offset])
+                        for k in T.unroll(n_splits - 1, explicit=True):
+                            sum_mul = S.vadd(sum_mul, S.vld(batch_mul_ub[k + 1, offset]), mask)
+                        S.vsts(mul_flat_ub[offset], sum_mul, mask)
+                    sum_sq = S.alloc_var(T.float32)
+                    sum_sq = S.vld(batch_sq_ub[0, 0])
+                    for k in T.unroll(n_splits - 1, explicit=True):
+                        sum_sq = S.vadd(sum_sq, S.vld(batch_sq_ub[k + 1, 0]), sq_mask)
+                    S.vsts(sq_ub[0], sum_sq, sq_mask, extent=tb)
+            elif token_base + tb <= num_tokens:
                 T.copy(gemm_out_mul[0:1, token_base : token_base + tb, 0:mhc3], T.view(mul_flat_ub, (tb, mhc3)))
                 T.copy(gemm_out_sqrsum[0:1, token_base : token_base + tb], sq_ub)
                 if n_splits > 1:
@@ -1019,7 +1045,8 @@ def mhc_shifted_single_reuse_kernel(
 
 
 def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
-                     projection_l2_default=True, tail_cores=None, tail_stages=2, deferred_splits=None):
+                     projection_l2_default=True, tail_cores=None, tail_stages=2,
+                     deferred_splits=None, batch_partials=False):
     """Compile the three launchers for the supplied tensors and return a callable."""
     import torch
     from tile_kernels.config import get_num_vec_cores
@@ -1027,6 +1054,8 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
     n, streams, hidden = x.shape
     if (streams, hidden) != (4, 5120) or not n or n % 128:
         raise ValueError('Expected residual[N,4,5120] with positive N divisible by 128')
+    if batch_partials and deferred_splits != 8:
+        raise ValueError('Batch reduction is only enabled for deferred K8')
     if deferred_splits is not None:
         projection_config = get_config(streams * hidden, 24, n, split_override=deferred_splits)
     elif projection_config is None:
@@ -1063,7 +1092,7 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
             residual_l2_cache_ctrl=None if projection_l2_default else 'notalloc_keep',
             **projection_config)
     coefficients = mhc_coeff_token_pipeline.compile(
-        raw, sq.view(splits, n), alpha, bias, pre, post, comb, **settings)
+        raw, sq.view(splits, n), alpha, bias, pre, post, comb, batch_partials=batch_partials, **settings)
     apply = mhc_pre_apply_flat_pipeline_asc.compile(
         x, prev, hi, h_blk=hidden, num_vec_cores=vec_cores, pipeline_stages=3)
 
@@ -1089,4 +1118,4 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
         note='compilation excluded for all sides; all device math, output/workspace allocation and views remain timed',
         generated_apply_source=sources['apply'], standalone_apply_source_sha256=hashes['apply'],
         standalone_apply_hidden_tile=hidden, generated_sources=sources,
-        deferred_splits=deferred_splits, projection_config=projection_config)
+        deferred_splits=deferred_splits, batch_partials=batch_partials, projection_config=projection_config)

@@ -64,7 +64,7 @@ def make_shifted_single_candidate(x, prev, phi, alpha, bias, *, reuse_apply=Fals
                      generated_source=kernel.get_kernel_source())
 
 
-def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, apply_h_blk=5120, tail_cores=None, tail_stages=2, apply_pipeline=None, flat_pipeline=False, all_token_pipeline=False, projection_l2_default=False, deferred_splits=None):
+def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, apply_h_blk=5120, tail_cores=None, tail_stages=2, apply_pipeline=None, flat_pipeline=False, all_token_pipeline=False, projection_l2_default=False, deferred_splits=None, batch_partials=False):
     if apply_h_blk <= 0 or apply_h_blk % 64 or 5120 % apply_h_blk:
         raise ValueError("apply_h_blk must divide 5120 and be a multiple of 64")
     import torch
@@ -78,8 +78,8 @@ def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, app
         return bind_shifted_pre(
             x, prev, projector.phi, alpha, bias, projector.config,
             projection_l2_default=projection_l2_default, tail_cores=tail_cores, tail_stages=tail_stages,
-            deferred_splits=deferred_splits)
-    if projection_l2_default or deferred_splits is not None:
+            deferred_splits=deferred_splits, batch_partials=batch_partials)
+    if projection_l2_default or deferred_splits is not None or batch_partials:
         raise ValueError('Projection cache/split overrides require all_token_pipeline')
     from apply_tail import mhc_shifted_tail_apply_fwd_asc
     t, padded = projector.t, projector.padded

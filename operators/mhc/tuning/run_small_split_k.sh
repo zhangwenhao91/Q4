@@ -14,6 +14,12 @@ mkdir -p "$OUT"
 git rev-parse HEAD > "$OUT/revision.txt"
 echo "Results: $OUT"
 base=tilelang_all_token_l2_default
+mode="${1:-scan}"
+case "$mode" in
+  scan) shapes=(128 256 512) ;;
+  batch) shapes=(128 256) ;;
+  *) echo 'Usage: run_small_split_k.sh [scan|batch]'; exit 2 ;;
+esac
 
 run_case() {
   local tag="$1" n="$2"
@@ -26,16 +32,23 @@ run_case() {
   fi
 }
 
-for n in 128 256 512; do
+for n in "${shapes[@]}"; do
   run_case "N$n-profile-base" "$n" --implementations "$base" --profile "$base"
 done
-for n in 128 256 512; do
-  labels=("$base" tilelang_deferred_k4 tilelang_deferred_k8)
-  if [[ "$n" == 128 ]]; then labels+=(tilelang_deferred_k16); fi
+for n in "${shapes[@]}"; do
+  if [[ "$mode" == batch ]]; then
+    labels=("$base" tilelang_deferred_k8 tilelang_deferred_k8_batch)
+  else
+    labels=("$base" tilelang_deferred_k4 tilelang_deferred_k8)
+    if [[ "$n" == 128 ]]; then labels+=(tilelang_deferred_k16); fi
+  fi
   for rep in 1 2 3; do
     run_case "N$n-rep$rep" "$n" --implementations "${labels[@]}" \
       --warmup 100 --rounds 24 --iters 100
   done
   run_case "N$n-profile-k8" "$n" --implementations tilelang_deferred_k8 --profile tilelang_deferred_k8
+  if [[ "$mode" == batch ]]; then
+    run_case "N$n-profile-batch" "$n" --implementations tilelang_deferred_k8_batch --profile tilelang_deferred_k8_batch
+  fi
 done
-"$PY" operators/mhc/vllm_v3/summarize_small_split_k.py "$OUT" | tee "$ROOT/error.txt"
+"$PY" operators/mhc/vllm_v3/summarize_small_split_k.py "$OUT" "$mode" | tee "$ROOT/error.txt"
