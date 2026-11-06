@@ -1,2 +1,67 @@
-src=/home/z30086261/Q4/results/mhc-shifted-single/20261106-145329-1060803/check/tilelang_shifted_single_reuse_pipeline_h5120.cpp
-rg -n -C 6 'asc_sync_inter_(arrive|wait).*8|asc_copy_l0c2ub|drain_stage' "$src"
+(zwh) root@ubuntu162:/home/z30086261/Q4# rg -n -C 6 'asc_sync_inter_(arrive|wait).*8|asc_copy_l0c2ub|drain_stage' "$src"
+840-          x_ub_aiv0_version_counter_2 = (x_ub_aiv0_version_counter_2 + 1);
+841-        }
+842-        asc_sync_notify(PIPE_M, PIPE_MTE1, static_cast<event_t>(((local_hidden_block & 1) + 2)));
+843-      }
+844-      asc_sync_intra_wait(PIPE_FIX, 19);
+845-      asc_sync_intra_wait(PIPE_FIX, 3);
+846:      for (int32_t drain_stage = 0; drain_stage < min(2, max(((((((tokens + 127) >> 7) + 3) - (((int32_t)block_idx) & 3)) >> 2) - (chunk_idx * 2)), 0)); ++drain_stage) {
+847-        asc_set_l0c_copy_nz_para(1, 0, 0);
+848:        asc_copy_l0c2ub((&(((__ubuf__ float*)buf_dyn_shmem)[(drain_stage * 1536)])), ((__cc__ float*)out_mul_l0 + (drain_stage * 4096)), 24, 128, 24, 128, 0, static_cast<asc_dual_dst_mode>(1), static_cast<asc_unit_flag_mode>(3), static_cast<asc_quant_mode>(0), static_cast<asc_relu_pre_mode>(0), 0, 1, 0, 0);
+849-      }
+850-      asc_sync_intra_arrive(PIPE_FIX, 23);
+851-      asc_sync_intra_arrive(PIPE_FIX, 7);
+852-    }
+853-    asc_sync_wait(PIPE_M, PIPE_MTE1, static_cast<event_t>(0));
+854-    asc_sync_wait(PIPE_M, PIPE_MTE1, static_cast<event_t>(1));
+--
+1109-        if (((chunk_idx_1 + 1) == ((tokens + 1023) >> 10))) {
+1110-          condval = 1;
+1111-        } else {
+1112-          condval = 0;
+1113-        }
+1114-        for (int32_t __aiv1 = 0; __aiv1 < condval; ++__aiv1) {
+1115:          asc_sync_inter_arrive(PIPE_MTE3, 8);
+1116-        }
+1117-      }
+1118-      if (vector_id == 0) {
+1119-        for (int32_t store_stage_aiv0 = 0; store_stage_aiv0 < min(2, max(((((((tokens + 127) >> 7) + 3) - (((int32_t)block_idx) & 3)) >> 2) - (chunk_idx_1 * 2)), 0)); ++store_stage_aiv0) {
+1120-          asc_sync_wait(PIPE_V, PIPE_MTE3, static_cast<event_t>(3));
+1121-          asc_sync_intra_wait(PIPE_MTE3, 7);
+--
+1130-        if (((chunk_idx_1 + 1) == ((tokens + 1023) >> 10))) {
+1131-          condval_1 = 1;
+1132-        } else {
+1133-          condval_1 = 0;
+1134-        }
+1135-        for (int32_t __aiv0 = 0; __aiv0 < condval_1; ++__aiv0) {
+1136:          asc_sync_inter_arrive(PIPE_MTE3, 8);
+1137-        }
+1138-      }
+1139-    }
+1140-    if (vector_id == 0) {
+1141-      asc_sync_notify(PIPE_MTE3, PIPE_MTE2, static_cast<event_t>(0));
+1142-    }
+--
+1149-    if (vector_id == 1) {
+1150-      asc_sync_wait(PIPE_MTE3, PIPE_MTE2, static_cast<event_t>(0));
+1151-    }
+1152-    for (int32_t job = 0; job < ((max(((tokens >> 5) - ((int32_t)block_idx)), 0) + 15) >> 4); ++job) {
+1153-      if (vector_id == 1) {
+1154-        for (int32_t __aiv1_1 = 0; __aiv1_1 < max((1 - job), 0); ++__aiv1_1) {
+1155:          asc_sync_inter_wait(PIPE_MTE2, 8);
+1156-        }
+1157-        asc_sync_wait(PIPE_V, PIPE_MTE2, static_cast<event_t>(5));
+1158-        asc_copy_gm2ub_align((__ubuf__ uint8_t*)((&(((__ubuf__ float*)buf_dyn_shmem)[(int64_t)48896]))), (__gm__ uint8_t*)((&(partial_proj[(((((int64_t)job) * (int64_t)6144) + (((int64_t)((int32_t)block_idx)) * (int64_t)384)) + ((((int64_t)tokens) >> (int64_t)1) * (int64_t)24))]))), 1, 1536, 0, 0, 0, static_cast<asc_load_l2_cache_mode>(0), 1536, 1536);
+1159-        asc_copy_gm2ub_align((__ubuf__ uint8_t*)((&(((__ubuf__ float*)buf_dyn_shmem)[(int64_t)51032]))), (__gm__ uint8_t*)((&(partial_sq[(((((int64_t)job) * (int64_t)256) + (((int64_t)((int32_t)block_idx)) * (int64_t)16)) + (((int64_t)tokens) >> (int64_t)1))]))), 1, 64, 0, 0, 0, static_cast<asc_load_l2_cache_mode>(0), 64, 64);
+1160-      }
+1161-      if (vector_id == 0) {
+1162-        for (int32_t __aiv0_1 = 0; __aiv0_1 < max((1 - job), 0); ++__aiv0_1) {
+1163:          asc_sync_inter_wait(PIPE_MTE2, 8);
+1164-        }
+1165-        asc_sync_wait(PIPE_V, PIPE_MTE2, static_cast<event_t>(5));
+1166-        asc_copy_gm2ub_align((__ubuf__ uint8_t*)((&(((__ubuf__ float*)buf_dyn_shmem)[(int64_t)48896]))), (__gm__ uint8_t*)((&(partial_proj[((((int64_t)job) * (int64_t)6144) + (((int64_t)((int32_t)block_idx)) * (int64_t)384))]))), 1, 1536, 0, 0, 0, static_cast<asc_load_l2_cache_mode>(0), 1536, 1536);
+1167-        asc_copy_gm2ub_align((__ubuf__ uint8_t*)((&(((__ubuf__ float*)buf_dyn_shmem)[(int64_t)51032]))), (__gm__ uint8_t*)((&(partial_sq[((((int64_t)job) * (int64_t)256) + (((int64_t)((int32_t)block_idx)) * (int64_t)16))]))), 1, 64, 0, 0, 0, static_cast<asc_load_l2_cache_mode>(0), 64, 64);
+1168-      }
+1169-      for (int32_t k = 1; k < 4; ++k) {
+(zwh) root@ubuntu162:/home/z30086261/Q4#
