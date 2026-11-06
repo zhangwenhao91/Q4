@@ -19,14 +19,18 @@ def main():
         log = max(logs, key=lambda v: v.stat().st_mtime)
     error = re.compile(r'FAILED:|\bfatal error:|\berror:|CMake Error|Traceback \(most recent call last\)|ModuleNotFoundError|HTTP response code said error|SSL certificate|Error in cmake code|No such file or directory|Permission denied', re.I)
     progress = re.compile(r'\[download \d+% complete\]')
+    exception = re.compile(r'^(?:[\w.]+(?:Error|Exception)|Error):')
     before, tail = deque(maxlen=8), deque(maxlen=20)
     contexts, seen, remaining, groups = [], set(), 0, 0
+    exceptions = deque(maxlen=8)
     with log.open(encoding='utf-8', errors='replace') as f:
         for number, raw in enumerate(f, 1):
             line = raw.rstrip()
             if progress.search(line):
                 continue
             item = f'{number}: {line[:1800]}'
+            if exception.match(line):
+                exceptions.append(item)
             if error.search(line) and remaining == 0 and groups < 4:
                 groups += 1
                 for entry in before:
@@ -42,6 +46,7 @@ def main():
             before.append(item)
             tail.append(item)
     report = '\n'.join([f'Failed stage: {a.stage}', f'Log: {log.resolve()}',
+        '=== Exception headlines (up to 8) ===', *exceptions,
         '=== First error contexts (up to 4) ===', *contexts,
         '=== Final non-progress lines ===', *tail]) + '\n'
     (root / 'error.txt').write_text(report, encoding='utf-8')

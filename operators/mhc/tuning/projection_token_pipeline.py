@@ -282,10 +282,10 @@ def _projection_body(
                         )
 
             if fused_shifted:
-                for token_stage in T.Serial(num_valid_token_stages):
-                    token_begin = (token_block_base + token_stage * cores_per_split) * block_num_tokens
+                for epilogue_stage in T.Serial(num_valid_token_stages):
+                    epilogue_begin = (token_block_base + epilogue_stage * cores_per_split) * block_num_tokens
                     shifted_epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
-                                     out_mul_l0, sqrsum_ub, token_begin, token_stage,
+                                     out_mul_l0, sqrsum_ub, epilogue_begin, epilogue_stage,
                                      aiv_id, mhc_hidden_size // 4, num_l0c_stages)
             else:
                 with T.PerCoreTask():
