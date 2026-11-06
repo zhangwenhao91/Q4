@@ -847,8 +847,9 @@ def mhc_coeff_token_pipeline(
             pid = core_id + step * num_vec_cores
             token_base = pid * tb
             if batch_partials:
-                raw_tiles = T.view(gemm_out_mul, (n_splits, num_tokens // tb, tb * mhc3))
-                T.copy(raw_tiles[0:n_splits, pid, 0:tb * mhc3], batch_mul_ub)
+                raw_rows = T.view(gemm_out_mul, (n_splits, num_tokens * mhc3))
+                raw_begin = token_base * mhc3
+                T.copy(raw_rows[0:n_splits, raw_begin : raw_begin + tb * mhc3], batch_mul_ub)
                 T.copy(gemm_out_sqrsum[0:n_splits, token_base : token_base + tb],
                        batch_sq_ub[0:n_splits, 0:tb])
                 with T.SimdVF():
