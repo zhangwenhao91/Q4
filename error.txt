@@ -1,50 +1,52 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_shifted_single.sh
-Results: /home/z30086261/Q4/results/mhc-shifted-single/20261106-095717-538078
+Results: /home/z30086261/Q4/results/mhc-shifted-single/20261106-100342-557269
 H=5120 N=128 check
 Failed stage: check
-Log: /home/z30086261/Q4/results/mhc-shifted-single/20261106-095717-538078/check.log
+Log: /home/z30086261/Q4/results/mhc-shifted-single/20261106-100342-557269/check.log
+=== Exception headlines (up to 8) ===
+44: RuntimeError: Immutable variable `hi` is used outside its defining region!
 === First error contexts (up to 4) ===
-1: [09:57:35] /home/z30086261/Q4/third_party/tilelang-950/3rdparty/tvm/src/tirx/script/printer/expr.cc:75: Warning: Didn't find variable definition for: num_token_chunks
-2: [09:57:36] /home/z30086261/Q4/third_party/tilelang-950/3rdparty/tvm/src/relax/script/printer/./../../../script/printer/utils.h:53: Warning: TVMScript printer falls back to the basic address printer with the error:
+1: [10:03:59] /home/z30086261/Q4/third_party/tilelang-950/3rdparty/tvm/src/tirx/script/printer/expr.cc:75: Warning: Didn't find variable definition for: num_token_chunks
+2: [10:04:00] /home/z30086261/Q4/third_party/tilelang-950/3rdparty/tvm/src/relax/script/printer/./../../../script/printer/utils.h:53: Warning: TVMScript printer falls back to the basic address printer with the error:
 3: Variable is not defined in the environment: num_token_chunks
-4: [09:57:36] /home/z30086261/Q4/third_party/tilelang-950/3rdparty/tvm/src/tirx/script/printer/expr.cc:75: Warning: Didn't find variable definition for: num_valid_token_stages
-5: [09:57:36] /home/z30086261/Q4/third_party/tilelang-950/3rdparty/tvm/src/relax/script/printer/./../../../script/printer/utils.h:53: Warning: TVMScript printer falls back to the basic address printer with the error:
+4: [10:04:00] /home/z30086261/Q4/third_party/tilelang-950/3rdparty/tvm/src/tirx/script/printer/expr.cc:75: Warning: Didn't find variable definition for: num_valid_token_stages
+5: [10:04:00] /home/z30086261/Q4/third_party/tilelang-950/3rdparty/tvm/src/relax/script/printer/./../../../script/printer/utils.h:53: Warning: TVMScript printer falls back to the basic address printer with the error:
 6: Variable is not defined in the environment: num_valid_token_stages
-7: 2026-11-06 09:57:34  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_coeff_token_pipeline` with `out_idx=None`
-8: 2026-11-06 09:57:35  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_coeff_token_pipeline`
-9: Traceback (most recent call last):
-10:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
-11:     if __name__=='__main__': main()
-12:                              ^^^^^^
-13:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 96, in main
-14:     functions,refs,names,meta=make_case(a)
-15:                               ^^^^^^^^^^^^
-16:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 129, in make_case
-17:     functions[single_label], meta = make_shifted_single_candidate(x, prev, phi, alpha, bias)
-18:                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-19:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 21, in make_shifted_single_candidate
-20:     kernel = mhc_shifted_single_kernel.compile(flat, phi, prev2d, alpha, bias, *sample, **config)
-21:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+7: Traceback (most recent call last):
+8:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
+9:     if __name__=='__main__': main()
+10:                              ^^^^^^
+11:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 96, in main
+12:     functions,refs,names,meta=make_case(a)
+13:                               ^^^^^^^^^^^^
+14:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 129, in make_case
+15:     functions[single_label], meta = make_shifted_single_candidate(x, prev, phi, alpha, bias)
+16:                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+17:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 21, in make_shifted_single_candidate
+18:     kernel = mhc_shifted_single_kernel.compile(flat, phi, prev2d, alpha, bias, *sample, **config)
+19:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+20:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 469, in compile
+21:     prim_func = self.get_tir(*args, **kwargs)
 === Final non-progress lines ===
-136:                         nz_ptr[0] = T.tl.simd.vsstb(hi, nz_ptr[0], 4260360, f32_mask, "POST_UPDATE")
-137:                     row_sum[0] = T.tl.simd.vcadd(row_acc[0], f32_mask, "MODE_ZEROING")
-138:                     row_sum_broadcast: T.float32x64 = T.tl.simd.vdupv(row_sum[0], f32_mask, "POS_LOWEST", "MODE_ZEROING")
-139:                     row_mask: T.boolx256 = T.tl.simd.vcmp(row_indices, current_row[0], f32_mask, "eq")
-140:                     sqr_sums[0] = T.tl.simd.vsel(row_sum_broadcast, sqr_sums[0], row_mask)
-141:                     current_row[0] = T.tl.simd.vadd(current_row[0], one, f32_mask, "MODE_ZEROING")
-142:                 sqrsum_ub = T.Buffer((16, 64), scope="shared.dyn")
-143:                 if local_hidden_block != 0:
-144:                     previous: T.float32x64 = T.tl.simd.vld(T.access_ptr(sqrsum_ub[token_stage, 0], 64, 1), "NORM")
-145:                     sqr_sums[0] = T.tl.simd.vadd(sqr_sums[0], previous, f32_mask, "MODE_ZEROING")
-146:                 T.tl.simd.vsts(T.access_ptr(sqrsum_ub[token_stage, 0], 64, 2), sqr_sums[0], f32_mask, "NORM_B32")
-147:             T.ascend_copy(T.region(x_nz_ub[0, 0], 1, 64, 256), T.region(x_l1[0, 0], 2, 128, 256), dual_dst_ctl=1, double=T.bool(True), l2_cache_ctrl=0)
-148:         for hidden_mad in range(4):
-149:             x_l0 = T.Buffer((128, 64), scope="shared.l0a")
-150:             T.ascend_copy(T.region(x_l1[0, hidden_mad * 64], 1, actual_num_tokens, 64), T.region(x_l0[0, 0], 2, actual_num_tokens, 64))
-151:             out_mul_l0 = T.Buffer((16, 128, 32), scope="shared.l0c")
-152:             T.gemm(T.region(x_l0[0, 0], 1, actual_num_tokens, 64), T.region(fn_l0[hidden_mad, 0, 0], 1, 1, 24, 64), T.region(out_mul_l0[token_stage, 0, 0], 3, 1, actual_num_tokens, 24), T.bool(False), T.bool(True), 128, 32, 64, 0, local_hidden_block == 0 and hidden_mad == 0, 0, 0, 0, unit_flag_ctrl=T.Select(local_hidden_block == 79 and hidden_mad == 3, 3, 2))), vars=(chunk_idx,), doms=(ir.Range(0x55753ca2c000),)), script.ir_builder.tirx.ForFrame(stmts=(token_block_base = T.int32()
-153: token_stage = T.int32()
-154: token_begin: T.int32 = (token_block_base + token_stage) * 128,), vars=(token_stage,), doms=(ir.Range(0x55753b645380),))].
-155: [ERROR] 2026-11-06-09:57:37 (PID:538084, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+134:                         nz_ptr[0] = T.tl.simd.vsstb(hi, nz_ptr[0], 4260360, f32_mask, "POST_UPDATE")
+135:                     row_sum[0] = T.tl.simd.vcadd(row_acc[0], f32_mask, "MODE_ZEROING")
+136:                     row_sum_broadcast: T.float32x64 = T.tl.simd.vdupv(row_sum[0], f32_mask, "POS_LOWEST", "MODE_ZEROING")
+137:                     row_mask: T.boolx256 = T.tl.simd.vcmp(row_indices, current_row[0], f32_mask, "eq")
+138:                     sqr_sums[0] = T.tl.simd.vsel(row_sum_broadcast, sqr_sums[0], row_mask)
+139:                     current_row[0] = T.tl.simd.vadd(current_row[0], one, f32_mask, "MODE_ZEROING")
+140:                 sqrsum_ub = T.Buffer((16, 64), scope="shared.dyn")
+141:                 if local_hidden_block != 0:
+142:                     previous: T.float32x64 = T.tl.simd.vld(T.access_ptr(sqrsum_ub[token_stage, 0], 64, 1), "NORM")
+143:                     sqr_sums[0] = T.tl.simd.vadd(sqr_sums[0], previous, f32_mask, "MODE_ZEROING")
+144:                 T.tl.simd.vsts(T.access_ptr(sqrsum_ub[token_stage, 0], 64, 2), sqr_sums[0], f32_mask, "NORM_B32")
+145:             T.ascend_copy(T.region(x_nz_ub[0, 0], 1, 64, 256), T.region(x_l1[0, 0], 2, 128, 256), dual_dst_ctl=1, double=T.bool(True), l2_cache_ctrl=0)
+146:         for hidden_mad in range(4):
+147:             x_l0 = T.Buffer((128, 64), scope="shared.l0a")
+148:             T.ascend_copy(T.region(x_l1[0, hidden_mad * 64], 1, actual_num_tokens, 64), T.region(x_l0[0, 0], 2, actual_num_tokens, 64))
+149:             out_mul_l0 = T.Buffer((16, 128, 32), scope="shared.l0c")
+150:             T.gemm(T.region(x_l0[0, 0], 1, actual_num_tokens, 64), T.region(fn_l0[hidden_mad, 0, 0], 1, 1, 24, 64), T.region(out_mul_l0[token_stage, 0, 0], 3, 1, actual_num_tokens, 24), T.bool(False), T.bool(True), 128, 32, 64, 0, local_hidden_block == 0 and hidden_mad == 0, 0, 0, 0, unit_flag_ctrl=T.Select(local_hidden_block == 79 and hidden_mad == 3, 3, 2))), vars=(chunk_idx,), doms=(ir.Range(0x55ef84196eb0),)), script.ir_builder.tirx.ForFrame(stmts=(token_block_base = T.int32()
+151: epilogue_stage = T.int32()
+152: epilogue_begin: T.int32 = (token_block_base + epilogue_stage) * 128,), vars=(epilogue_stage,), doms=(ir.Range(0x55ef8430f820),))].
+153: [ERROR] 2026-11-06-10:04:01 (PID:557275, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
 Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
