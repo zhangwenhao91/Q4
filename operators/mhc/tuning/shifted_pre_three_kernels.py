@@ -326,11 +326,12 @@ def _projection_body(
             if reuse_apply:
                 if num_valid_token_stages > 0:
                     T.dual_copy(out_mul_l0[0, 0:128, 0:24], partial_ub, unit_flag_ctrl=3)
+                partial_start = token_block_base * 64
                 with T.PerCoreTask():
                     if num_valid_token_stages > 0:
                         with T.Task():
-                            T.copy(partial_ub, out_mul[split_id, aiv_token_begin_base : aiv_token_begin_base + 64, 0:24])
-                            T.copy(sqrsum_ub[0, 0:64], sqrsum[split_id, aiv_token_begin_base : aiv_token_begin_base + 64])
+                            T.copy(partial_ub, out_mul[split_id, aiv_id, partial_start : partial_start + 64, 0:24])
+                            T.copy(sqrsum_ub[0, 0:64], sqrsum[split_id, aiv_id, partial_start : partial_start + 64])
                     # All AIVs reach this barrier after the last chunk, including
                     # workers with no tile in that chunk. Both partials use MTE3.
                     for _ in T.Serial(T.max(chunk_idx + 1 - num_token_chunks, 0)):
@@ -906,15 +907,17 @@ def _reduce_split_coefficients(partial_proj, partial_sq, alpha, bias, pre, post,
         for i in T.Parallel(24):
             base_ub[i, 0] = bias[i]
 
-    worker = cube_id * 2 + vector_id
-    jobs = T.ceildiv(T.max(tokens // 16 - worker, 0), cube_cores * 2)
+    # Keep AIV0 and AIV1 on disjoint workspace planes. Within a plane
+    # consecutive 64-row blocks correspond to alternate halves of each tile.
+    jobs = T.ceildiv(T.max(tokens // 32 - cube_id, 0), cube_cores)
     for job in T.Serial(jobs):
-        start = (worker + job * cube_cores * 2) * 16
-        T.copy(partial_proj[0, start : start + 16, 0:24], T.view(proj, (16, 24)))
-        T.copy(partial_sq[0, start : start + 16], sq)
+        start = (cube_id + job * cube_cores) * 16
+        output_start = start // 64 * 128 + vector_id * 64 + start % 64
+        T.copy(partial_proj[0, vector_id, start : start + 16, 0:24], T.view(proj, (16, 24)))
+        T.copy(partial_sq[0, vector_id, start : start + 16], sq)
         for k in T.Serial(1, splits):
-            T.copy(partial_proj[k, start : start + 16, 0:24], T.view(proj_next, (16, 24)))
-            T.copy(partial_sq[k, start : start + 16], sq_next)
+            T.copy(partial_proj[k, vector_id, start : start + 16, 0:24], T.view(proj_next, (16, 24)))
+            T.copy(partial_sq[k, vector_id, start : start + 16], sq_next)
             with T.SimdVF():
                 mask = S.pset(32)
                 for v in T.unroll(6, explicit=True):
@@ -926,9 +929,9 @@ def _reduce_split_coefficients(partial_proj, partial_sq, alpha, bias, pre, post,
         compute_coefficients(
             proj, sq, scale_ub, base_ub, mixes, pre_tile, post_tile, comb_in, comb_out,
             0, 0, 16, 4, 16, 24, T.float32(1.0 / 20480), 1e-20, 1e-6, 1e-6, 2., 20)
-        T.copy(pre_tile, pre[start : start + 16, 0:4])
-        T.copy(post_tile, post[start : start + 16, 0:4])
-        T.copy(comb_out, comb[start : start + 16, 0:16])
+        T.copy(pre_tile, pre[output_start : output_start + 16, 0:4])
+        T.copy(post_tile, post[output_start : output_start + 16, 0:4])
+        T.copy(comb_out, comb[output_start : output_start + 16, 0:16])
 
 
 @tilelang.jit
@@ -948,8 +951,8 @@ def mhc_shifted_single_reuse_kernel(
     pre: T.Tensor[(tokens, 4), T.float32]
     post: T.Tensor[(tokens, 4), T.float32]
     comb: T.Tensor[(tokens, 16), T.float32]
-    partial_proj: T.Tensor[(num_k_splits, tokens, 24), T.float32]
-    partial_sq: T.Tensor[(num_k_splits, tokens), T.float32]
+    partial_proj: T.Tensor[(num_k_splits, 2, tokens // 2, 24), T.float32]
+    partial_sq: T.Tensor[(num_k_splits, 2, tokens // 2), T.float32]
     assert num_l0c_stages == 1 and num_hidden_blocks_per_split % 4 == 0
     _projection_body(
         x, fn, partial_proj, partial_sq, prev_pre, alpha, bias, hi, pre, post, comb,

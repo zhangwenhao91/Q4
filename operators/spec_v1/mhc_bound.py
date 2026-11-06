@@ -28,8 +28,8 @@ def make_shifted_single_candidate(x, prev, phi, alpha, bias, *, reuse_apply=Fals
         if not reuse_apply:
             return ()
         splits = config['num_k_splits']
-        return (torch.empty(splits, t, 24, dtype=torch.float32, device=x.device),
-                torch.empty(splits, t, dtype=torch.float32, device=x.device))
+        return (torch.empty(splits, 2, t // 2, 24, dtype=torch.float32, device=x.device),
+                torch.empty(splits, 2, t // 2, dtype=torch.float32, device=x.device))
 
     sample = allocate_outputs(torch, t, x)
     kernel = kernel_fn.compile(flat, phi, prev2d, alpha, bias, *sample, *allocate_partials(), **config)
