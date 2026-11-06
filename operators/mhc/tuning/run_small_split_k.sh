@@ -17,8 +17,8 @@ base=tilelang_all_token_l2_default
 mode="${1:-scan}"
 case "$mode" in
   scan) shapes=(128 256 512) ;;
-  batch) shapes=(128 256) ;;
-  *) echo 'Usage: run_small_split_k.sh [scan|batch]'; exit 2 ;;
+  batch|alloc) shapes=(128 256) ;;
+  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc]'; exit 2 ;;
 esac
 
 run_case() {
@@ -32,11 +32,16 @@ run_case() {
   fi
 }
 
+if [[ "$mode" != alloc ]]; then
+  for n in "${shapes[@]}"; do
+    run_case "N$n-profile-base" "$n" --implementations "$base" --profile "$base"
+  done
+fi
 for n in "${shapes[@]}"; do
-  run_case "N$n-profile-base" "$n" --implementations "$base" --profile "$base"
-done
-for n in "${shapes[@]}"; do
-  if [[ "$mode" == batch ]]; then
+  if [[ "$mode" == alloc ]]; then
+    labels=(tilelang_deferred_k8 tilelang_deferred_k8_prealloc
+            tilelang_deferred_k8_batch tilelang_deferred_k8_batch_prealloc)
+  elif [[ "$mode" == batch ]]; then
     labels=("$base" tilelang_deferred_k8 tilelang_deferred_k8_batch)
   else
     labels=("$base" tilelang_deferred_k4 tilelang_deferred_k8)
@@ -47,8 +52,12 @@ for n in "${shapes[@]}"; do
       --warmup 100 --rounds 24 --iters 100
   done
   run_case "N$n-profile-k8" "$n" --implementations tilelang_deferred_k8 --profile tilelang_deferred_k8
-  if [[ "$mode" == batch ]]; then
+  if [[ "$mode" == batch || "$mode" == alloc ]]; then
     run_case "N$n-profile-batch" "$n" --implementations tilelang_deferred_k8_batch --profile tilelang_deferred_k8_batch
+  fi
+  if [[ "$mode" == alloc ]]; then
+    run_case "N$n-profile-k8-prealloc" "$n" --implementations tilelang_deferred_k8_prealloc --profile tilelang_deferred_k8_prealloc
+    run_case "N$n-profile-batch-prealloc" "$n" --implementations tilelang_deferred_k8_batch_prealloc --profile tilelang_deferred_k8_batch_prealloc
   fi
 done
 "$PY" operators/mhc/vllm_v3/summarize_small_split_k.py "$OUT" "$mode" | tee "$ROOT/error.txt"

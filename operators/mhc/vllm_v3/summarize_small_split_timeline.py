@@ -68,19 +68,15 @@ def read_timeline(folder, projection):
     return [*(median(column) for column in zip(*calls)), median(next_gaps), median(periods)], extras
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('run', type=Path)
-    parser.add_argument('--output', type=Path)
-    args = parser.parse_args()
-    lines = [f'Run: {args.run}', 'Per-invocation device timeline medians (us), 30 complete calls per profile.',
+def timeline_lines(run, tags=('base', 'k8', 'batch')):
+    lines = [f'Run: {run}', 'Per-invocation device timeline medians (us), 30 complete calls per profile.',
              'Next gap and period use 27 adjacent calls within profiler steps. Profiles are separate captures.',
              'N | variant | Apply | projection | tail | Apply->projection gap | projection->tail gap | '
              'first start to last end | next-call gap | start-to-start period']
     errors = []
     for n in (128, 256):
-        for tag in ('base', 'k8', 'batch'):
-            folder = args.run / f'N{n}-profile-{tag}'
+        for tag in tags:
+            folder = run / f'N{n}-profile-{tag}'
             kernel = 'mhc_projection_token_pipeline' if tag == 'base' else 'mhc_projection_split_partials'
             try:
                 values, extras = read_timeline(folder, kernel)
@@ -89,6 +85,15 @@ def main():
                     lines.append(f'{folder.name}: {extras} other device records; gaps may include other work.')
             except (ValueError, ArithmeticError, OSError) as exc:
                 errors.append(f'{folder.name}: {exc}')
+    return lines, errors
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('run', type=Path)
+    parser.add_argument('--output', type=Path)
+    args = parser.parse_args()
+    lines, errors = timeline_lines(args.run)
     result = '\n'.join([*lines, *errors]) + '\n'
     if args.output:
         args.output.write_text(result, encoding='utf-8')
