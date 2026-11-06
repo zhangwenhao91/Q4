@@ -1,55 +1,48 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh batch
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261106-153211-1167659
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261106-153710-1195897
 N=128 N128-profile-base
 N=256 N256-profile-base
 N=128 N128-rep1
-Failed stage: N128-rep1
-Log: /home/z30086261/Q4/results/mhc-small-split-k/20261106-153211-1167659/N128-rep1.log
-=== Exception headlines (up to 8) ===
-38: ValueError: T.view shape and dtype must preserve the logical bit count of 'gemm_out_mul': 8 * (num_tokens // 16) * 384 * 32 bits != 8 * num_tokens * 24 * 32 bits.
-=== First error contexts (up to 4) ===
-1: 2026-11-06 15:32:53  [TileLang:tilelang.cache.kernel_cache:WARNING] (kernel_cache.py:379): Found kernel 'mhc_pre_apply_flat_pipeline_asc' in memory cache. For better performance, consider using `@tilelang.jit` instead of direct kernel caching.
-2: 2026-11-06 15:32:53  [TileLang:tilelang.cache.kernel_cache:WARNING] (kernel_cache.py:379): Found kernel 'mhc_projection_split_partials' in memory cache. For better performance, consider using `@tilelang.jit` instead of direct kernel caching.
-3: Traceback (most recent call last):
-4:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
-5:     if __name__=='__main__': main()
-6:                              ^^^^^^
-7:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 96, in main
-8:     functions,refs,names,meta=make_case(a)
-9:                               ^^^^^^^^^^^^
-10:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 163, in make_case
-11:     functions[label], meta = make_bound_candidate(projector, x, prev, alpha, bias,
-12:                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-13:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 78, in make_bound_candidate
-14:     return bind_shifted_pre(
-15:            ^^^^^^^^^^^^^^^^^
-16:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_three_kernels.py", line 1094, in bind_shifted_pre
-17:     coefficients = mhc_coeff_token_pipeline.compile(
-18:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-19:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 469, in compile
-20:     prim_func = self.get_tir(*args, **kwargs)
-21:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 390, in get_tir
-=== Final non-progress lines ===
-20:     prim_func = self.get_tir(*args, **kwargs)
-21:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 390, in get_tir
-23:     tir = self.func(*args, **kwargs)
-24:           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-25:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1709, in __call__
-26:     return self.get_tir(*args, **kwargs)
-27:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-28:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1702, in get_tir
-29:     return self.p1_cache[bound.p1_key].get_tir(
-30:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-31:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1361, in get_tir
-32:     self.ir_gen.gen(builder)(**tensor_args, **kwargs)
-33:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_three_kernels.py", line 850, in mhc_coeff_token_pipeline
-34:     raw_tiles = T.view(gemm_out_mul, (n_splits, num_tokens // tb, tb * mhc3))
-35:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-36:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/customize.py", line 111, in view
-37:     raise ValueError(
-38: ValueError: T.view shape and dtype must preserve the logical bit count of 'gemm_out_mul': 8 * (num_tokens // 16) * 384 * 32 bits != 8 * num_tokens * 24 * 32 bits.
-39: [ERROR] 2026-11-06-15:32:54 (PID:1170843, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
-Saved: /home/z30086261/Q4/error.txt
+N=128 N128-rep2
+N=128 N128-rep3
+N=128 N128-profile-k8
+N=128 N128-profile-batch
+N=256 N256-rep1
+N=256 N256-rep2
+N=256 N256-rep3
+N=256 N256-profile-k8
+N=256 N256-profile-batch
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261106-153710-1195897
+Q4 revision: cebd4b4652e79f1f5c4f5485f1f50ba7b542b885
+N | implementation | Cube cores | Pre event us (3 processes) | median us | paired baseline/TL | paired sequential K8/TL
+128 | tilelang_all_token_l2_default | 4 | 25.398, 36.373, 25.898 | 25.898 | 1.0000 | 0.9666
+128 | tilelang_deferred_k8 | 8 | 24.551, 34.799, 25.159 | 25.159 | 1.0345 | 1.0000
+128 | tilelang_deferred_k8_batch | 8 | 24.695, 34.095, 25.083 | 25.083 | 1.0325 | 1.0030
+N128-profile-base: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 5.1395
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.0940
+mhc_projection_token_pipeline_kernel | 30 | 16.1610
+N128-profile-k8: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 7.4535
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.3180
+mhc_projection_split_partials_kernel | 30 | 10.0475
+N128-profile-batch: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 5.5260
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.1190
+mhc_projection_split_partials_kernel | 30 | 10.1250
+256 | tilelang_all_token_l2_default | 8 | 26.103, 26.253, 26.142 | 26.142 | 1.0000 | 0.9433
+256 | tilelang_deferred_k8 | 16 | 24.623, 24.756, 24.709 | 24.709 | 1.0601 | 1.0000
+256 | tilelang_deferred_k8_batch | 16 | 24.618, 24.777, 24.696 | 24.696 | 1.0595 | 1.0002
+N256-profile-base: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 5.2665
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.4205
+mhc_projection_token_pipeline_kernel | 30 | 16.4705
+N256-profile-k8: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 7.6720
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.3720
+mhc_projection_split_partials_kernel | 30 | 10.4170
+N256-profile-batch: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 5.4900
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.3485
+mhc_projection_split_partials_kernel | 30 | 10.4775
 (zwh) root@ubuntu162:/home/z30086261/Q4#
