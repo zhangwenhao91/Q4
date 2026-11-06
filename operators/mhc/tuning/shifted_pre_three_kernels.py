@@ -78,7 +78,9 @@ def _projection_body(
     num_aivs = 2
     half_block_num_tokens = block_num_tokens // num_aivs
     num_mads_per_block = block_hidden // mad_hidden
-    num_load_stages = 2 if fused_shifted or reuse_apply else 3
+    # The reuse path also keeps the FP32 Apply accumulator and BF16 result
+    # in UB. Give up one 64x256 BF16 input slot to leave launch-time headroom.
+    num_load_stages = 1 if reuse_apply else (2 if fused_shifted else 3)
     num_cast_stages = 1 if reuse_apply else 2
     num_l1_x_stages = 3
     num_mad_stages = 2
