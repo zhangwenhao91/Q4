@@ -1,55 +1,55 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh 
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261106-152038-1127986
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh batch
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261106-153211-1167659
 N=128 N128-profile-base
 N=256 N256-profile-base
-N=512 N512-profile-base
 N=128 N128-rep1
-N=128 N128-rep2
-N=128 N128-rep3
-N=128 N128-profile-k8
-N=256 N256-rep1
-N=256 N256-rep2
-N=256 N256-rep3
-N=256 N256-profile-k8
-N=512 N512-rep1
-N=512 N512-rep2
-N=512 N512-rep3
-N=512 N512-profile-k8
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261106-152038-1127986
-Q4 revision: ed93d9210fb93334e804c307d9386e8bf80a87a5
-N | implementation | Cube cores | Pre event us (3 processes) | median us | paired baseline/TL
-128 | tilelang_all_token_l2_default | 4 | 25.355, 25.424, 25.392 | 25.392 | 1.0000
-128 | tilelang_deferred_k4 | 4 | 24.982, 24.989, 24.948 | 24.982 | 1.0174
-128 | tilelang_deferred_k8 | 8 | 24.745, 24.645, 24.556 | 24.645 | 1.0316
-128 | tilelang_deferred_k16 | 16 | 24.680, 24.617, 24.588 | 24.617 | 1.0327
-N128-profile-base: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 5.1765
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.1010
-mhc_projection_token_pipeline_kernel | 30 | 16.0505
-N128-profile-k8: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 7.4325
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.3865
-mhc_projection_split_partials_kernel | 30 | 9.9920
-256 | tilelang_all_token_l2_default | 8 | 26.167, 26.058, 26.183 | 26.167 | 1.0000
-256 | tilelang_deferred_k4 | 8 | 26.453, 26.500, 26.501 | 26.500 | 0.9880
-256 | tilelang_deferred_k8 | 16 | 23.469, 24.646, 24.968 | 24.646 | 1.0573
-N256-profile-base: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 5.2015
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.4160
-mhc_projection_token_pipeline_kernel | 30 | 16.5570
-N256-profile-k8: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 7.8065
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.3295
-mhc_projection_split_partials_kernel | 30 | 10.3940
-512 | tilelang_all_token_l2_default | 16 | 28.895, 28.769, 28.912 | 28.895 | 1.0000
-512 | tilelang_deferred_k4 | 16 | 29.323, 29.202, 29.334 | 29.323 | 0.9854
-512 | tilelang_deferred_k8 | 24 | 29.305, 29.092, 29.200 | 29.200 | 0.9889
-N512-profile-base: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 5.6555
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.5075
-mhc_projection_token_pipeline_kernel | 30 | 16.7820
-N512-profile-k8: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 7.9350
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.7740
-mhc_projection_split_partials_kernel | 30 | 15.0000
+Failed stage: N128-rep1
+Log: /home/z30086261/Q4/results/mhc-small-split-k/20261106-153211-1167659/N128-rep1.log
+=== Exception headlines (up to 8) ===
+38: ValueError: T.view shape and dtype must preserve the logical bit count of 'gemm_out_mul': 8 * (num_tokens // 16) * 384 * 32 bits != 8 * num_tokens * 24 * 32 bits.
+=== First error contexts (up to 4) ===
+1: 2026-11-06 15:32:53  [TileLang:tilelang.cache.kernel_cache:WARNING] (kernel_cache.py:379): Found kernel 'mhc_pre_apply_flat_pipeline_asc' in memory cache. For better performance, consider using `@tilelang.jit` instead of direct kernel caching.
+2: 2026-11-06 15:32:53  [TileLang:tilelang.cache.kernel_cache:WARNING] (kernel_cache.py:379): Found kernel 'mhc_projection_split_partials' in memory cache. For better performance, consider using `@tilelang.jit` instead of direct kernel caching.
+3: Traceback (most recent call last):
+4:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
+5:     if __name__=='__main__': main()
+6:                              ^^^^^^
+7:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 96, in main
+8:     functions,refs,names,meta=make_case(a)
+9:                               ^^^^^^^^^^^^
+10:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 163, in make_case
+11:     functions[label], meta = make_bound_candidate(projector, x, prev, alpha, bias,
+12:                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+13:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 78, in make_bound_candidate
+14:     return bind_shifted_pre(
+15:            ^^^^^^^^^^^^^^^^^
+16:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_three_kernels.py", line 1094, in bind_shifted_pre
+17:     coefficients = mhc_coeff_token_pipeline.compile(
+18:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+19:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 469, in compile
+20:     prim_func = self.get_tir(*args, **kwargs)
+21:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 390, in get_tir
+=== Final non-progress lines ===
+20:     prim_func = self.get_tir(*args, **kwargs)
+21:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 390, in get_tir
+23:     tir = self.func(*args, **kwargs)
+24:           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+25:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1709, in __call__
+26:     return self.get_tir(*args, **kwargs)
+27:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+28:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1702, in get_tir
+29:     return self.p1_cache[bound.p1_key].get_tir(
+30:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+31:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1361, in get_tir
+32:     self.ir_gen.gen(builder)(**tensor_args, **kwargs)
+33:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_three_kernels.py", line 850, in mhc_coeff_token_pipeline
+34:     raw_tiles = T.view(gemm_out_mul, (n_splits, num_tokens // tb, tb * mhc3))
+35:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+36:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/customize.py", line 111, in view
+37:     raise ValueError(
+38: ValueError: T.view shape and dtype must preserve the logical bit count of 'gemm_out_mul': 8 * (num_tokens // 16) * 384 * 32 bits != 8 * num_tokens * 24 * 32 bits.
+39: [ERROR] 2026-11-06-15:32:54 (PID:1170843, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
