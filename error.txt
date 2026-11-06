@@ -1,68 +1,61 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_shifted_single.sh
-Results: /home/z30086261/Q4/results/mhc-shifted-single/20261106-100847-571442
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_shifted_single.sh reuse
+Results: /home/z30086261/Q4/results/mhc-shifted-single/20261106-110212-693896
 H=5120 N=128 check
-H=5120 N=128 profile
-Profiler verified 30 launches for 30 Pre calls at N=128: mhc_shifted_single_kernel_kernel
-H=5120 N=128 N128-rep1
-H=5120 N=128 N128-rep2
-H=5120 N=128 N128-rep3
-H=5120 N=256 N256-rep1
-H=5120 N=256 N256-rep2
-H=5120 N=256 N256-rep3
-H=5120 N=512 N512-rep1
-H=5120 N=512 N512-rep2
-H=5120 N=512 N512-rep3
-H=5120 N=2048 N2048-rep1
-H=5120 N=2048 N2048-rep2
-H=5120 N=2048 N2048-rep3
-H=5120 N=8192 N8192-rep1
-H=5120 N=8192 N8192-rep2
-H=5120 N=8192 N8192-rep3
-Run: /home/z30086261/Q4/results/mhc-shifted-single/20261106-100847-571442
-AC reference: tilelang_all_token_l2_default
-Event time: median across rounds (us); ratios > 1 mean TL is faster.
-case | AC us | TL us | AC/TL
-N128-rep1 | 26.033 | 309.295 | 0.0842
-N128-rep2 | 24.728 | 309.218 | 0.0800
-N128-rep3 | 25.279 | 309.303 | 0.0817
-N2048-rep1 | 76.882 | 312.906 | 0.2457
-N2048-rep2 | 73.801 | 312.543 | 0.2361
-N2048-rep3 | 73.510 | 312.753 | 0.2350
-N256-rep1 | 26.214 | 311.188 | 0.0842
-N256-rep2 | 26.312 | 311.144 | 0.0846
-N256-rep3 | 26.122 | 311.146 | 0.0840
-N512-rep1 | 28.933 | 311.189 | 0.0930
-N512-rep2 | 28.939 | 311.175 | 0.0930
-N512-rep3 | 28.957 | 311.177 | 0.0931
-N8192-rep1 | 495.121 | 1226.686 | 0.4036
-N8192-rep2 | 493.640 | 1225.431 | 0.4028
-N8192-rep3 | 495.390 | 1226.623 | 0.4039
-Cases with timing: 15
-Runner log tail (last 20 lines):
-Q4 revision: 5eee826ddab1b526950634f4018d0de43b4491c0
-Profiler verified 30 launches for 30 Pre calls at N=128: mhc_shifted_single_kernel_kernel
-Saved: /home/z30086261/Q4/results/mhc-shifted-single/20261106-100847-571442/summary.txt
-Run: /home/z30086261/Q4/results/mhc-shifted-single/20261106-100847-571442
-Three-kernel reference: tilelang_all_token_l2_default
-Event time: median across rounds (us); ratios > 1 mean single kernel is faster.
-case | three-kernel TL us | single-kernel TL us | three/single
-N128-rep1 | 26.033 | 309.295 | 0.0842
-N128-rep2 | 24.728 | 309.218 | 0.0800
-N128-rep3 | 25.279 | 309.303 | 0.0817
-N2048-rep1 | 76.882 | 312.906 | 0.2457
-N2048-rep2 | 73.801 | 312.543 | 0.2361
-N2048-rep3 | 73.510 | 312.753 | 0.2350
-N256-rep1 | 26.214 | 311.188 | 0.0842
-N256-rep2 | 26.312 | 311.144 | 0.0846
-N256-rep3 | 26.122 | 311.146 | 0.0840
-N512-rep1 | 28.933 | 311.189 | 0.0930
-N512-rep2 | 28.939 | 311.175 | 0.0930
-N512-rep3 | 28.957 | 311.177 | 0.0931
-N8192-rep1 | 495.121 | 1226.686 | 0.4036
-N8192-rep2 | 493.640 | 1225.431 | 0.4028
-N8192-rep3 | 495.390 | 1226.623 | 0.4039
-Cases with timing: 15
-Runner log tail (last 20 lines):
-Q4 revision: 5eee826ddab1b526950634f4018d0de43b4491c0
-Profiler verified 30 launches for 30 Pre calls at N=128: mhc_shifted_single_kernel_kernel
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+Failed stage: check
+Log: /home/z30086261/Q4/results/mhc-shifted-single/20261106-110212-693896/check.log
+=== Exception headlines (up to 8) ===
+93: tvm.error.InternalError: Check failed: (validator.has_dependency_task_) is false: T.PerCoreTask must contain at least one dependency-bearing task after task normalization
+=== First error contexts (up to 4) ===
+1: 2026-11-06 11:02:30  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_shifted_single_reuse_kernel` with `out_idx=None`
+2: Traceback (most recent call last):
+3:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
+4:     if __name__=='__main__': main()
+5:                              ^^^^^^
+6:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 96, in main
+7:     functions,refs,names,meta=make_case(a)
+8:                               ^^^^^^^^^^^^
+9:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 131, in make_case
+10:     functions[single_label], meta = make_shifted_single_candidate(
+11:                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+12:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 35, in make_shifted_single_candidate
+13:     kernel = kernel_fn.compile(flat, phi, prev2d, alpha, bias, *sample, *allocate_partials(), **config)
+14:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+15:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 470, in compile
+16:     kernel_result = compile(
+17:                     ^^^^^^^^
+18:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 166, in compile
+19:     return cached(
+20:            ^^^^^^^
+21:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/__init__.py", line 91, in cached
+85:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+86:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+87:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
+88:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+89:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+90:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+91:   File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
+92:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/materialize_schedule_units.cc", line 328, in static void tvm::tl::{anonymous}::PerCoreTaskBodyValidator::Validate(const tvm::tirx::Stmt&, uint16_t)
+93: tvm.error.InternalError: Check failed: (validator.has_dependency_task_) is false: T.PerCoreTask must contain at least one dependency-bearing task after task normalization
+94: [ERROR] 2026-11-06-11:02:32 (PID:693902, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+=== Final non-progress lines ===
+75:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+76:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+77:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+78:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+79:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+80:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+81:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+82:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+83:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+84:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+85:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+86:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+87:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
+88:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+89:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+90:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+91:   File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
+92:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/materialize_schedule_units.cc", line 328, in static void tvm::tl::{anonymous}::PerCoreTaskBodyValidator::Validate(const tvm::tirx::Stmt&, uint16_t)
+93: tvm.error.InternalError: Check failed: (validator.has_dependency_task_) is false: T.PerCoreTask must contain at least one dependency-bearing task after task normalization
+94: [ERROR] 2026-11-06-11:02:32 (PID:693902, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+Saved: /home/z30086261/Q4/error.txt
