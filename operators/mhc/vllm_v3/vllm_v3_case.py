@@ -124,9 +124,12 @@ def make_case(a):
             for name, source in meta.pop('generated_sources').items():
                 (a.output / f'{label}_{name}.cpp').write_text(source, encoding='utf-8')
             metadata[label] = meta
-        single_label = 'tilelang_shifted_single_h5120'
-        if single_label in (a.implementations or ()):
-            functions[single_label], meta = make_shifted_single_candidate(x, prev, phi, alpha, bias)
+        for single_label, reuse_apply in (('tilelang_shifted_single_h5120', False),
+                                         ('tilelang_shifted_single_reuse_h5120', True)):
+            if single_label not in (a.implementations or ()):
+                continue
+            functions[single_label], meta = make_shifted_single_candidate(
+                x, prev, phi, alpha, bias, reuse_apply=reuse_apply)
             (a.output / f'{single_label}.cpp').write_text(meta.pop('generated_source'), encoding='utf-8')
             metadata[single_label] = meta
         return functions, refs, ['layer_input', 'next_pre_mix', 'post_mix', 'comb_mix'], dict(

@@ -4,7 +4,7 @@ import hashlib
 from mhc_fusion import SOURCE, allocate_outputs
 
 
-def make_shifted_single_candidate(x, prev, phi, alpha, bias):
+def make_shifted_single_candidate(x, prev, phi, alpha, bias, *, reuse_apply=False):
     import sys
     import torch
 
@@ -16,17 +16,32 @@ def make_shifted_single_candidate(x, prev, phi, alpha, bias):
 
     flat = x.flatten(1)
     prev2d = prev.view(t, 4)
-    config = get_config(4 * 5120, 24, t, token_owned=True)
+    config = get_config(4 * 5120, 24, t, token_owned=not reuse_apply)
+    kernel_fn = mhc_shifted_single_kernel
+    if reuse_apply:
+        from shifted_pre_three_kernels import mhc_shifted_single_reuse_kernel
+        kernel_fn = mhc_shifted_single_reuse_kernel
+        config['num_l0c_stages'] = 1
+        config['num_token_blocks_per_chunk'] = config['cores_per_split']
+
+    def allocate_partials():
+        if not reuse_apply:
+            return ()
+        splits = config['num_k_splits']
+        return (torch.empty(splits, t, 24, dtype=torch.float32, device=x.device),
+                torch.empty(splits, t, dtype=torch.float32, device=x.device))
+
     sample = allocate_outputs(torch, t, x)
-    kernel = mhc_shifted_single_kernel.compile(flat, phi, prev2d, alpha, bias, *sample, **config)
+    kernel = kernel_fn.compile(flat, phi, prev2d, alpha, bias, *sample, *allocate_partials(), **config)
 
     def run():
         hi, pre, post, comb = allocate_outputs(torch, t, x)
-        kernel(flat, phi, prev2d, alpha, bias, hi, pre, post, comb)
+        kernel(flat, phi, prev2d, alpha, bias, hi, pre, post, comb, *allocate_partials())
         return hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(t, 4, 4)
 
     return run, dict(expected_kernels_per_call=1, projection_config=config,
-                     per_call_allocations=2, generated_source=kernel.get_kernel_source())
+                     per_call_allocations=4 if reuse_apply else 2, reuse_apply=reuse_apply,
+                     generated_source=kernel.get_kernel_source())
 
 
 def make_bound_candidate(projector, x, prev, alpha, bias, split_apply=False, apply_h_blk=5120, tail_cores=None, tail_stages=2, apply_pipeline=None, flat_pipeline=False, all_token_pipeline=False, projection_l2_default=False):

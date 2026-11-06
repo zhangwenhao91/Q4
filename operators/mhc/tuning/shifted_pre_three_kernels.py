@@ -70,6 +70,7 @@ def _projection_body(
     block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
     num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
     num_token_blocks_per_chunk, deterministic, residual_l2_cache_ctrl, fused_shifted, epilogue,
+    reuse_apply=False,
 ):
     block_num_tokens = 128
     block_hidden = 256
@@ -77,8 +78,8 @@ def _projection_body(
     num_aivs = 2
     half_block_num_tokens = block_num_tokens // num_aivs
     num_mads_per_block = block_hidden // mad_hidden
-    num_load_stages = 2 if fused_shifted else 3
-    num_cast_stages = 2
+    num_load_stages = 2 if fused_shifted or reuse_apply else 3
+    num_cast_stages = 1 if reuse_apply else 2
     num_l1_x_stages = 3
     num_mad_stages = 2
 
@@ -102,6 +103,13 @@ def _projection_body(
         x_nz_ub = T.alloc_shared((nz_stage_rows, block_hidden), T.float32)
         T.annotate_layout({x_nz_ub: make_ascend_compact_nz_layout(x_nz_ub)})
         sqrsum_ub = T.alloc_shared((num_l0c_stages, half_block_num_tokens), T.float32)
+        if reuse_apply:
+            # Only one token tile is resident while its four-stream sum is live.
+            old_mix_ub = T.alloc_shared((64, 4), T.float32)
+            apply_acc = T.alloc_shared((64, 256), T.float32)
+            apply_out = T.alloc_shared((64, 256), T.bfloat16)
+            partial_ub = T.alloc_shared((64, 24), T.float32)
+            T.annotate_buffer_versions({apply_acc: 1, apply_out: 1})
 
         x_l1 = T.alloc_l1((block_num_tokens, block_hidden), T.float32)
         fn_l1 = T.alloc_l1((block_mhc_mult3, block_hidden), T.float32)
@@ -120,8 +128,9 @@ def _projection_body(
             }
         )
 
-        if split_id != 0:
-            T.set_atomic('add', 'float32')
+        if not reuse_apply:
+            if split_id != 0:
+                T.set_atomic('add', 'float32')
         T.set_hf32_mode('nearest_even')
         for chunk_idx in T.Serial(num_token_chunks):
             token_block_base = chunk_idx * num_token_blocks_per_chunk + core_in_split
@@ -140,9 +149,17 @@ def _projection_body(
                     0,
                 ),
             )
+            if reuse_apply:
+                if num_valid_token_stages > 0:
+                    T.copy(prev_pre[aiv_token_begin_base : aiv_token_begin_base + 64, 0:4], old_mix_ub)
 
             for local_hidden_block in T.Pipelined(num_hidden_blocks_per_split, num_stages=2):
-                global_hidden_block = split_id * num_hidden_blocks_per_split + local_hidden_block
+                if reuse_apply:
+                    stream_idx = local_hidden_block % 4
+                    hidden_band = split_id * (num_hidden_blocks_per_split // 4) + local_hidden_block // 4
+                    global_hidden_block = stream_idx * (mhc_hidden_size // (4 * block_hidden)) + hidden_band
+                else:
+                    global_hidden_block = split_id * num_hidden_blocks_per_split + local_hidden_block
                 hidden_begin = global_hidden_block * block_hidden
 
                 # Keep physical buffers block_mhc_mult3-aligned, but restrict
@@ -214,6 +231,26 @@ def _projection_body(
                                     unpacked_lo = T.reinterpret(lo_bits, 'float32x64')
                                     unpacked_hi = T.reinterpret(hi_bits, 'float32x64')
 
+                                    if reuse_apply:
+                                        mix_weight = S.vld(old_mix_ub[row, stream_idx], dist='BRC_B32')
+                                        band_col = pass_id * 128
+                                        apply_lo = S.alloc_var(T.float32)
+                                        apply_hi = S.alloc_var(T.float32)
+                                        if stream_idx == 0:
+                                            apply_lo = S.vmul(unpacked_lo, mix_weight)
+                                            apply_hi = S.vmul(unpacked_hi, mix_weight)
+                                        else:
+                                            apply_lo = S.vld(apply_acc[row, band_col])
+                                            apply_hi = S.vld(apply_acc[row, band_col + 64])
+                                            S.vmula(apply_lo, unpacked_lo, mix_weight)
+                                            S.vmula(apply_hi, unpacked_hi, mix_weight)
+                                        if stream_idx == 3:
+                                            S.vsts(apply_out[row, band_col], S.vcvt(apply_lo, T.bfloat16), dist='PK_B32')
+                                            S.vsts(apply_out[row, band_col + 64], S.vcvt(apply_hi, T.bfloat16), dist='PK_B32')
+                                        else:
+                                            S.vsts(apply_acc[row, band_col], apply_lo)
+                                            S.vsts(apply_acc[row, band_col + 64], apply_hi)
+
                                     row_acc = T.simd.vadd(
                                         row_acc,
                                         T.simd.vmul(unpacked_lo, unpacked_lo, f32_mask),
@@ -256,6 +293,10 @@ def _projection_body(
                                 sqr_sums = T.simd.vadd(sqr_sums, previous, f32_mask)
                             T.simd.vsts(sqrsum_ub[token_stage, 0], sqr_sums, f32_mask)
 
+                        if reuse_apply:
+                            if stream_idx == 3:
+                                T.copy(apply_out, hi[aiv_token_begin : aiv_token_begin + 64,
+                                                     hidden_band * 256 : (hidden_band + 1) * 256])
                         T.dual_copy(
                             x_nz_ub[0:half_block_num_tokens, 0:block_hidden],
                             x_l1[0:block_num_tokens, 0:block_hidden],
@@ -282,7 +323,13 @@ def _projection_body(
                             ),
                         )
 
-            if fused_shifted:
+            if reuse_apply:
+                for partial_stage in T.Serial(num_valid_token_stages):
+                    partial_begin = aiv_token_begin_base + partial_stage * cores_per_split * 128
+                    T.dual_copy(out_mul_l0[partial_stage, 0:128, 0:24], partial_ub, unit_flag_ctrl=3)
+                    T.copy(partial_ub, out_mul[split_id, partial_begin : partial_begin + 64, 0:24])
+                    T.copy(sqrsum_ub[partial_stage, 0:64], sqrsum[split_id, partial_begin : partial_begin + 64])
+            elif fused_shifted:
                 for epilogue_stage in T.Serial(num_valid_token_stages):
                     epilogue_begin = (token_block_base + epilogue_stage * cores_per_split) * block_num_tokens
                     epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
@@ -353,8 +400,17 @@ def _projection_body(
                             T.ascend_sync_inter_arrive('PIPE_MTE3', sqrsum_flag)
                             T.ascend_sync_inter_wait('PIPE_MTE3', sqrsum_flag)
 
-        if split_id != 0:
-            T.set_atomic_none()
+        if reuse_apply:
+            # Both partials are now written by MTE3, so one uniform Vector
+            # barrier suffices before any AIV reads another group's partials.
+            with T.PerCoreTask():
+                T.ascend_sync_inter_arrive('PIPE_MTE3', 8)
+                T.ascend_sync_inter_wait('PIPE_MTE3', 8)
+            epilogue(out_mul, sqrsum, alpha, bias, pre, post, comb,
+                     num_tokens, num_k_splits, num_aic_cores, core_id, aiv_id)
+        else:
+            if split_id != 0:
+                T.set_atomic_none()
 
 @tilelang.jit
 def mhc_projection_token_pipeline(
@@ -825,6 +881,79 @@ def mhc_pre_apply_flat_pipeline_asc(x, mix, o, h_blk, num_vec_cores: int, pipeli
                     S.vsts(o_ub[col], S.vcvt(acc, T.bfloat16), dist='PK_B32')
 
             T.copy(o_ub, o[pid_n, pid_h * h_blk])
+
+
+@T.macro
+def _reduce_split_coefficients(partial_proj, partial_sq, alpha, bias, pre, post, comb,
+                               tokens, splits, cube_cores, cube_id, vector_id):
+    proj = T.alloc_shared((384,), T.float32)
+    proj_next = T.alloc_shared((384,), T.float32)
+    sq = T.alloc_shared((16,), T.float32)
+    sq_next = T.alloc_shared((16,), T.float32)
+    scale_ub = T.alloc_shared((3, 8), T.float32)
+    base_ub = T.alloc_shared((24, 8), T.float32)
+    mixes = T.alloc_shared((384,), T.float32)
+    pre_tile = T.alloc_shared((16, 4), T.float32)
+    post_tile = T.alloc_shared((16, 4), T.float32)
+    comb_in = T.alloc_shared((16, 16), T.float32)
+    comb_out = T.alloc_shared((16, 16), T.float32)
+
+    with T.SimtVF(threads=32):
+        for i in T.Parallel(3):
+            scale_ub[i, 0] = alpha[i]
+        for i in T.Parallel(24):
+            base_ub[i, 0] = bias[i]
+
+    worker = cube_id * 2 + vector_id
+    jobs = T.ceildiv(T.max(tokens // 16 - worker, 0), cube_cores * 2)
+    for job in T.Serial(jobs):
+        start = (worker + job * cube_cores * 2) * 16
+        T.copy(partial_proj[0, start : start + 16, 0:24], T.view(proj, (16, 24)))
+        T.copy(partial_sq[0, start : start + 16], sq)
+        for k in T.Serial(1, splits):
+            T.copy(partial_proj[k, start : start + 16, 0:24], T.view(proj_next, (16, 24)))
+            T.copy(partial_sq[k, start : start + 16], sq_next)
+            with T.SimdVF():
+                mask = S.pset(32)
+                for v in T.unroll(6, explicit=True):
+                    off = v * 64
+                    S.vsts(proj[off], S.vadd(S.vld(proj[off]), S.vld(proj_next[off]), mask))
+            with T.SimtVF(threads=32):
+                for row in T.Parallel(16):
+                    sq[row] = sq[row] + sq_next[row]
+        compute_coefficients(
+            proj, sq, scale_ub, base_ub, mixes, pre_tile, post_tile, comb_in, comb_out,
+            0, 0, 16, 4, 16, 24, T.float32(1.0 / 20480), 1e-20, 1e-6, 1e-6, 2., 20)
+        T.copy(pre_tile, pre[start : start + 16, 0:4])
+        T.copy(post_tile, post[start : start + 16, 0:4])
+        T.copy(comb_out, comb[start : start + 16, 0:16])
+
+
+@tilelang.jit
+def mhc_shifted_single_reuse_kernel(
+    x, fn, prev_pre, alpha, bias, hi, pre, post, comb, partial_proj, partial_sq,
+    block_mhc_mult3: int, num_aic_cores: int, num_k_splits: int, cores_per_split: int,
+    num_hidden_blocks_per_split: int, num_l0b_stages: int, num_l0c_stages: int,
+    num_token_blocks_per_chunk: int,
+):
+    tokens = T.dynamic('tokens')
+    x: T.Tensor[(tokens, 20480), T.bfloat16]
+    fn: T.Tensor[(24, 20480), T.float32]
+    prev_pre: T.Tensor[(tokens, 4), T.float32]
+    alpha: T.Tensor[(3,), T.float32]
+    bias: T.Tensor[(24,), T.float32]
+    hi: T.Tensor[(tokens, 5120), T.bfloat16]
+    pre: T.Tensor[(tokens, 4), T.float32]
+    post: T.Tensor[(tokens, 4), T.float32]
+    comb: T.Tensor[(tokens, 16), T.float32]
+    partial_proj: T.Tensor[(num_k_splits, tokens, 24), T.float32]
+    partial_sq: T.Tensor[(num_k_splits, tokens), T.float32]
+    assert num_l0c_stages == 1 and num_hidden_blocks_per_split % 4 == 0
+    _projection_body(
+        x, fn, partial_proj, partial_sq, prev_pre, alpha, bias, hi, pre, post, comb,
+        tokens, 24, 20480, block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
+        num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
+        num_token_blocks_per_chunk, False, None, False, _reduce_split_coefficients, True)
 
 
 def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,

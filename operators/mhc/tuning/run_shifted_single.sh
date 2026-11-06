@@ -15,7 +15,18 @@ printf 'Q4 revision: %s\n' "$(git rev-parse HEAD)" > "$OUT/runner.log"
 echo "Results: $OUT"
 
 baseline=tilelang_all_token_l2_default
-candidate=tilelang_shifted_single_h5120
+case "${1:-original}" in
+  original)
+    candidate=tilelang_shifted_single_h5120
+    kernel=mhc_shifted_single_kernel
+    ;;
+  reuse)
+    candidate=tilelang_shifted_single_reuse_h5120
+    kernel=mhc_shifted_single_reuse_kernel
+    ;;
+  *) echo 'Usage: run_shifted_single.sh [original|reuse]'; exit 2 ;;
+esac
+printf 'Candidate: %s\n' "$candidate" >> "$OUT/runner.log"
 run_case() {
   local tag="$1" n="$2"
   shift 2
@@ -29,7 +40,7 @@ run_case() {
 
 run_case check 128 --implementations "$baseline" "$candidate" --check-only
 run_case profile 128 --implementations "$candidate" --profile "$candidate"
-if ! "$PY" - "$OUT/profile" > "$OUT/launch-check.log" 2>&1 <<'PYTHON'
+if ! "$PY" - "$OUT/profile" "$kernel" > "$OUT/launch-check.log" 2>&1 <<'PYTHON'
 import csv
 from pathlib import Path
 import sys
@@ -43,7 +54,7 @@ with paths[0].open(encoding='utf-8-sig', newline='') as stream:
     if field is None:
         raise RuntimeError(f'Unknown kernel name column: {rows.fieldnames}')
     names = [row[field] for row in rows if row.get(field)]
-if len(names) != 30 or not all('mhc_shifted_single_kernel' in name for name in names):
+if len(names) != 30 or not all(sys.argv[2] in name for name in names):
     raise RuntimeError(f'Expected 30 single-kernel launches, observed {len(names)}: {sorted(set(names))}')
 print(f'Profiler verified 30 launches for 30 Pre calls at N=128: {names[0]}')
 PYTHON
