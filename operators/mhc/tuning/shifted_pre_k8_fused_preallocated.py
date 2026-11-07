@@ -468,14 +468,15 @@ def _projection_body(
     num_l0b_stages,
     num_l0c_stages,
     num_token_blocks_per_chunk,
+    input_stages,
 ):
     block_hidden = 256
     mad_hidden = 64
     num_aivs = 2
     half_block_num_tokens = 128 // num_aivs
     num_mads_per_block = block_hidden // mad_hidden
-    # Two input slots keep the fused kernel within the UB budget.
-    num_load_stages = 2
+    # Larger coefficient loops need additional compiler-managed UB scratch.
+    num_load_stages = input_stages
     num_cast_stages = 2
     num_l1_x_stages = 3
     num_mad_stages = 2
@@ -682,6 +683,7 @@ def mhc_projection_coeff_k8_kernel(
     num_l0b_stages: int,
     num_l0c_stages: int,
     num_token_blocks_per_chunk: int,
+    input_stages: int = 2,
 ):
     tokens = T.const('tokens')
     flat_hidden = T.const('flat_hidden')
@@ -718,6 +720,7 @@ def mhc_projection_coeff_k8_kernel(
         num_l0b_stages,
         num_l0c_stages,
         num_token_blocks_per_chunk,
+        input_stages,
     )
 
 
@@ -813,6 +816,7 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False):
         num_l0b_stages=2,
         num_l0c_stages=1,
         num_token_blocks_per_chunk=groups,
+        input_stages=1 if n > 8 * groups * 32 else 2,
     )
     flat = x.flatten(1)
     hi = torch.empty(n, hidden, dtype=x.dtype, device=x.device)
