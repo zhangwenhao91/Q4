@@ -14,8 +14,9 @@ mode="${1:-scan}"
 case "$mode" in
   scan) shapes=(128 256 512) ;;
   v3-fused-k8-combined) shapes=(128 256 384) ;;
+  v3-fused-k8-combined-large) shapes=(512 1024 2048 4096 8192) ;;
   batch|alloc|workspace|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096) shapes=(128 256) ;;
-  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|v3-fused-k8-combined|workspace [run-directory]]'; exit 2 ;;
+  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|v3-fused-k8-combined|v3-fused-k8-combined-large|workspace [run-directory]]'; exit 2 ;;
 esac
 if [[ "$mode" == v3-fused-k8* ]]; then
   export TORCH_EXTENSIONS_DIR="$ROOT/third_party/torch-extensions-gcc13"
@@ -47,7 +48,7 @@ run_case() {
   local tag="$1" n="$2"
   shift 2
   local stage=pre
-  if [[ "$mode" == v3-fused-k8-combined ]]; then stage=combined; fi
+  if [[ "$mode" == v3-fused-k8-combined* ]]; then stage=combined; fi
   if [[ "$mode" == v3-fused-k8-h4096 ]]; then
     set -- --mhc-vllm-hidden 4096 "$@"
   fi
@@ -122,7 +123,7 @@ for n in "${shapes[@]}"; do
   fi
   for rep in 1 2 3; do
     ordered_labels=("${labels[@]}")
-    if [[ "$mode" == v3-fused-k8-combined && "$rep" == 2 ]]; then
+    if [[ "$mode" == v3-fused-k8-combined* && "$rep" == 2 ]]; then
       ordered_labels=("${labels[1]}" "${labels[0]}")
     fi
     run_case "N$n-rep$rep" "$n" --implementations "${ordered_labels[@]}" \

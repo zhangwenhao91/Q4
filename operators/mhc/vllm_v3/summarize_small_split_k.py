@@ -89,7 +89,7 @@ def allocation_report(root, mode='alloc'):
     return '\n'.join([*lines, '', *timeline, *errors]) + '\n'
 
 
-def v3_fused_k8_report(root, hidden=5120, combined=False):
+def v3_fused_k8_report(root, hidden=5120, combined=False, large=False):
     ac = 'ascendc_vllm_v3'
     tl = 'tilelang_projection_coeff_k8_batch_prealloc'
     scope = 'shifted Pre + Post' if combined else 'shifted Pre'
@@ -99,7 +99,8 @@ def v3_fused_k8_report(root, hidden=5120, combined=False):
              if combined else
              'AscendC uses the upstream vLLM v3 API with per-call allocation; TL reuses outputs and workspace.',
              'N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us']
-    for n in ((128, 256, 384) if combined else (128, 256)):
+    shapes = (512, 1024, 2048, 4096, 8192) if large else ((128, 256, 384) if combined else (128, 256))
+    for n in shapes:
         timings = [json.loads((root / f'N{n}-rep{rep}' / 'summary.json').read_text())
                    for rep in (1, 2, 3)]
         for rep, run in enumerate(timings, 1):
@@ -200,9 +201,9 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
-    elif mode in ('v3-fused-k8', 'v3-fused-k8-h4096', 'v3-fused-k8-combined'):
+    elif mode in ('v3-fused-k8', 'v3-fused-k8-h4096', 'v3-fused-k8-combined', 'v3-fused-k8-combined-large'):
         summary = v3_fused_k8_report(root, hidden=4096 if mode.endswith('-h4096') else 5120,
-                                   combined=mode.endswith('-combined'))
+                                   combined='-combined' in mode, large=mode.endswith('-large'))
     elif mode == 'fused-k8-refactor':
         summary = fused_k8_refactor_report(root)
     elif mode in ('fused-apply', 'fused-pack128'):

@@ -379,7 +379,6 @@ def _reduce_split_coefficients(
     post_tile = T.alloc_shared((16, 4), T.float32)
     comb_in = T.alloc_shared((16, 16), T.float32)
     comb_out = T.alloc_shared((16, 16), T.float32)
-    assert tokens <= cube_cores * 32
     # Every AIV waits, including AIVs with no coefficient tile.
     # Their preload addresses are clamped to a valid token tile.
     first_start = T.min(cube_id, tokens // 32 - 1) * 16
@@ -400,6 +399,10 @@ def _reduce_split_coefficients(
     for job in T.Serial(jobs):
         start = (cube_id + job * cube_cores) * 16
         output_start = start // 64 * 128 + vector_id * 64 + start % 64
+        if job != 0:
+            raw_begin = output_start * 24
+            T.copy(raw_rows[:, raw_begin : raw_begin + 384], batch_proj)
+            T.copy(partial_sq[:, output_start : output_start + 16], batch_sq[:, 0:16])
         with T.SimdVF():
             mask = S.pset(32)
             sq_mask = S.vcmps(S.vci(T.int32(0), T.int32), T.int32(16), mask, 'lt')
@@ -640,8 +643,9 @@ def _projection_body(
                         T.copy(
                             sqrsum_ub[sum_slot, 0:64], sqrsum[split_id, sum_token : sum_token + 64]
                         )
-                # Publish the partials after the GM writes finish.
-                T.ascend_sync_inter_arrive('PIPE_MTE3', 8)
+                # Every producer publishes once, after its final workspace writes.
+                for _ in T.Serial(T.if_then_else(chunk_idx + 1 == num_token_chunks, 1, 0)):
+                    T.ascend_sync_inter_arrive('PIPE_MTE3', 8)
         _reduce_split_coefficients(
             out_mul,
             sqrsum,
@@ -691,7 +695,7 @@ def mhc_projection_coeff_k8_kernel(
     partial_proj: T.Tensor[(8, tokens, 24), T.float32]
     partial_sq: T.Tensor[(8, tokens), T.float32]
     assert num_k_splits == 8 and num_l0c_stages == 1
-    assert tokens == cores_per_split * 128
+    assert tokens % (cores_per_split * 128) == 0
     assert flat_hidden == num_hidden_blocks_per_split * num_k_splits * 256
     _projection_body(
         x,
@@ -779,8 +783,11 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False):
     if streams != 4 or hidden not in (4096, 5120) or not n or n % 128:
         raise ValueError('Expected BF16 residual[N,4,H], H=4096/5120, positive N divisible by 128')
     groups = min(_C.get_num_sms() // 8, n // 128)
-    if groups != n // 128:
-        raise ValueError('K8 fusion requires one 128-token tile per Cube in each split')
+    if groups == 0:
+        raise ValueError('K8 fusion requires at least eight Cube cores')
+    # Uniform chunk counts keep all barrier participants active through the last drain.
+    while (n // 128) % groups:
+        groups -= 1
     if not current_pre and tuple(prev_pre.shape) not in ((n, 4), (n, 4, 1)):
         raise ValueError('Expected prev_pre[N,4] or prev_pre[N,4,1]')
     inputs = (
