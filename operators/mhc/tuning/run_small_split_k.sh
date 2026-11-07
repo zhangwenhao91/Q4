@@ -13,8 +13,8 @@ base=tilelang_all_token_l2_default
 mode="${1:-scan}"
 case "$mode" in
   scan) shapes=(128 256 512) ;;
-  batch|alloc|workspace|refactor|timeline) shapes=(128 256) ;;
-  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|timeline|workspace [run-directory]]'; exit 2 ;;
+  batch|alloc|workspace|refactor|timeline|fused-apply) shapes=(128 256) ;;
+  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|timeline|fused-apply|workspace [run-directory]]'; exit 2 ;;
 esac
 resume="${2:-}"
 results="$ROOT/results/mhc-small-split-k"
@@ -76,7 +76,9 @@ if [[ "$mode" == scan || "$mode" == batch ]]; then
   done
 fi
 for n in "${shapes[@]}"; do
-  if [[ "$mode" == refactor ]]; then
+  if [[ "$mode" == fused-apply ]]; then
+    labels=(tilelang_fused_small_prealloc tilelang_fused_small_prealloc_u2 tilelang_fused_small_prealloc_u4)
+  elif [[ "$mode" == refactor ]]; then
     labels=(tilelang_deferred_k8_batch_prealloc_reference tilelang_deferred_k8_batch_prealloc)
   elif [[ "$mode" == workspace ]]; then
     labels=(tilelang_deferred_k8_batch tilelang_deferred_k8_batch_workspace
@@ -95,6 +97,12 @@ for n in "${shapes[@]}"; do
       --warmup 100 --rounds 24 --iters 100
   done
   if [[ "$mode" == refactor ]]; then continue; fi
+  if [[ "$mode" == fused-apply ]]; then
+    for label in "${labels[@]}"; do
+      run_case "N$n-profile-$label" "$n" --implementations "$label" --profile "$label"
+    done
+    continue
+  fi
   if [[ "$mode" == workspace ]]; then
     for tag in batch batch-workspace batch-prealloc; do
       label="tilelang_deferred_k8_${tag//-/_}"

@@ -452,26 +452,44 @@ def _load_small_dynamic(raw, sq, raw_ub, sq_ub, token_base, num_tokens):
 
 
 @T.macro
-def _apply_small_tile(x_ub, prev_ub, output_ub):
+def _apply_small_tile(x_ub, prev_ub, output_ub, apply_unroll):
     with T.SimdVF():
         for token in T.serial(2):
             weights = S.alloc_local((4,), T.float32)
             for stream in T.unroll(4, explicit=True):
                 weights[stream] = S.vld(prev_ub[token, stream], dist='BRC_B32')
-            for chunk in T.serial(HIDDEN // 64):
-                col = chunk * 64
-                acc = S.alloc_var(T.float32)
-                first = S.vcvt(S.vld(x_ub[token, 0, col], dist='UNPK_B16'), T.float32, part=0)
-                acc = S.vmul(first, weights[0])
-                for stream in T.unroll(1, 4, explicit=True):
-                    value = S.vcvt(S.vld(x_ub[token, stream, col], dist='UNPK_B16'), T.float32, part=0)
-                    S.vmula(acc, value, weights[stream])
-                S.vsts(output_ub[token, col], S.vcvt(acc, T.bfloat16), dist='PK_B32')
+            if apply_unroll == 1:
+                for chunk in T.serial(HIDDEN // 64):
+                    col = chunk * 64
+                    acc = S.alloc_var(T.float32)
+                    first = S.vcvt(S.vld(x_ub[token, 0, col], dist='UNPK_B16'), T.float32, part=0)
+                    acc = S.vmul(first, weights[0])
+                    for stream in T.unroll(1, 4, explicit=True):
+                        value = S.vcvt(S.vld(x_ub[token, stream, col], dist='UNPK_B16'), T.float32, part=0)
+                        S.vmula(acc, value, weights[stream])
+                    S.vsts(output_ub[token, col], S.vcvt(acc, T.bfloat16), dist='PK_B32')
+            else:
+                # Independent chunks keep their accumulators in registers.
+                # Within each chunk the stream order and BF16 conversion stay the same.
+                accum = S.alloc_local((apply_unroll,), T.float32)
+                for group in T.serial(HIDDEN // (64 * apply_unroll)):
+                    for part in T.unroll(apply_unroll, explicit=True):
+                        first_col = (group * apply_unroll + part) * 64
+                        first_vec = S.vcvt(S.vld(x_ub[token, 0, first_col], dist='UNPK_B16'), T.float32, part=0)
+                        accum[part] = S.vmul(first_vec, weights[0])
+                    for stream in T.unroll(1, 4, explicit=True):
+                        for part in T.unroll(apply_unroll, explicit=True):
+                            input_col = (group * apply_unroll + part) * 64
+                            residual = S.vcvt(S.vld(x_ub[token, stream, input_col], dist='UNPK_B16'), T.float32, part=0)
+                            S.vmula(accum[part], residual, weights[stream])
+                    for part in T.unroll(apply_unroll, explicit=True):
+                        output_col = (group * apply_unroll + part) * 64
+                        S.vsts(output_ub[token, output_col], S.vcvt(accum[part], T.bfloat16), dist='PK_B32')
 
 
 @tilelang.jit
 def mhc_coeff_apply_small_pipeline(x, prev, raw, sq, scale, base, hi, pre, post, comb,
-                                   num_vec_cores: int = 64, num_stages: int = 2):
+                                   num_vec_cores: int = 64, num_stages: int = 2, apply_unroll: int = 1):
     n = T.dynamic('num_tokens')
     x: T.Tensor[(n, 4, HIDDEN), T.bfloat16]
     prev: T.Tensor[(n, 4), T.float32]
@@ -484,6 +502,7 @@ def mhc_coeff_apply_small_pipeline(x, prev, raw, sq, scale, base, hi, pre, post,
     post: T.Tensor[(n, 4), T.float32]
     comb: T.Tensor[(n, 16), T.float32]
     assert 1 <= num_stages <= 2
+    assert apply_unroll in (1, 2, 4)
     with T.Kernel(num_vec_cores) as core:
         raw_ub = T.alloc_shared((2, 32), T.float32)
         sq_ub = T.alloc_shared((64,), T.float32)
@@ -511,12 +530,12 @@ def mhc_coeff_apply_small_pipeline(x, prev, raw, sq, scale, base, hi, pre, post,
             T.copy(pre_ub[0:2, :], pre[token_base:token_base + 2, :])
             T.copy(post_ub[0:2, :], post[token_base:token_base + 2, :])
             T.copy(comb_ub[0:2, :], comb[token_base:token_base + 2, :])
-            _apply_small_tile(x_ub, prev_ub, hi_ub)
+            _apply_small_tile(x_ub, prev_ub, hi_ub, apply_unroll)
             T.copy(hi_ub, hi[token_base:token_base + 2, :])
 
 
 def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
-                     num_aic_cores=32, num_vec_cores=64, num_stages=2, preallocate=False):
+                     num_aic_cores=32, num_vec_cores=64, num_stages=2, preallocate=False, apply_unroll=1):
     """Compile the two kernels and return ``(run, configuration)``.
 
     Inputs are bound by reference. Each run launches projection then the fused
@@ -544,13 +563,15 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
             raise ValueError(f'{name} must be contiguous and on the same device as x')
     if not isinstance(num_vec_cores, int) or num_vec_cores <= 0 or num_stages not in (1, 2):
         raise ValueError('Expected positive vector core count and one or two buffer stages')
+    if apply_unroll not in (1, 2, 4):
+        raise ValueError('Apply unroll must be 1, 2 or 4')
     projection_config = dict(projection_config) if projection_config is not None else get_config(
         20480, 24, n, num_aic_cores=num_aic_cores)
     m = projection_config['block_num_tokens']
     if m not in (64, 128):
         raise ValueError('Projection M tile must be 64 or 128')
     flat, prev = x.view(n, 20480), prev_pre.view(n, 4)
-    tail_config = dict(num_vec_cores=num_vec_cores, num_stages=num_stages)
+    tail_config = dict(num_vec_cores=num_vec_cores, num_stages=num_stages, apply_unroll=apply_unroll)
 
     def allocate():
         hi = torch.empty(n, HIDDEN, dtype=torch.bfloat16, device=x.device)

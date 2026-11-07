@@ -180,8 +180,11 @@ def make_case(a):
             for name, source in meta.pop('generated_sources').items():
                 (a.output / f'{reference}_{name}.cpp').write_text(source, encoding='utf-8')
             metadata[reference] = meta
-        for label, preallocated in (('tilelang_fused_small', False),
-                                    ('tilelang_fused_small_prealloc', True)):
+        for label, preallocated, apply_unroll in (
+                ('tilelang_fused_small', False, 1),
+                ('tilelang_fused_small_prealloc', True, 1),
+                ('tilelang_fused_small_prealloc_u2', True, 2),
+                ('tilelang_fused_small_prealloc_u4', True, 4)):
             if label not in (a.implementations or ()):
                 continue
             from deep_gemm import _C
@@ -190,7 +193,7 @@ def make_case(a):
             from shifted_pre_fused import bind_shifted_pre
             functions[label], metadata[label] = bind_shifted_pre(
                 x, prev, phi, alpha, bias, num_aic_cores=_C.get_num_sms(),
-                num_vec_cores=get_num_vec_cores(), preallocate=preallocated)
+                num_vec_cores=get_num_vec_cores(), preallocate=preallocated, apply_unroll=apply_unroll)
         for single_label, reuse_apply, token_stages in (
                 ('tilelang_shifted_single_h5120', False, 1),
                 ('tilelang_shifted_single_reuse_h5120', True, 1),

@@ -30,6 +30,22 @@ def fused_report(root):
     return '\n'.join(lines) + '\n'
 
 
+def fused_apply_report(root):
+    base = 'tilelang_fused_small_prealloc'
+    lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
+             'H=5120 shifted Pre; CPU and pairwise checks passed. All variants preallocate outputs and workspace.',
+             'N | Apply unroll | Pre event us (3 processes) | median us | paired U1/candidate']
+    for n in (128, 256):
+        timings = [json.loads((root / f'N{n}-rep{i}' / 'summary.json').read_text()) for i in (1, 2, 3)]
+        for unroll, label in ((1, base), (2, f'{base}_u2'), (4, f'{base}_u4')):
+            times = [run[label]['event_us'] for run in timings]
+            ratio = median(run[base]['event_us'] / value for run, value in zip(timings, times))
+            lines.append(f'{n} | {unroll} | {", ".join(f"{value:.3f}" for value in times)} | '
+                         f'{median(times):.3f} | {ratio:.4f}')
+            lines.extend(profile_lines(root / f'N{n}-profile-{label}', 'mhc_projection_token_pipeline'))
+    return '\n'.join(lines) + '\n'
+
+
 def allocation_report(root, mode='alloc'):
     labels = ('tilelang_deferred_k8', 'tilelang_deferred_k8_batch')
     pairs = [(name, f'{name}_prealloc') for name in labels]
@@ -104,6 +120,8 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
+    elif mode == 'fused-apply':
+        summary = fused_apply_report(root)
     elif mode in ('alloc', 'workspace', 'refactor'):
         summary = allocation_report(root, mode=mode)
     else:
