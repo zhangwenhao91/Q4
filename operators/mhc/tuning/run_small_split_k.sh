@@ -16,6 +16,15 @@ case "$mode" in
   batch|alloc|workspace|refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8) shapes=(128 256) ;;
   *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|workspace [run-directory]]'; exit 2 ;;
 esac
+if [[ "$mode" == v3-fused-k8 ]]; then
+  export TORCH_EXTENSIONS_DIR="$ROOT/third_party/torch-extensions-gcc13"
+  export ASCEND_CUSTOM_OPP_PATH="$ROOT/third_party/q4vllmv3-opp/vendors/q4vllmv3_transformer"
+  export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
+  if [[ ! -f "$ASCEND_CUSTOM_OPP_PATH/op_api/lib/libcust_opapi.so" ]]; then
+    echo 'Missing isolated v3 vendor. Run bash operators/mhc/vllm_v3/run.sh all' | tee "$ROOT/error.txt"
+    exit 1
+  fi
+fi
 resume="${2:-}"
 results="$ROOT/results/mhc-small-split-k"
 if [[ -n "$resume" ]]; then
