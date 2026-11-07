@@ -89,18 +89,23 @@ def allocation_report(root, mode='alloc'):
     return '\n'.join([*lines, '', *timeline, *errors]) + '\n'
 
 
-def v3_fused_k8_report(root, hidden=5120, combined=False, large=False, automatic=False):
+def v3_fused_k8_report(root, hidden=5120, combined=False, large=False, automatic=False, post_only=False):
     ac = 'ascendc_vllm_v3'
     tl = 'tilelang_shifted_pre_auto' if automatic else 'tilelang_projection_coeff_k8_batch_prealloc'
     scope = 'shifted Pre + Post' if combined else 'shifted Pre'
+    allocation_note = ('AscendC uses upstream vLLM APIs with per-call allocation; TL Pre preallocates and TL Post uses its allocating API.'
+                       if combined else
+                       'AscendC uses the upstream vLLM v3 API with per-call allocation; TL reuses outputs and workspace.')
+    if post_only:
+        ac, tl = 'ascendc_vllm_post', 'tilelang_post'
+        scope = 'Post'
+        allocation_note = 'Both Post APIs include per-call output allocation and use identical precomputed coefficients and BF16 features.'
     lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
              f'H={hidden} {scope}; CPU and pairwise checks passed.',
-             'AscendC uses upstream vLLM APIs with per-call allocation; TL Pre preallocates and TL Post uses its allocating API.'
-             if combined else
-             'AscendC uses the upstream vLLM v3 API with per-call allocation; TL reuses outputs and workspace.',
+             allocation_note,
              'N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us']
     shapes = (512, 1024, 2048, 4096, 8192) if large else ((128, 256, 384) if combined else (128, 256))
-    if automatic:
+    if automatic or post_only:
         shapes = (128, 256, 384, 512, 1024, 2048, 4096, 8192)
     for n in shapes:
         timings = [json.loads((root / f'N{n}-rep{rep}' / 'summary.json').read_text())
@@ -332,6 +337,8 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
+    elif mode == 'v3-post':
+        summary = v3_fused_k8_report(root, post_only=True)
     elif mode == 'auto-dispatch':
         summary = auto_dispatch_report(root)
     elif mode in ('v3-auto-pre', 'v3-auto-combined'):
