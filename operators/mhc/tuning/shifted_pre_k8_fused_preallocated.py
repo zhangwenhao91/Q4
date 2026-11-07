@@ -7,6 +7,8 @@ Use its launcher on one stream. Returned outputs alias across calls.
 Apply consumes prev_pre. The generated next_pre is for the next layer.
 For a current-pre comparison, pass prev_pre=None and current_pre=True to run
 the fused projection/coefficients first, then Apply with its newly generated pre.
+The experimental reuse_tail option stages partials in a dead input slot after
+the producer barrier, to leave UB space for two input and two cast slots.
 
 Usage from the repository root:
     from operators.mhc.tuning.shifted_pre_k8_fused_preallocated import bind_shifted_pre
@@ -367,11 +369,21 @@ def _reduce_split_coefficients(
     cube_id,
     vector_id,
     flat_hidden,
+    input_buffer,
+    reuse_tail,
 ):
     proj = T.alloc_shared((384,), T.float32)
     sq = T.alloc_shared((16,), T.float32)
-    batch_proj = T.alloc_shared((splits, 384), T.float32)
-    batch_sq = T.alloc_shared((splits, 64), T.float32)
+    if reuse_tail:
+        # Reuse one dead BF16 input slot after all projection writes complete.
+        # Each FP32 row reserves disjoint projection and square-sum regions.
+        batch_proj = T.view(input_buffer, (splits, 1024), dtype=T.float32)
+        batch_sq = T.view(input_buffer, (splits, 1024), dtype=T.float32)
+        sq_offset = 384
+    else:
+        batch_proj = T.alloc_shared((splits, 384), T.float32)
+        batch_sq = T.alloc_shared((splits, 64), T.float32)
+        sq_offset = 0
     scale_ub = T.alloc_shared((3, 8), T.float32)
     base_ub = T.alloc_shared((24, 8), T.float32)
     mixes = T.alloc_shared((384,), T.float32)
@@ -388,8 +400,9 @@ def _reduce_split_coefficients(
         with T.Task():
             raw_rows = T.view(partial_proj, (splits, tokens * 24))
             first_raw = first_output * 24
-            T.copy(raw_rows[:, first_raw : first_raw + 384], batch_proj)
-            T.copy(partial_sq[:, first_output : first_output + 16], batch_sq[:, 0:16])
+            T.copy(raw_rows[:, first_raw : first_raw + 384], batch_proj[:, 0:384])
+            T.copy(partial_sq[:, first_output : first_output + 16],
+                   batch_sq[:, sq_offset : sq_offset + 16])
     with T.SimtVF(threads=32):
         for i in T.Parallel(3):
             scale_ub[i, 0] = alpha[i]
@@ -401,8 +414,9 @@ def _reduce_split_coefficients(
         output_start = start // 64 * 128 + vector_id * 64 + start % 64
         if job != 0:
             raw_begin = output_start * 24
-            T.copy(raw_rows[:, raw_begin : raw_begin + 384], batch_proj)
-            T.copy(partial_sq[:, output_start : output_start + 16], batch_sq[:, 0:16])
+            T.copy(raw_rows[:, raw_begin : raw_begin + 384], batch_proj[:, 0:384])
+            T.copy(partial_sq[:, output_start : output_start + 16],
+                   batch_sq[:, sq_offset : sq_offset + 16])
         with T.SimdVF():
             mask = S.pset(32)
             sq_mask = S.vcmps(S.vci(T.int32(0), T.int32), T.int32(16), mask, 'lt')
@@ -414,9 +428,9 @@ def _reduce_split_coefficients(
                     sum_proj = S.vadd(sum_proj, S.vld(batch_proj[k + 1, offset]), mask)
                 S.vsts(proj[offset], sum_proj, mask)
             sum_sq = S.alloc_var(T.float32)
-            sum_sq = S.vld(batch_sq[0, 0])
+            sum_sq = S.vld(batch_sq[0, sq_offset])
             for k in T.unroll(splits - 1, explicit=True):
-                sum_sq = S.vadd(sum_sq, S.vld(batch_sq[k + 1, 0]), sq_mask)
+                sum_sq = S.vadd(sum_sq, S.vld(batch_sq[k + 1, sq_offset]), sq_mask)
             S.vsts(sq[0], sum_sq, sq_mask, extent=16)
         compute_coefficients(
             proj,
@@ -470,6 +484,7 @@ def _projection_body(
     num_token_blocks_per_chunk,
     input_stages,
     cast_stages,
+    reuse_tail,
 ):
     block_hidden = 256
     mad_hidden = 64
@@ -662,6 +677,8 @@ def _projection_body(
             core_id,
             aiv_id,
             flat_hidden,
+            x_ub,
+            reuse_tail,
         )
 
 
@@ -686,6 +703,7 @@ def mhc_projection_coeff_k8_kernel(
     num_token_blocks_per_chunk: int,
     input_stages: int = 2,
     cast_stages: int = 2,
+    reuse_tail: bool = False,
 ):
     tokens = T.const('tokens')
     flat_hidden = T.const('flat_hidden')
@@ -724,6 +742,7 @@ def mhc_projection_coeff_k8_kernel(
         num_token_blocks_per_chunk,
         input_stages,
         cast_stages,
+        reuse_tail,
     )
 
 
@@ -780,7 +799,7 @@ def mhc_pre_apply_flat_pipeline_asc(x, mix, o, h_blk, num_vec_cores: int, pipeli
 
 
 def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
-                     input_stages=None, cast_stages=2):
+                     input_stages=None, cast_stages=2, reuse_tail=False):
     """Return (launcher, metadata) with all allocations outside the launcher."""
     import torch
     from deep_gemm import _C
@@ -826,6 +845,7 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
         num_token_blocks_per_chunk=groups,
         input_stages=input_stages,
         cast_stages=cast_stages,
+        reuse_tail=reuse_tail,
     )
     flat = x.flatten(1)
     hi = torch.empty(n, hidden, dtype=x.dtype, device=x.device)

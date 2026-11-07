@@ -116,13 +116,20 @@ def v3_fused_k8_report(root, hidden=5120, combined=False, large=False):
     return '\n'.join(lines) + '\n'
 
 
-def buffer_report(root):
+def buffer_report(root, cast_reuse=False):
     ac = 'ascendc_vllm_v3'
     base = 'tilelang_projection_coeff_k8_batch_prealloc'
     variants = [('current', base), ('I1C1', base + '_i1c1'), ('I2C1', base + '_i2c1')]
+    if cast_reuse:
+        base += '_i2c1'
+        variants = [('I2C1', base), ('I2C1-reuse', base + '_reuse'),
+                    ('I2C2-reuse', 'tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse')]
     lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
+             'H=5120 shifted Pre; CPU and pairwise checks passed.' if cast_reuse else
              'H=5120 shifted Pre + Post; CPU and pairwise checks passed.',
-             'I=input slots; C=FP32 NZ cast slots. I1C1/I2C1 isolates input buffering at C=1.',
+             'I=input slots; C=FP32 NZ cast slots. Reuse candidates share dead input storage with the partial staging buffers.'
+             if cast_reuse else 'I=input slots; C=FP32 NZ cast slots. I1C1/I2C1 isolates input buffering at C=1.',
+             'TL Pre fully preallocates; AscendC allocates through its upstream API.' if cast_reuse else
              'TL Pre fully preallocates; TL Post and upstream AscendC allocate through their APIs.',
              'N | variant | input slots | cast slots | event us (3 processes) | median us | paired AC/TL | paired current/TL']
     for n in (512, 1024, 2048, 4096, 8192):
@@ -140,8 +147,9 @@ def buffer_report(root):
                          f'{", ".join(f"{v:.3f}" for v in times)} | {median(times):.3f} | '
                          f'{ratios[0]:.4f} | {ratios[1]:.4f}')
             lines.extend(profile_lines(root / f'N{n}-profile-{label}', 'mhc_projection_coeff_k8_kernel'))
-        ratio = median(run[base + '_i1c1']['event_us'] / run[base + '_i2c1']['event_us'] for run in timings)
-        lines.append(f'{n} | paired I1C1/I2C1 speedup | {ratio:.4f}')
+        ratio = median(run[variants[1][1]]['event_us'] / run[variants[2][1]]['event_us'] for run in timings)
+        comparison = 'I2C1-reuse/I2C2-reuse' if cast_reuse else 'I1C1/I2C1'
+        lines.append(f'{n} | paired {comparison} speedup | {ratio:.4f}')
     return '\n'.join(lines) + '\n'
 
 
@@ -230,8 +238,8 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
-    elif mode == 'v3-fused-k8-combined-buffers':
-        summary = buffer_report(root)
+    elif mode in ('v3-fused-k8-combined-buffers', 'v3-fused-k8-cast-reuse'):
+        summary = buffer_report(root, cast_reuse=mode.endswith('-cast-reuse'))
     elif mode in ('v3-fused-k8', 'v3-fused-k8-h4096', 'v3-fused-k8-combined', 'v3-fused-k8-combined-large'):
         summary = v3_fused_k8_report(root, hidden=4096 if mode.endswith('-h4096') else 5120,
                                    combined='-combined' in mode, large=mode.endswith('-large'))
