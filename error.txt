@@ -1,41 +1,37 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8-k128
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-185906-3299039
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8-k128-three
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-190553-3313465
 N=512 N512-rep1
 N=512 N512-rep2
 N=512 N512-rep3
-N=512 N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1
-N=512 N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c2
+N=512 N512-profile-tilelang_deferred_k8_batch_prealloc
 N=512 N512-profile-tilelang_projection_coeff_k8_batch_prealloc_k128_i2c2
 N=1024 N1024-rep1
 N=1024 N1024-rep2
 N=1024 N1024-rep3
-N=1024 N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1
+N=1024 N1024-profile-tilelang_deferred_k8_batch_prealloc
 N=1024 N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_k128_i2c2
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-185906-3299039
-Q4 revision: 28a87188cdcc184e530b42e2ec0551cbaea36ad6
-H=5120 shifted Pre; CPU and pairwise checks passed. TL outputs/workspace are preallocated.
-K block width changes; K split remains 8. Each token tile has 40 K64 GEMM steps per split.
-N | variant | K block | input slots | cast slots | blocks per split | event us (3 processes) | median us | paired AC/TL | paired K256-I2C1/TL
-512 | AC | - | - | - | - | 33.331, 33.293, 33.233 | 33.293 | 1.0000 | -
-512 | K256-I2C1 | 256 | 2 | 1 | 10 | 33.633, 33.596, 33.578 | 33.596 | 0.9910 | 1.0000
-N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.4660
-mhc_projection_coeff_k8_kernel_kernel | 30 | 26.9270
-512 | K256-I2C2 | 256 | 2 | 2 | 10 | 28.350, 28.316, 28.321 | 28.321 | 1.1757 | 1.1863
-N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c2: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.5015
-mhc_projection_coeff_k8_kernel_kernel | 30 | 21.7310
-512 | K128-I2C2 | 128 | 2 | 2 | 20 | 30.510, 30.474, 30.487 | 30.487 | 1.0925 | 1.1024
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-190553-3313465
+Q4 revision: 518590a41b07ef77e0fc9bdeec21a8bb5a70beb8
+H=5120 shifted Pre; CPU and pairwise checks passed. All variants preallocate outputs/workspace.
+N | variant | Cube cores | K splits | event us (3 processes) | median us | paired three-kernel/TL | paired AC/TL
+512 | AC v3 | - | - | 33.456, 33.513, 33.498 | 33.498 | - | 1.0000
+512 | three-kernel K8 | 24 | 8 | 27.184, 27.204, 27.183 | 27.184 | 1.0000 | 1.2319
+N512-profile-tilelang_deferred_k8_batch_prealloc: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 5.7065
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.5215
+mhc_projection_split_partials_kernel | 30 | 14.7285
+512 | two-kernel K128-I2C2 | 16 | 8 | 30.524, 30.466, 30.491 | 30.491 | 0.8915 | 1.0986
 N512-profile-tilelang_projection_coeff_k8_batch_prealloc_k128_i2c2: kernel | calls | median us
 mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.4830
-mhc_projection_coeff_k8_kernel_kernel | 30 | 23.8050
-1024 | AC | - | - | - | - | 56.384, 56.352, 56.359 | 56.359 | 1.0000 | -
-1024 | K256-I2C1 | 256 | 2 | 1 | 10 | 62.561, 62.591, 62.632 | 62.591 | 0.9003 | 1.0000
-N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 11.0195
-mhc_projection_coeff_k8_kernel_kernel | 30 | 51.3380
-1024 | K128-I2C2 | 128 | 2 | 2 | 20 | 55.715, 55.768, 55.770 | 55.768 | 1.0106 | 1.1229
+mhc_projection_coeff_k8_kernel_kernel | 30 | 23.9420
+1024 | AC v3 | - | - | 56.382, 56.356, 56.399 | 56.382 | - | 1.0000
+1024 | three-kernel K8 | 24 | 8 | 40.920, 41.023, 40.934 | 40.934 | 1.0000 | 1.3778
+N1024-profile-tilelang_deferred_k8_batch_prealloc: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 8.9685
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 11.0060
+mhc_projection_split_partials_kernel | 30 | 20.7285
+1024 | two-kernel K128-I2C2 | 16 | 8 | 55.693, 55.793, 55.718 | 55.718 | 0.7347 | 1.0122
 N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_k128_i2c2: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 11.0390
-mhc_projection_coeff_k8_kernel_kernel | 30 | 44.5890
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 11.0140
+mhc_projection_coeff_k8_kernel_kernel | 30 | 44.5645
 (zwh) root@ubuntu162:/home/z30086261/Q4#
