@@ -1,21 +1,21 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-113703-2462153
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh fused-k8-refactor
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-114737-2490711
 N=128 N128-rep1
 N=128 N128-rep2
 N=128 N128-rep3
 N=256 N256-rep1
 N=256 N256-rep2
 N=256 N256-rep3
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-113703-2462153
-Q4 revision: 5061de4eb10523623c8af4046ca5f27ca220e118
-H=5120 shifted Pre; CPU and pairwise checks passed.
-AscendC uses the upstream vLLM v3 API with per-call allocation; TL reuses outputs and workspace.
-N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us
-128 | rep1 | 17.873 | 16.803 | 1.0637 | 18.273 | 17.233
-128 | rep2 | 15.323 | 16.795 | 0.9123 | 15.692 | 17.288
-128 | rep3 | 16.944 | 16.777 | 1.0100 | 17.261 | 17.128
-128 | median | 16.944 | 16.795 | 1.0100 | 17.261 | 17.233
-256 | rep1 | 21.756 | 18.519 | 1.1748 | 22.170 | 18.972
-256 | rep2 | 21.611 | 18.430 | 1.1726 | 21.860 | 18.732
-256 | rep3 | 21.725 | 18.459 | 1.1769 | 22.047 | 18.769
-256 | median | 21.725 | 18.459 | 1.1748 | 22.047 | 18.769
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-114737-2490711
+Q4 revision: 1db95fe079be0750f993e6e678aece3ab0b2ca45
+H=5120 shifted Pre; CPU and pairwise checks passed. Both variants preallocate outputs and workspace.
+N | run | original us | standalone us | original/standalone | device source match (apply, fused)
+128 | rep1 | 16.865 | 16.861 | 1.0002 | [True, True]
+128 | rep2 | 16.877 | 16.877 | 1.0000 | [True, True]
+128 | rep3 | 16.860 | 16.872 | 0.9993 | [True, True]
+128 | median paired speedup | 1.0000
+256 | rep1 | 18.527 | 18.525 | 1.0001 | [True, True]
+256 | rep2 | 18.513 | 18.527 | 0.9992 | [True, True]
+256 | rep3 | 18.457 | 18.474 | 0.9990 | [True, True]
+256 | median paired speedup | 0.9992
+(zwh) root@ubuntu162:/home/z30086261/Q4#
