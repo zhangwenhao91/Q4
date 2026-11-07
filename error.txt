@@ -1,62 +1,62 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh fused-projection-coeff-k8
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-105858-2371358
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-110139-2374567
 N=128 N128-rep1
 Failed stage: N128-rep1
-Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-105858-2371358/N128-rep1.log
+Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-110139-2374567/N128-rep1.log
 === Exception headlines (up to 8) ===
-94: tvm.error.InternalError: Check failed: pipe->value == expected_pipe_ (PIPE_MTE2 vs. PIPE_V) : Inter-core synchronization inside T.PerCoreTask must use its inferred pipe PIPE_V, got PIPE_MTE2
+27: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_projection_coeff_k8_kernel_kernel with ACL error 107000, grid=8, dyn_ubuf_bytes=246016: [PID: 2374573] 2026-11-07-11:01:48.153.975 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
 === First error contexts (up to 4) ===
-1: 2026-11-07 10:59:03  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_projection_coeff_k8_kernel` with `out_idx=None`
-2: Traceback (most recent call last):
-3:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
-4:     if __name__=='__main__': main()
-5:                              ^^^^^^
-6:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 96, in main
-7:     functions,refs,names,meta=make_case(a)
-8:                               ^^^^^^^^^^^^
-9:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 180, in make_case
-10:     functions[projection_coeff], meta = make_projection_coeff_candidate(
-11:                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-12:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 42, in make_projection_coeff_candidate
-13:     fused = kernel_fn.compile(flat, phi, alpha, bias, pre, post, comb, *workspace, **config)
-14:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-15:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 470, in compile
-16:     kernel_result = compile(
-17:                     ^^^^^^^^
-18:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 166, in compile
-19:     return cached(
-20:            ^^^^^^^
-21:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/__init__.py", line 91, in cached
-86:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-87:   File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
-88:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*) const
-89:   File "<unknown>", line 0, in tvm::tirx::StmtVisitor::VisitStmt_(tvm::tirx::SeqStmtNode const*)
-90:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*) const
-91:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*) const
-92:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::ExprFunctor<void (tvm::PrimExpr const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::ExprFunctor<void (tvm::PrimExpr const&)>*) const
-93:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/materialize_schedule_units.cc", line 218, in virtual void tvm::tl::{anonymous}::PerCoreTaskControlValidator::VisitExpr_(const tvm::tirx::CallNode*)
-94: tvm.error.InternalError: Check failed: pipe->value == expected_pipe_ (PIPE_MTE2 vs. PIPE_V) : Inter-core synchronization inside T.PerCoreTask must use its inferred pipe PIPE_V, got PIPE_MTE2
-95: [ERROR] 2026-11-07-10:59:05 (PID:2371364, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+1: 2026-11-07 11:01:45  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_projection_coeff_k8_kernel` with `out_idx=None`
+2: 2026-11-07 11:01:47  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_projection_coeff_k8_kernel`
+3: 2026-11-07 11:01:47  [TileLang:tilelang.cache.kernel_cache:WARNING] (kernel_cache.py:379): Found kernel 'mhc_pre_apply_flat_pipeline_asc' in memory cache. For better performance, consider using `@tilelang.jit` instead of direct kernel caching.
+4: {'implementation': 'tilelang_deferred_k8_batch_prealloc', 'output': 'layer_input', 'shape': [128, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 2.215548518326271e-05, 'relative_l2': 1.9314915095015055e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+5: {'implementation': 'tilelang_deferred_k8_batch_prealloc', 'output': 'next_pre_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.463859558105469e-06, 'rmse': 2.8092394133499223e-06, 'relative_l2': 5.59702463880962e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+6: {'implementation': 'tilelang_deferred_k8_batch_prealloc', 'output': 'post_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.5497207641601562e-05, 'rmse': 5.598341050063007e-06, 'relative_l2': 5.599112221068266e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+7: {'implementation': 'tilelang_deferred_k8_batch_prealloc', 'output': 'comb_mix', 'shape': [128, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.255243301391602e-06, 'rmse': 2.147088149547657e-06, 'relative_l2': 8.550665042910696e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+8: Traceback (most recent call last):
+9:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
+10:     if __name__=='__main__': main()
+11:                              ^^^^^^
+12:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 184, in main
+13:     outputs=tuple(fn());torch.npu.synchronize()
+14:                   ^^^^
+15:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 48, in run
+16:     fused(flat, phi, alpha, bias, pre, post, comb, *workspace)
+17:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 228, in __call__
+18:     return self.torch_function(*args, **kwds)
+19:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+20:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/adapter/tvm_ffi.py", line 348, in func
+21:     executable(*tensor_list)
+22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm/runtime/executable.py", line 46, in __call__
+23:     return self.jit().main(*args, **kwargs)
+24:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+25:   File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
+26:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/runtime/ascend_module.cc", line 697, in void tvm::ascend::AscendWrappedFunc<LaunchPolicy>::operator()(tvm::ffi::PackedArgs, tvm::ffi::Any*, void*, size_t) const [with LaunchPolicy = tvm::ascend::DirectLaunchPolicy; size_t = long unsigned int]
+27: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_projection_coeff_k8_kernel_kernel with ACL error 107000, grid=8, dyn_ubuf_bytes=246016: [PID: 2374573] 2026-11-07-11:01:48.153.975 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
+28: TraceBack (most recent call last):
+29:         The argument is invalid. Reason: rtsLaunchKernelWithHostArgs execution failed.
+30: 
+31: [ERROR] 2026-11-07-11:01:50 (PID:2374573, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
 === Final non-progress lines ===
-76:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-77:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-78:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-79:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
-80:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-81:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-82:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-83:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
-84:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
-85:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
-86:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
-87:   File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
-88:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*) const
-89:   File "<unknown>", line 0, in tvm::tirx::StmtVisitor::VisitStmt_(tvm::tirx::SeqStmtNode const*)
-90:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*) const
-91:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*) const
-92:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::ExprFunctor<void (tvm::PrimExpr const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::ExprFunctor<void (tvm::PrimExpr const&)>*) const
-93:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/materialize_schedule_units.cc", line 218, in virtual void tvm::tl::{anonymous}::PerCoreTaskControlValidator::VisitExpr_(const tvm::tirx::CallNode*)
-94: tvm.error.InternalError: Check failed: pipe->value == expected_pipe_ (PIPE_MTE2 vs. PIPE_V) : Inter-core synchronization inside T.PerCoreTask must use its inferred pipe PIPE_V, got PIPE_MTE2
-95: [ERROR] 2026-11-07-10:59:05 (PID:2371364, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+12:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 184, in main
+13:     outputs=tuple(fn());torch.npu.synchronize()
+14:                   ^^^^
+15:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 48, in run
+16:     fused(flat, phi, alpha, bias, pre, post, comb, *workspace)
+17:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 228, in __call__
+18:     return self.torch_function(*args, **kwds)
+19:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+20:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/adapter/tvm_ffi.py", line 348, in func
+21:     executable(*tensor_list)
+22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm/runtime/executable.py", line 46, in __call__
+23:     return self.jit().main(*args, **kwargs)
+24:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+25:   File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
+26:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/runtime/ascend_module.cc", line 697, in void tvm::ascend::AscendWrappedFunc<LaunchPolicy>::operator()(tvm::ffi::PackedArgs, tvm::ffi::Any*, void*, size_t) const [with LaunchPolicy = tvm::ascend::DirectLaunchPolicy; size_t = long unsigned int]
+27: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_projection_coeff_k8_kernel_kernel with ACL error 107000, grid=8, dyn_ubuf_bytes=246016: [PID: 2374573] 2026-11-07-11:01:48.153.975 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
+28: TraceBack (most recent call last):
+29:         The argument is invalid. Reason: rtsLaunchKernelWithHostArgs execution failed.
+30: 
+31: [ERROR] 2026-11-07-11:01:50 (PID:2374573, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
 Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
