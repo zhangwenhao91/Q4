@@ -89,7 +89,7 @@ def allocation_report(root, mode='alloc'):
     return '\n'.join([*lines, '', *timeline, *errors]) + '\n'
 
 
-def v3_fused_k8_report(root, hidden=5120, combined=False, large=False, automatic=False, post_only=False):
+def v3_fused_k8_report(root, hidden=5120, combined=False, large=False, automatic=False, post_only=False, k128_all=False):
     ac = 'ascendc_vllm_v3'
     tl = 'tilelang_shifted_pre_auto' if automatic else 'tilelang_projection_coeff_k8_batch_prealloc'
     scope = 'shifted Pre + Post' if combined else 'shifted Pre'
@@ -100,12 +100,14 @@ def v3_fused_k8_report(root, hidden=5120, combined=False, large=False, automatic
         ac, tl = 'ascendc_vllm_post', 'tilelang_post'
         scope = 'Post'
         allocation_note = 'Both Post APIs include per-call output allocation and use identical precomputed coefficients and BF16 features.'
+    if k128_all:
+        tl = 'tilelang_projection_coeff_k8_batch_prealloc_k128_i2c2'
     lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
              f'H={hidden} {scope}; CPU and pairwise checks passed.',
              allocation_note,
              'N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us']
     shapes = (512, 1024, 2048, 4096, 8192) if large else ((128, 256, 384) if combined else (128, 256))
-    if automatic or post_only:
+    if automatic or post_only or k128_all:
         shapes = (128, 256, 384, 512, 1024, 2048, 4096, 8192)
     for n in shapes:
         timings = [json.loads((root / f'N{n}-rep{rep}' / 'summary.json').read_text())
@@ -115,6 +117,13 @@ def v3_fused_k8_report(root, hidden=5120, combined=False, large=False, automatic
             kernel_scope = 'Pre kernels + Post' if combined else 'kernels'
             lines.append(f'{n} | TL dispatch | {meta["dispatch"]["implementation"]} | '
                          f'{meta["expected_kernels_per_call"]} {kernel_scope}')
+        if k128_all:
+            meta = json.loads((root / f'N{n}-rep1' / 'metadata.json').read_text())['variants'][tl]
+            config = meta['projection_config']
+            lines.append(f'{n} | TL config | {meta["expected_kernels_per_call"]} kernels | '
+                         f'K block {config["block_hidden"]} | K splits {config["num_k_splits"]} | '
+                         f'input slots {config["input_stages"]} | cast slots {config["cast_stages"]} | '
+                         f'Cube cores {config["num_aic_cores"]}')
         for rep, run in enumerate(timings, 1):
             lines.append(f'{n} | rep{rep} | {run[ac]["event_us"]:.3f} | {run[tl]["event_us"]:.3f} | '
                          f'{run[ac]["event_us"] / run[tl]["event_us"]:.4f} | '
@@ -455,6 +464,8 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
+    elif mode == 'v3-fused-k8-k128-all':
+        summary = v3_fused_k8_report(root, k128_all=True)
     elif mode == 'v3-fused-k8-k128-three':
         summary = three_vs_two_report(root, k128=True)
     elif mode == 'v3-fused-k8-k128':
