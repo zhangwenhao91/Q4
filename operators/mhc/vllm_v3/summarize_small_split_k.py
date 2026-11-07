@@ -128,6 +128,43 @@ def v3_fused_k8_report(root, hidden=5120, combined=False, large=False, automatic
     return '\n'.join(lines) + '\n'
 
 
+def stages_report(root):
+    scopes = [('Pre', 'ascendc_vllm_v3', 'tilelang_shifted_pre_auto'),
+              ('Post', 'ascendc_vllm_post', 'tilelang_post'),
+              ('Pre+Post', 'ascendc_vllm_combined', 'tilelang_auto_combined')]
+    lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
+             'H=5120 N=8192; CPU and same-stage pairwise checks passed.',
+             'Each process times all six callbacks on shared inputs, then profiles both combined callbacks.',
+             'Standalone Post uses shared reference coefficients; combined Post consumes its own Pre coefficients.',
+             'TL Pre preallocates; Post and upstream AscendC use their allocating APIs.',
+             'run | stage | AC event us | TL event us | AC/TL | AC wall us | TL wall us']
+    timings = []
+    for rep in (1, 2, 3):
+        case = root / f'N8192-rep{rep}'
+        run = json.loads((case / 'summary.json').read_text())
+        timings.append(run)
+        for stage, ac, tl in scopes:
+            lines.append(f'rep{rep} | {stage} | {run[ac]["event_us"]:.3f} | {run[tl]["event_us"]:.3f} | '
+                         f'{run[ac]["event_us"] / run[tl]["event_us"]:.4f} | '
+                         f'{run[ac]["wall_us"]:.3f} | {run[tl]["wall_us"]:.3f}')
+        for side, pre, post, combined in (
+                ('AC', scopes[0][1], scopes[1][1], scopes[2][1]),
+                ('TL', scopes[0][2], scopes[1][2], scopes[2][2])):
+            summed = run[pre]['event_us'] + run[post]['event_us']
+            chained = run[combined]['event_us']
+            lines.append(f'rep{rep} | {side} isolated sum {summed:.3f} us | '
+                         f'combined {chained:.3f} us | reduction {summed - chained:.3f} us')
+            lines.extend(profile_lines(case / 'profile-after-timing' / combined))
+    for stage, ac, tl in scopes:
+        ac_time = median(run[ac]['event_us'] for run in timings)
+        tl_time = median(run[tl]['event_us'] for run in timings)
+        ratio = median(run[ac]['event_us'] / run[tl]['event_us'] for run in timings)
+        lines.append(f'median | {stage} | {ac_time:.3f} | {tl_time:.3f} | {ratio:.4f} | '
+                     f'{median(run[ac]["wall_us"] for run in timings):.3f} | '
+                     f'{median(run[tl]["wall_us"] for run in timings):.3f}')
+    return '\n'.join(lines) + '\n'
+
+
 def buffer_report(root, cast_reuse=False):
     ac = 'ascendc_vllm_v3'
     base = 'tilelang_projection_coeff_k8_batch_prealloc'
@@ -337,6 +374,8 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
+    elif mode == 'v3-stages':
+        summary = stages_report(root)
     elif mode == 'v3-post':
         summary = v3_fused_k8_report(root, post_only=True)
     elif mode == 'auto-dispatch':

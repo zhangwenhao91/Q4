@@ -23,10 +23,11 @@ case "$mode" in
   three-vs-two-small) shapes=(128 256 384 512) ;;
   auto-dispatch) shapes=(128 256 384 512 1024) ;;
   v3-auto-pre|v3-auto-combined|v3-post) shapes=(128 256 384 512 1024 2048 4096 8192) ;;
+  v3-stages) shapes=(8192) ;;
   batch|alloc|workspace|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096) shapes=(128 256) ;;
-  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|v3-fused-k8-combined|v3-fused-k8-combined-large|v3-fused-k8-combined-buffers|v3-fused-k8-cast-reuse|v3-fused-k8-cube24|v3-fused-k4-cube28|three-vs-two-large|three-vs-two-small|auto-dispatch|v3-auto-pre|v3-auto-combined|v3-post|workspace [run-directory]]'; exit 2 ;;
+  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|v3-fused-k8-combined|v3-fused-k8-combined-large|v3-fused-k8-combined-buffers|v3-fused-k8-cast-reuse|v3-fused-k8-cube24|v3-fused-k4-cube28|three-vs-two-large|three-vs-two-small|auto-dispatch|v3-auto-pre|v3-auto-combined|v3-post|v3-stages|workspace [run-directory]]'; exit 2 ;;
 esac
-if [[ "$mode" == v3-fused-k8* || "$mode" == v3-fused-k4-cube28 || "$mode" == v3-auto-* || "$mode" == v3-post ]]; then
+if [[ "$mode" == v3-fused-k8* || "$mode" == v3-fused-k4-cube28 || "$mode" == v3-auto-* || "$mode" == v3-post || "$mode" == v3-stages ]]; then
   export TORCH_EXTENSIONS_DIR="$ROOT/third_party/torch-extensions-gcc13"
   export ASCEND_CUSTOM_OPP_PATH="$ROOT/third_party/q4vllmv3-opp/vendors/q4vllmv3_transformer"
   export LD_LIBRARY_PATH="$ASCEND_CUSTOM_OPP_PATH/op_api/lib:${LD_LIBRARY_PATH:-}"
@@ -60,6 +61,11 @@ run_case() {
   if [[ "$mode" == v3-post ]]; then
     stage=post
     variant_options=()
+  fi
+  if [[ "$mode" == v3-stages ]]; then
+    stage=stages
+    variant_options=()
+    set -- "$@" --profile-after-timing ascendc_vllm_combined tilelang_auto_combined
   fi
   if [[ "$mode" == v3-fused-k8-combined* || "$mode" == v3-auto-combined ]]; then stage=combined; fi
   if [[ "$mode" == v3-fused-k8-h4096 ]]; then
@@ -108,6 +114,9 @@ for n in "${shapes[@]}"; do
   if [[ "$mode" == fused-k8-refactor ]]; then
     labels=(tilelang_projection_coeff_k8_batch_prealloc_reference
             tilelang_projection_coeff_k8_batch_prealloc)
+  elif [[ "$mode" == v3-stages ]]; then
+    labels=(ascendc_vllm_v3 tilelang_shifted_pre_auto ascendc_vllm_post
+            tilelang_post ascendc_vllm_combined tilelang_auto_combined)
   elif [[ "$mode" == v3-post ]]; then
     labels=(ascendc_vllm_post tilelang_post)
   elif [[ "$mode" == v3-auto-* ]]; then
@@ -192,7 +201,7 @@ for n in "${shapes[@]}"; do
       run_case "N$n-profile-$label" "$n" --implementations "$label" --profile "$label"
     done
   fi
-  if [[ "$mode" == refactor || "$mode" == fused-k8-refactor || "$mode" == v3-fused-k8* || "$mode" == v3-fused-k4-cube28 || "$mode" == auto-dispatch || "$mode" == v3-auto-* || "$mode" == v3-post ]]; then continue; fi
+  if [[ "$mode" == refactor || "$mode" == fused-k8-refactor || "$mode" == v3-fused-k8* || "$mode" == v3-fused-k4-cube28 || "$mode" == auto-dispatch || "$mode" == v3-auto-* || "$mode" == v3-post || "$mode" == v3-stages ]]; then continue; fi
   if [[ "$mode" == fused-apply || "$mode" == fused-pack128 || "$mode" == fused-projection-coeff* ]]; then
     for label in "${labels[@]}"; do
       run_case "N$n-profile-$label" "$n" --implementations "$label" --profile "$label"

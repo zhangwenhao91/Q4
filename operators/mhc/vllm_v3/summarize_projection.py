@@ -17,7 +17,7 @@ PROJECTIONS = {
 }
 
 
-def profile_lines(folder, projection):
+def profile_lines(folder, projection=None):
     files = list(folder.rglob('kernel_details.csv'))
     if len(files) != 1:
         return [f'{folder.name}: expected one kernel_details.csv, found {len(files)}']
@@ -38,6 +38,8 @@ def profile_lines(folder, projection):
     lines = [f'{folder.name}: kernel | calls | median us']
     for label, values in sorted(timings.items()):
         lines.append(f'{label} | {len(values)} | {median(values):.4f}')
+    if projection is None:
+        return lines
     matched = [values for name, values in timings.items() if projection in name]
     if len(matched) != 1 or len(matched[0]) != 30:
         lines.append('Review projection attribution: expected one projection kernel name and 30 recorded calls.')

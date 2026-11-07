@@ -161,6 +161,33 @@ def make_case(a):
             hc_mult=4, hc_sinkhorn_iters=20, norm_eps=1e-20, hc_eps=1e-6)
         return y, pre.unsqueeze(-1), post.unsqueeze(-1), comb
 
+    if stage == 'stages':
+        sys.path.insert(0, str(ROOT / 'operators/mhc/tuning'))
+        from shifted_pre_auto import bind_shifted_pre
+        tl_pre, tl_meta = bind_shifted_pre(x, prev, phi, alpha, bias)
+        for name, generated in tl_meta.pop('generated_sources').items():
+            (a.output / f'tilelang_shifted_pre_auto_{name}.cpp').write_text(generated, encoding='utf-8')
+        fixed_post, fixed_comb = post0.npu(), comb0.npu()
+        functions = {
+            'ascendc_vllm_v3': ac,
+            'tilelang_shifted_pre_auto': tl_pre,
+            'ascendc_vllm_post': lambda: (ac_post(fixed_post, fixed_comb),),
+            'tilelang_post': lambda: (tl_post(fixed_post, fixed_comb),),
+            'ascendc_vllm_combined': chain_pre_post(ac, ac_post),
+            'tilelang_auto_combined': chain_pre_post(tl_pre, tl_post),
+        }
+        groups = dict(zip(functions, ('pre', 'pre', 'post', 'post', 'combined', 'combined')))
+        pre_names = ['layer_input', 'next_pre_mix', 'post_mix', 'comb_mix']
+        references = {'pre': refs, 'post': (residual_ref,), 'combined': (*refs, residual_ref)}
+        output_names = {'pre': pre_names, 'post': ['new_residual'], 'combined': [*pre_names, 'new_residual']}
+        return functions, {label: references[groups[label]] for label in functions}, {
+            label: output_names[groups[label]] for label in functions}, dict(
+                comparison_available=True, vllm_v3=provenance, stage=stage,
+                validation_groups=groups, variants={'tilelang_shifted_pre_auto': tl_meta},
+                contract=dict(N=t, hidden=hidden, hc_mult=4, shifted=True),
+                timing_boundary='Six callbacks share the same input tensors and process; standalone Post uses shared CPU-reference coefficients; combined Post uses its own Pre outputs',
+                allocation_boundary='TL Pre preallocates; TL Post and upstream AscendC allocate through their APIs')
+
     if hidden == 4096:
         sys.path.insert(0, str(ROOT / 'operators/mhc/tuning'))
         from shifted_pre_k8_fused_preallocated import bind_shifted_pre

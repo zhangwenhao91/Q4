@@ -26,7 +26,7 @@ def main():
     p.add_argument('--suite',choices=['mha','mha_scenarios','mha_bf16','mha_nostore','mha_stages','mha_finalize','mha_buffers','mha_stats_split','mhc_post','mhc_shifted','mhc_shifted_native','mhc_shifted_split','mhc_original','mhc_original_fused','mhc_original_big5120','mhc_vllm_v3'],required=True)
     p.add_argument('--mhc-pipeline-flat',action='store_true',help='compare flat with nested apply pipeline')
     p.add_argument('--mhc-all-token-pipeline',action='store_true',help='three-kernel N-pipeline candidate; N must be divisible by 128')
-    p.add_argument('--mhc-vllm-stage',choices=('pre','post','combined'),default='pre',help='timing scope for mhc_vllm_v3')
+    p.add_argument('--mhc-vllm-stage',choices=('pre','post','combined','stages'),default='pre',help='timing scope for mhc_vllm_v3')
     p.add_argument('--mhc-vllm-hidden',type=int,choices=(4096,5120),default=5120,help='hidden size for the standalone K8 Pre comparison with v3')
     p.add_argument('--mhc-projection-l2-ab',action='store_true',help='enable the two all-N Pre cache policies; select v3 explicitly to include it')
     p.add_argument('--mhc-apply-pipeline',choices=[f'{b}:{s}' for b in (256,1024,1280,5120) for s in (1,3)],help='apply block:stages; use 5120 with --mhc-pipeline-flat for full-hidden token pipelining')
@@ -47,11 +47,15 @@ def main():
     p.add_argument('--iters',type=int,default=100)
     p.add_argument('--rounds',type=int,default=9)
     p.add_argument('--check-only',action='store_true')
+    p.add_argument('--profile-after-timing',nargs='+',metavar='IMPLEMENTATION',
+                   help='profile selected implementations in this process after timing')
     p.add_argument('--profile',help='exact implementation label printed by check')
     p.add_argument('--profile-pipe-metrics',action='store_true',help='explicit Level1 PipeUtilization counters; requires --profile')
     p.add_argument('--profile-aic-metric', choices=('Memory', 'L2Cache'), help='collect one Level1 memory counter group')
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
+    if a.profile_after_timing and (a.profile or a.check_only):
+        p.error('--profile-after-timing requires timing and cannot combine with --profile')
     if a.mha_seqlen!=4096 and a.suite not in ('mha_bf16','mha_stats_split','mha_scenarios'):
         p.error('--mha-seqlen 3584 requires mha_bf16, mha_stats_split or mha_scenarios')
     if a.mhc_projection_l2_ab and (a.suite != 'mhc_vllm_v3' or a.mhc_vllm_stage not in ('pre', 'combined')):
@@ -126,6 +130,8 @@ def main():
         unknown=set(a.implementations)-set(functions)
         if unknown:p.error('unknown implementations: '+str(sorted(unknown)))
         functions={label:functions[label] for label in a.implementations}
+    unknown_profiles=set(a.profile_after_timing or ())-set(functions)
+    if unknown_profiles:p.error('unknown post-timing profiles: '+str(sorted(unknown_profiles)))
     props=torch_npu.npu.get_device_properties(0)
     meta['device_properties']=dict(name=props.name,cube_core_num=props.cube_core_num,
                                    vector_core_num=props.vector_core_num)
@@ -161,9 +167,9 @@ def main():
         (a.output/'apply_flat_pipeline_kernel.cpp').write_text(flat_source)
     (a.output/'metadata.json').write_text(json.dumps(meta,indent=2))
     records=[];values={}
-    def validate(label,outputs,expected):
+    def validate(label,outputs,expected,output_names=None):
         if len(outputs)!=len(expected): raise AssertionError('wrong output count')
-        for name,y,r in zip(names,outputs,expected):
+        for name,y,r in zip(names if output_names is None else output_names,outputs,expected):
             y=y.detach().cpu();r=r.detach().cpu()
             if y.shape!=r.shape or y.dtype!=r.dtype:
                 raise AssertionError(f'{label}/{name}: {y.shape}/{y.dtype} != {r.shape}/{r.dtype}')
@@ -185,13 +191,18 @@ def main():
             outputs=tuple(fn());torch.npu.synchronize()
             # CPU copies avoid retaining large NPU outputs during timing.
             values[label]=tuple(y.detach().cpu() for y in outputs)
-            validate(label,values[label],refs)
+            expected = refs[label] if isinstance(refs,dict) else refs
+            output_names = names[label] if isinstance(names,dict) else names
+            validate(label,values[label],expected,output_names)
         labels=list(functions)
-        if len(labels)==2: validate('pairwise',values[labels[0]],values[labels[1]])
-        elif len(labels)>2:
+        if len(labels)>1:
             from itertools import combinations
+            groups = meta.get('validation_groups')
             for left,right in combinations(labels,2):
-                validate(left+'_vs_'+right,values[left],values[right])
+                if groups and groups[left] != groups[right]:
+                    continue
+                pair = 'pairwise' if len(labels)==2 else left+'_vs_'+right
+                validate(pair,values[left],values[right],names[left] if isinstance(names,dict) else names)
     (a.output/'correctness.json').write_text(json.dumps(records,indent=2))
     if not all(r['passed'] for r in records): raise AssertionError('Correctness failed; timing skipped')
     print('Correctness passed. Implementations:',list(functions),flush=True)
@@ -199,26 +210,28 @@ def main():
         (a.output/'comparison_status.json').write_text(json.dumps(dict(status='single_side_only',
             reason=meta['ascendc_status'],speedup=None),indent=2))
         print(meta['ascendc_status'],flush=True)
-    del values,refs,outputs
+    del values,refs,outputs,expected,output_names
     if a.check_only: return
     with torch.no_grad():
-        for fn in functions.values():
-            for _ in range(a.warmup): fn()
-            torch.npu.synchronize()
-        if a.profile:
-            if a.profile not in functions: p.error(f'profile implementation must be one of {list(functions)}')
-            fn=functions[a.profile]
+        def profile_impl(label,destination):
+            fn=functions[label]
             from profiling_config import extra_profile_options
             profile_options=extra_profile_options(torch_npu.profiler,a.profile_pipe_metrics,a.profile_aic_metric)
             print('Profiler metrics:', a.profile_aic_metric or ('Level1 PipeUtilization' if a.profile_pipe_metrics else 'default'),flush=True)
             with torch_npu.profiler.profile(
                 activities=[torch_npu.profiler.ProfilerActivity.CPU,torch_npu.profiler.ProfilerActivity.NPU],
                 schedule=torch_npu.profiler.schedule(wait=1,warmup=1,active=3,repeat=1),
-                on_trace_ready=torch_npu.profiler.tensorboard_trace_handler(str(a.output/'profile')),
+                on_trace_ready=torch_npu.profiler.tensorboard_trace_handler(str(destination)),
                 record_shapes=True,profile_memory=False,with_stack=False,**profile_options) as prof:
                 for _ in range(5):
                     for _ in range(10): fn()
                     torch.npu.synchronize();prof.step()
+        for fn in functions.values():
+            for _ in range(a.warmup): fn()
+            torch.npu.synchronize()
+        if a.profile:
+            if a.profile not in functions: p.error(f'profile implementation must be one of {list(functions)}')
+            profile_impl(a.profile,a.output/'profile')
             return
         rows=[]
         with (a.output/'timings.csv').open('w',newline='') as f:
@@ -283,6 +296,11 @@ def main():
                     q128_over_nostore=summary['tilelang_q128']['event_us']/summary['tilelang_nostore']['event_us'],
                     ascendc_over_nostore=summary['ascendc']['event_us']/summary['tilelang_nostore']['event_us'])
         (a.output/'summary.json').write_text(json.dumps(summary,indent=2));print(summary)
+        for label in a.profile_after_timing or ():
+            print('Profiling after timing:',label,flush=True)
+            for _ in range(a.warmup): functions[label]()
+            torch.npu.synchronize()
+            profile_impl(label,a.output/'profile-after-timing'/label)
 
 
 if __name__=='__main__': main()
