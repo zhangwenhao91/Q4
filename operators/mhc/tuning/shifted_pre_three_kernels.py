@@ -616,22 +616,23 @@ def _reduce_split_coefficients(partial_proj, partial_sq, alpha, bias, pre, post,
     comb_out = T.alloc_shared((16, 16), T.float32)
 
     if flat_layout:
-        alpha_ub = T.alloc_shared((8,), T.float32)
+        assert tokens <= cube_cores * 32
+        # All AIVs participate, including those with zero coefficient jobs.
+        # Bind the wait to workspace reads so it follows the producer stores.
+        first_start = T.min(cube_id, tokens // 32 - 1) * 16
+        first_output = first_start // 64 * 128 + vector_id * 64 + first_start % 64
         with T.PerCoreTask():
             T.ascend_sync_inter_wait('PIPE_MTE2', 8)
             with T.Task():
-                T.copy(alpha[0:3], alpha_ub[0:3])
-        with T.SimtVF(threads=32):
-            for i in T.Parallel(3):
-                scale_ub[i, 0] = alpha_ub[i]
-            for i in T.Parallel(24):
-                base_ub[i, 0] = bias[i]
-    else:
-        with T.SimtVF(threads=32):
-            for i in T.Parallel(3):
-                scale_ub[i, 0] = alpha[i]
-            for i in T.Parallel(24):
-                base_ub[i, 0] = bias[i]
+                T.copy(partial_proj[0, first_output : first_output + 16, 0:24],
+                       T.view(proj, (16, 24)))
+                T.copy(partial_sq[0, first_output : first_output + 16], sq)
+
+    with T.SimtVF(threads=32):
+        for i in T.Parallel(3):
+            scale_ub[i, 0] = alpha[i]
+        for i in T.Parallel(24):
+            base_ub[i, 0] = bias[i]
 
     # Keep AIV0 and AIV1 on disjoint workspace planes. Within a plane
     # consecutive 64-row blocks correspond to alternate halves of each tile.
@@ -639,14 +640,11 @@ def _reduce_split_coefficients(partial_proj, partial_sq, alpha, bias, pre, post,
     for job in T.Serial(jobs):
         start = (cube_id + job * cube_cores) * 16
         output_start = start // 64 * 128 + vector_id * 64 + start % 64
-        with T.PerCoreTask():
-            for _ in T.Serial(0 if flat_layout else T.max(1 - job, 0)):
-                T.ascend_sync_inter_wait('PIPE_MTE2', 8)
-            with T.Task():
-                if flat_layout:
-                    T.copy(partial_proj[0, output_start : output_start + 16, 0:24], T.view(proj, (16, 24)))
-                    T.copy(partial_sq[0, output_start : output_start + 16], sq)
-                else:
+        if not flat_layout:
+            with T.PerCoreTask():
+                for _ in T.Serial(T.max(1 - job, 0)):
+                    T.ascend_sync_inter_wait('PIPE_MTE2', 8)
+                with T.Task():
                     T.copy(partial_proj[0, vector_id, start : start + 16, 0:24], T.view(proj, (16, 24)))
                     T.copy(partial_sq[0, vector_id, start : start + 16], sq)
         for k in T.Serial(1, splits):

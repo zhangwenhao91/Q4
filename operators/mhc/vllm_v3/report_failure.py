@@ -45,10 +45,19 @@ def main():
                 remaining -= 1
             before.append(item)
             tail.append(item)
+    generated_context = []
+    for source in sorted(log.with_suffix('').glob('*projection_coeff_k8_prealloc_projection_coeff.cpp')):
+        source_lines = source.read_text(encoding='utf-8', errors='replace').splitlines()
+        selected = set()
+        for index, line in enumerate(source_lines):
+            if re.search(r'sync_inter_|sync_all|pipe_barrier|__global__', line):
+                selected.update(range(max(0, index - 2), min(len(source_lines), index + 3)))
+        generated_context.extend([f'Generated synchronization: {source}'])
+        generated_context.extend(f'{index + 1}: {source_lines[index][:300]}' for index in sorted(selected)[:100])
     report = '\n'.join([f'Failed stage: {a.stage}', f'Log: {log.resolve()}',
         '=== Exception headlines (up to 8) ===', *exceptions,
         '=== First error contexts (up to 4) ===', *contexts,
-        '=== Final non-progress lines ===', *tail]) + '\n'
+        '=== Final non-progress lines ===', *tail, *generated_context]) + '\n'
     (root / 'error.txt').write_text(report, encoding='utf-8')
     (log.parent / 'failure-report.txt').write_text(report, encoding='utf-8')
     print(report, end='')
