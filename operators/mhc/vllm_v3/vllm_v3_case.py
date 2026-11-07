@@ -237,6 +237,7 @@ def make_case(a):
                 ('tilelang_projection_coeff_k8_batch_prealloc_reference', 128, 8, True),
                 ('tilelang_projection_coeff_k8_batch_prealloc_i1c1', 128, 8, True),
                 ('tilelang_projection_coeff_k8_batch_prealloc_i2c1', 128, 8, True),
+                ('tilelang_projection_coeff_k8_batch_prealloc_i2c2', 128, 8, True),
                 ('tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse', 128, 8, True),
                 ('tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse', 128, 8, True),
                 ('tilelang_projection_coeff_k8_batch_prealloc_i2c1_c24', 128, 8, True),
@@ -248,6 +249,7 @@ def make_case(a):
                     'tilelang_projection_coeff_k8_batch_prealloc',
                     'tilelang_projection_coeff_k8_batch_prealloc_i1c1',
                     'tilelang_projection_coeff_k8_batch_prealloc_i2c1',
+                    'tilelang_projection_coeff_k8_batch_prealloc_i2c2',
                     'tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse',
                     'tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse',
                     'tilelang_projection_coeff_k8_batch_prealloc_i2c1_c24',
@@ -259,6 +261,9 @@ def make_case(a):
                     options = dict(input_stages=1, cast_stages=1)
                 elif projection_coeff.endswith('_i2c1'):
                     options = dict(input_stages=2, cast_stages=1)
+                elif projection_coeff.endswith('_i2c2'):
+                    options = dict(input_stages=2, cast_stages=2, reuse_tail=False,
+                                   balance_tail=False, k_splits=8)
                 elif projection_coeff.endswith('_i2c1_reuse'):
                     options = dict(input_stages=2, cast_stages=1, reuse_tail=True)
                 elif projection_coeff.endswith('_i2c2_reuse'):

@@ -24,8 +24,9 @@ case "$mode" in
   auto-dispatch) shapes=(128 256 384 512 1024) ;;
   v3-auto-pre|v3-auto-combined|v3-post) shapes=(128 256 384 512 1024 2048 4096 8192) ;;
   v3-stages) shapes=(8192) ;;
+  v3-fused-k8-i2c2) shapes=(512 1024) ;;
   batch|alloc|workspace|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096) shapes=(128 256) ;;
-  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|v3-fused-k8-combined|v3-fused-k8-combined-large|v3-fused-k8-combined-buffers|v3-fused-k8-cast-reuse|v3-fused-k8-cube24|v3-fused-k4-cube28|three-vs-two-large|three-vs-two-small|auto-dispatch|v3-auto-pre|v3-auto-combined|v3-post|v3-stages|workspace [run-directory]]'; exit 2 ;;
+  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|v3-fused-k8-combined|v3-fused-k8-combined-large|v3-fused-k8-combined-buffers|v3-fused-k8-cast-reuse|v3-fused-k8-cube24|v3-fused-k4-cube28|three-vs-two-large|three-vs-two-small|auto-dispatch|v3-auto-pre|v3-auto-combined|v3-post|v3-stages|v3-fused-k8-i2c2|workspace [run-directory]]'; exit 2 ;;
 esac
 if [[ "$mode" == v3-fused-k8* || "$mode" == v3-fused-k4-cube28 || "$mode" == v3-auto-* || "$mode" == v3-post || "$mode" == v3-stages ]]; then
   export TORCH_EXTENSIONS_DIR="$ROOT/third_party/torch-extensions-gcc13"
@@ -52,6 +53,7 @@ else
 fi
 printf '%s\n' "$mode" > "$OUT/mode.txt"
 echo "Results: $OUT"
+benchmark_status=0
 
 run_case() {
   local tag="$1" n="$2"
@@ -85,6 +87,7 @@ run_case() {
   if ! "$PY" operators/spec_v1/bench.py --suite mhc_vllm_v3 --mhc-vllm-stage "$stage" \
     "${variant_options[@]}" --tokens "$n" --output "$OUT/$tag" "$@" > "$OUT/$tag.log" 2>&1; then
     "$PY" operators/mhc/vllm_v3/report_failure.py --stage "$tag" --log "$OUT/$tag.log"
+    if [[ "$mode" == v3-fused-k8-i2c2 ]]; then return 1; fi
     exit 1
   fi
 }
@@ -148,6 +151,8 @@ for n in "${shapes[@]}"; do
     labels=(ascendc_vllm_v3 tilelang_projection_coeff_k8_batch_prealloc
             tilelang_projection_coeff_k8_batch_prealloc_i1c1
             tilelang_projection_coeff_k8_batch_prealloc_i2c1)
+  elif [[ "$mode" == v3-fused-k8-i2c2 ]]; then
+    labels=(ascendc_vllm_v3 tilelang_projection_coeff_k8_batch_prealloc_i2c2)
   elif [[ "$mode" == v3-fused-k8* ]]; then
     labels=(ascendc_vllm_v3 tilelang_projection_coeff_k8_batch_prealloc)
   elif [[ "$mode" == fused-projection-coeff-k8 ]]; then
@@ -176,7 +181,7 @@ for n in "${shapes[@]}"; do
   fi
   for rep in 1 2 3; do
     ordered_labels=("${labels[@]}")
-    if [[ ( "$mode" == v3-auto-* || "$mode" == v3-post ) && "$rep" == 2 ]]; then
+    if [[ ( "$mode" == v3-auto-* || "$mode" == v3-post || "$mode" == v3-fused-k8-i2c2 ) && "$rep" == 2 ]]; then
       ordered_labels=("${labels[1]}" "${labels[0]}")
     elif [[ "$mode" == three-vs-two-small && "$rep" == 2 ]]; then
       ordered_labels=("${labels[3]}" "${labels[2]}" "${labels[1]}" "${labels[0]}")
@@ -187,8 +192,16 @@ for n in "${shapes[@]}"; do
     elif [[ "$mode" == v3-fused-k8-combined* && "$rep" == 2 ]]; then
       ordered_labels=("${labels[1]}" "${labels[0]}")
     fi
-    run_case "N$n-rep$rep" "$n" --implementations "${ordered_labels[@]}" \
-      --warmup 100 --rounds 24 --iters 100
+    if [[ "$mode" == v3-fused-k8-i2c2 ]]; then
+      if ! run_case "N$n-rep$rep" "$n" --implementations "${ordered_labels[@]}" \
+          --warmup 100 --rounds 24 --iters 100; then
+        benchmark_status=1
+        break
+      fi
+    else
+      run_case "N$n-rep$rep" "$n" --implementations "${ordered_labels[@]}" \
+        --warmup 100 --rounds 24 --iters 100
+    fi
   done
   if [[ "$mode" == three-vs-two-large || "$mode" == three-vs-two-small ]]; then
     for label in "${labels[@]}"; do
@@ -225,3 +238,4 @@ for n in "${shapes[@]}"; do
   fi
 done
 "$PY" operators/mhc/vllm_v3/summarize_small_split_k.py "$OUT" "$mode" | tee "$ROOT/error.txt"
+exit "$benchmark_status"

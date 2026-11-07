@@ -128,6 +128,40 @@ def v3_fused_k8_report(root, hidden=5120, combined=False, large=False, automatic
     return '\n'.join(lines) + '\n'
 
 
+def i2c2_report(root):
+    ac = 'ascendc_vllm_v3'
+    tl = 'tilelang_projection_coeff_k8_batch_prealloc_i2c2'
+    lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
+             'H=5120 shifted Pre; forced K8, two input buffers, two cast buffers, separate tail storage.',
+             'TL outputs/workspace are preallocated; AscendC uses the original vLLM v3 API allocations.',
+             'Successful timings have passed CPU and pairwise checks. Failed cases have no speedup.',
+             'N | run | AC event us | TL event us | AC/TL speedup']
+    for n in (512, 1024):
+        timings = []
+        for rep in (1, 2, 3):
+            case = root / f'N{n}-rep{rep}'
+            summary = case / 'summary.json'
+            log = root / f'N{n}-rep{rep}.log'
+            if summary.is_file():
+                run = json.loads(summary.read_text())
+                timings.append(run)
+                lines.append(f'{n} | rep{rep} | {run[ac]["event_us"]:.3f} | {run[tl]["event_us"]:.3f} | '
+                             f'{run[ac]["event_us"] / run[tl]["event_us"]:.4f}')
+            elif log.is_file():
+                errors = [line.strip() for line in log.read_text(encoding='utf-8', errors='replace').splitlines()
+                          if line.startswith(('RuntimeError:', 'tvm.error.', 'AssertionError:'))]
+                reason = errors[-1][:1000] if errors else f'See {log}'
+                lines.append(f'{n} | rep{rep} | FAILED | {reason}')
+        if timings:
+            ratio = median(run[ac]['event_us'] / run[tl]['event_us'] for run in timings)
+            lines.append(f'{n} | median ({len(timings)} processes) | '
+                         f'{median(run[ac]["event_us"] for run in timings):.3f} | '
+                         f'{median(run[tl]["event_us"] for run in timings):.3f} | {ratio:.4f}')
+        else:
+            lines.append(f'{n} | no valid speedup')
+    return '\n'.join(lines) + '\n'
+
+
 def stages_report(root):
     scopes = [('Pre', 'ascendc_vllm_v3', 'tilelang_shifted_pre_auto'),
               ('Post', 'ascendc_vllm_post', 'tilelang_post'),
@@ -374,6 +408,8 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
+    elif mode == 'v3-fused-k8-i2c2':
+        summary = i2c2_report(root)
     elif mode == 'v3-stages':
         summary = stages_report(root)
     elif mode == 'v3-post':
