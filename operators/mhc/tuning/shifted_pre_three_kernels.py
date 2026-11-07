@@ -614,14 +614,16 @@ def _reduce_split_coefficients(partial_proj, partial_sq, alpha, bias, pre, post,
     comb_out = T.alloc_shared((16, 16), T.float32)
 
     if flat_layout:
+        alpha_ub = T.alloc_shared((8,), T.float32)
         with T.PerCoreTask():
             T.ascend_sync_inter_wait('PIPE_MTE2', 8)
             with T.Task():
-                with T.SimtVF(threads=32):
-                    for i in T.Parallel(3):
-                        scale_ub[i, 0] = alpha[i]
-                    for i in T.Parallel(24):
-                        base_ub[i, 0] = bias[i]
+                T.copy(alpha[0:3], alpha_ub[0:3])
+        with T.SimtVF(threads=32):
+            for i in T.Parallel(3):
+                scale_ub[i, 0] = alpha_ub[i]
+            for i in T.Parallel(24):
+                base_ub[i, 0] = bias[i]
     else:
         with T.SimtVF(threads=32):
             for i in T.Parallel(3):
