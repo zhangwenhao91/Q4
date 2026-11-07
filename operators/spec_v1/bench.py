@@ -27,6 +27,7 @@ def main():
     p.add_argument('--mhc-pipeline-flat',action='store_true',help='compare flat with nested apply pipeline')
     p.add_argument('--mhc-all-token-pipeline',action='store_true',help='three-kernel N-pipeline candidate; N must be divisible by 128')
     p.add_argument('--mhc-vllm-stage',choices=('pre','post','combined'),default='pre',help='timing scope for mhc_vllm_v3')
+    p.add_argument('--mhc-vllm-hidden',type=int,choices=(4096,5120),default=5120,help='hidden size for the standalone K8 Pre comparison with v3')
     p.add_argument('--mhc-projection-l2-ab',action='store_true',help='enable the two all-N Pre cache policies; select v3 explicitly to include it')
     p.add_argument('--mhc-apply-pipeline',choices=[f'{b}:{s}' for b in (256,1024,1280,5120) for s in (1,3)],help='apply block:stages; use 5120 with --mhc-pipeline-flat for full-hidden token pipelining')
     p.add_argument('--mhc-tail-config',choices=[f'{c}:{s}' for c in (14,28,56) for s in (1,2)],help='shifted_split: tail cores:stages, apply fixed H1280')

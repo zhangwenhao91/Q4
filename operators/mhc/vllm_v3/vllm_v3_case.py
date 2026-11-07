@@ -106,13 +106,18 @@ def make_case(a):
     if a.tokens % 128:
         raise ValueError('Three-kernel N-pipeline comparison requires N divisible by 128')
     l2_ab = a.mhc_projection_l2_ab
+    hidden = a.mhc_vllm_hidden
+    if hidden == 4096 and (
+            a.mhc_vllm_stage != 'pre' or not l2_ab or
+            set(a.implementations or ()) != {'ascendc_vllm_v3', 'tilelang_projection_coeff_k8_batch_prealloc'}):
+        raise ValueError('H4096 v3 comparison requires Pre and the standalone batched K8 TL/v3 pair')
     include_v3 = not l2_ab or 'ascendc_vllm_v3' in (a.implementations or ())
     if include_v3:
         op, provenance = load_v3()
     t = a.tokens
-    x0 = torch.randn(t, 4, 5120, dtype=torch.bfloat16)
+    x0 = torch.randn(t, 4, hidden, dtype=torch.bfloat16)
     prev0 = torch.rand(t, 4, 1) + 1e-6
-    phi0 = torch.empty(24, 20480).uniform_(-1, 1) / 20480**.5
+    phi0 = torch.empty(24, 4 * hidden).uniform_(-1, 1) / (4 * hidden)**.5
     alpha0 = torch.tensor([.1, .1, .1])
     bias0 = torch.randn(24) * .1
     refs = shifted_reference(x0, prev0, phi0, alpha0, bias0)
@@ -149,6 +154,18 @@ def make_case(a):
             hc_mult=4, hc_sinkhorn_iters=20, norm_eps=1e-20, hc_eps=1e-6)
         return y, pre.unsqueeze(-1), post.unsqueeze(-1), comb
 
+    if hidden == 4096:
+        sys.path.insert(0, str(ROOT / 'operators/mhc/tuning'))
+        from shifted_pre_k8_fused_preallocated import bind_shifted_pre
+        label = 'tilelang_projection_coeff_k8_batch_prealloc'
+        launcher, meta = bind_shifted_pre(x, prev, phi, alpha, bias)
+        for name, generated in meta.pop('generated_sources').items():
+            (a.output / f'{label}_{name}.cpp').write_text(generated, encoding='utf-8')
+        return {'ascendc_vllm_v3': ac, label: launcher}, refs, [
+            'layer_input', 'next_pre_mix', 'post_mix', 'comb_mix'], dict(
+                comparison_available=True, vllm_v3=provenance, stage=stage,
+                contract=dict(N=t, hidden=hidden, hc_mult=4, shifted=True),
+                variants={label: meta})
     projector = DynamicHCProjection(x, phi)
     if l2_ab:
         functions = {'ascendc_vllm_v3': ac} if include_v3 else {}

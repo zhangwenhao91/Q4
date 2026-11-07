@@ -89,11 +89,11 @@ def allocation_report(root, mode='alloc'):
     return '\n'.join([*lines, '', *timeline, *errors]) + '\n'
 
 
-def v3_fused_k8_report(root):
+def v3_fused_k8_report(root, hidden=5120):
     ac = 'ascendc_vllm_v3'
     tl = 'tilelang_projection_coeff_k8_batch_prealloc'
     lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
-             'H=5120 shifted Pre; CPU and pairwise checks passed.',
+             f'H={hidden} shifted Pre; CPU and pairwise checks passed.',
              'AscendC uses the upstream vLLM v3 API with per-call allocation; TL reuses outputs and workspace.',
              'N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us']
     for n in (128, 256):
@@ -197,8 +197,8 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
-    elif mode == 'v3-fused-k8':
-        summary = v3_fused_k8_report(root)
+    elif mode in ('v3-fused-k8', 'v3-fused-k8-h4096'):
+        summary = v3_fused_k8_report(root, hidden=4096 if mode.endswith('-h4096') else 5120)
     elif mode == 'fused-k8-refactor':
         summary = fused_k8_refactor_report(root)
     elif mode in ('fused-apply', 'fused-pack128'):
