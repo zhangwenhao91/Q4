@@ -1,109 +1,68 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8-cast-reuse
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-155946-2843911
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8-cube24
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-161456-2905325
 N=512 N512-rep1
-N=512 N512-rep2
-N=512 N512-rep3
-N=512 N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1
-N=512 N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse
-N=512 N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse
-N=1024 N1024-rep1
-N=1024 N1024-rep2
-N=1024 N1024-rep3
-N=1024 N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1
-N=1024 N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse
-N=1024 N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse
-N=2048 N2048-rep1
-N=2048 N2048-rep2
-N=2048 N2048-rep3
-N=2048 N2048-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1
-N=2048 N2048-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse
-N=2048 N2048-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse
-N=4096 N4096-rep1
-N=4096 N4096-rep2
-N=4096 N4096-rep3
-N=4096 N4096-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1
-N=4096 N4096-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse
-N=4096 N4096-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse
-N=8192 N8192-rep1
-N=8192 N8192-rep2
-N=8192 N8192-rep3
-N=8192 N8192-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1
-N=8192 N8192-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse
-N=8192 N8192-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-155946-2843911
-Q4 revision: 2c71dc87fbdc10d5b9c2c474d366936674ba5ccb
-H=5120 shifted Pre; CPU and pairwise checks passed.
-I=input slots; C=FP32 NZ cast slots. Reuse candidates share dead input storage with the partial staging buffers.
-TL Pre fully preallocates; AscendC allocates through its upstream API.
-N | variant | input slots | cast slots | event us (3 processes) | median us | paired AC/TL | paired current/TL
-512 | AC | - | - | 33.296, 33.133, 33.296 | 33.296 | 1.0000 | -
-512 | I2C1 | 2 | 1 | 33.624, 33.627, 33.642 | 33.627 | 0.9897 | 1.0000
-N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.4850
-mhc_projection_coeff_k8_kernel_kernel | 30 | 26.9055
-512 | I2C1-reuse | 2 | 1 | 34.631, 34.585, 34.547 | 34.585 | 0.9614 | 0.9723
-N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.4665
-mhc_projection_coeff_k8_kernel_kernel | 30 | 27.9060
-512 | I2C2-reuse | 2 | 2 | 34.672, 34.650, 34.699 | 34.672 | 0.9596 | 0.9698
-N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.5040
-mhc_projection_coeff_k8_kernel_kernel | 30 | 27.8730
-512 | paired I2C1-reuse/I2C2-reuse speedup | 0.9981
-1024 | AC | - | - | 56.211, 56.128, 56.231 | 56.211 | 1.0000 | -
-1024 | I2C1 | 2 | 1 | 62.660, 62.519, 62.654 | 62.654 | 0.8975 | 1.0000
-N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 11.0890
-mhc_projection_coeff_k8_kernel_kernel | 30 | 51.3290
-1024 | I2C1-reuse | 2 | 1 | 64.415, 64.244, 64.482 | 64.415 | 0.8726 | 0.9728
-N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 11.0185
-mhc_projection_coeff_k8_kernel_kernel | 30 | 53.1230
-1024 | I2C2-reuse | 2 | 2 | 64.851, 64.773, 64.802 | 64.802 | 0.8668 | 0.9662
-N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 10.9940
-mhc_projection_coeff_k8_kernel_kernel | 30 | 53.4615
-1024 | paired I2C1-reuse/I2C2-reuse speedup | 0.9933
-2048 | AC | - | - | 112.839, 112.852, 114.727 | 112.852 | 1.0000 | -
-2048 | I2C1 | 2 | 1 | 122.457, 121.655, 126.577 | 122.457 | 0.9215 | 1.0000
-N2048-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 23.0215
-mhc_projection_coeff_k8_kernel_kernel | 30 | 100.5070
-2048 | I2C1-reuse | 2 | 1 | 133.780, 130.842, 136.392 | 133.780 | 0.8435 | 0.9280
-N2048-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 22.4445
-mhc_projection_coeff_k8_kernel_kernel | 30 | 111.3380
-2048 | I2C2-reuse | 2 | 2 | 134.219, 131.449, 136.677 | 134.219 | 0.8407 | 0.9255
-N2048-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 22.6930
-mhc_projection_coeff_k8_kernel_kernel | 30 | 112.7020
-2048 | paired I2C1-reuse/I2C2-reuse speedup | 0.9967
-4096 | AC | - | - | 233.084, 238.639, 236.128 | 236.128 | 1.0000 | -
-4096 | I2C1 | 2 | 1 | 315.925, 328.567, 315.470 | 315.925 | 0.7378 | 1.0000
-N4096-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 119.3660
-mhc_projection_coeff_k8_kernel_kernel | 30 | 196.4825
-4096 | I2C1-reuse | 2 | 1 | 355.193, 355.725, 355.504 | 355.504 | 0.6642 | 0.8894
-N4096-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 119.6785
-mhc_projection_coeff_k8_kernel_kernel | 30 | 236.1025
-4096 | I2C2-reuse | 2 | 2 | 355.211, 356.998, 355.237 | 355.237 | 0.6647 | 0.8894
-N4096-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 118.9935
-mhc_projection_coeff_k8_kernel_kernel | 30 | 236.9280
-4096 | paired I2C1-reuse/I2C2-reuse speedup | 0.9999
-8192 | AC | - | - | 465.328, 465.624, 466.001 | 465.624 | 1.0000 | -
-8192 | I2C1 | 2 | 1 | 669.114, 668.794, 668.925 | 668.925 | 0.6962 | 1.0000
-N8192-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 280.0925
-mhc_projection_coeff_k8_kernel_kernel | 30 | 388.2005
-8192 | I2C1-reuse | 2 | 1 | 753.182, 752.575, 752.833 | 752.833 | 0.6187 | 0.8885
-N8192-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 279.7830
-mhc_projection_coeff_k8_kernel_kernel | 30 | 472.1505
-8192 | I2C2-reuse | 2 | 2 | 754.083, 753.637, 753.653 | 753.653 | 0.6178 | 0.8874
-N8192-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 280.0105
-mhc_projection_coeff_k8_kernel_kernel | 30 | 472.7245
-8192 | paired I2C1-reuse/I2C2-reuse speedup | 0.9988
+Failed stage: N512-rep1
+Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-161456-2905325/N512-rep1.log
+=== Exception headlines (up to 8) ===
+91: tvm.error.InternalError: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV0.MTE3 -> AIV1.MTE2 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
+=== First error contexts (up to 4) ===
+1: ninja: no work to do.
+2: [16:15:15] /home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/insert_sync.cc:846: Fatal: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV0.MTE3 -> AIV1.MTE2 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
+3: 2026-11-07 16:15:13  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_projection_coeff_k8_kernel` with `out_idx=None`
+4: Traceback (most recent call last):
+5:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 288, in <module>
+6:     if __name__=='__main__': main()
+7:                              ^^^^^^
+8:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 97, in main
+9:     functions,refs,names,meta=make_case(a)
+10:                               ^^^^^^^^^^^^
+11:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 231, in make_case
+12:     functions[projection_coeff], meta = bind_shifted_pre(x, prev, phi, alpha, bias, **options)
+13:                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+14:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_k8_fused_preallocated.py", line 872, in bind_shifted_pre
+15:     fused = mhc_projection_coeff_k8_kernel.compile(
+16:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+17:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 470, in compile
+18:     kernel_result = compile(
+19:                     ^^^^^^^^
+20:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 166, in compile
+21:     return cached(
+22:            ^^^^^^^
+23:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/__init__.py", line 91, in cached
+=== Final non-progress lines ===
+73:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockNode const*)
+74:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+75:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+76:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+77:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+78:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+79:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+80:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+81:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+82:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+83:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+84:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+85:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
+86:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+87:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+88:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+89:   File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
+90:   File "<unknown>", line 0, in tvm::runtime::detail::LogFatal::~LogFatal()
+91: tvm.error.InternalError: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV0.MTE3 -> AIV1.MTE2 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
+92: [ERROR] 2026-11-07-16:15:17 (PID:2905331, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+Generated synchronization: /home/z30086261/Q4/results/mhc-small-split-k/20261107-161456-2905325/N512-rep1/tilelang_projection_coeff_k8_batch_prealloc_i2c1_projection_coeff.cpp
+412: }
+413: 
+414: extern "C" __global__ __mix__(1, 2) void mhc_projection_coeff_k8_kernel_kernel(__gm__ float* alpha, __gm__ float* bias, __gm__ float* comb, __gm__ float* fn, __gm__ float* partial_sq, __gm__ float* post, __gm__ float* pre, __gm__ float* raw_rows, __gm__ bfloat16_t* x) {
+415:   asc_init();
+416:   __cbuf__ uint8_t *buf_dyn_l1 = (__cbuf__ uint8_t *)0;
+529:       }
+530:       for (int32_t __1 = 0; __1 < condval; ++__1) {
+531:         asc_sync_inter_arrive(PIPE_MTE3, 8);
+532:       }
+533:     }
+534:     asc_sync_inter_wait(PIPE_MTE2, 8);
+535:     asc_sync_wait(PIPE_MTE3, PIPE_MTE2, static_cast<event_t>(0));
+536:     asc_copy_gm2ub_align((__ubuf__ uint8_t*)((&(((__ubuf__ float*)buf_dyn_shmem)[33024]))), (__gm__ uint8_t*)((&(raw_rows[((((((int32_t)block_idx) >> 2) * 3072) + (vector_id * 1536)) + ((((int32_t)block_idx) & 3) * 384))]))), 8, 1536, 0, 0, 0, static_cast<asc_load_l2_cache_mode>(0), 49152, 1536);
+Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
