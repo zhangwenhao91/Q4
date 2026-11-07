@@ -1,22 +1,30 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-115215-2507246
-N=128 N128-rep1
-N=128 N128-rep2
-N=128 N128-rep3
-N=256 N256-rep1
-N=256 N256-rep2
-N=256 N256-rep3
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-115215-2507246
-Q4 revision: 1c491d9685611ec435f562b69e787e399e22eb84
-H=5120 shifted Pre; CPU and pairwise checks passed.
-AscendC uses the upstream vLLM v3 API with per-call allocation; TL reuses outputs and workspace.
-N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us
-128 | rep1 | 22.498 | 16.881 | 1.3328 | 22.929 | 17.306
-128 | rep2 | 22.350 | 16.913 | 1.3215 | 22.776 | 17.394
-128 | rep3 | 15.255 | 16.824 | 0.9067 | 15.526 | 17.098
-128 | median | 22.350 | 16.881 | 1.3215 | 22.776 | 17.306
-256 | rep1 | 21.746 | 18.479 | 1.1768 | 22.114 | 18.863
-256 | rep2 | 21.685 | 18.479 | 1.1735 | 22.084 | 18.882
-256 | rep3 | 22.818 | 18.508 | 1.2329 | 23.277 | 18.882
-256 | median | 21.746 | 18.479 | 1.1768 | 22.114 | 18.882
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_original.sh h5120-fused-k8-ab
+Results: /home/z30086261/Q4/results/mhc-original/20261107-142803-h5120-fused-k8-ab-2654399
+Timing H=5120 N128-rep1
+Timing H=5120 N128-rep2
+Timing H=5120 N128-rep3
+Timing H=5120 N256-rep1
+Timing H=5120 N256-rep2
+Timing H=5120 N256-rep3
+Run: /home/z30086261/Q4/results/mhc-original/20261107-142803-h5120-fused-k8-ab-2654399
+AC reference: ascendc_adapted_fused_h5120
+Event time: median across rounds (us); ratios > 1 mean TL is faster.
+case | AC us | TL us | AC/TL
+N128-rep1 | 15.001 | 16.904 | 0.8874
+N128-rep2 | 24.814 | 17.024 | 1.4576
+N128-rep3 | 24.992 | 16.985 | 1.4715
+N256-rep1 | 19.618 | 18.528 | 1.0588
+N256-rep2 | 21.140 | 18.571 | 1.1383
+N256-rep3 | 25.434 | 18.601 | 1.3674
+Cases with timing: 6
+Runner log tail (last 20 lines):
+H=5120 current-pre semantics; AscendC uses the H5120 allowlist adaptation and its original allocations; standalone TL fully preallocates.
+Q4 revision: 486c46a1b18e64b836680237686a8c355dd54a21
+CPU and pairwise correctness passed for N128-rep1
+CPU and pairwise correctness passed for N128-rep2
+CPU and pairwise correctness passed for N128-rep3
+CPU and pairwise correctness passed for N256-rep1
+CPU and pairwise correctness passed for N256-rep2
+CPU and pairwise correctness passed for N256-rep3
+Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
