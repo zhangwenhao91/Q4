@@ -13,9 +13,10 @@ case "${MHC_SIM_STAGE:-all}" in
   *) echo 'MHC_SIM_STAGE must be all or projection' >&2; exit 2 ;;
 esac
 case "$VARIANT" in
-  candidate|baseline|k8-prealloc) ;;
-  *) echo 'Usage: run_all_token_simulator.sh [candidate|k8-prealloc|baseline [candidate_run]]' >&2; exit 2 ;;
+  candidate|baseline|k8-prealloc|fused) ;;
+  *) echo 'Usage: run_all_token_simulator.sh [candidate|k8-prealloc|fused|baseline [candidate_run]]' >&2; exit 2 ;;
 esac
+if [[ "$VARIANT" == fused && "${MHC_SIM_STAGE:-all}" == all ]]; then stages=(projection tail); fi
 if [[ -n "$COMPARE" && ( "$VARIANT" != baseline || ! -d "$COMPARE" ) ]]; then
   echo 'Pass an existing candidate run directory with baseline mode.' >&2
   exit 2
@@ -27,14 +28,14 @@ export CXX="$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++"
 export TORCH_EXTENSIONS_DIR="$ROOT/third_party/torch-extensions-gcc13"
 OUT="$ROOT/results/mhc-all-token-simulator/$(date +%Y%m%d-%H%M%S)-$$"
 if [[ "$VARIANT" == baseline ]]; then OUT="$OUT-baseline"; fi
-if [[ "$VARIANT" == k8-prealloc ]]; then OUT="$OUT-k8-prealloc-N${MHC_SIM_TOKENS:-128}"; fi
+if [[ "$VARIANT" == k8-prealloc || "$VARIANT" == fused ]]; then OUT="$OUT-$VARIANT-N${MHC_SIM_TOKENS:-128}"; fi
 mkdir -p "$OUT"
 REPORT="$OUT/summary.txt"
 echo "Results: $OUT" | tee "$REPORT"
 git rev-parse HEAD > "$OUT/revision.txt"
 PY="$CONDA_PREFIX/bin/python"
 default_tokens=2048
-if [[ "$VARIANT" == k8-prealloc ]]; then default_tokens=128; fi
+if [[ "$VARIANT" == k8-prealloc || "$VARIANT" == fused ]]; then default_tokens=128; fi
 TOKENS="${MHC_SIM_TOKENS:-$default_tokens}"
 touch "$OUT/console.log"
 diagnose() {
@@ -42,7 +43,7 @@ diagnose() {
 }
 variants=(baseline candidate)
 if [[ "$VARIANT" == baseline ]]; then variants=(baseline); fi
-if [[ "$VARIANT" == k8-prealloc ]]; then variants=(k8-prealloc); fi
+if [[ "$VARIANT" == k8-prealloc || "$VARIANT" == fused ]]; then variants=("$VARIANT"); fi
 echo 'Checking precision on NPU without msprof first.'
 for variant in "${variants[@]}"; do
   echo "Preflight: $variant" | tee -a "$OUT/console.log"
@@ -73,6 +74,9 @@ for stage in "${stages[@]}"; do
   if [[ "$VARIANT" == k8-prealloc && "$stage" == projection ]]; then
     kernel=mhc_projection_split_partials_kernel
   fi
+  if [[ "$VARIANT" == fused && "$stage" == tail ]]; then
+    kernel=mhc_coeff_apply_small_pipeline_kernel
+  fi
   mkdir -p "$OUT/$stage"
   echo "Capture: $stage" | tee -a "$OUT/console.log"
   if "$PY" "$ROOT/operators/mhc/tuning/collect_guarded.py" --log "$OUT/$stage/console.log" -- \
@@ -100,11 +104,11 @@ for stage in "${stages[@]}"; do
 done
 echo 'Selected captures and CPU checks passed.' >> "$OUT/console.log"
 diagnose
-if [[ "$VARIANT" == k8-prealloc ]]; then
+if [[ "$VARIANT" == k8-prealloc || "$VARIANT" == fused ]]; then
   find "$OUT" -name visualize_data.bin -print | tee "$OUT/insight-files.txt"
   if [[ "${MHC_SIM_STAGE:-all}" == all ]]; then
     "$PY" "$ROOT/operators/mhc/tuning/summarize_all_token_trace.py" --input "$OUT" \
-      --output "$OUT/overlap.txt"
+      --stages "${stages[@]}" --output "$OUT/overlap.txt"
     cat "$OUT/insight-files.txt" "$OUT/overlap.txt" > "$ROOT/error.txt"
   fi
 fi

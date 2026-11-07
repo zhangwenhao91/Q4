@@ -114,6 +114,7 @@ def main():
     p.add_argument('--input', type=Path, help='specific run directory')
     p.add_argument('--baseline', type=Path, help='compare with a baseline run directory')
     p.add_argument('--output', type=Path, default=Path('error.txt'))
+    p.add_argument('--stages', nargs='+', choices=STAGES, default=STAGES)
     a = p.parse_args()
     runs = sorted(r for r in Path('results/mhc-all-token-simulator').glob('*/')
                   if not r.name.endswith('-baseline'))
@@ -130,7 +131,7 @@ def main():
              'stage\tcore\tpipe\tinstructions\tbusy']
     overlaps = ['stage\tcore\tpair\toverlap\t% of first pipe busy\t% of second pipe busy']
     lanes = ['stage\tcore\tlane\ttop instruction names (count)']
-    for stage in STAGES:
+    for stage in a.stages:
         files = sorted((run / stage / 'prof').rglob('core*/trace.json'))
         if not files:
             lines.append(f'{stage}\tMISSING per-core trace.json')

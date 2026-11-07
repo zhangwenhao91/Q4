@@ -1,4 +1,4 @@
-"""Compile three N-pipeline kernels, launch one mHC call, check CPU reference."""
+"""Compile the selected shifted Pre, launch one call, and check the CPU reference."""
 import argparse
 import json
 from pathlib import Path
@@ -9,7 +9,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--tokens', type=int, default=2048)
     p.add_argument('--output', type=Path, required=True)
-    p.add_argument('--variant', choices=('baseline', 'candidate', 'k8-prealloc'), default='candidate')
+    p.add_argument('--variant', choices=('baseline', 'candidate', 'k8-prealloc', 'fused'), default='candidate')
     a = p.parse_args()
     if a.tokens <= 0 or a.tokens % 128:
         p.error('tokens must be a positive multiple of 128')
@@ -26,7 +26,7 @@ def main():
     torch.npu.matmul.allow_hf32 = True
     x0 = torch.randn(a.tokens, 4, 5120, dtype=torch.bfloat16)
     prev0 = torch.rand(a.tokens, 4, 1, dtype=torch.float32) + 1e-6
-    if a.variant == 'k8-prealloc':
+    if a.variant in ('k8-prealloc', 'fused'):
         phi0 = torch.empty(24, 20480).uniform_(-1, 1) / 20480**.5
         alpha0 = torch.tensor([.1, .1, .1])
         bias0 = torch.randn(24) * .1
@@ -39,6 +39,13 @@ def main():
     if a.variant == 'k8-prealloc':
         from shifted_pre_k8_preallocated import bind_preallocated_k8
         run, meta = bind_preallocated_k8(x, prev, phi, alpha, bias)
+    elif a.variant == 'fused':
+        from deep_gemm import _C
+        from tile_kernels.config import get_num_vec_cores
+        from shifted_pre_fused import bind_shifted_pre
+        run, meta = bind_shifted_pre(
+            x, prev, phi, alpha, bias, num_aic_cores=_C.get_num_sms(),
+            num_vec_cores=get_num_vec_cores())
     else:
         projector = DynamicHCProjection(x, phi)
         options = dict(split_apply=True)
@@ -65,7 +72,7 @@ def main():
     (a.output / 'correctness.json').write_text(json.dumps(checks, indent=2))
     print('ALL TOKEN CHECK:', checks, flush=True)
     if not all(v['passed'] for v in checks):
-        raise AssertionError('Three-kernel N-pipeline CPU check failed')
+        raise AssertionError(f'{a.variant} shifted Pre CPU check failed')
 
 
 if __name__ == '__main__':
