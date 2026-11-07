@@ -17,8 +17,9 @@ case "$mode" in
   v3-fused-k8-combined-large) shapes=(512 1024 2048 4096 8192) ;;
   v3-fused-k8-combined-buffers) shapes=(512 1024 2048 4096 8192) ;;
   v3-fused-k8-cast-reuse) shapes=(512 1024 2048 4096 8192) ;;
+  v3-fused-k8-cube24) shapes=(512 1024 2048 4096 8192) ;;
   batch|alloc|workspace|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096) shapes=(128 256) ;;
-  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|v3-fused-k8-combined|v3-fused-k8-combined-large|v3-fused-k8-combined-buffers|v3-fused-k8-cast-reuse|workspace [run-directory]]'; exit 2 ;;
+  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|v3-fused-k8-combined|v3-fused-k8-combined-large|v3-fused-k8-combined-buffers|v3-fused-k8-cast-reuse|v3-fused-k8-cube24|workspace [run-directory]]'; exit 2 ;;
 esac
 if [[ "$mode" == v3-fused-k8* ]]; then
   export TORCH_EXTENSIONS_DIR="$ROOT/third_party/torch-extensions-gcc13"
@@ -97,6 +98,9 @@ for n in "${shapes[@]}"; do
   if [[ "$mode" == fused-k8-refactor ]]; then
     labels=(tilelang_projection_coeff_k8_batch_prealloc_reference
             tilelang_projection_coeff_k8_batch_prealloc)
+  elif [[ "$mode" == v3-fused-k8-cube24 ]]; then
+    labels=(ascendc_vllm_v3 tilelang_projection_coeff_k8_batch_prealloc_i2c1
+            tilelang_projection_coeff_k8_batch_prealloc_i2c1_c24)
   elif [[ "$mode" == v3-fused-k8-cast-reuse ]]; then
     labels=(ascendc_vllm_v3 tilelang_projection_coeff_k8_batch_prealloc_i2c1
             tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse
@@ -133,7 +137,9 @@ for n in "${shapes[@]}"; do
   fi
   for rep in 1 2 3; do
     ordered_labels=("${labels[@]}")
-    if [[ ( "$mode" == v3-fused-k8-combined-buffers || "$mode" == v3-fused-k8-cast-reuse ) && "$rep" == 2 ]]; then
+    if [[ "$mode" == v3-fused-k8-cube24 && "$rep" == 2 ]]; then
+      ordered_labels=("${labels[2]}" "${labels[1]}" "${labels[0]}")
+    elif [[ ( "$mode" == v3-fused-k8-combined-buffers || "$mode" == v3-fused-k8-cast-reuse ) && "$rep" == 2 ]]; then
       ordered_labels=("${labels[3]}" "${labels[2]}" "${labels[1]}" "${labels[0]}")
     elif [[ "$mode" == v3-fused-k8-combined* && "$rep" == 2 ]]; then
       ordered_labels=("${labels[1]}" "${labels[0]}")
@@ -141,7 +147,7 @@ for n in "${shapes[@]}"; do
     run_case "N$n-rep$rep" "$n" --implementations "${ordered_labels[@]}" \
       --warmup 100 --rounds 24 --iters 100
   done
-  if [[ "$mode" == v3-fused-k8-combined-buffers || "$mode" == v3-fused-k8-cast-reuse ]]; then
+  if [[ "$mode" == v3-fused-k8-combined-buffers || "$mode" == v3-fused-k8-cast-reuse || "$mode" == v3-fused-k8-cube24 ]]; then
     for label in "${labels[@]:1}"; do
       run_case "N$n-profile-$label" "$n" --implementations "$label" --profile "$label"
     done

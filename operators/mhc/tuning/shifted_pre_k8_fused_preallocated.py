@@ -485,6 +485,7 @@ def _projection_body(
     input_stages,
     cast_stages,
     reuse_tail,
+    balance_tail,
 ):
     block_hidden = 256
     mad_hidden = 64
@@ -525,6 +526,12 @@ def _projection_body(
         T.set_hf32_mode('nearest_even')
         for chunk_idx in T.Serial(num_token_chunks):
             token_block_base = chunk_idx * num_token_blocks_per_chunk + core_in_split
+            if balance_tail:
+                # Repeat this group's last owned tile in an incomplete round.
+                # Ownership stays disjoint and every AIV has a real final drain.
+                last_owned = ((num_token_blocks - 1 - core_in_split) // cores_per_split
+                              * cores_per_split + core_in_split)
+                token_block_base = T.min(token_block_base, last_owned)
             num_valid_token_stages = T.min(
                 num_l0c_stages,
                 T.max(T.ceildiv(num_token_blocks - token_block_base, cores_per_split), 0),
@@ -704,6 +711,7 @@ def mhc_projection_coeff_k8_kernel(
     input_stages: int = 2,
     cast_stages: int = 2,
     reuse_tail: bool = False,
+    balance_tail: bool = False,
 ):
     tokens = T.const('tokens')
     flat_hidden = T.const('flat_hidden')
@@ -717,7 +725,9 @@ def mhc_projection_coeff_k8_kernel(
     partial_proj: T.Tensor[(8, tokens, 24), T.float32]
     partial_sq: T.Tensor[(8, tokens), T.float32]
     assert num_k_splits == 8 and num_l0c_stages == 1
-    assert tokens % (cores_per_split * 128) == 0
+    assert tokens >= cores_per_split * 128
+    if not balance_tail:
+        assert tokens % (cores_per_split * 128) == 0
     assert flat_hidden == num_hidden_blocks_per_split * num_k_splits * 256
     _projection_body(
         x,
@@ -743,6 +753,7 @@ def mhc_projection_coeff_k8_kernel(
         input_stages,
         cast_stages,
         reuse_tail,
+        balance_tail,
     )
 
 
@@ -799,7 +810,7 @@ def mhc_pre_apply_flat_pipeline_asc(x, mix, o, h_blk, num_vec_cores: int, pipeli
 
 
 def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
-                     input_stages=None, cast_stages=2, reuse_tail=False):
+                     input_stages=None, cast_stages=2, reuse_tail=False, balance_tail=False):
     """Return (launcher, metadata) with all allocations outside the launcher."""
     import torch
     from deep_gemm import _C
@@ -812,8 +823,9 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
     if groups == 0:
         raise ValueError('K8 fusion requires at least eight Cube cores')
     # Uniform chunk counts keep all barrier participants active through the last drain.
-    while (n // 128) % groups:
-        groups -= 1
+    if not balance_tail:
+        while (n // 128) % groups:
+            groups -= 1
     if input_stages not in (None, 1, 2) or cast_stages not in (1, 2):
         raise ValueError('Input and cast buffering must use one or two stages')
     if input_stages is None:
@@ -846,6 +858,7 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
         input_stages=input_stages,
         cast_stages=cast_stages,
         reuse_tail=reuse_tail,
+        balance_tail=balance_tail,
     )
     flat = x.flatten(1)
     hi = torch.empty(n, hidden, dtype=x.dtype, device=x.device)
