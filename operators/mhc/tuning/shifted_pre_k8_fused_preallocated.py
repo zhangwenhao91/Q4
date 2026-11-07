@@ -692,7 +692,7 @@ def mhc_projection_coeff_k8_kernel(
     partial_sq: T.Tensor[(8, tokens), T.float32]
     assert num_k_splits == 8 and num_l0c_stages == 1
     assert tokens == cores_per_split * 128
-    assert flat_hidden in (16384, 20480)
+    assert flat_hidden == num_hidden_blocks_per_split * num_k_splits * 256
     _projection_body(
         x,
         fn,
