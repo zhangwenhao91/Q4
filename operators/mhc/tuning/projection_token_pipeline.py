@@ -80,6 +80,7 @@ def mhc_projection_coeff_k8_kernel(
     block_mhc_mult3: int, num_aic_cores: int, num_k_splits: int, cores_per_split: int,
     num_hidden_blocks_per_split: int, num_l0b_stages: int, num_l0c_stages: int,
     num_token_blocks_per_chunk: int,
+    batch_partials: bool = False,
 ):
     tokens = T.const('tokens')
     x: T.Tensor[(tokens, 20480), T.bfloat16]
@@ -98,4 +99,4 @@ def mhc_projection_coeff_k8_kernel(
         tokens, 24, 20480, block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
         num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
         num_token_blocks_per_chunk, False, None, False, _reduce_split_coefficients,
-        False, True, 128, True)
+        False, True, 128, True, batch_partials)

@@ -23,6 +23,7 @@ def _projection_body(
     num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
     num_token_blocks_per_chunk, deterministic, residual_l2_cache_ctrl, fused_shifted, epilogue,
     reuse_apply=False, defer_reduce=False, block_num_tokens=128, fused_split_coeff=False,
+    batch_split_coeff=False,
 ):
     reuse_pipeline = reuse_apply and num_l0c_stages > 1
     block_hidden = 128 if reuse_pipeline else 256
@@ -395,7 +396,8 @@ def _projection_body(
 
         if fused_split_coeff:
             epilogue(out_mul, sqrsum, alpha, bias, pre, post, comb,
-                     num_tokens, num_k_splits, num_aic_cores, core_id, aiv_id, True)
+                     num_tokens, num_k_splits, num_aic_cores, core_id, aiv_id, True,
+                     batch_split_coeff)
         elif reuse_apply:
             epilogue(out_mul, sqrsum, alpha, bias, pre, post, comb,
                      num_tokens, num_k_splits, num_aic_cores, core_id, aiv_id)
@@ -602,11 +604,17 @@ def mhc_coeff_token_pipeline(
 
 @T.macro
 def _reduce_split_coefficients(partial_proj, partial_sq, alpha, bias, pre, post, comb,
-                               tokens, splits, cube_cores, cube_id, vector_id, flat_layout=False):
+                               tokens, splits, cube_cores, cube_id, vector_id,
+                               flat_layout=False, batch_partials=False):
+    assert not batch_partials or flat_layout
     proj = T.alloc_shared((384,), T.float32)
-    proj_next = T.alloc_shared((384,), T.float32)
     sq = T.alloc_shared((16,), T.float32)
-    sq_next = T.alloc_shared((16,), T.float32)
+    if batch_partials:
+        batch_proj = T.alloc_shared((splits, 384), T.float32)
+        batch_sq = T.alloc_shared((splits, 64), T.float32)
+    else:
+        proj_next = T.alloc_shared((384,), T.float32)
+        sq_next = T.alloc_shared((16,), T.float32)
     scale_ub = T.alloc_shared((3, 8), T.float32)
     base_ub = T.alloc_shared((24, 8), T.float32)
     mixes = T.alloc_shared((384,), T.float32)
@@ -624,9 +632,15 @@ def _reduce_split_coefficients(partial_proj, partial_sq, alpha, bias, pre, post,
         with T.PerCoreTask():
             T.ascend_sync_inter_wait('PIPE_MTE2', 8)
             with T.Task():
-                T.copy(partial_proj[0, first_output : first_output + 16, 0:24],
-                       T.view(proj, (16, 24)))
-                T.copy(partial_sq[0, first_output : first_output + 16], sq)
+                if batch_partials:
+                    raw_rows = T.view(partial_proj, (splits, tokens * 24))
+                    first_raw = first_output * 24
+                    T.copy(raw_rows[:, first_raw : first_raw + 384], batch_proj)
+                    T.copy(partial_sq[:, first_output : first_output + 16], batch_sq[:, 0:16])
+                else:
+                    T.copy(partial_proj[0, first_output : first_output + 16, 0:24],
+                           T.view(proj, (16, 24)))
+                    T.copy(partial_sq[0, first_output : first_output + 16], sq)
 
     with T.SimtVF(threads=32):
         for i in T.Parallel(3):
@@ -647,21 +661,38 @@ def _reduce_split_coefficients(partial_proj, partial_sq, alpha, bias, pre, post,
                 with T.Task():
                     T.copy(partial_proj[0, vector_id, start : start + 16, 0:24], T.view(proj, (16, 24)))
                     T.copy(partial_sq[0, vector_id, start : start + 16], sq)
-        for k in T.Serial(1, splits):
-            if flat_layout:
-                T.copy(partial_proj[k, output_start : output_start + 16, 0:24], T.view(proj_next, (16, 24)))
-                T.copy(partial_sq[k, output_start : output_start + 16], sq_next)
-            else:
-                T.copy(partial_proj[k, vector_id, start : start + 16, 0:24], T.view(proj_next, (16, 24)))
-                T.copy(partial_sq[k, vector_id, start : start + 16], sq_next)
+        if batch_partials:
             with T.SimdVF():
                 mask = S.pset(32)
-                for v in T.unroll(6, explicit=True):
-                    off = v * 64
-                    S.vsts(proj[off], S.vadd(S.vld(proj[off]), S.vld(proj_next[off]), mask))
-            with T.SimtVF(threads=32):
-                for row in T.Parallel(16):
-                    sq[row] = sq[row] + sq_next[row]
+                sq_mask = S.vcmps(S.vci(T.int32(0), T.int32), T.int32(16), mask, 'lt')
+                for vec in T.unroll(6, explicit=True):
+                    offset = vec * 64
+                    sum_proj = S.alloc_var(T.float32)
+                    sum_proj = S.vld(batch_proj[0, offset])
+                    for k in T.unroll(splits - 1, explicit=True):
+                        sum_proj = S.vadd(sum_proj, S.vld(batch_proj[k + 1, offset]), mask)
+                    S.vsts(proj[offset], sum_proj, mask)
+                sum_sq = S.alloc_var(T.float32)
+                sum_sq = S.vld(batch_sq[0, 0])
+                for k in T.unroll(splits - 1, explicit=True):
+                    sum_sq = S.vadd(sum_sq, S.vld(batch_sq[k + 1, 0]), sq_mask)
+                S.vsts(sq[0], sum_sq, sq_mask, extent=16)
+        else:
+            for k in T.Serial(1, splits):
+                if flat_layout:
+                    T.copy(partial_proj[k, output_start : output_start + 16, 0:24], T.view(proj_next, (16, 24)))
+                    T.copy(partial_sq[k, output_start : output_start + 16], sq_next)
+                else:
+                    T.copy(partial_proj[k, vector_id, start : start + 16, 0:24], T.view(proj_next, (16, 24)))
+                    T.copy(partial_sq[k, vector_id, start : start + 16], sq_next)
+                with T.SimdVF():
+                    mask = S.pset(32)
+                    for v in T.unroll(6, explicit=True):
+                        off = v * 64
+                        S.vsts(proj[off], S.vadd(S.vld(proj[off]), S.vld(proj_next[off]), mask))
+                with T.SimtVF(threads=32):
+                    for row in T.Parallel(16):
+                        sq[row] = sq[row] + sq_next[row]
         compute_coefficients(
             proj, sq, scale_ub, base_ub, mixes, pre_tile, post_tile, comb_in, comb_out,
             0, 0, 16, 4, 16, 24, T.float32(1.0 / 20480), 1e-20, 1e-6, 1e-6, 2., 20)

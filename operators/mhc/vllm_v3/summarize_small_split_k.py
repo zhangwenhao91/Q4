@@ -95,7 +95,8 @@ def projection_coeff_report(root, k8=False):
                 ('tilelang_projection_coeff_m32_prealloc', 'mhc_projection_coeff_kernel'))
     if k8:
         variants = ((base, 'mhc_projection_split_partials'),
-                    ('tilelang_projection_coeff_k8_prealloc', 'mhc_projection_coeff_k8_kernel'))
+                    ('tilelang_projection_coeff_k8_prealloc', 'mhc_projection_coeff_k8_kernel'),
+                    ('tilelang_projection_coeff_k8_batch_prealloc', 'mhc_projection_coeff_k8_kernel'))
     lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
              'H=5120 shifted Pre; CPU and pairwise checks passed. Both variants preallocate outputs.',
              'N | implementation | Cube cores | K splits | Pre event us (3 processes) | median us | paired K8/TL']

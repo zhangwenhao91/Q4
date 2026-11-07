@@ -4,7 +4,8 @@ import hashlib
 from mhc_fusion import SOURCE, allocate_outputs
 
 
-def make_projection_coeff_candidate(x, prev, phi, alpha, bias, *, block_num_tokens=128, k_splits=1):
+def make_projection_coeff_candidate(x, prev, phi, alpha, bias, *, block_num_tokens=128,
+                                    k_splits=1, batch_partials=False):
     import sys
     import torch
     from deep_gemm import _C
@@ -37,6 +38,7 @@ def make_projection_coeff_candidate(x, prev, phi, alpha, bias, *, block_num_toke
     kernel_fn = mhc_projection_coeff_kernel
     if k_splits == 8:
         kernel_fn = mhc_projection_coeff_k8_kernel
+        config['batch_partials'] = batch_partials
         workspace = (torch.empty(8, n, 24, dtype=torch.float32, device=x.device),
                      torch.empty(8, n, dtype=torch.float32, device=x.device))
     fused = kernel_fn.compile(flat, phi, alpha, bias, pre, post, comb, *workspace, **config)
