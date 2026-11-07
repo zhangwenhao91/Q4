@@ -1,51 +1,53 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_original.sh h4096-fused-k8-ab
-Results: /home/z30086261/Q4/results/mhc-original/20261107-143335-h4096-fused-k8-ab-2663477
+Results: /home/z30086261/Q4/results/mhc-original/20261107-144616-h4096-fused-k8-ab-2676464
 Timing H=4096 N128-rep1
 Failed stage: N128-rep1
-Log: /home/z30086261/Q4/results/mhc-original/20261107-143335-h4096-fused-k8-ab-2663477/N128-rep1.log
+Log: /home/z30086261/Q4/results/mhc-original/20261107-144616-h4096-fused-k8-ab-2676464/N128-rep1.log
 === Exception headlines (up to 8) ===
-10: RuntimeError: ExchangeDevice:../torch_npu/csrc/core/npu/sys_ctrl/npu_sys_ctrl.cpp:337 NPU function error: c10_npu::SetDevice(device), error code is 507033
+35: AssertionError: Assertion failed
 === First error contexts (up to 4) ===
-1: Traceback (most recent call last):
-2:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
-3:     if __name__=='__main__': main()
-4:                              ^^^^^^
-5:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 86, in main
-6:     torch.manual_seed(a.seed);torch.npu.set_device(0)
-7:                               ^^^^^^^^^^^^^^^^^^^^^^^
-8:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/npu/utils.py", line 94, in set_device
-9:     torch_npu._C._npu_setDevice(device_id)
-10: RuntimeError: ExchangeDevice:../torch_npu/csrc/core/npu/sys_ctrl/npu_sys_ctrl.cpp:337 NPU function error: c10_npu::SetDevice(device), error code is 507033
-11: [ERROR] 2026-11-07-14:36:35 (PID:2663483, Device:0, RankID:-1) ERR00100 PTA call acl api failed
-12: [Error]: Failed to start the device.
-13:         Rectify the fault based on the error information in the ascend log.
-14: [PID: 2663483] 2026-11-07-14:36:20.049.411 Inner_Error_Device_Subprocess_Startup_Timeout(E39007): Starting a subprocess on the device timed out.
-15:         Possible Cause: 1.Failed to start the subprocess. 2. The HDC link is faulty.
-16:         Solution: Obtain the host and device logs, and contact technical support at https://www.hiascend.com/support.
-17: TraceBack (most recent call last):
-18:         tsd client wait response fail, hostpid:2663483, receive device response data failed, check hdc service.[FUNC:WaitRsp][FILE:tsd_process_controller.cpp][LINE:197]
-19:         Starting a subprocess on the device timed out.
-20:         TsdOpen failed. devId=0, tdt error=31.[FUNC:PrintfTsdError][FILE:runtime.cc][LINE:2206]
+1: Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+2: Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
+3: Traceback (most recent call last):
+4:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
+5:     if __name__=='__main__': main()
+6:                              ^^^^^^
+7:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 91, in main
+8:     functions,refs,names,meta=make_case(a)
+9:                               ^^^^^^^^^^^^
+10:   File "/home/z30086261/Q4/operators/spec_v1/mhc_original.py", line 74, in make_case
+11:     launcher, tl_meta = bind_shifted_pre(x, None, phi, alpha, bias, current_pre=True)
+12:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+13:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_k8_fused_preallocated.py", line 819, in bind_shifted_pre
+14:     fused = mhc_projection_coeff_k8_kernel.compile(
+15:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+16:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 469, in compile
+17:     prim_func = self.get_tir(*args, **kwargs)
+18:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+19:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 390, in get_tir
+20:     tir = self.func(*args, **kwargs)
+21:           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1709, in __call__
 === Final non-progress lines ===
-4:                              ^^^^^^
-5:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 86, in main
-6:     torch.manual_seed(a.seed);torch.npu.set_device(0)
-7:                               ^^^^^^^^^^^^^^^^^^^^^^^
-8:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/npu/utils.py", line 94, in set_device
-9:     torch_npu._C._npu_setDevice(device_id)
-10: RuntimeError: ExchangeDevice:../torch_npu/csrc/core/npu/sys_ctrl/npu_sys_ctrl.cpp:337 NPU function error: c10_npu::SetDevice(device), error code is 507033
-11: [ERROR] 2026-11-07-14:36:35 (PID:2663483, Device:0, RankID:-1) ERR00100 PTA call acl api failed
-12: [Error]: Failed to start the device.
-13:         Rectify the fault based on the error information in the ascend log.
-14: [PID: 2663483] 2026-11-07-14:36:20.049.411 Inner_Error_Device_Subprocess_Startup_Timeout(E39007): Starting a subprocess on the device timed out.
-15:         Possible Cause: 1.Failed to start the subprocess. 2. The HDC link is faulty.
-16:         Solution: Obtain the host and device logs, and contact technical support at https://www.hiascend.com/support.
-17: TraceBack (most recent call last):
-18:         tsd client wait response fail, hostpid:2663483, receive device response data failed, check hdc service.[FUNC:WaitRsp][FILE:tsd_process_controller.cpp][LINE:197]
-19:         Starting a subprocess on the device timed out.
-20:         TsdOpen failed. devId=0, tdt error=31.[FUNC:PrintfTsdError][FILE:runtime.cc][LINE:2206]
-21:         Check param failed, dev can not be NULL![FUNC:DeviceRetain][FILE:runtime.cc][LINE:3250]
-22:         rtSetDevice execution failed, reason=device retain error[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
-23: 
+17:     prim_func = self.get_tir(*args, **kwargs)
+18:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+19:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 390, in get_tir
+20:     tir = self.func(*args, **kwargs)
+21:           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1709, in __call__
+23:     return self.get_tir(*args, **kwargs)
+24:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+25:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1700, in get_tir
+26:     template = self._build_tir_template(**bound.compile_kwargs)
+27:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+28:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1671, in _build_tir_template
+29:     self.ir_gen.gen(builder)(**self.tensor_args, **kwargs)
+30:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_k8_fused_preallocated.py", line 695, in mhc_projection_coeff_k8_kernel
+31:     assert flat_hidden in (16384, 20480)
+32: 
+33:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 906, in assert_expr
+34:     raise AssertionError(msg)
+35: AssertionError: Assertion failed
+36: [ERROR] 2026-11-07-14:46:22 (PID:2676470, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
 Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
