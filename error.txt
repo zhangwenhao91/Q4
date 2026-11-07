@@ -1,43 +1,124 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8-combined-large
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-152345-2750062
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8-combined-buffers
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-153533-2775823
 N=512 N512-rep1
 N=512 N512-rep2
 N=512 N512-rep3
+N=512 N512-profile-tilelang_projection_coeff_k8_batch_prealloc
+N=512 N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i1c1
+N=512 N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1
 N=1024 N1024-rep1
 N=1024 N1024-rep2
 N=1024 N1024-rep3
+N=1024 N1024-profile-tilelang_projection_coeff_k8_batch_prealloc
+N=1024 N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_i1c1
+N=1024 N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1
 N=2048 N2048-rep1
 N=2048 N2048-rep2
 N=2048 N2048-rep3
+N=2048 N2048-profile-tilelang_projection_coeff_k8_batch_prealloc
+N=2048 N2048-profile-tilelang_projection_coeff_k8_batch_prealloc_i1c1
+N=2048 N2048-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1
 N=4096 N4096-rep1
 N=4096 N4096-rep2
 N=4096 N4096-rep3
+N=4096 N4096-profile-tilelang_projection_coeff_k8_batch_prealloc
+N=4096 N4096-profile-tilelang_projection_coeff_k8_batch_prealloc_i1c1
+N=4096 N4096-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1
 N=8192 N8192-rep1
 N=8192 N8192-rep2
 N=8192 N8192-rep3
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-152345-2750062
-Q4 revision: 4bfbf05fa0145b8ea25f6c8e6d3cb92db702f998
+N=8192 N8192-profile-tilelang_projection_coeff_k8_batch_prealloc
+N=8192 N8192-profile-tilelang_projection_coeff_k8_batch_prealloc_i1c1
+N=8192 N8192-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-153533-2775823
+Q4 revision: e9b9ba9ee322ba96d4e08afa0c253ab40f7f5fa5
 H=5120 shifted Pre + Post; CPU and pairwise checks passed.
-AscendC uses upstream vLLM APIs with per-call allocation; TL Pre preallocates and TL Post uses its allocating API.
-N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us
-512 | rep1 | 54.595 | 41.711 | 1.3089 | 54.987 | 42.086
-512 | rep2 | 54.698 | 41.720 | 1.3111 | 55.038 | 42.073
-512 | rep3 | 54.637 | 41.706 | 1.3101 | 55.013 | 42.115
-512 | median | 54.637 | 41.711 | 1.3101 | 55.013 | 42.086
-1024 | rep1 | 97.138 | 91.443 | 1.0623 | 97.589 | 91.857
-1024 | rep2 | 95.599 | 91.364 | 1.0464 | 96.037 | 91.829
-1024 | rep3 | 94.519 | 91.207 | 1.0363 | 94.985 | 91.708
-1024 | median | 95.599 | 91.364 | 1.0464 | 96.037 | 91.829
-2048 | rep1 | 220.798 | 244.921 | 0.9015 | 221.287 | 245.410
-2048 | rep2 | 219.611 | 238.896 | 0.9193 | 220.100 | 239.399
-2048 | rep3 | 219.480 | 243.116 | 0.9028 | 219.944 | 243.587
-2048 | median | 219.611 | 243.116 | 0.9028 | 220.100 | 243.587
-4096 | rep1 | 484.095 | 573.795 | 0.8437 | 484.631 | 574.299
-4096 | rep2 | 483.915 | 575.322 | 0.8411 | 484.432 | 575.946
-4096 | rep3 | 483.963 | 576.731 | 0.8391 | 484.498 | 577.162
-4096 | median | 483.963 | 575.322 | 0.8411 | 484.498 | 575.946
-8192 | rep1 | 985.714 | 1249.074 | 0.7892 | 989.342 | 1249.772
-8192 | rep2 | 1007.732 | 1290.335 | 0.7810 | 1008.253 | 1290.806
-8192 | rep3 | 984.013 | 1247.714 | 0.7887 | 990.435 | 1248.387
-8192 | median | 985.714 | 1249.074 | 0.7887 | 990.435 | 1249.772
+I=input slots; C=FP32 NZ cast slots. I1C1/I2C1 isolates input buffering at C=1.
+TL Pre fully preallocates; TL Post and upstream AscendC allocate through their APIs.
+N | variant | input slots | cast slots | event us (3 processes) | median us | paired AC/TL | paired current/TL
+512 | AC | - | - | 54.607, 54.533, 54.588 | 54.588 | 1.0000 | -
+512 | current | 2 | 2 | 41.592, 41.599, 41.803 | 41.599 | 1.3109 | 1.0000
+N512-profile-tilelang_projection_coeff_k8_batch_prealloc: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 12.9905
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.9065
+mhc_projection_coeff_k8_kernel_kernel | 30 | 22.2605
+512 | I1C1 | 1 | 1 | 47.714, 47.803, 47.843 | 47.803 | 1.1410 | 0.8717
+N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i1c1: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 12.7800
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.8175
+mhc_projection_coeff_k8_kernel_kernel | 30 | 28.1760
+512 | I2C1 | 2 | 1 | 46.868, 46.792, 46.916 | 46.868 | 1.1651 | 0.8890
+N512-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 12.8520
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.7090
+mhc_projection_coeff_k8_kernel_kernel | 30 | 27.3700
+512 | paired I1C1/I2C1 speedup | 1.0198
+1024 | AC | - | - | 96.164, 96.217, 94.753 | 96.164 | 1.0000 | -
+1024 | current | 1 | 2 | 93.061, 91.632, 92.198 | 92.198 | 1.0333 | 1.0000
+N1024-profile-tilelang_projection_coeff_k8_batch_prealloc: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 26.1200
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 11.0070
+mhc_projection_coeff_k8_kernel_kernel | 30 | 54.1210
+1024 | I1C1 | 1 | 1 | 91.462, 91.036, 90.972 | 91.036 | 1.0514 | 1.0135
+N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_i1c1: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 26.1265
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 11.0480
+mhc_projection_coeff_k8_kernel_kernel | 30 | 53.6690
+1024 | I2C1 | 2 | 1 | 89.304, 89.807, 89.941 | 89.807 | 1.0714 | 1.0251
+N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 26.1095
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 11.0865
+mhc_projection_coeff_k8_kernel_kernel | 30 | 51.9785
+1024 | paired I1C1/I2C1 speedup | 1.0137
+2048 | AC | - | - | 220.460, 217.168, 216.924 | 217.168 | 1.0000 | -
+2048 | current | 1 | 2 | 239.204, 237.369, 238.228 | 238.228 | 0.9149 | 1.0000
+N2048-profile-tilelang_projection_coeff_k8_batch_prealloc: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 78.3950
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 45.5925
+mhc_projection_coeff_k8_kernel_kernel | 30 | 113.8365
+2048 | I1C1 | 1 | 1 | 238.446, 237.515, 237.775 | 237.775 | 0.9143 | 1.0019
+N2048-profile-tilelang_projection_coeff_k8_batch_prealloc_i1c1: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 77.7500
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 47.1585
+mhc_projection_coeff_k8_kernel_kernel | 30 | 113.6620
+2048 | I2C1 | 2 | 1 | 225.942, 224.778, 224.993 | 224.993 | 0.9661 | 1.0587
+N2048-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 78.0960
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 45.5480
+mhc_projection_coeff_k8_kernel_kernel | 30 | 100.6255
+2048 | paired I1C1/I2C1 speedup | 1.0567
+4096 | AC | - | - | 484.834, 483.478, 484.897 | 484.834 | 1.0000 | -
+4096 | current | 1 | 2 | 575.871, 573.951, 574.420 | 574.420 | 0.8424 | 1.0000
+N4096-profile-tilelang_projection_coeff_k8_batch_prealloc: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 226.7510
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 110.8980
+mhc_projection_coeff_k8_kernel_kernel | 30 | 236.7020
+4096 | I1C1 | 1 | 1 | 575.176, 573.591, 574.062 | 574.062 | 0.8429 | 1.0006
+N4096-profile-tilelang_projection_coeff_k8_batch_prealloc_i1c1: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 226.5380
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 110.8720
+mhc_projection_coeff_k8_kernel_kernel | 30 | 236.4495
+4096 | I2C1 | 2 | 1 | 535.743, 533.904, 534.289 | 534.289 | 0.9056 | 1.0750
+N4096-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 226.6455
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 112.1010
+mhc_projection_coeff_k8_kernel_kernel | 30 | 197.5245
+4096 | paired I1C1/I2C1 speedup | 1.0743
+8192 | AC | - | - | 986.601, 983.028, 982.840 | 983.028 | 1.0000 | -
+8192 | current | 1 | 2 | 1248.380, 1248.416, 1248.685 | 1248.416 | 0.7874 | 1.0000
+N8192-profile-tilelang_projection_coeff_k8_batch_prealloc: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 496.2995
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 277.6135
+mhc_projection_coeff_k8_kernel_kernel | 30 | 473.9140
+8192 | I1C1 | 1 | 1 | 1246.695, 1247.565, 1247.772 | 1247.565 | 0.7880 | 1.0007
+N8192-profile-tilelang_projection_coeff_k8_batch_prealloc_i1c1: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 495.8255
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 277.3125
+mhc_projection_coeff_k8_kernel_kernel | 30 | 472.7740
+8192 | I2C1 | 2 | 1 | 1164.019, 1163.045, 1164.878 | 1164.019 | 0.8452 | 1.0725
+N8192-profile-tilelang_projection_coeff_k8_batch_prealloc_i2c1: kernel | calls | median us
+mhc_post_fwd_asc_kernel | 30 | 495.7910
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 276.9145
+mhc_projection_coeff_k8_kernel_kernel | 30 | 389.3910
+8192 | paired I1C1/I2C1 speedup | 1.0712
 (zwh) root@ubuntu162:/home/z30086261/Q4#
