@@ -1,83 +1,43 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8-combined-large
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-152037-2739914
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-152345-2750062
 N=512 N512-rep1
 N=512 N512-rep2
 N=512 N512-rep3
 N=1024 N1024-rep1
-Failed stage: N1024-rep1
-Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-152037-2739914/N1024-rep1.log
-=== Exception headlines (up to 8) ===
-31: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_projection_coeff_k8_kernel_kernel with ACL error 107000, grid=16, dyn_ubuf_bytes=225952: [PID: 2742223] 2026-11-07-15:21:28.525.897 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
-=== First error contexts (up to 4) ===
-1: ninja: no work to do.
-2: 2026-11-07 15:21:24  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_projection_coeff_k8_kernel` with `out_idx=None`
-3: 2026-11-07 15:21:27  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_projection_coeff_k8_kernel`
-4: {'implementation': 'ascendc_vllm_v3', 'output': 'layer_input', 'shape': [1024, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
-5: {'implementation': 'ascendc_vllm_v3', 'output': 'next_pre_mix', 'shape': [1024, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.1324882507324219e-05, 'rmse': 2.877235934047669e-06, 'relative_l2': 5.668102923996137e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-6: {'implementation': 'ascendc_vllm_v3', 'output': 'post_mix', 'shape': [1024, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.002716064453125e-05, 'rmse': 5.582860073494336e-06, 'relative_l2': 5.148691961872959e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-7: {'implementation': 'ascendc_vllm_v3', 'output': 'comb_mix', 'shape': [1024, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.344650268554688e-06, 'rmse': 2.1162278068293956e-06, 'relative_l2': 8.429528919535165e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
-8: {'implementation': 'ascendc_vllm_v3', 'output': 'new_residual', 'shape': [1024, 4, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.03125, 'rmse': 0.00018669821832203692, 'relative_l2': 0.00015622990722054088, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
-9: Traceback (most recent call last):
-10:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 288, in <module>
-11:     if __name__=='__main__': main()
-12:                              ^^^^^^
-13:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 185, in main
-14:     outputs=tuple(fn());torch.npu.synchronize()
-15:                   ^^^^
-16:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 101, in run
-17:     outputs = pre_fn()
-18:               ^^^^^^^^
-19:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_k8_fused_preallocated.py", line 841, in run
-20:     fused(flat, phi, alpha, bias, pre, post, comb, partial_proj, partial_sq)
-21:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 228, in __call__
-22:     return self.torch_function(*args, **kwds)
-23:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-24:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/adapter/tvm_ffi.py", line 348, in func
-25:     executable(*tensor_list)
-26:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm/runtime/executable.py", line 46, in __call__
-27:     return self.jit().main(*args, **kwargs)
-28:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-29:   File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
-30:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/runtime/ascend_module.cc", line 697, in void tvm::ascend::AscendWrappedFunc<LaunchPolicy>::operator()(tvm::ffi::PackedArgs, tvm::ffi::Any*, void*, size_t) const [with LaunchPolicy = tvm::ascend::DirectLaunchPolicy; size_t = long unsigned int]
-31: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_projection_coeff_k8_kernel_kernel with ACL error 107000, grid=16, dyn_ubuf_bytes=225952: [PID: 2742223] 2026-11-07-15:21:28.525.897 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
-32: TraceBack (most recent call last):
-33:         The argument is invalid. Reason: rtsLaunchKernelWithHostArgs execution failed.
-34: 
-35: [ERROR] 2026-11-07-15:21:30 (PID:2742223, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
-=== Final non-progress lines ===
-16:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 101, in run
-17:     outputs = pre_fn()
-18:               ^^^^^^^^
-19:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_k8_fused_preallocated.py", line 841, in run
-20:     fused(flat, phi, alpha, bias, pre, post, comb, partial_proj, partial_sq)
-21:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 228, in __call__
-22:     return self.torch_function(*args, **kwds)
-23:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-24:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/adapter/tvm_ffi.py", line 348, in func
-25:     executable(*tensor_list)
-26:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm/runtime/executable.py", line 46, in __call__
-27:     return self.jit().main(*args, **kwargs)
-28:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-29:   File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
-30:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/runtime/ascend_module.cc", line 697, in void tvm::ascend::AscendWrappedFunc<LaunchPolicy>::operator()(tvm::ffi::PackedArgs, tvm::ffi::Any*, void*, size_t) const [with LaunchPolicy = tvm::ascend::DirectLaunchPolicy; size_t = long unsigned int]
-31: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_projection_coeff_k8_kernel_kernel with ACL error 107000, grid=16, dyn_ubuf_bytes=225952: [PID: 2742223] 2026-11-07-15:21:28.525.897 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
-32: TraceBack (most recent call last):
-33:         The argument is invalid. Reason: rtsLaunchKernelWithHostArgs execution failed.
-34: 
-35: [ERROR] 2026-11-07-15:21:30 (PID:2742223, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
-Generated synchronization: /home/z30086261/Q4/results/mhc-small-split-k/20261107-152037-2739914/N1024-rep1/tilelang_projection_coeff_k8_batch_prealloc_projection_coeff.cpp
-412: }
-413: 
-414: extern "C" __global__ __mix__(1, 2) void mhc_projection_coeff_k8_kernel_kernel(__gm__ float* alpha, __gm__ float* bias, __gm__ float* comb, __gm__ float* fn, __gm__ float* partial_sq, __gm__ float* post, __gm__ float* pre, __gm__ float* raw_rows, __gm__ bfloat16_t* x) {
-415:   asc_init();
-416:   __cbuf__ uint8_t *buf_dyn_l1 = (__cbuf__ uint8_t *)0;
-532:       }
-533:       for (int32_t __1 = 0; __1 < condval; ++__1) {
-534:         asc_sync_inter_arrive(PIPE_MTE3, 8);
-535:       }
-536:     }
-537:     asc_sync_inter_wait(PIPE_MTE2, 8);
-538:     asc_sync_wait(PIPE_MTE3, PIPE_MTE2, static_cast<event_t>(0));
-539:     asc_copy_gm2ub_align((__ubuf__ uint8_t*)((&(((__ubuf__ float*)buf_dyn_shmem)[49664]))), (__gm__ uint8_t*)((&(raw_rows[((((((int32_t)block_idx) >> 2) * 3072) + (vector_id * 1536)) + ((((int32_t)block_idx) & 3) * 384))]))), 8, 1536, 0, 0, 0, static_cast<asc_load_l2_cache_mode>(0), 98304, 1536);
-Saved: /home/z30086261/Q4/error.txt
+N=1024 N1024-rep2
+N=1024 N1024-rep3
+N=2048 N2048-rep1
+N=2048 N2048-rep2
+N=2048 N2048-rep3
+N=4096 N4096-rep1
+N=4096 N4096-rep2
+N=4096 N4096-rep3
+N=8192 N8192-rep1
+N=8192 N8192-rep2
+N=8192 N8192-rep3
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-152345-2750062
+Q4 revision: 4bfbf05fa0145b8ea25f6c8e6d3cb92db702f998
+H=5120 shifted Pre + Post; CPU and pairwise checks passed.
+AscendC uses upstream vLLM APIs with per-call allocation; TL Pre preallocates and TL Post uses its allocating API.
+N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us
+512 | rep1 | 54.595 | 41.711 | 1.3089 | 54.987 | 42.086
+512 | rep2 | 54.698 | 41.720 | 1.3111 | 55.038 | 42.073
+512 | rep3 | 54.637 | 41.706 | 1.3101 | 55.013 | 42.115
+512 | median | 54.637 | 41.711 | 1.3101 | 55.013 | 42.086
+1024 | rep1 | 97.138 | 91.443 | 1.0623 | 97.589 | 91.857
+1024 | rep2 | 95.599 | 91.364 | 1.0464 | 96.037 | 91.829
+1024 | rep3 | 94.519 | 91.207 | 1.0363 | 94.985 | 91.708
+1024 | median | 95.599 | 91.364 | 1.0464 | 96.037 | 91.829
+2048 | rep1 | 220.798 | 244.921 | 0.9015 | 221.287 | 245.410
+2048 | rep2 | 219.611 | 238.896 | 0.9193 | 220.100 | 239.399
+2048 | rep3 | 219.480 | 243.116 | 0.9028 | 219.944 | 243.587
+2048 | median | 219.611 | 243.116 | 0.9028 | 220.100 | 243.587
+4096 | rep1 | 484.095 | 573.795 | 0.8437 | 484.631 | 574.299
+4096 | rep2 | 483.915 | 575.322 | 0.8411 | 484.432 | 575.946
+4096 | rep3 | 483.963 | 576.731 | 0.8391 | 484.498 | 577.162
+4096 | median | 483.963 | 575.322 | 0.8411 | 484.498 | 575.946
+8192 | rep1 | 985.714 | 1249.074 | 0.7892 | 989.342 | 1249.772
+8192 | rep2 | 1007.732 | 1290.335 | 0.7810 | 1008.253 | 1290.806
+8192 | rep3 | 984.013 | 1247.714 | 0.7887 | 990.435 | 1248.387
+8192 | median | 985.714 | 1249.074 | 0.7887 | 990.435 | 1249.772
 (zwh) root@ubuntu162:/home/z30086261/Q4#
