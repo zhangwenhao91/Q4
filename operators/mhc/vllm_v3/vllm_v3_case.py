@@ -132,7 +132,7 @@ def make_case(a):
     stage = a.mhc_vllm_stage
     if stage != 'pre':
         from tile_kernels.mhc import mhc_post_fwd
-        post_op = torch.ops._C_ascend.npu_hc_post
+        post_op = torch.ops._C_ascend.npu_hc_post if include_v3 else None
         layer0 = torch.randn(t, 5120, dtype=torch.bfloat16)
         post0, comb0 = refs[2:]
         residual_ref = (torch.einsum('nij,nih->njh', comb0, x0.float())
@@ -200,13 +200,23 @@ def make_case(a):
                 ('tilelang_projection_coeff_m32_prealloc', 32, 1, False),
                 ('tilelang_projection_coeff_k8_prealloc', 128, 8, False),
                 ('tilelang_projection_coeff_k8_batch_prealloc_reference', 128, 8, True),
+                ('tilelang_projection_coeff_k8_batch_prealloc_i1c1', 128, 8, True),
+                ('tilelang_projection_coeff_k8_batch_prealloc_i2c1', 128, 8, True),
                 ('tilelang_projection_coeff_k8_batch_prealloc', 128, 8, True)):
             if projection_coeff not in (a.implementations or ()):
                 continue
-            if projection_coeff == 'tilelang_projection_coeff_k8_batch_prealloc':
+            if projection_coeff in (
+                    'tilelang_projection_coeff_k8_batch_prealloc',
+                    'tilelang_projection_coeff_k8_batch_prealloc_i1c1',
+                    'tilelang_projection_coeff_k8_batch_prealloc_i2c1'):
                 sys.path.insert(0, str(ROOT / 'operators/mhc/tuning'))
                 from shifted_pre_k8_fused_preallocated import bind_shifted_pre
-                functions[projection_coeff], meta = bind_shifted_pre(x, prev, phi, alpha, bias)
+                options = {}
+                if projection_coeff.endswith('_i1c1'):
+                    options = dict(input_stages=1, cast_stages=1)
+                elif projection_coeff.endswith('_i2c1'):
+                    options = dict(input_stages=2, cast_stages=1)
+                functions[projection_coeff], meta = bind_shifted_pre(x, prev, phi, alpha, bias, **options)
             else:
                 functions[projection_coeff], meta = make_projection_coeff_candidate(
                     x, prev, phi, alpha, bias, block_num_tokens=block_num_tokens, k_splits=k_splits,

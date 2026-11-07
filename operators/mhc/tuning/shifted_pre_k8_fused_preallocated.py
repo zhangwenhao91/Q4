@@ -469,6 +469,7 @@ def _projection_body(
     num_l0c_stages,
     num_token_blocks_per_chunk,
     input_stages,
+    cast_stages,
 ):
     block_hidden = 256
     mad_hidden = 64
@@ -477,7 +478,7 @@ def _projection_body(
     num_mads_per_block = block_hidden // mad_hidden
     # Larger coefficient loops need additional compiler-managed UB scratch.
     num_load_stages = input_stages
-    num_cast_stages = 2
+    num_cast_stages = cast_stages
     num_l1_x_stages = 3
     num_mad_stages = 2
     nz_stage_rows = half_block_num_tokens + 1
@@ -684,6 +685,7 @@ def mhc_projection_coeff_k8_kernel(
     num_l0c_stages: int,
     num_token_blocks_per_chunk: int,
     input_stages: int = 2,
+    cast_stages: int = 2,
 ):
     tokens = T.const('tokens')
     flat_hidden = T.const('flat_hidden')
@@ -721,6 +723,7 @@ def mhc_projection_coeff_k8_kernel(
         num_l0c_stages,
         num_token_blocks_per_chunk,
         input_stages,
+        cast_stages,
     )
 
 
@@ -776,7 +779,8 @@ def mhc_pre_apply_flat_pipeline_asc(x, mix, o, h_blk, num_vec_cores: int, pipeli
             T.copy(o_ub, o[pid_n, pid_h * h_blk])
 
 
-def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False):
+def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
+                     input_stages=None, cast_stages=2):
     """Return (launcher, metadata) with all allocations outside the launcher."""
     import torch
     from deep_gemm import _C
@@ -791,6 +795,10 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False):
     # Uniform chunk counts keep all barrier participants active through the last drain.
     while (n // 128) % groups:
         groups -= 1
+    if input_stages not in (None, 1, 2) or cast_stages not in (1, 2):
+        raise ValueError('Input and cast buffering must use one or two stages')
+    if input_stages is None:
+        input_stages = 1 if n > 8 * groups * 32 else 2
     if not current_pre and tuple(prev_pre.shape) not in ((n, 4), (n, 4, 1)):
         raise ValueError('Expected prev_pre[N,4] or prev_pre[N,4,1]')
     inputs = (
@@ -816,7 +824,8 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False):
         num_l0b_stages=2,
         num_l0c_stages=1,
         num_token_blocks_per_chunk=groups,
-        input_stages=1 if n > 8 * groups * 32 else 2,
+        input_stages=input_stages,
+        cast_stages=cast_stages,
     )
     flat = x.flatten(1)
     hi = torch.empty(n, hidden, dtype=x.dtype, device=x.device)

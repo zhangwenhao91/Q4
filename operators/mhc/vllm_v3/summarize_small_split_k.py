@@ -116,6 +116,35 @@ def v3_fused_k8_report(root, hidden=5120, combined=False, large=False):
     return '\n'.join(lines) + '\n'
 
 
+def buffer_report(root):
+    ac = 'ascendc_vllm_v3'
+    base = 'tilelang_projection_coeff_k8_batch_prealloc'
+    variants = [('current', base), ('I1C1', base + '_i1c1'), ('I2C1', base + '_i2c1')]
+    lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
+             'H=5120 shifted Pre + Post; CPU and pairwise checks passed.',
+             'I=input slots; C=FP32 NZ cast slots. I1C1/I2C1 isolates input buffering at C=1.',
+             'TL Pre fully preallocates; TL Post and upstream AscendC allocate through their APIs.',
+             'N | variant | input slots | cast slots | event us (3 processes) | median us | paired AC/TL | paired current/TL']
+    for n in (512, 1024, 2048, 4096, 8192):
+        cases = [root / f'N{n}-rep{rep}' for rep in (1, 2, 3)]
+        timings = [json.loads((case / 'summary.json').read_text()) for case in cases]
+        metadata = json.loads((cases[0] / 'metadata.json').read_text())['variants']
+        ac_times = [run[ac]['event_us'] for run in timings]
+        lines.append(f'{n} | AC | - | - | {", ".join(f"{v:.3f}" for v in ac_times)} | {median(ac_times):.3f} | 1.0000 | -')
+        for variant, label in variants:
+            times = [run[label]['event_us'] for run in timings]
+            config = metadata[label]['projection_config']
+            ratios = [median(run[reference]['event_us'] / run[label]['event_us'] for run in timings)
+                      for reference in (ac, base)]
+            lines.append(f'{n} | {variant} | {config["input_stages"]} | {config["cast_stages"]} | '
+                         f'{", ".join(f"{v:.3f}" for v in times)} | {median(times):.3f} | '
+                         f'{ratios[0]:.4f} | {ratios[1]:.4f}')
+            lines.extend(profile_lines(root / f'N{n}-profile-{label}', 'mhc_projection_coeff_k8_kernel'))
+        ratio = median(run[base + '_i1c1']['event_us'] / run[base + '_i2c1']['event_us'] for run in timings)
+        lines.append(f'{n} | paired I1C1/I2C1 speedup | {ratio:.4f}')
+    return '\n'.join(lines) + '\n'
+
+
 def fused_k8_refactor_report(root):
     candidate = 'tilelang_projection_coeff_k8_batch_prealloc'
     reference = candidate + '_reference'
@@ -201,6 +230,8 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
+    elif mode == 'v3-fused-k8-combined-buffers':
+        summary = buffer_report(root)
     elif mode in ('v3-fused-k8', 'v3-fused-k8-h4096', 'v3-fused-k8-combined', 'v3-fused-k8-combined-large'):
         summary = v3_fused_k8_report(root, hidden=4096 if mode.endswith('-h4096') else 5120,
                                    combined='-combined' in mode, large=mode.endswith('-large'))

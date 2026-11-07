@@ -46,7 +46,7 @@ def main():
             before.append(item)
             tail.append(item)
     generated_context = []
-    for source in sorted(log.with_suffix('').glob('*projection_coeff_k8*prealloc_projection_coeff.cpp')):
+    for source in sorted(log.with_suffix('').glob('*projection_coeff_k8*prealloc*_projection_coeff.cpp')):
         source_lines = source.read_text(encoding='utf-8', errors='replace').splitlines()
         selected = set()
         for index, line in enumerate(source_lines):
