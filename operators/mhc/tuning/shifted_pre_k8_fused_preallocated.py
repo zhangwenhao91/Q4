@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 DeepSeek. Portions adapted for Q4 shifted mHC.
-"""Preallocated batched K8 shifted Pre for BF16 x[N,4,5120].
+"""Preallocated batched K8 shifted Pre for BF16 x[N,4,H], H=4096 or 5120.
 
 bind_shifted_pre compiles two kernels and allocates outputs/workspace once.
 Use its launcher on one stream. Returned outputs alias across calls.
@@ -366,6 +366,7 @@ def _reduce_split_coefficients(
     cube_cores,
     cube_id,
     vector_id,
+    flat_hidden,
 ):
     proj = T.alloc_shared((384,), T.float32)
     sq = T.alloc_shared((16,), T.float32)
@@ -430,7 +431,7 @@ def _reduce_split_coefficients(
             4,
             16,
             24,
-            T.float32(1.0 / 20480),
+            T.float32(1.0 / flat_hidden),
             1e-20,
             1e-06,
             1e-06,
@@ -455,6 +456,7 @@ def _projection_body(
     comb,
     num_tokens,
     mhc_mult3,
+    flat_hidden,
     block_mhc_mult3,
     num_aic_cores,
     num_k_splits,
@@ -653,6 +655,7 @@ def _projection_body(
             num_aic_cores,
             core_id,
             aiv_id,
+            flat_hidden,
         )
 
 
@@ -677,8 +680,9 @@ def mhc_projection_coeff_k8_kernel(
     num_token_blocks_per_chunk: int,
 ):
     tokens = T.const('tokens')
-    x: T.Tensor[(tokens, 20480), T.bfloat16]
-    fn: T.Tensor[(24, 20480), T.float32]
+    flat_hidden = T.const('flat_hidden')
+    x: T.Tensor[(tokens, flat_hidden), T.bfloat16]
+    fn: T.Tensor[(24, flat_hidden), T.float32]
     alpha: T.Tensor[(3,), T.float32]
     bias: T.Tensor[(24,), T.float32]
     pre: T.Tensor[(tokens, 4), T.float32]
@@ -688,6 +692,7 @@ def mhc_projection_coeff_k8_kernel(
     partial_sq: T.Tensor[(8, tokens), T.float32]
     assert num_k_splits == 8 and num_l0c_stages == 1
     assert tokens == cores_per_split * 128
+    assert flat_hidden in (16384, 20480)
     _projection_body(
         x,
         fn,
@@ -700,6 +705,7 @@ def mhc_projection_coeff_k8_kernel(
         comb,
         tokens,
         24,
+        flat_hidden,
         block_mhc_mult3,
         num_aic_cores,
         num_k_splits,
@@ -770,16 +776,16 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False):
     from tile_kernels.config import get_num_vec_cores
 
     n, streams, hidden = x.shape
-    if (streams, hidden) != (4, 5120) or not n or n % 128:
-        raise ValueError('Expected BF16 residual[N,4,5120], positive N divisible by 128')
+    if streams != 4 or hidden not in (4096, 5120) or not n or n % 128:
+        raise ValueError('Expected BF16 residual[N,4,H], H=4096/5120, positive N divisible by 128')
     groups = min(_C.get_num_sms() // 8, n // 128)
     if groups != n // 128:
         raise ValueError('K8 fusion requires one 128-token tile per Cube in each split')
     if not current_pre and tuple(prev_pre.shape) not in ((n, 4), (n, 4, 1)):
         raise ValueError('Expected prev_pre[N,4] or prev_pre[N,4,1]')
     inputs = (
-        (x, (n, 4, 5120), torch.bfloat16),
-        (phi, (24, 20480), torch.float32),
+        (x, (n, 4, hidden), torch.bfloat16),
+        (phi, (24, 4 * hidden), torch.float32),
         (alpha, (3,), torch.float32),
         (bias, (24,), torch.float32),
     )
@@ -796,7 +802,7 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False):
         num_aic_cores=8 * groups,
         num_k_splits=8,
         cores_per_split=groups,
-        num_hidden_blocks_per_split=10,
+        num_hidden_blocks_per_split=4 * hidden // (8 * 256),
         num_l0b_stages=2,
         num_l0c_stages=1,
         num_token_blocks_per_chunk=groups,

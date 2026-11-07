@@ -5,8 +5,8 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"
 MODE="${1:-smoke}"
 case "$MODE" in
-  smoke|check|bench|profile|all|h4096-ab|h5120-fused-ab|workspace-ab|h4096-workspace-ab|h5120-workspace-ab|h5120-fused-k8-ab) ;;
-  *) echo 'Usage: run_original.sh [smoke|check|bench|profile|all|h4096-ab|h5120-fused-ab|workspace-ab|h4096-workspace-ab|h5120-workspace-ab|h5120-fused-k8-ab]'; exit 2 ;;
+  smoke|check|bench|profile|all|h4096-ab|h5120-fused-ab|workspace-ab|h4096-workspace-ab|h5120-workspace-ab|h4096-fused-k8-ab|h5120-fused-k8-ab) ;;
+  *) echo 'Usage: run_original.sh [smoke|check|bench|profile|all|h4096-ab|h5120-fused-ab|workspace-ab|h4096-workspace-ab|h5120-workspace-ab|h4096-fused-k8-ab|h5120-fused-k8-ab]'; exit 2 ;;
 esac
 if [[ "$MODE" == workspace-ab ]]; then
   mkdir -p "$ROOT/results/mhc-original"
@@ -27,7 +27,7 @@ if [[ "$MODE" == workspace-ab ]]; then
 fi
 : "${CONDA_PREFIX:?Activate zwh first}"
 : "${ASCEND_HOME_PATH:?Source CANN first}"
-if [[ "$MODE" == h5120-fused-k8-ab ]]; then
+if [[ "$MODE" == *-fused-k8-ab ]]; then
   export ASCEND_RT_VISIBLE_DEVICES="${ASCEND_RT_VISIBLE_DEVICES:-0}"
 else
   export ASCEND_RT_VISIBLE_DEVICES="${ASCEND_RT_VISIBLE_DEVICES:-4}"
@@ -54,7 +54,7 @@ if [[ ! -f "$ASCEND_CUSTOM_OPP_PATH/op_api/lib/libcust_opapi.so" ]]; then
     exit 1
   fi
 fi
-if [[ "$MODE" == h4096-ab || "$MODE" == h5120-fused-ab || "$MODE" == *-workspace-ab || "$MODE" == h5120-fused-k8-ab ]]; then
+if [[ "$MODE" == h4096-ab || "$MODE" == h5120-fused-ab || "$MODE" == *-workspace-ab || "$MODE" == *-fused-k8-ab ]]; then
   hidden=4096
   reference=ascendc_original_fused_h4096
   if [[ "$vendor" == q4mhc5120 ]]; then
@@ -67,10 +67,13 @@ if [[ "$MODE" == h4096-ab || "$MODE" == h5120-fused-ab || "$MODE" == *-workspace
     candidate="tilelang_current_pre_k8_batch_workspace_h$hidden"
     token_shapes=(128 256)
   fi
-  if [[ "$MODE" == h5120-fused-k8-ab ]]; then
-    candidate=tilelang_current_pre_k8_fused_prealloc_h5120
+  if [[ "$MODE" == *-fused-k8-ab ]]; then
+    candidate="tilelang_current_pre_k8_fused_prealloc_h$hidden"
     token_shapes=(128 256)
-    echo 'H=5120 current-pre semantics; AscendC uses the H5120 allowlist adaptation and its original allocations; standalone TL fully preallocates.' >> "$OUT/runner.log"
+    echo "H=$hidden current-pre semantics; AscendC uses its original allocations; standalone TL fully preallocates." >> "$OUT/runner.log"
+    if [[ "$hidden" == 5120 ]]; then
+      echo 'AscendC includes the H5120 allowlist adaptation.' >> "$OUT/runner.log"
+    fi
   fi
   printf 'Q4 revision: %s\n' "$(git rev-parse HEAD)" >> "$OUT/runner.log"
   for tokens in "${token_shapes[@]}"; do
@@ -85,7 +88,7 @@ if [[ "$MODE" == h4096-ab || "$MODE" == h5120-fused-ab || "$MODE" == *-workspace
         python operators/mhc/vllm_v3/report_failure.py --stage "$tag" --log "$OUT/$tag.log"
         exit 1
       fi
-      if [[ "$MODE" == h5120-fused-k8-ab ]]; then
+      if [[ "$MODE" == *-fused-k8-ab ]]; then
         echo "CPU and pairwise correctness passed for $tag" >> "$OUT/runner.log"
       else
         echo "Raw TL projection, CPU and pairwise correctness passed for $tag" >> "$OUT/runner.log"

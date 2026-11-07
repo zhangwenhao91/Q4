@@ -65,11 +65,9 @@ def make_case(a):
     functions = {label: original_fused if fused else original}
     tl_meta = None
     upstream_meta = None
-    standalone_label = 'tilelang_current_pre_k8_fused_prealloc_h5120'
+    standalone_label = f'tilelang_current_pre_k8_fused_prealloc_h{hidden}'
     if fused:
         if standalone_label in (a.implementations or ()):
-            if hidden != 5120:
-                raise ValueError('Standalone fused K8 comparison requires H=5120')
             import sys
             sys.path.insert(0, str(ROOT / 'operators/mhc/tuning'))
             from shifted_pre_k8_fused_preallocated import bind_shifted_pre
