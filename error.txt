@@ -1,14 +1,14 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8-cube24
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-161456-2905325
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-161842-2919641
 N=512 N512-rep1
 Failed stage: N512-rep1
-Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-161456-2905325/N512-rep1.log
+Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-161842-2919641/N512-rep1.log
 === Exception headlines (up to 8) ===
 91: tvm.error.InternalError: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV0.MTE3 -> AIV1.MTE2 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
 === First error contexts (up to 4) ===
 1: ninja: no work to do.
-2: [16:15:15] /home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/insert_sync.cc:846: Fatal: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV0.MTE3 -> AIV1.MTE2 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
-3: 2026-11-07 16:15:13  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_projection_coeff_k8_kernel` with `out_idx=None`
+2: [16:19:03] /home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/insert_sync.cc:846: Fatal: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV0.MTE3 -> AIV1.MTE2 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
+3: 2026-11-07 16:19:01  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_projection_coeff_k8_kernel` with `out_idx=None`
 4: Traceback (most recent call last):
 5:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 288, in <module>
 6:     if __name__=='__main__': main()
@@ -19,7 +19,7 @@ Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-161456-2905325/N512-r
 11:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 231, in make_case
 12:     functions[projection_coeff], meta = bind_shifted_pre(x, prev, phi, alpha, bias, **options)
 13:                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-14:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_k8_fused_preallocated.py", line 872, in bind_shifted_pre
+14:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_k8_fused_preallocated.py", line 901, in bind_shifted_pre
 15:     fused = mhc_projection_coeff_k8_kernel.compile(
 16:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 17:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 470, in compile
@@ -49,8 +49,8 @@ Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-161456-2905325/N512-r
 89:   File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
 90:   File "<unknown>", line 0, in tvm::runtime::detail::LogFatal::~LogFatal()
 91: tvm.error.InternalError: Ascend AutoSchedule does not support synchronization between AIV0 and AIV1: uncovered AIV0.MTE3 -> AIV1.MTE2 dependency at logical distance 0. Use disjoint storage regions or an actual AIC data dependency that orders these accesses; mode-1 flags and AIC relay synchronization are not generated.
-92: [ERROR] 2026-11-07-16:15:17 (PID:2905331, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
-Generated synchronization: /home/z30086261/Q4/results/mhc-small-split-k/20261107-161456-2905325/N512-rep1/tilelang_projection_coeff_k8_batch_prealloc_i2c1_projection_coeff.cpp
+92: [ERROR] 2026-11-07-16:19:04 (PID:2919647, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+Generated synchronization: /home/z30086261/Q4/results/mhc-small-split-k/20261107-161842-2919641/N512-rep1/tilelang_projection_coeff_k8_batch_prealloc_i2c1_projection_coeff.cpp
 412: }
 413: 
 414: extern "C" __global__ __mix__(1, 2) void mhc_projection_coeff_k8_kernel_kernel(__gm__ float* alpha, __gm__ float* bias, __gm__ float* comb, __gm__ float* fn, __gm__ float* partial_sq, __gm__ float* post, __gm__ float* pre, __gm__ float* raw_rows, __gm__ bfloat16_t* x) {
@@ -65,4 +65,3 @@ Generated synchronization: /home/z30086261/Q4/results/mhc-small-split-k/20261107
 535:     asc_sync_wait(PIPE_MTE3, PIPE_MTE2, static_cast<event_t>(0));
 536:     asc_copy_gm2ub_align((__ubuf__ uint8_t*)((&(((__ubuf__ float*)buf_dyn_shmem)[33024]))), (__gm__ uint8_t*)((&(raw_rows[((((((int32_t)block_idx) >> 2) * 3072) + (vector_id * 1536)) + ((((int32_t)block_idx) & 3) * 384))]))), 8, 1536, 0, 0, 0, static_cast<asc_load_l2_cache_mode>(0), 49152, 1536);
 Saved: /home/z30086261/Q4/error.txt
-(zwh) root@ubuntu162:/home/z30086261/Q4#
