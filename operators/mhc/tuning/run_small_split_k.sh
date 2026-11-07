@@ -26,8 +26,9 @@ case "$mode" in
   v3-stages) shapes=(8192) ;;
   v3-fused-k8-i2c2) shapes=(512 1024) ;;
   v3-fused-k8-k128) shapes=(512 1024) ;;
+  v3-fused-k8-k128-three) shapes=(512 1024) ;;
   batch|alloc|workspace|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096) shapes=(128 256) ;;
-  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|v3-fused-k8-combined|v3-fused-k8-combined-large|v3-fused-k8-combined-buffers|v3-fused-k8-cast-reuse|v3-fused-k8-cube24|v3-fused-k4-cube28|three-vs-two-large|three-vs-two-small|auto-dispatch|v3-auto-pre|v3-auto-combined|v3-post|v3-stages|v3-fused-k8-i2c2|v3-fused-k8-k128|workspace [run-directory]]'; exit 2 ;;
+  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|v3-fused-k8-combined|v3-fused-k8-combined-large|v3-fused-k8-combined-buffers|v3-fused-k8-cast-reuse|v3-fused-k8-cube24|v3-fused-k4-cube28|three-vs-two-large|three-vs-two-small|auto-dispatch|v3-auto-pre|v3-auto-combined|v3-post|v3-stages|v3-fused-k8-i2c2|v3-fused-k8-k128|v3-fused-k8-k128-three|workspace [run-directory]]'; exit 2 ;;
 esac
 if [[ "$mode" == v3-fused-k8* || "$mode" == v3-fused-k4-cube28 || "$mode" == v3-auto-* || "$mode" == v3-post || "$mode" == v3-stages ]]; then
   export TORCH_EXTENSIONS_DIR="$ROOT/third_party/torch-extensions-gcc13"
@@ -152,6 +153,9 @@ for n in "${shapes[@]}"; do
     labels=(ascendc_vllm_v3 tilelang_projection_coeff_k8_batch_prealloc
             tilelang_projection_coeff_k8_batch_prealloc_i1c1
             tilelang_projection_coeff_k8_batch_prealloc_i2c1)
+  elif [[ "$mode" == v3-fused-k8-k128-three ]]; then
+    labels=(ascendc_vllm_v3 tilelang_deferred_k8_batch_prealloc
+            tilelang_projection_coeff_k8_batch_prealloc_k128_i2c2)
   elif [[ "$mode" == v3-fused-k8-k128 ]]; then
     labels=(ascendc_vllm_v3 tilelang_projection_coeff_k8_batch_prealloc_i2c1)
     if (( n == 512 )); then labels+=(tilelang_projection_coeff_k8_batch_prealloc_i2c2); fi
@@ -186,7 +190,7 @@ for n in "${shapes[@]}"; do
   fi
   for rep in 1 2 3; do
     ordered_labels=("${labels[@]}")
-    if [[ "$mode" == v3-fused-k8-k128 && "$rep" == 2 ]]; then
+    if [[ "$mode" == v3-fused-k8-k128* && "$rep" == 2 ]]; then
       ordered_labels=()
       for ((label_index=${#labels[@]}-1; label_index>=0; label_index--)); do
         ordered_labels+=("${labels[label_index]}")
@@ -213,7 +217,7 @@ for n in "${shapes[@]}"; do
         --warmup 100 --rounds 24 --iters 100
     fi
   done
-  if [[ "$mode" == v3-fused-k8-k128 ]]; then
+  if [[ "$mode" == v3-fused-k8-k128* ]]; then
     for label in "${labels[@]:1}"; do
       run_case "N$n-profile-$label" "$n" --implementations "$label" --profile "$label"
     done

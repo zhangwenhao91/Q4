@@ -305,7 +305,7 @@ def cube_report(root, full28=False):
     return '\n'.join(lines) + '\n'
 
 
-def three_vs_two_report(root, small=False):
+def three_vs_two_report(root, small=False, k128=False):
     base = 'tilelang_deferred_k8_batch_prealloc'
     variants = [('three-kernel K8', base),
                 ('two-kernel K8/24', 'tilelang_projection_coeff_k8_batch_prealloc_i2c1_c24'),
@@ -315,19 +315,35 @@ def three_vs_two_report(root, small=False):
                     ('two-kernel K8 small', 'tilelang_projection_coeff_k8_batch_prealloc'),
                     ('two-kernel K8 balanced', 'tilelang_projection_coeff_k8_batch_prealloc_i2c1_c24'),
                     ('two-kernel K4 balanced', 'tilelang_projection_coeff_k4_batch_prealloc_i2c1_c28')]
+    if k128:
+        variants = [('three-kernel K8', base),
+                    ('two-kernel K128-I2C2', 'tilelang_projection_coeff_k8_batch_prealloc_k128_i2c2')]
     lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
              'H=5120 shifted Pre; CPU and pairwise checks passed. All variants preallocate outputs/workspace.',
              'N | variant | Cube cores | K splits | event us (3 processes) | median us | paired three-kernel/TL']
-    for n in ((128, 256, 384, 512) if small else (1024, 2048, 4096, 8192)):
+    if k128:
+        lines[-1] += ' | paired AC/TL'
+    shapes = (128, 256, 384, 512) if small else (1024, 2048, 4096, 8192)
+    if k128:
+        shapes = (512, 1024)
+    for n in shapes:
         cases = [root / f'N{n}-rep{rep}' for rep in (1, 2, 3)]
         timings = [json.loads((case / 'summary.json').read_text()) for case in cases]
         metadata = json.loads((cases[0] / 'metadata.json').read_text())['variants']
+        if k128:
+            ac_times = [run['ascendc_vllm_v3']['event_us'] for run in timings]
+            lines.append(f'{n} | AC v3 | - | - | {", ".join(f"{v:.3f}" for v in ac_times)} | '
+                         f'{median(ac_times):.3f} | - | 1.0000')
         for variant, label in variants:
             times = [run[label]['event_us'] for run in timings]
             config = metadata[label]['projection_config']
             ratio = median(run[base]['event_us'] / run[label]['event_us'] for run in timings)
-            lines.append(f'{n} | {variant} | {config["num_aic_cores"]} | {config["num_k_splits"]} | '
-                         f'{", ".join(f"{v:.3f}" for v in times)} | {median(times):.3f} | {ratio:.4f}')
+            row = (f'{n} | {variant} | {config["num_aic_cores"]} | {config["num_k_splits"]} | '
+                   f'{", ".join(f"{v:.3f}" for v in times)} | {median(times):.3f} | {ratio:.4f}')
+            if k128:
+                ac_ratio = median(run['ascendc_vllm_v3']['event_us'] / run[label]['event_us'] for run in timings)
+                row += f' | {ac_ratio:.4f}'
+            lines.append(row)
             lines.extend(profile_lines(root / f'N{n}-profile-{label}', 'mhc_projection'))
     return '\n'.join(lines) + '\n'
 
@@ -439,6 +455,8 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
+    elif mode == 'v3-fused-k8-k128-three':
+        summary = three_vs_two_report(root, k128=True)
     elif mode == 'v3-fused-k8-k128':
         summary = kblock_report(root)
     elif mode == 'v3-fused-k8-i2c2':
