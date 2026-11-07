@@ -1,14 +1,14 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh fused-projection-coeff-k8
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-110139-2374567
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-110425-2378997
 N=128 N128-rep1
 Failed stage: N128-rep1
-Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-110139-2374567/N128-rep1.log
+Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-110425-2378997/N128-rep1.log
 === Exception headlines (up to 8) ===
-27: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_projection_coeff_k8_kernel_kernel with ACL error 107000, grid=8, dyn_ubuf_bytes=246016: [PID: 2374573] 2026-11-07-11:01:48.153.975 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
+18: RuntimeError: npuSynchronizeDevice:../torch_npu/csrc/core/npu/NPUStream.cpp:748 NPU function error: AclrtSynchronizeDeviceWithTimeout, error code is 507014
 === First error contexts (up to 4) ===
-1: 2026-11-07 11:01:45  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_projection_coeff_k8_kernel` with `out_idx=None`
-2: 2026-11-07 11:01:47  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_projection_coeff_k8_kernel`
-3: 2026-11-07 11:01:47  [TileLang:tilelang.cache.kernel_cache:WARNING] (kernel_cache.py:379): Found kernel 'mhc_pre_apply_flat_pipeline_asc' in memory cache. For better performance, consider using `@tilelang.jit` instead of direct kernel caching.
+1: 2026-11-07 11:04:31  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_projection_coeff_k8_kernel` with `out_idx=None`
+2: 2026-11-07 11:04:34  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:145): TileLang completes to compile kernel `mhc_projection_coeff_k8_kernel`
+3: 2026-11-07 11:04:34  [TileLang:tilelang.cache.kernel_cache:WARNING] (kernel_cache.py:379): Found kernel 'mhc_pre_apply_flat_pipeline_asc' in memory cache. For better performance, consider using `@tilelang.jit` instead of direct kernel caching.
 4: {'implementation': 'tilelang_deferred_k8_batch_prealloc', 'output': 'layer_input', 'shape': [128, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.015625, 'rmse': 2.215548518326271e-05, 'relative_l2': 1.9314915095015055e-05, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
 5: {'implementation': 'tilelang_deferred_k8_batch_prealloc', 'output': 'next_pre_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.463859558105469e-06, 'rmse': 2.8092394133499223e-06, 'relative_l2': 5.59702463880962e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
 6: {'implementation': 'tilelang_deferred_k8_batch_prealloc', 'output': 'post_mix', 'shape': [128, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.5497207641601562e-05, 'rmse': 5.598341050063007e-06, 'relative_l2': 5.599112221068266e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
@@ -19,44 +19,104 @@ Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-110139-2374567/N128-r
 11:                              ^^^^^^
 12:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 184, in main
 13:     outputs=tuple(fn());torch.npu.synchronize()
-14:                   ^^^^
-15:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 48, in run
-16:     fused(flat, phi, alpha, bias, pre, post, comb, *workspace)
-17:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 228, in __call__
-18:     return self.torch_function(*args, **kwds)
-19:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-20:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/adapter/tvm_ffi.py", line 348, in func
-21:     executable(*tensor_list)
-22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm/runtime/executable.py", line 46, in __call__
-23:     return self.jit().main(*args, **kwargs)
-24:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-25:   File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
-26:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/runtime/ascend_module.cc", line 697, in void tvm::ascend::AscendWrappedFunc<LaunchPolicy>::operator()(tvm::ffi::PackedArgs, tvm::ffi::Any*, void*, size_t) const [with LaunchPolicy = tvm::ascend::DirectLaunchPolicy; size_t = long unsigned int]
-27: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_projection_coeff_k8_kernel_kernel with ACL error 107000, grid=8, dyn_ubuf_bytes=246016: [PID: 2374573] 2026-11-07-11:01:48.153.975 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
-28: TraceBack (most recent call last):
-29:         The argument is invalid. Reason: rtsLaunchKernelWithHostArgs execution failed.
-30: 
-31: [ERROR] 2026-11-07-11:01:50 (PID:2374573, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+14:                         ^^^^^^^^^^^^^^^^^^^^^^^
+15:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/npu/utils.py", line 75, in synchronize
+16:     return torch_npu._C._npu_synchronize()
+17:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+18: RuntimeError: npuSynchronizeDevice:../torch_npu/csrc/core/npu/NPUStream.cpp:748 NPU function error: AclrtSynchronizeDeviceWithTimeout, error code is 507014
+19: [ERROR] 2026-11-07-11:13:44 (PID:2379003, Device:0, RankID:-1) ERR00100 PTA call acl api failed
+20: [Error]: The aicore execution times out.
+21:         Rectify the fault based on the error information in the ascend log.
+22: EZ9999: Internal error!
+23: EZ9999[PID: 2379003] 2026-11-07-11:13:44.234.196 (EZ9999):  An error occurs on the device(chipId:0, dieId:0), the serial number is 32, the error is aicore error, core id is 0, error code = 0, dump info: pc start: 0x120041005000, current: 0x120041005290, sc error info: 0xffffffffffff, su error info: 0xd7eef4fd0f66f6a7,0xef8e97df7000ffbf, mte error info: 0xfefeffff0007fbfe, vec error info: 0, cube error info: 0, l1 error info: 0x5a00070000, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+24: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+25: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+26: TraceBack (most recent call last):
+27:        An error occurs on the device(chipId:0, dieId:0), the serial number is 32, the error is aicore error, core id is 1, error code = 0, dump info: pc start: 0x120041005000, current: 0x120041005290, sc error info: 0xffffffffffff, su error info: 0x7f5efdff1b9ebefe,0x65dbdfddf000fdd7, mte error info: 0x6e2c7af80006ffbf, vec error info: 0, cube error info: 0, l1 error info: 0x45fe001f7fee, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+28: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+29: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+30:        An error occurs on the device(chipId:0, dieId:0), the serial number is 32, the error is aicore error, core id is 2, error code = 0, dump info: pc start: 0x120041005000, current: 0x120041005290, sc error info: 0xffffffffffff, su error info: 0x9dff3f5817eefdff,0xfff7ff7f6000dadf, mte error info: 0xfdddb77e0002bfff, vec error info: 0, cube error info: 0, l1 error info: 0xfdfe001d4f2f, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+31: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+32: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+33:        An error occurs on the device(chipId:0, dieId:0), the serial number is 32, the error is aicore error, core id is 3, error code = 0, dump info: pc start: 0x120041005000, current: 0x120041005290, sc error info: 0xffffffffffff, su error info: 0xefffdff30f668adb,0xffed1fffb800fffe, mte error info: 0xbcaff7b0006b7fe, vec error info: 0, cube error info: 0, l1 error info: 0xfffb0006defe, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+34: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+35: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+36:        An error occurs on the device(chipId:0, dieId:0), the serial number is 32, the error is aicore error, core id is 18, error code = 0, dump info: pc start: 0x120041005000, current: 0x120041005290, sc error info: 0xffffffffffff, su error info: 0xefbfffff13ea36df,0xfdddf57fd800ff7f, mte error info: 0xffff6fff0007adde, vec error info: 0, cube error info: 0, l1 error info: 0xbeff001793c8, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+37: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+38: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+39:        An error occurs on the device(chipId:0, dieId:0), the serial number is 32, the error is aicore error, core id is 19, error code = 0, dump info: pc start: 0x120041005000, current: 0x120041005290, sc error info: 0xffffffffffff, su error info: 0x7dff77d71670feff,0xed59c56ff800eff6, mte error info: 0xb99e7d440007fcfb, vec error info: 0, cube error info: 0, l1 error info: 0xcfa9001ff47c, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+40: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+41: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+42:        An error occurs on the device(chipId:0, dieId:0), the serial number is 32, the error is aicore error, core id is 20, error code = 0, dump info: pc start: 0x120041005000, current: 0x120041005290, sc error info: 0xffffffffffff, su error info: 0xffefdfff1f7efeff,0xdd7df51ff800fffd, mte error info: 0xdff3eddf0005fbe6, vec error info: 0, cube error info: 0, l1 error info: 0xfee30003356d, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+43: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+44: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+45:        An error occurs on the device(chipId:0, dieId:0), the serial number is 32, the error is aicore error, core id is 21, error code = 0, dump info: pc start: 0x120041005000, current: 0x120041005290, sc error info: 0xffffffffffff, su error info: 0xb7ffef9f1e6ebefb,0xdf9d7f74f800deff, mte error info: 0xd3f26c4e0003fedf, vec error info: 0, cube error info: 0, l1 error info: 0x9f7f000bbddd, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+46: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+47: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+48:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 0, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0xf57bffdf07fe7fff,0xeff7f7ffd800579b, mte error info: 0x210b7, vec error info: 0x410021a400310849, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+49: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+50: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+51:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 1, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0xfb7bdfef1d9efbff,0x777cc9cf7800fd7f, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+52: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+53: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+54:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 2, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0xfdeb37c5357cfffb,0xf7ef7fefd000bf3f, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+55: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+56: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+57:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 3, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0x7e9fefff3dfcbced,0x76fdfeb7b800bbff, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+58: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+59: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+60:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 4, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0x4fe97ff53dfefbff,0xfffdfefe5800f6f8, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+61: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+62: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+63:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 5, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0x5eeecb7d3bc4ffdf,0x368c5cf368006f7f, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+64: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+65: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+66:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 6, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0xf7f95bf43bd8fa9f,0x4ff8edd6f000ffff, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+67: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+68: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+69:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 7, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0xfcaefffe04fcdfcf,0x537c6cfff8007d7f, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+70: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+71: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+72:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 36, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0xf4787ebf2ffe47ff,0xeff3eeff700015dd, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+73: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+74: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+75:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 37, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0xfbffffff3f9a77ff,0xe4ffffd77000ffff, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+76: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+77: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+78:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 38, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0xfedd35bf3e3a7d77,0x7ff63cff50007ffb, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+79: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+80: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+81:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 39, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0xf5f7beff20d09bfe,0xfd9ee7fff800fff3, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+82: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+83: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+84:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 40, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0x6d6efe7d37c0fb9a,0x5ef8efd5f800fdbf, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+85: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+86: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+87:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 41, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0xeef3777d3ffeeaa5,0xf55d7d44b000dfff, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+88: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+89: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+90:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 42, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0x3fe8ffcc17eaa977,0xfdcd7fcd100042b3, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+91: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
 === Final non-progress lines ===
-12:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 184, in main
-13:     outputs=tuple(fn());torch.npu.synchronize()
-14:                   ^^^^
-15:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 48, in run
-16:     fused(flat, phi, alpha, bias, pre, post, comb, *workspace)
-17:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 228, in __call__
-18:     return self.torch_function(*args, **kwds)
-19:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-20:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/adapter/tvm_ffi.py", line 348, in func
-21:     executable(*tensor_list)
-22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm/runtime/executable.py", line 46, in __call__
-23:     return self.jit().main(*args, **kwargs)
-24:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-25:   File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
-26:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/runtime/ascend_module.cc", line 697, in void tvm::ascend::AscendWrappedFunc<LaunchPolicy>::operator()(tvm::ffi::PackedArgs, tvm::ffi::Any*, void*, size_t) const [with LaunchPolicy = tvm::ascend::DirectLaunchPolicy; size_t = long unsigned int]
-27: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_projection_coeff_k8_kernel_kernel with ACL error 107000, grid=8, dyn_ubuf_bytes=246016: [PID: 2374573] 2026-11-07-11:01:48.153.975 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
-28: TraceBack (most recent call last):
-29:         The argument is invalid. Reason: rtsLaunchKernelWithHostArgs execution failed.
-30: 
-31: [ERROR] 2026-11-07-11:01:50 (PID:2374573, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+93:        An error occurs on the device(chipId:0, dieId:0), the serial number is 33, the error is aivec error, core id is 43, error code = 0, dump info: pc start: 0x1200410053c8, current: 0x120041005664, sc error info: 0xffffffffffff, su error info: 0xf33f9fff124af6ff,0xfbdd4fe5a000fdb5, mte error info: 0xac3a, vec error info: 0x411481f00039205c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c6000a8, mte error: 0, aic cond: 0.
+94: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+95: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:721]
+96:        An error occurred in the kernel task, retCode=0x25, [aicore timeout].[FUNC:PreCheckTaskErr][FILE:davinci_kernel_task.cc][LINE:1030]
+97:        rtDeviceSynchronizeWithTimeout execution failed, reason=aicore timeout[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+98: 
+99: [W1107 11:13:44.467493148 NPUStream.cpp:767] Warning: NPU warning, error code is 507014[Error]:
+100: [Error]: The aicore execution times out.
+101:         Rectify the fault based on the error information in the ascend log.
+102: EE9999: Internal error!
+103: EE9999[PID: 2379003] 2026-11-07-11:13:44.238.161 (EE9999):  rtDeviceSynchronizeWithTimeout execution failed, reason=aicore timeout[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+104: TraceBack (most recent call last):
+105:  (function npuSynchronizeUsedDevices)
+106: [W1107 11:13:44.467820899 NPUStream.cpp:750] Warning: NPU warning, error code is 507014[Error]:
+107: [Error]: The aicore execution times out.
+108:         Rectify the fault based on the error information in the ascend log.
+109: EE9999: Internal error!
+110: EE9999[PID: 2379003] 2026-11-07-11:13:44.238.609 (EE9999):  rtDeviceSynchronizeWithTimeout execution failed, reason=aicore timeout[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+111: TraceBack (most recent call last):
+112:  (function npuSynchronizeDevice)
 Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
