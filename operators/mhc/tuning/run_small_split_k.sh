@@ -13,8 +13,9 @@ base=tilelang_all_token_l2_default
 mode="${1:-scan}"
 case "$mode" in
   scan) shapes=(128 256 512) ;;
+  v3-fused-k8-combined) shapes=(128 256 384) ;;
   batch|alloc|workspace|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096) shapes=(128 256) ;;
-  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|workspace [run-directory]]'; exit 2 ;;
+  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|v3-fused-k8-combined|workspace [run-directory]]'; exit 2 ;;
 esac
 if [[ "$mode" == v3-fused-k8* ]]; then
   export TORCH_EXTENSIONS_DIR="$ROOT/third_party/torch-extensions-gcc13"
@@ -45,6 +46,8 @@ echo "Results: $OUT"
 run_case() {
   local tag="$1" n="$2"
   shift 2
+  local stage=pre
+  if [[ "$mode" == v3-fused-k8-combined ]]; then stage=combined; fi
   if [[ "$mode" == v3-fused-k8-h4096 ]]; then
     set -- --mhc-vllm-hidden 4096 "$@"
   fi
@@ -59,7 +62,7 @@ run_case() {
     if [[ -e "$OUT/$tag.log" ]]; then mv -- "$OUT/$tag.log" "$saved.log"; fi
   fi
   echo "N=$n $tag"
-  if ! "$PY" operators/spec_v1/bench.py --suite mhc_vllm_v3 --mhc-vllm-stage pre \
+  if ! "$PY" operators/spec_v1/bench.py --suite mhc_vllm_v3 --mhc-vllm-stage "$stage" \
     --mhc-projection-l2-ab --tokens "$n" --output "$OUT/$tag" "$@" > "$OUT/$tag.log" 2>&1; then
     "$PY" operators/mhc/vllm_v3/report_failure.py --stage "$tag" --log "$OUT/$tag.log"
     exit 1
@@ -118,7 +121,11 @@ for n in "${shapes[@]}"; do
     if [[ "$n" == 128 ]]; then labels+=(tilelang_deferred_k16); fi
   fi
   for rep in 1 2 3; do
-    run_case "N$n-rep$rep" "$n" --implementations "${labels[@]}" \
+    ordered_labels=("${labels[@]}")
+    if [[ "$mode" == v3-fused-k8-combined && "$rep" == 2 ]]; then
+      ordered_labels=("${labels[1]}" "${labels[0]}")
+    fi
+    run_case "N$n-rep$rep" "$n" --implementations "${ordered_labels[@]}" \
       --warmup 100 --rounds 24 --iters 100
   done
   if [[ "$mode" == refactor || "$mode" == fused-k8-refactor || "$mode" == v3-fused-k8* ]]; then continue; fi

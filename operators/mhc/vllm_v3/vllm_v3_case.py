@@ -96,6 +96,13 @@ def check_reuse_partials(x, phi, alpha, bias, raw, sums, pre, post, comb):
         flush=True)
 
 
+def chain_pre_post(pre_fn, post_fn):
+    def run():
+        outputs = pre_fn()
+        return (*outputs, post_fn(outputs[2], outputs[3]))
+    return run
+
+
 def make_case(a):
     import torch
     import sys
@@ -255,9 +262,21 @@ def make_case(a):
                     raise RuntimeError('Generated reuse kernel is missing the MTE3 arrival or MTE2 wait for flag 8')
                 print('Generated reuse kernel includes both arrival and wait for flag 8', flush=True)
             metadata[single_label] = meta
-        return functions, refs, ['layer_input', 'next_pre_mix', 'post_mix', 'comb_mix'], dict(
+        names = ['layer_input', 'next_pre_mix', 'post_mix', 'comb_mix']
+        if stage == 'combined':
+            functions = {name: chain_pre_post(fn, ac_post if name == 'ascendc_vllm_v3' else tl_post)
+                         for name, fn in functions.items()}
+            refs = (*refs, residual_ref)
+            names.append('new_residual')
+        return functions, refs, names, dict(
             comparison_available=True, vllm_v3=provenance if include_v3 else None,
-            stage=stage, projection_config=projector.config, variants=metadata)
+            stage=stage, projection_config=projector.config, variants=metadata,
+            contract=dict(N=t, hidden=hidden, hc_mult=4, shifted=True,
+                          rms_eps=1e-20, hc_pre_eps=1e-6, hc_sinkhorn_eps=1e-6,
+                          sinkhorn_repeat=20, post_mult=2),
+            timing_boundary='Pre plus Post with Pre-produced post/comb and a shared synthetic sublayer output'
+                            if stage == 'combined' else 'Complete shifted Pre call',
+            allocation_boundary='Standalone TL Pre preallocates; TL Post and upstream AscendC APIs allocate per call')
     baseline, baseline_meta = make_bound_candidate(projector, x, prev, alpha, bias, split_apply=True)
     candidate, candidate_meta = make_bound_candidate(projector, x, prev, alpha, bias,
         split_apply=True, apply_pipeline=(5120, 3), flat_pipeline=True, all_token_pipeline=True)
@@ -268,13 +287,7 @@ def make_case(a):
     functions = dict(ascendc_vllm_v3=ac, tilelang_coeff_bound=baseline,
                      tilelang_all_token_h5120s3=candidate)
     if stage == 'combined':
-        def chain(pre_fn, post_fn):
-            def run():
-                outputs = pre_fn()
-                return (*outputs, post_fn(outputs[2], outputs[3]))
-            return run
-
-        functions = {name: chain(fn, ac_post if name == 'ascendc_vllm_v3' else tl_post)
+        functions = {name: chain_pre_post(fn, ac_post if name == 'ascendc_vllm_v3' else tl_post)
                      for name, fn in functions.items()}
         refs = (*refs, residual_ref)
         names.append('new_residual')
