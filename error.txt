@@ -1,37 +1,72 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8-k128-three
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-190553-3313465
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8-k128-all
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-191429-3322780
+N=128 N128-rep1
+N=128 N128-rep2
+N=128 N128-rep3
+N=256 N256-rep1
+N=256 N256-rep2
+N=256 N256-rep3
+N=384 N384-rep1
+N=384 N384-rep2
+N=384 N384-rep3
 N=512 N512-rep1
 N=512 N512-rep2
 N=512 N512-rep3
-N=512 N512-profile-tilelang_deferred_k8_batch_prealloc
-N=512 N512-profile-tilelang_projection_coeff_k8_batch_prealloc_k128_i2c2
 N=1024 N1024-rep1
 N=1024 N1024-rep2
 N=1024 N1024-rep3
-N=1024 N1024-profile-tilelang_deferred_k8_batch_prealloc
-N=1024 N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_k128_i2c2
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-190553-3313465
-Q4 revision: 518590a41b07ef77e0fc9bdeec21a8bb5a70beb8
-H=5120 shifted Pre; CPU and pairwise checks passed. All variants preallocate outputs/workspace.
-N | variant | Cube cores | K splits | event us (3 processes) | median us | paired three-kernel/TL | paired AC/TL
-512 | AC v3 | - | - | 33.456, 33.513, 33.498 | 33.498 | - | 1.0000
-512 | three-kernel K8 | 24 | 8 | 27.184, 27.204, 27.183 | 27.184 | 1.0000 | 1.2319
-N512-profile-tilelang_deferred_k8_batch_prealloc: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 5.7065
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.5215
-mhc_projection_split_partials_kernel | 30 | 14.7285
-512 | two-kernel K128-I2C2 | 16 | 8 | 30.524, 30.466, 30.491 | 30.491 | 0.8915 | 1.0986
-N512-profile-tilelang_projection_coeff_k8_batch_prealloc_k128_i2c2: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 6.4830
-mhc_projection_coeff_k8_kernel_kernel | 30 | 23.9420
-1024 | AC v3 | - | - | 56.382, 56.356, 56.399 | 56.382 | - | 1.0000
-1024 | three-kernel K8 | 24 | 8 | 40.920, 41.023, 40.934 | 40.934 | 1.0000 | 1.3778
-N1024-profile-tilelang_deferred_k8_batch_prealloc: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 8.9685
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 11.0060
-mhc_projection_split_partials_kernel | 30 | 20.7285
-1024 | two-kernel K128-I2C2 | 16 | 8 | 55.693, 55.793, 55.718 | 55.718 | 0.7347 | 1.0122
-N1024-profile-tilelang_projection_coeff_k8_batch_prealloc_k128_i2c2: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 11.0140
-mhc_projection_coeff_k8_kernel_kernel | 30 | 44.5645
+N=2048 N2048-rep1
+N=2048 N2048-rep2
+N=2048 N2048-rep3
+N=4096 N4096-rep1
+N=4096 N4096-rep2
+N=4096 N4096-rep3
+N=8192 N8192-rep1
+N=8192 N8192-rep2
+N=8192 N8192-rep3
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-191429-3322780
+Q4 revision: ef2dc21840e525a6d32f4f98102607850b8595f3
+H=5120 shifted Pre; CPU and pairwise checks passed.
+AscendC uses the upstream vLLM v3 API with per-call allocation; TL reuses outputs and workspace.
+N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us
+128 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 8
+128 | rep1 | 22.501 | 17.598 | 1.2786 | 22.975 | 18.072
+128 | rep2 | 16.935 | 17.542 | 0.9654 | 17.326 | 18.080
+128 | rep3 | 15.289 | 17.540 | 0.8717 | 15.549 | 17.945
+128 | median | 16.935 | 17.542 | 0.9654 | 17.326 | 18.072
+256 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 16
+256 | rep1 | 21.704 | 19.136 | 1.1342 | 21.985 | 19.402
+256 | rep2 | 21.710 | 19.187 | 1.1315 | 22.148 | 19.695
+256 | rep3 | 21.756 | 19.170 | 1.1349 | 22.094 | 19.624
+256 | median | 21.710 | 19.170 | 1.1342 | 22.094 | 19.624
+384 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 24
+384 | rep1 | 27.605 | 20.964 | 1.3167 | 27.955 | 21.325
+384 | rep2 | 27.604 | 20.983 | 1.3156 | 27.930 | 21.308
+384 | rep3 | 27.613 | 20.976 | 1.3164 | 27.961 | 21.314
+384 | median | 27.605 | 20.976 | 1.3164 | 27.955 | 21.314
+512 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 16
+512 | rep1 | 33.276 | 30.506 | 1.0908 | 33.654 | 30.890
+512 | rep2 | 33.252 | 30.499 | 1.0902 | 33.604 | 30.860
+512 | rep3 | 33.203 | 30.476 | 1.0895 | 33.522 | 30.824
+512 | median | 33.252 | 30.499 | 1.0902 | 33.604 | 30.860
+1024 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 16
+1024 | rep1 | 56.239 | 55.787 | 1.0081 | 56.575 | 56.139
+1024 | rep2 | 56.222 | 55.733 | 1.0088 | 56.551 | 56.086
+1024 | rep3 | 56.064 | 55.704 | 1.0065 | 56.453 | 56.050
+1024 | median | 56.222 | 55.733 | 1.0081 | 56.551 | 56.086
+2048 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 16
+2048 | rep1 | 114.306 | 110.411 | 1.0353 | 114.663 | 110.822
+2048 | rep2 | 113.246 | 112.440 | 1.0072 | 113.597 | 112.789
+2048 | rep3 | 114.295 | 113.777 | 1.0046 | 114.786 | 114.179
+2048 | median | 114.295 | 112.440 | 1.0072 | 114.663 | 112.789
+4096 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 16
+4096 | rep1 | 234.523 | 314.658 | 0.7453 | 235.047 | 315.019
+4096 | rep2 | 235.557 | 313.699 | 0.7509 | 236.004 | 314.072
+4096 | rep3 | 235.425 | 314.335 | 0.7490 | 235.981 | 314.698
+4096 | median | 235.425 | 314.335 | 0.7490 | 235.981 | 314.698
+8192 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 16
+8192 | rep1 | 466.652 | 673.039 | 0.6934 | 469.531 | 673.871
+8192 | rep2 | 480.735 | 672.823 | 0.7145 | 481.139 | 673.803
+8192 | rep3 | 469.462 | 672.662 | 0.6979 | 471.224 | 673.187
+8192 | median | 469.462 | 672.823 | 0.6979 | 471.224 | 673.803
 (zwh) root@ubuntu162:/home/z30086261/Q4#
