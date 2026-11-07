@@ -218,6 +218,28 @@ def three_vs_two_report(root, small=False):
     return '\n'.join(lines) + '\n'
 
 
+def auto_dispatch_report(root):
+    candidate = 'tilelang_shifted_pre_auto'
+    lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
+             'H=5120 shifted Pre; CPU and pairwise checks passed. All outputs/workspace are preallocated.',
+             'N | selected implementation | kernel count | reference us | auto us | paired reference/auto | all device sources equal']
+    for n in (128, 256, 384, 512, 1024):
+        reference = 'tilelang_projection_coeff_k8_batch_prealloc' if n < 512 else 'tilelang_deferred_k8_batch_prealloc'
+        kernels = ('apply', 'projection_coeff') if n < 512 else ('apply', 'projection', 'tail')
+        cases = [root / f'N{n}-rep{rep}' for rep in (1, 2, 3)]
+        timings = [json.loads((case / 'summary.json').read_text()) for case in cases]
+        meta = json.loads((cases[0] / 'metadata.json').read_text())['variants'][candidate]
+        matches = all((case / f'{reference}_{kernel}.cpp').read_bytes() ==
+                      (case / f'{candidate}_{kernel}.cpp').read_bytes()
+                      for case in cases for kernel in kernels)
+        old = median(run[reference]['event_us'] for run in timings)
+        new = median(run[candidate]['event_us'] for run in timings)
+        ratio = median(run[reference]['event_us'] / run[candidate]['event_us'] for run in timings)
+        lines.append(f'{n} | {meta["dispatch"]["implementation"]} | {meta["expected_kernels_per_call"]} | '
+                     f'{old:.3f} | {new:.3f} | {ratio:.4f} | {matches}')
+    return '\n'.join(lines) + '\n'
+
+
 def fused_k8_refactor_report(root):
     candidate = 'tilelang_projection_coeff_k8_batch_prealloc'
     reference = candidate + '_reference'
@@ -303,6 +325,8 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
+    elif mode == 'auto-dispatch':
+        summary = auto_dispatch_report(root)
     elif mode in ('three-vs-two-large', 'three-vs-two-small'):
         summary = three_vs_two_report(root, small=mode.endswith('-small'))
     elif mode in ('v3-fused-k8-combined-buffers', 'v3-fused-k8-cast-reuse'):

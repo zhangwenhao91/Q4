@@ -21,8 +21,9 @@ case "$mode" in
   v3-fused-k4-cube28) shapes=(1024 2048 4096 8192) ;;
   three-vs-two-large) shapes=(1024 2048 4096 8192) ;;
   three-vs-two-small) shapes=(128 256 384 512) ;;
+  auto-dispatch) shapes=(128 256 384 512 1024) ;;
   batch|alloc|workspace|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096) shapes=(128 256) ;;
-  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|v3-fused-k8-combined|v3-fused-k8-combined-large|v3-fused-k8-combined-buffers|v3-fused-k8-cast-reuse|v3-fused-k8-cube24|v3-fused-k4-cube28|three-vs-two-large|three-vs-two-small|workspace [run-directory]]'; exit 2 ;;
+  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|fused-k8-refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|v3-fused-k8-h4096|v3-fused-k8-combined|v3-fused-k8-combined-large|v3-fused-k8-combined-buffers|v3-fused-k8-cast-reuse|v3-fused-k8-cube24|v3-fused-k4-cube28|three-vs-two-large|three-vs-two-small|auto-dispatch|workspace [run-directory]]'; exit 2 ;;
 esac
 if [[ "$mode" == v3-fused-k8* || "$mode" == v3-fused-k4-cube28 ]]; then
   export TORCH_EXTENSIONS_DIR="$ROOT/third_party/torch-extensions-gcc13"
@@ -101,6 +102,10 @@ for n in "${shapes[@]}"; do
   if [[ "$mode" == fused-k8-refactor ]]; then
     labels=(tilelang_projection_coeff_k8_batch_prealloc_reference
             tilelang_projection_coeff_k8_batch_prealloc)
+  elif [[ "$mode" == auto-dispatch ]]; then
+    reference=tilelang_deferred_k8_batch_prealloc
+    if (( n < 512 )); then reference=tilelang_projection_coeff_k8_batch_prealloc; fi
+    labels=("$reference" tilelang_shifted_pre_auto)
   elif [[ "$mode" == three-vs-two-small ]]; then
     labels=(tilelang_deferred_k8_batch_prealloc
             tilelang_projection_coeff_k8_batch_prealloc
@@ -175,7 +180,7 @@ for n in "${shapes[@]}"; do
       run_case "N$n-profile-$label" "$n" --implementations "$label" --profile "$label"
     done
   fi
-  if [[ "$mode" == refactor || "$mode" == fused-k8-refactor || "$mode" == v3-fused-k8* || "$mode" == v3-fused-k4-cube28 ]]; then continue; fi
+  if [[ "$mode" == refactor || "$mode" == fused-k8-refactor || "$mode" == v3-fused-k8* || "$mode" == v3-fused-k4-cube28 || "$mode" == auto-dispatch ]]; then continue; fi
   if [[ "$mode" == fused-apply || "$mode" == fused-pack128 || "$mode" == fused-projection-coeff* ]]; then
     for label in "${labels[@]}"; do
       run_case "N$n-profile-$label" "$n" --implementations "$label" --profile "$label"

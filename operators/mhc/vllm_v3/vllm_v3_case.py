@@ -177,6 +177,14 @@ def make_case(a):
     if l2_ab:
         functions = {'ascendc_vllm_v3': ac} if include_v3 else {}
         metadata = {}
+        automatic = 'tilelang_shifted_pre_auto'
+        if automatic in (a.implementations or ()):
+            sys.path.insert(0, str(ROOT / 'operators/mhc/tuning'))
+            from shifted_pre_auto import bind_shifted_pre
+            functions[automatic], meta = bind_shifted_pre(x, prev, phi, alpha, bias)
+            for name, generated in meta.pop('generated_sources').items():
+                (a.output / f'{automatic}_{name}.cpp').write_text(generated, encoding='utf-8')
+            metadata[automatic] = meta
         variants = [('tilelang_all_token_h5120s3', False, None), ('tilelang_all_token_l2_default', True, None)]
         if a.implementations:
             variants.extend((f'tilelang_deferred_k{splits}', True, splits) for splits in (4, 8, 16))
