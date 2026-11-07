@@ -33,6 +33,8 @@ def _projection_body(
     # The 256-wide reuse path needs one input slot to fit the Apply buffers.
     # Two 128-wide slots have the same footprint in the pipelined variant.
     num_load_stages = 2 if reuse_pipeline else (1 if reuse_apply else (2 if fused_shifted else 3))
+    if fused_split_coeff:
+        num_load_stages = 2
     num_cast_stages = 2 if reuse_pipeline or not reuse_apply else 1
     num_l1_x_stages = 3
     num_mad_stages = 2
