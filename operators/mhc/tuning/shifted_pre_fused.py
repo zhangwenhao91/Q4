@@ -459,20 +459,25 @@ def _apply_small_tile(x_ub, prev_ub, output_ub, apply_unroll, apply_pack128):
             for stream in T.unroll(4, explicit=True):
                 weights[stream] = S.vld(prev_ub[token, stream], dist='BRC_B32')
             if apply_pack128:
-                zero_bf16 = S.vdup(T.bfloat16(0), T.bfloat16, S.pset(16))
+                pack_mask = S.pset(16)
+                zero_bf16 = S.vdup(T.bfloat16(0), 'bfloat16', pack_mask)
                 for pair in T.serial(HIDDEN // 128):
                     pair_col = pair * 128
                     packed_first = S.vld(x_ub[token, 0, pair_col])
                     first_lo, first_hi = S.vintlv(zero_bf16, packed_first)
+                    first_lo_fp32 = T.reinterpret(first_lo, 'float32x64')
+                    first_hi_fp32 = T.reinterpret(first_hi, 'float32x64')
                     acc_lo = S.alloc_var(T.float32)
                     acc_hi = S.alloc_var(T.float32)
-                    acc_lo = S.vmul(T.reinterpret(first_lo, 'float32x64'), weights[0])
-                    acc_hi = S.vmul(T.reinterpret(first_hi, 'float32x64'), weights[0])
+                    acc_lo = S.vmul(first_lo_fp32, weights[0])
+                    acc_hi = S.vmul(first_hi_fp32, weights[0])
                     for stream in T.unroll(1, 4, explicit=True):
                         packed_next = S.vld(x_ub[token, stream, pair_col])
                         next_lo, next_hi = S.vintlv(zero_bf16, packed_next)
-                        S.vmula(acc_lo, T.reinterpret(next_lo, 'float32x64'), weights[stream])
-                        S.vmula(acc_hi, T.reinterpret(next_hi, 'float32x64'), weights[stream])
+                        next_lo_fp32 = T.reinterpret(next_lo, 'float32x64')
+                        next_hi_fp32 = T.reinterpret(next_hi, 'float32x64')
+                        S.vmula(acc_lo, next_lo_fp32, weights[stream])
+                        S.vmula(acc_hi, next_hi_fp32, weights[stream])
                     S.vsts(output_ub[token, pair_col], S.vcvt(acc_lo, T.bfloat16), dist='PK_B32')
                     S.vsts(output_ub[token, pair_col + 64], S.vcvt(acc_hi, T.bfloat16), dist='PK_B32')
             elif apply_unroll == 1:
