@@ -1,43 +1,51 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh fused-apply
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-100011-2284974
-N=128 N128-rep1
-N=128 N128-rep2
-N=128 N128-rep3
-N=128 N128-profile-tilelang_fused_small_prealloc
-N=128 N128-profile-tilelang_fused_small_prealloc_u2
-N=128 N128-profile-tilelang_fused_small_prealloc_u4
-N=256 N256-rep1
-N=256 N256-rep2
-N=256 N256-rep3
-N=256 N256-profile-tilelang_fused_small_prealloc
-N=256 N256-profile-tilelang_fused_small_prealloc_u2
-N=256 N256-profile-tilelang_fused_small_prealloc_u4
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-100011-2284974
-Q4 revision: 8ec8fb4f760d2e4c81ee02f6cec68ff6210f12ec
-H=5120 shifted Pre; CPU and pairwise checks passed. All variants preallocate outputs and workspace.
-N | Apply unroll | Pre event us (3 processes) | median us | paired U1/candidate
-128 | 1 | 22.301, 22.327, 22.379 | 22.327 | 1.0000
-N128-profile-tilelang_fused_small_prealloc: kernel | calls | median us
-mhc_coeff_apply_small_pipeline_kernel | 30 | 9.2415
-mhc_projection_token_pipeline_kernel | 30 | 12.9440
-128 | 2 | 22.207, 22.377, 22.251 | 22.251 | 1.0042
-N128-profile-tilelang_fused_small_prealloc_u2: kernel | calls | median us
-mhc_coeff_apply_small_pipeline_kernel | 30 | 9.1515
-mhc_projection_token_pipeline_kernel | 30 | 12.9800
-128 | 4 | 23.015, 23.086, 23.088 | 23.086 | 0.9690
-N128-profile-tilelang_fused_small_prealloc_u4: kernel | calls | median us
-mhc_coeff_apply_small_pipeline_kernel | 30 | 10.0180
-mhc_projection_token_pipeline_kernel | 30 | 12.9700
-256 | 1 | 29.374, 29.369, 29.331 | 29.369 | 1.0000
-N256-profile-tilelang_fused_small_prealloc: kernel | calls | median us
-mhc_coeff_apply_small_pipeline_kernel | 30 | 12.8645
-mhc_projection_token_pipeline_kernel | 30 | 16.3015
-256 | 2 | 29.325, 29.315, 29.265 | 29.315 | 1.0018
-N256-profile-tilelang_fused_small_prealloc_u2: kernel | calls | median us
-mhc_coeff_apply_small_pipeline_kernel | 30 | 12.8135
-mhc_projection_token_pipeline_kernel | 30 | 16.3390
-256 | 4 | 30.529, 30.558, 30.455 | 30.529 | 0.9622
-N256-profile-tilelang_fused_small_prealloc_u4: kernel | calls | median us
-mhc_coeff_apply_small_pipeline_kernel | 30 | 14.0700
-mhc_projection_token_pipeline_kernel | 30 | 16.3150
+(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mhc/tuning/summarize_fused_tail_instructions.py 
+Run: /home/z30086261/Q4/results/mhc-all-token-simulator/20261107-093730-2247240-fused-N128
+Times are raw simulator units. Families classify instructions, not complete source phases.
+Families can overlap in time; their shares need not add to 100%.
+
+core0.veccore0
+Vector span=6.39454, busy union=2.20848, busy/span=34.54%
+family | instruction records | busy union | % of Vector busy
+fused multiply-add | 1010 | 1.60848 | 72.83
+other vector | 394 | 1.51514 | 68.61
+vector loads / stores | 1533 | 1.13576 | 51.43
+conversion / packing | 779 | 1.06182 | 48.08
+group reduction / lane rearrange | 80 | 0.298787 | 13.53
+divide / reciprocal / sqrt / exp | 10 | 0.0775767 | 3.51
+top mnemonic | instruction records | busy union
+RV_VMULA | 1010 | 1.60848
+RV_VLDI | 1232 | 1.11636
+RV_VCVT_F2F | 779 | 1.06182
+RV_VMUL | 307 | 1.05211
+RV_VSTI | 301 | 1.04726
+RV_SEND | 4 | 0.284848
+RV_VSEL | 66 | 0.226666
+RV_POR | 22 | 0.0933333
+RV_VSELR | 10 | 0.0690957
+RV_VEXPDIF | 5 | 0.0375758
+RV_VADDS | 7 | 0.02909
+RV_VADD | 7 | 0.0254541
+
+core0.veccore1
+Vector span=6.31091, busy union=2.20848, busy/span=34.99%
+family | instruction records | busy union | % of Vector busy
+fused multiply-add | 1023 | 1.60847 | 72.83
+other vector | 394 | 1.51515 | 68.61
+vector loads / stores | 1523 | 1.13577 | 51.43
+conversion / packing | 776 | 1.06182 | 48.08
+group reduction / lane rearrange | 80 | 0.298795 | 13.53
+divide / reciprocal / sqrt / exp | 10 | 0.0775767 | 3.51
+top mnemonic | instruction records | busy union
+RV_VMULA | 1023 | 1.60847
+RV_VLDI | 1229 | 1.11637
+RV_VCVT_F2F | 776 | 1.06182
+RV_VMUL | 307 | 1.05212
+RV_VSTI | 294 | 1.04727
+RV_SEND | 4 | 0.284848
+RV_VSEL | 66 | 0.22667
+RV_POR | 22 | 0.0933333
+RV_VSELR | 10 | 0.0690957
+RV_VEXPDIF | 5 | 0.0375719
+RV_VADDS | 7 | 0.02909
+RV_VADD | 7 | 0.0254579
 (zwh) root@ubuntu162:/home/z30086261/Q4#
