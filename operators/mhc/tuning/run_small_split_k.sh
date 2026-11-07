@@ -13,8 +13,8 @@ base=tilelang_all_token_l2_default
 mode="${1:-scan}"
 case "$mode" in
   scan) shapes=(128 256 512) ;;
-  batch|alloc|workspace|refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8) shapes=(128 256) ;;
-  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|workspace [run-directory]]'; exit 2 ;;
+  batch|alloc|workspace|refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8) shapes=(128 256) ;;
+  *) echo 'Usage: run_small_split_k.sh [scan|batch|alloc|refactor|timeline|fused-apply|fused-pack128|fused-projection-coeff|fused-projection-coeff-k8|v3-fused-k8|workspace [run-directory]]'; exit 2 ;;
 esac
 resume="${2:-}"
 results="$ROOT/results/mhc-small-split-k"
@@ -76,7 +76,9 @@ if [[ "$mode" == scan || "$mode" == batch ]]; then
   done
 fi
 for n in "${shapes[@]}"; do
-  if [[ "$mode" == fused-projection-coeff-k8 ]]; then
+  if [[ "$mode" == v3-fused-k8 ]]; then
+    labels=(ascendc_vllm_v3 tilelang_projection_coeff_k8_batch_prealloc)
+  elif [[ "$mode" == fused-projection-coeff-k8 ]]; then
     labels=(tilelang_deferred_k8_batch_prealloc tilelang_projection_coeff_k8_prealloc
             tilelang_projection_coeff_k8_batch_prealloc)
   elif [[ "$mode" == fused-projection-coeff ]]; then
@@ -104,7 +106,7 @@ for n in "${shapes[@]}"; do
     run_case "N$n-rep$rep" "$n" --implementations "${labels[@]}" \
       --warmup 100 --rounds 24 --iters 100
   done
-  if [[ "$mode" == refactor ]]; then continue; fi
+  if [[ "$mode" == refactor || "$mode" == v3-fused-k8 ]]; then continue; fi
   if [[ "$mode" == fused-apply || "$mode" == fused-pack128 || "$mode" == fused-projection-coeff* ]]; then
     for label in "${labels[@]}"; do
       run_case "N$n-profile-$label" "$n" --implementations "$label" --profile "$label"

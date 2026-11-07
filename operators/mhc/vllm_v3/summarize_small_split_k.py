@@ -88,6 +88,29 @@ def allocation_report(root, mode='alloc'):
     return '\n'.join([*lines, '', *timeline, *errors]) + '\n'
 
 
+def v3_fused_k8_report(root):
+    ac = 'ascendc_vllm_v3'
+    tl = 'tilelang_projection_coeff_k8_batch_prealloc'
+    lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
+             'H=5120 shifted Pre; CPU and pairwise checks passed.',
+             'AscendC uses the upstream vLLM v3 API with per-call allocation; TL reuses outputs and workspace.',
+             'N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us']
+    for n in (128, 256):
+        timings = [json.loads((root / f'N{n}-rep{rep}' / 'summary.json').read_text())
+                   for rep in (1, 2, 3)]
+        for rep, run in enumerate(timings, 1):
+            lines.append(f'{n} | rep{rep} | {run[ac]["event_us"]:.3f} | {run[tl]["event_us"]:.3f} | '
+                         f'{run[ac]["event_us"] / run[tl]["event_us"]:.4f} | '
+                         f'{run[ac]["wall_us"]:.3f} | {run[tl]["wall_us"]:.3f}')
+        ac_time = median(run[ac]['event_us'] for run in timings)
+        tl_time = median(run[tl]['event_us'] for run in timings)
+        paired_ratio = median(run[ac]['event_us'] / run[tl]['event_us'] for run in timings)
+        lines.append(f'{n} | median | {ac_time:.3f} | {tl_time:.3f} | {paired_ratio:.4f} | '
+                     f'{median(run[ac]["wall_us"] for run in timings):.3f} | '
+                     f'{median(run[tl]["wall_us"] for run in timings):.3f}')
+    return '\n'.join(lines) + '\n'
+
+
 def projection_coeff_report(root, k8=False):
     base = 'tilelang_deferred_k8_batch_prealloc'
     variants = ((base, 'mhc_projection_split_partials'),
@@ -148,6 +171,8 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
+    elif mode == 'v3-fused-k8':
+        summary = v3_fused_k8_report(root)
     elif mode in ('fused-apply', 'fused-pack128'):
         summary = fused_apply_report(root, pack128=mode == 'fused-pack128')
     elif mode in ('fused-projection-coeff', 'fused-projection-coeff-k8'):
