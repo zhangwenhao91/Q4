@@ -184,7 +184,8 @@ def make_case(a):
                 ('tilelang_fused_small', False, 1),
                 ('tilelang_fused_small_prealloc', True, 1),
                 ('tilelang_fused_small_prealloc_u2', True, 2),
-                ('tilelang_fused_small_prealloc_u4', True, 4)):
+                ('tilelang_fused_small_prealloc_u4', True, 4),
+                ('tilelang_fused_small_prealloc_pack128', True, 1)):
             if label not in (a.implementations or ()):
                 continue
             from deep_gemm import _C
@@ -193,7 +194,8 @@ def make_case(a):
             from shifted_pre_fused import bind_shifted_pre
             functions[label], metadata[label] = bind_shifted_pre(
                 x, prev, phi, alpha, bias, num_aic_cores=_C.get_num_sms(),
-                num_vec_cores=get_num_vec_cores(), preallocate=preallocated, apply_unroll=apply_unroll)
+                num_vec_cores=get_num_vec_cores(), preallocate=preallocated, apply_unroll=apply_unroll,
+                apply_pack128=label.endswith('_pack128'))
         for single_label, reuse_apply, token_stages in (
                 ('tilelang_shifted_single_h5120', False, 1),
                 ('tilelang_shifted_single_reuse_h5120', True, 1),

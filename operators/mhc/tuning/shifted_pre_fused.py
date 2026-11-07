@@ -452,13 +452,30 @@ def _load_small_dynamic(raw, sq, raw_ub, sq_ub, token_base, num_tokens):
 
 
 @T.macro
-def _apply_small_tile(x_ub, prev_ub, output_ub, apply_unroll):
+def _apply_small_tile(x_ub, prev_ub, output_ub, apply_unroll, apply_pack128):
     with T.SimdVF():
         for token in T.serial(2):
             weights = S.alloc_local((4,), T.float32)
             for stream in T.unroll(4, explicit=True):
                 weights[stream] = S.vld(prev_ub[token, stream], dist='BRC_B32')
-            if apply_unroll == 1:
+            if apply_pack128:
+                zero_bf16 = S.vdup(T.bfloat16(0), T.bfloat16, S.pset(16))
+                for pair in T.serial(HIDDEN // 128):
+                    pair_col = pair * 128
+                    packed_first = S.vld(x_ub[token, 0, pair_col])
+                    first_lo, first_hi = S.vintlv(zero_bf16, packed_first)
+                    acc_lo = S.alloc_var(T.float32)
+                    acc_hi = S.alloc_var(T.float32)
+                    acc_lo = S.vmul(T.reinterpret(first_lo, 'float32x64'), weights[0])
+                    acc_hi = S.vmul(T.reinterpret(first_hi, 'float32x64'), weights[0])
+                    for stream in T.unroll(1, 4, explicit=True):
+                        packed_next = S.vld(x_ub[token, stream, pair_col])
+                        next_lo, next_hi = S.vintlv(zero_bf16, packed_next)
+                        S.vmula(acc_lo, T.reinterpret(next_lo, 'float32x64'), weights[stream])
+                        S.vmula(acc_hi, T.reinterpret(next_hi, 'float32x64'), weights[stream])
+                    S.vsts(output_ub[token, pair_col], S.vcvt(acc_lo, T.bfloat16), dist='PK_B32')
+                    S.vsts(output_ub[token, pair_col + 64], S.vcvt(acc_hi, T.bfloat16), dist='PK_B32')
+            elif apply_unroll == 1:
                 for chunk in T.serial(HIDDEN // 64):
                     col = chunk * 64
                     acc = S.alloc_var(T.float32)
@@ -489,7 +506,8 @@ def _apply_small_tile(x_ub, prev_ub, output_ub, apply_unroll):
 
 @tilelang.jit
 def mhc_coeff_apply_small_pipeline(x, prev, raw, sq, scale, base, hi, pre, post, comb,
-                                   num_vec_cores: int = 64, num_stages: int = 2, apply_unroll: int = 1):
+                                   num_vec_cores: int = 64, num_stages: int = 2, apply_unroll: int = 1,
+                                   apply_pack128: bool = False):
     n = T.dynamic('num_tokens')
     x: T.Tensor[(n, 4, HIDDEN), T.bfloat16]
     prev: T.Tensor[(n, 4), T.float32]
@@ -530,12 +548,13 @@ def mhc_coeff_apply_small_pipeline(x, prev, raw, sq, scale, base, hi, pre, post,
             T.copy(pre_ub[0:2, :], pre[token_base:token_base + 2, :])
             T.copy(post_ub[0:2, :], post[token_base:token_base + 2, :])
             T.copy(comb_ub[0:2, :], comb[token_base:token_base + 2, :])
-            _apply_small_tile(x_ub, prev_ub, hi_ub, apply_unroll)
+            _apply_small_tile(x_ub, prev_ub, hi_ub, apply_unroll, apply_pack128)
             T.copy(hi_ub, hi[token_base:token_base + 2, :])
 
 
 def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
-                     num_aic_cores=32, num_vec_cores=64, num_stages=2, preallocate=False, apply_unroll=1):
+                     num_aic_cores=32, num_vec_cores=64, num_stages=2, preallocate=False,
+                     apply_unroll=1, apply_pack128=False):
     """Compile the two kernels and return ``(run, configuration)``.
 
     Inputs are bound by reference. Each run launches projection then the fused
@@ -565,13 +584,16 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, projection_config=None, *,
         raise ValueError('Expected positive vector core count and one or two buffer stages')
     if apply_unroll not in (1, 2, 4):
         raise ValueError('Apply unroll must be 1, 2 or 4')
+    if apply_pack128 and apply_unroll != 1:
+        raise ValueError('Pack128 and Apply unroll are separate experiments')
     projection_config = dict(projection_config) if projection_config is not None else get_config(
         20480, 24, n, num_aic_cores=num_aic_cores)
     m = projection_config['block_num_tokens']
     if m not in (64, 128):
         raise ValueError('Projection M tile must be 64 or 128')
     flat, prev = x.view(n, 20480), prev_pre.view(n, 4)
-    tail_config = dict(num_vec_cores=num_vec_cores, num_stages=num_stages, apply_unroll=apply_unroll)
+    tail_config = dict(num_vec_cores=num_vec_cores, num_stages=num_stages,
+                       apply_unroll=apply_unroll, apply_pack128=apply_pack128)
 
     def allocate():
         hi = torch.empty(n, HIDDEN, dtype=torch.bfloat16, device=x.device)
