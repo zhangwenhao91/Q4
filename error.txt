@@ -1,63 +1,55 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-post
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-180739-3201145
-N=128 N128-rep1
-N=128 N128-rep2
-N=128 N128-rep3
-N=256 N256-rep1
-N=256 N256-rep2
-N=256 N256-rep3
-N=384 N384-rep1
-N=384 N384-rep2
-N=384 N384-rep3
-N=512 N512-rep1
-N=512 N512-rep2
-N=512 N512-rep3
-N=1024 N1024-rep1
-N=1024 N1024-rep2
-N=1024 N1024-rep3
-N=2048 N2048-rep1
-N=2048 N2048-rep2
-N=2048 N2048-rep3
-N=4096 N4096-rep1
-N=4096 N4096-rep2
-N=4096 N4096-rep3
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-stages
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-182347-3234276
 N=8192 N8192-rep1
 N=8192 N8192-rep2
 N=8192 N8192-rep3
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-180739-3201145
-Q4 revision: 76a637efe98815ceabe7ce59352f82d1935bb57a
-H=5120 Post; CPU and pairwise checks passed.
-Both Post APIs include per-call output allocation and use identical precomputed coefficients and BF16 features.
-N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us
-128 | rep1 | 12.913 | 20.559 | 0.6281 | 13.304 | 20.936
-128 | rep2 | 13.209 | 21.588 | 0.6119 | 13.618 | 22.029
-128 | rep3 | 13.621 | 22.581 | 0.6032 | 14.096 | 23.043
-128 | median | 13.209 | 21.588 | 0.6119 | 13.618 | 22.029
-256 | rep1 | 13.004 | 21.048 | 0.6178 | 13.328 | 21.468
-256 | rep2 | 12.898 | 21.404 | 0.6026 | 13.182 | 21.713
-256 | rep3 | 14.608 | 21.722 | 0.6725 | 15.103 | 22.229
-256 | median | 13.004 | 21.404 | 0.6178 | 13.328 | 21.713
-384 | rep1 | 16.617 | 20.941 | 0.7935 | 16.994 | 21.351
-384 | rep2 | 16.673 | 21.022 | 0.7931 | 16.993 | 21.356
-384 | rep3 | 16.691 | 21.635 | 0.7715 | 17.033 | 22.039
-384 | median | 16.673 | 21.022 | 0.7931 | 16.994 | 21.356
-512 | rep1 | 21.523 | 21.199 | 1.0153 | 21.892 | 21.619
-512 | rep2 | 21.556 | 20.926 | 1.0301 | 21.997 | 21.416
-512 | rep3 | 21.586 | 21.886 | 0.9863 | 21.967 | 22.292
-512 | median | 21.556 | 21.199 | 1.0153 | 21.967 | 21.619
-1024 | rep1 | 40.078 | 26.854 | 1.4924 | 40.454 | 27.203
-1024 | rep2 | 38.351 | 26.741 | 1.4342 | 38.707 | 27.119
-1024 | rep3 | 38.215 | 26.706 | 1.4310 | 38.608 | 27.087
-1024 | median | 38.351 | 26.741 | 1.4342 | 38.707 | 27.119
-2048 | rep1 | 120.677 | 75.410 | 1.6003 | 121.126 | 75.801
-2048 | rep2 | 118.011 | 73.097 | 1.6144 | 118.443 | 73.555
-2048 | rep3 | 123.377 | 72.621 | 1.6989 | 123.810 | 73.023
-2048 | median | 120.677 | 73.097 | 1.6144 | 121.126 | 73.555
-4096 | rep1 | 267.382 | 237.739 | 1.1247 | 267.897 | 238.185
-4096 | rep2 | 267.898 | 240.678 | 1.1131 | 268.477 | 241.072
-4096 | rep3 | 267.859 | 240.453 | 1.1140 | 268.416 | 240.941
-4096 | median | 267.859 | 240.453 | 1.1140 | 268.416 | 240.941
-8192 | rep1 | 528.856 | 500.272 | 1.0571 | 529.399 | 500.839
-8192 | rep2 | 528.342 | 500.351 | 1.0559 | 528.869 | 500.881
-8192 | rep3 | 528.323 | 500.466 | 1.0557 | 528.877 | 501.048
-8192 | median | 528.342 | 500.351 | 1.0559 | 528.877 | 500.881
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-182347-3234276
+Q4 revision: e2be1dae5e64e725b7a083e0dcf2aa5e1916aecf
+H=5120 N=8192; CPU and same-stage pairwise checks passed.
+Each process times all six callbacks on shared inputs, then profiles both combined callbacks.
+Standalone Post uses shared reference coefficients; combined Post consumes its own Pre coefficients.
+TL Pre preallocates; Post and upstream AscendC use their allocating APIs.
+run | stage | AC event us | TL event us | AC/TL | AC wall us | TL wall us
+rep1 | Pre | 472.578 | 525.981 | 0.8985 | 473.142 | 526.439
+rep1 | Post | 528.129 | 500.472 | 1.0553 | 528.538 | 500.988
+rep1 | Pre+Post | 985.474 | 1021.170 | 0.9650 | 986.068 | 1021.680
+rep1 | AC isolated sum 1000.708 us | combined 985.474 us | reduction 15.234 us
+ascendc_vllm_combined: kernel | calls | median us
+HcPost | 30 | 502.9695
+HcPre | 30 | 481.5475
+rep1 | TL isolated sum 1026.453 us | combined 1021.170 us | reduction 5.283 us
+tilelang_auto_combined: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 37.2010
+mhc_post_fwd_asc_kernel | 30 | 494.7930
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 276.5655
+mhc_projection_split_partials_kernel | 30 | 210.7445
+rep2 | Pre | 476.694 | 526.261 | 0.9058 | 478.497 | 526.731
+rep2 | Post | 527.811 | 501.269 | 1.0529 | 528.343 | 501.922
+rep2 | Pre+Post | 985.161 | 1021.721 | 0.9642 | 985.746 | 1022.366
+rep2 | AC isolated sum 1004.505 us | combined 985.161 us | reduction 19.344 us
+ascendc_vllm_combined: kernel | calls | median us
+HcPost | 30 | 502.0635
+HcPre | 30 | 479.8715
+rep2 | TL isolated sum 1027.530 us | combined 1021.721 us | reduction 5.809 us
+tilelang_auto_combined: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 37.4535
+mhc_post_fwd_asc_kernel | 30 | 496.2430
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 277.2775
+mhc_projection_split_partials_kernel | 30 | 209.9675
+rep3 | Pre | 481.089 | 525.539 | 0.9154 | 481.640 | 525.996
+rep3 | Post | 527.616 | 500.552 | 1.0541 | 528.059 | 500.885
+rep3 | Pre+Post | 989.970 | 1021.697 | 0.9689 | 990.456 | 1022.235
+rep3 | AC isolated sum 1008.706 us | combined 989.970 us | reduction 18.736 us
+ascendc_vllm_combined: kernel | calls | median us
+HcPost | 30 | 502.7035
+HcPre | 30 | 480.3425
+rep3 | TL isolated sum 1026.091 us | combined 1021.697 us | reduction 4.394 us
+tilelang_auto_combined: kernel | calls | median us
+mhc_coeff_token_pipeline_kernel | 30 | 37.2500
+mhc_post_fwd_asc_kernel | 30 | 494.9445
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 277.1925
+mhc_projection_split_partials_kernel | 30 | 210.4490
+median | Pre | 476.694 | 525.981 | 0.9058 | 478.497 | 526.439
+median | Post | 527.811 | 500.552 | 1.0541 | 528.343 | 500.988
+median | Pre+Post | 985.474 | 1021.697 | 0.9650 | 986.068 | 1022.235
+(zwh) root@ubuntu162:/home/z30086261/Q4#
