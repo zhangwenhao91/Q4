@@ -1,44 +1,62 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh fused-projection-coeff
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-104412-2350596
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh fused-projection-coeff-k8
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-105858-2371358
 N=128 N128-rep1
-N=128 N128-rep2
-N=128 N128-rep3
-N=128 N128-profile-tilelang_deferred_k8_batch_prealloc
-N=128 N128-profile-tilelang_projection_coeff_prealloc
-N=128 N128-profile-tilelang_projection_coeff_m32_prealloc
-N=256 N256-rep1
-N=256 N256-rep2
-N=256 N256-rep3
-N=256 N256-profile-tilelang_deferred_k8_batch_prealloc
-N=256 N256-profile-tilelang_projection_coeff_prealloc
-N=256 N256-profile-tilelang_projection_coeff_m32_prealloc
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-104412-2350596
-Q4 revision: c73be32f3ff7deebbb3da49247a7ebfe1694b4cf
-H=5120 shifted Pre; CPU and pairwise checks passed. Both variants preallocate outputs.
-N | implementation | Cube cores | K splits | Pre event us (3 processes) | median us | paired K8/TL
-128 | tilelang_deferred_k8_batch_prealloc | 8 | 8 | 18.502, 18.561, 18.546 | 18.546 | 1.0000
-N128-profile-tilelang_deferred_k8_batch_prealloc: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 5.4590
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.0370
-mhc_projection_split_partials_kernel | 30 | 9.7995
-128 | tilelang_projection_coeff_prealloc | 1 | 1 | 68.024, 68.104, 68.033 | 68.033 | 0.2725
-N128-profile-tilelang_projection_coeff_prealloc: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.0320
-mhc_projection_coeff_kernel_kernel | 30 | 64.5795
-128 | tilelang_projection_coeff_m32_prealloc | 4 | 1 | 39.153, 39.226, 39.223 | 39.223 | 0.4728
-N128-profile-tilelang_projection_coeff_m32_prealloc: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 2.9385
-mhc_projection_coeff_kernel_kernel | 30 | 35.8790
-256 | tilelang_deferred_k8_batch_prealloc | 16 | 8 | 20.008, 20.036, 20.009 | 20.009 | 1.0000
-N256-profile-tilelang_deferred_k8_batch_prealloc: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 5.5980
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.2080
-mhc_projection_split_partials_kernel | 30 | 10.1670
-256 | tilelang_projection_coeff_prealloc | 2 | 1 | 69.656, 69.639, 69.633 | 69.639 | 0.2874
-N256-profile-tilelang_projection_coeff_prealloc: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.0605
-mhc_projection_coeff_kernel_kernel | 30 | 65.2950
-256 | tilelang_projection_coeff_m32_prealloc | 8 | 1 | 40.379, 40.411, 40.423 | 40.411 | 0.4955
-N256-profile-tilelang_projection_coeff_m32_prealloc: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.0890
-mhc_projection_coeff_kernel_kernel | 30 | 36.0030
+Failed stage: N128-rep1
+Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-105858-2371358/N128-rep1.log
+=== Exception headlines (up to 8) ===
+94: tvm.error.InternalError: Check failed: pipe->value == expected_pipe_ (PIPE_MTE2 vs. PIPE_V) : Inter-core synchronization inside T.PerCoreTask must use its inferred pipe PIPE_V, got PIPE_MTE2
+=== First error contexts (up to 4) ===
+1: 2026-11-07 10:59:03  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_projection_coeff_k8_kernel` with `out_idx=None`
+2: Traceback (most recent call last):
+3:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
+4:     if __name__=='__main__': main()
+5:                              ^^^^^^
+6:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 96, in main
+7:     functions,refs,names,meta=make_case(a)
+8:                               ^^^^^^^^^^^^
+9:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 180, in make_case
+10:     functions[projection_coeff], meta = make_projection_coeff_candidate(
+11:                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+12:   File "/home/z30086261/Q4/operators/spec_v1/mhc_bound.py", line 42, in make_projection_coeff_candidate
+13:     fused = kernel_fn.compile(flat, phi, alpha, bias, pre, post, comb, *workspace, **config)
+14:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+15:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 470, in compile
+16:     kernel_result = compile(
+17:                     ^^^^^^^^
+18:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 166, in compile
+19:     return cached(
+20:            ^^^^^^^
+21:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/__init__.py", line 91, in cached
+86:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+87:   File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
+88:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*) const
+89:   File "<unknown>", line 0, in tvm::tirx::StmtVisitor::VisitStmt_(tvm::tirx::SeqStmtNode const*)
+90:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*) const
+91:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*) const
+92:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::ExprFunctor<void (tvm::PrimExpr const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::ExprFunctor<void (tvm::PrimExpr const&)>*) const
+93:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/materialize_schedule_units.cc", line 218, in virtual void tvm::tl::{anonymous}::PerCoreTaskControlValidator::VisitExpr_(const tvm::tirx::CallNode*)
+94: tvm.error.InternalError: Check failed: pipe->value == expected_pipe_ (PIPE_MTE2 vs. PIPE_V) : Inter-core synchronization inside T.PerCoreTask must use its inferred pipe PIPE_V, got PIPE_MTE2
+95: [ERROR] 2026-11-07-10:59:05 (PID:2371364, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+=== Final non-progress lines ===
+76:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+77:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+78:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#2}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+79:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+80:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+81:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+82:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#13}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+83:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt_(tvm::tirx::SBlockRealizeNode const*)
+84:   File "<unknown>", line 0, in tvm::tirx::StmtMutator::VisitStmt(tvm::tirx::Stmt const&)
+85:   File "<unknown>", line 0, in tvm::NodeFunctor<tvm::tirx::Stmt (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*) const
+86:   File "<unknown>", line 0, in tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>::InitVTable()::{lambda(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)#12}::_FUN(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<tvm::tirx::Stmt (tvm::tirx::Stmt const&)>*)
+87:   File "<unknown>", line 0, in tvm::tl::ascend::kernel_rewriter_detail::TilelangKernelRewriter::VisitStmt_(tvm::tirx::SBlockNode const*)
+88:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*) const
+89:   File "<unknown>", line 0, in tvm::tirx::StmtVisitor::VisitStmt_(tvm::tirx::SeqStmtNode const*)
+90:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*) const
+91:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::StmtFunctor<void (tvm::tirx::Stmt const&)>*) const
+92:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::ExprFunctor<void (tvm::PrimExpr const&)>*)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::ExprFunctor<void (tvm::PrimExpr const&)>*) const
+93:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/transform/materialize_schedule_units.cc", line 218, in virtual void tvm::tl::{anonymous}::PerCoreTaskControlValidator::VisitExpr_(const tvm::tirx::CallNode*)
+94: tvm.error.InternalError: Check failed: pipe->value == expected_pipe_ (PIPE_MTE2 vs. PIPE_V) : Inter-core synchronization inside T.PerCoreTask must use its inferred pipe PIPE_V, got PIPE_MTE2
+95: [ERROR] 2026-11-07-10:59:05 (PID:2371364, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+Saved: /home/z30086261/Q4/error.txt
+(zwh) root@ubuntu162:/home/z30086261/Q4#
