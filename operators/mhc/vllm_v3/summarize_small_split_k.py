@@ -88,6 +88,27 @@ def allocation_report(root, mode='alloc'):
     return '\n'.join([*lines, '', *timeline, *errors]) + '\n'
 
 
+def projection_coeff_report(root):
+    base = 'tilelang_deferred_k8_batch_prealloc'
+    candidate = 'tilelang_projection_coeff_prealloc'
+    lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
+             'H=5120 shifted Pre; CPU and pairwise checks passed. Both variants preallocate outputs.',
+             'N | implementation | Cube cores | K splits | Pre event us (3 processes) | median us | paired K8/TL']
+    for n in (128, 256):
+        cases = [root / f'N{n}-rep{rep}' for rep in (1, 2, 3)]
+        timings = [json.loads((case / 'summary.json').read_text()) for case in cases]
+        metadata = json.loads((cases[0] / 'metadata.json').read_text())['variants']
+        for label, kernel in ((base, 'mhc_projection_split_partials'),
+                              (candidate, 'mhc_projection_coeff_kernel')):
+            times = [run[label]['event_us'] for run in timings]
+            speedup = median(run[base]['event_us'] / value for run, value in zip(timings, times))
+            config = metadata[label]['projection_config']
+            lines.append(f'{n} | {label} | {config["num_aic_cores"]} | {config["num_k_splits"]} | '
+                         f'{", ".join(f"{value:.3f}" for value in times)} | {median(times):.3f} | {speedup:.4f}')
+            lines.extend(profile_lines(root / f'N{n}-profile-{label}', kernel))
+    return '\n'.join(lines) + '\n'
+
+
 def report(root, batch=False):
     base = 'tilelang_all_token_l2_default'
     lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
@@ -124,6 +145,8 @@ if __name__ == '__main__':
         summary = fused_report(root)
     elif mode in ('fused-apply', 'fused-pack128'):
         summary = fused_apply_report(root, pack128=mode == 'fused-pack128')
+    elif mode == 'fused-projection-coeff':
+        summary = projection_coeff_report(root)
     elif mode in ('alloc', 'workspace', 'refactor'):
         summary = allocation_report(root, mode=mode)
     else:

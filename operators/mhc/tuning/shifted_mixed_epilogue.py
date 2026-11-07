@@ -6,8 +6,8 @@ from shifted_pre_three_kernels import compute_coefficients
 
 
 @T.macro
-def shifted_epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
-                     accum, sums, token_begin, token_stage, aiv_id, hidden, l0c_stages):
+def shifted_coeff_epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
+                           accum, sums, token_begin, token_stage, aiv_id, hidden, l0c_stages):
     # Each AIV owns 64 full tokens. Fixpipe splits the 128-row tile along M.
     proj_ub = T.alloc_shared((64 * 24,), T.float32)
     scale_ub = T.alloc_shared((3, 8), T.float32)
@@ -17,9 +17,6 @@ def shifted_epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
     post_ub = T.alloc_shared((16, 4), T.float32)
     comb_in_ub = T.alloc_shared((16, 16), T.float32)
     comb_out_ub = T.alloc_shared((16, 16), T.float32)
-    residual_ub = T.alloc_shared((4, 256), T.bfloat16)
-    old_mix_ub = T.alloc_shared((8,), T.float32)
-    hi_ub = T.alloc_shared((256,), T.bfloat16)
 
     T.dual_copy(accum[token_stage, 0:128, 0:24], T.view(proj_ub, (64, 24)), unit_flag_ctrl=3)
     with T.SimtVF(threads=32):
@@ -40,6 +37,16 @@ def shifted_epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
         T.copy(post_ub, post[start : start + 16, 0:4])
         T.copy(comb_out_ub, comb[start : start + 16, 0:16])
 
+
+@T.macro
+def shifted_epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
+                     accum, sums, token_begin, token_stage, aiv_id, hidden, l0c_stages):
+    shifted_coeff_epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
+                           accum, sums, token_begin, token_stage, aiv_id, hidden, l0c_stages)
+    residual_ub = T.alloc_shared((4, 256), T.bfloat16)
+    old_mix_ub = T.alloc_shared((8,), T.float32)
+    hi_ub = T.alloc_shared((256,), T.bfloat16)
+    aiv_begin = token_begin + aiv_id * 64
     for row in T.Serial(64):
         token = aiv_begin + row
         T.copy(prev_pre[token, 0:4], old_mix_ub[0:4])

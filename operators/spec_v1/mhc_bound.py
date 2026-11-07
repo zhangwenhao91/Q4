@@ -4,6 +4,39 @@ import hashlib
 from mhc_fusion import SOURCE, allocate_outputs
 
 
+def make_projection_coeff_candidate(x, prev, phi, alpha, bias):
+    import sys
+    import torch
+    from tile_kernels.config import get_num_vec_cores
+
+    n, streams, hidden = x.shape
+    if (streams, hidden) != (4, 5120) or not n or n % 128:
+        raise ValueError('Projection+Coefficients requires H=5120 and positive N divisible by 128')
+    sys.path.insert(0, str(SOURCE))
+    from projection_token_pipeline import get_config, mhc_projection_coeff_kernel
+    from shifted_pre_k8_preallocated import mhc_pre_apply_flat_pipeline_asc
+
+    flat, prev2d = x.flatten(1), prev.view(n, 4)
+    hi, pre, post, comb = allocate_outputs(torch, n, x)
+    outputs = hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(n, 4, 4)
+    config = get_config(streams * hidden, 24, n, token_owned=True)
+    # Each active Cube owns exactly one complete 128-token tile for this A/B.
+    config['num_l0c_stages'] = 1
+    config['num_token_blocks_per_chunk'] = config['cores_per_split']
+    fused = mhc_projection_coeff_kernel.compile(flat, phi, alpha, bias, pre, post, comb, **config)
+    apply = mhc_pre_apply_flat_pipeline_asc.compile(
+        x, prev2d, hi, h_blk=hidden, num_vec_cores=get_num_vec_cores(), pipeline_stages=3)
+
+    def run():
+        apply(x, prev2d, hi)
+        fused(flat, phi, alpha, bias, pre, post, comb)
+        return outputs
+
+    return run, dict(expected_kernels_per_call=2, projection_config=config,
+                     generated_sources={'apply': apply.get_kernel_source(),
+                                        'projection_coeff': fused.get_kernel_source()})
+
+
 def make_shifted_single_candidate(x, prev, phi, alpha, bias, *, reuse_apply=False,
                                   reuse_token_stages=1, partial_check=None):
     import sys

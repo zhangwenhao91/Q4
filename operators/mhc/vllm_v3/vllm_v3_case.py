@@ -101,7 +101,7 @@ def make_case(a):
     import sys
     sys.path.insert(0, str(ROOT / 'operators/mhc/matched'))
     from projection import DynamicHCProjection
-    from mhc_bound import make_bound_candidate, make_shifted_single_candidate
+    from mhc_bound import make_bound_candidate, make_projection_coeff_candidate, make_shifted_single_candidate
     from cases import shifted_reference
     if a.tokens % 128:
         raise ValueError('Three-kernel N-pipeline comparison requires N divisible by 128')
@@ -171,6 +171,12 @@ def make_case(a):
             for name, source in meta.pop('generated_sources').items():
                 (a.output / f'{label}_{name}.cpp').write_text(source, encoding='utf-8')
             metadata[label] = meta
+        projection_coeff = 'tilelang_projection_coeff_prealloc'
+        if projection_coeff in (a.implementations or ()):
+            functions[projection_coeff], meta = make_projection_coeff_candidate(x, prev, phi, alpha, bias)
+            for name, source in meta.pop('generated_sources').items():
+                (a.output / f'{projection_coeff}_{name}.cpp').write_text(source, encoding='utf-8')
+            metadata[projection_coeff] = meta
         reference = 'tilelang_deferred_k8_batch_prealloc_reference'
         if reference in (a.implementations or ()):
             sys.path.insert(0, str(ROOT / 'operators/mhc/tuning'))
