@@ -2,7 +2,9 @@
 import tilelang
 from tilelang.ascend import language as T
 
-from shifted_pre_three_kernels import _projection_body, get_config, mhc_projection_token_pipeline
+from shifted_pre_three_kernels import (
+    _projection_body, _reduce_split_coefficients, get_config, mhc_projection_token_pipeline,
+)
 from shifted_mixed_epilogue import shifted_coeff_epilogue, shifted_epilogue
 
 
@@ -70,3 +72,30 @@ def mhc_projection_coeff_kernel(
         num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
         num_token_blocks_per_chunk, False, None, True, shifted_coeff_epilogue,
         False, False, block_num_tokens)
+
+
+@tilelang.jit
+def mhc_projection_coeff_k8_kernel(
+    x, fn, alpha, bias, pre, post, comb, partial_proj, partial_sq,
+    block_mhc_mult3: int, num_aic_cores: int, num_k_splits: int, cores_per_split: int,
+    num_hidden_blocks_per_split: int, num_l0b_stages: int, num_l0c_stages: int,
+    num_token_blocks_per_chunk: int,
+):
+    tokens = T.const('tokens')
+    x: T.Tensor[(tokens, 20480), T.bfloat16]
+    fn: T.Tensor[(24, 20480), T.float32]
+    alpha: T.Tensor[(3,), T.float32]
+    bias: T.Tensor[(24,), T.float32]
+    pre: T.Tensor[(tokens, 4), T.float32]
+    post: T.Tensor[(tokens, 4), T.float32]
+    comb: T.Tensor[(tokens, 16), T.float32]
+    partial_proj: T.Tensor[(8, tokens, 24), T.float32]
+    partial_sq: T.Tensor[(8, tokens), T.float32]
+    assert num_k_splits == 8 and num_l0c_stages == 1
+    assert tokens == cores_per_split * 128
+    _projection_body(
+        x, fn, partial_proj, partial_sq, None, alpha, bias, None, pre, post, comb,
+        tokens, 24, 20480, block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
+        num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
+        num_token_blocks_per_chunk, False, None, False, _reduce_split_coefficients,
+        False, True, 128, True)

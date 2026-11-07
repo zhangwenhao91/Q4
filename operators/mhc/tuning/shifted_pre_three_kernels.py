@@ -22,7 +22,7 @@ def _projection_body(
     block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
     num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
     num_token_blocks_per_chunk, deterministic, residual_l2_cache_ctrl, fused_shifted, epilogue,
-    reuse_apply=False, defer_reduce=False, block_num_tokens=128,
+    reuse_apply=False, defer_reduce=False, block_num_tokens=128, fused_split_coeff=False,
 ):
     reuse_pipeline = reuse_apply and num_l0c_stages > 1
     block_hidden = 128 if reuse_pipeline else 256
@@ -58,6 +58,8 @@ def _projection_body(
         T.annotate_layout({x_nz_ub: make_ascend_compact_nz_layout(x_nz_ub)})
         # The SIMD row-sum accumulator always writes a full 64-lane register.
         sqrsum_ub = T.alloc_shared((num_l0c_stages, 64), T.float32)
+        if fused_split_coeff:
+            partial_ub = T.alloc_shared((num_l0c_stages, 64, 24), T.float32)
         if reuse_apply:
             # Explicit slots keep each token tile's four-stream sum separate.
             old_mix_ub = T.alloc_shared((num_l0c_stages, 64, 4), T.float32)
@@ -279,7 +281,21 @@ def _projection_body(
                             ),
                         )
 
-            if defer_reduce:
+            if fused_split_coeff:
+                for drain_slot in T.Serial(num_valid_token_stages):
+                    T.dual_copy(out_mul_l0[drain_slot, 0:128, 0:24],
+                                partial_ub[drain_slot, 0:64, 0:24], unit_flag_ctrl=3)
+                with T.PerCoreTask():
+                    with T.Task():
+                        for partial_slot in T.Serial(num_valid_token_stages):
+                            partial_token = aiv_token_begin_base + partial_slot * cores_per_split * block_num_tokens
+                            T.copy(partial_ub[partial_slot, 0:64, 0:24],
+                                   out_mul[split_id, partial_token : partial_token + 64, 0:24])
+                        for sum_slot in T.Serial(num_valid_sqrsum_stages):
+                            sum_token = aiv_token_begin_base + sum_slot * cores_per_split * block_num_tokens
+                            T.copy(sqrsum_ub[sum_slot, 0:64], sqrsum[split_id, sum_token : sum_token + 64])
+                    T.ascend_sync_inter_arrive('PIPE_MTE3', 8)
+            elif defer_reduce:
                 for partial_slot in T.Serial(num_valid_token_stages):
                     partial_token = (token_block_base + partial_slot * cores_per_split) * block_num_tokens
                     T.copy(out_mul_l0[partial_slot, 0:128, 0:24],
@@ -375,7 +391,10 @@ def _projection_body(
                             T.ascend_sync_inter_arrive('PIPE_MTE3', sqrsum_flag)
                             T.ascend_sync_inter_wait('PIPE_MTE3', sqrsum_flag)
 
-        if reuse_apply:
+        if fused_split_coeff:
+            epilogue(out_mul, sqrsum, alpha, bias, pre, post, comb,
+                     num_tokens, num_k_splits, num_aic_cores, core_id, aiv_id, True)
+        elif reuse_apply:
             epilogue(out_mul, sqrsum, alpha, bias, pre, post, comb,
                      num_tokens, num_k_splits, num_aic_cores, core_id, aiv_id)
         elif not defer_reduce:
@@ -581,7 +600,7 @@ def mhc_coeff_token_pipeline(
 
 @T.macro
 def _reduce_split_coefficients(partial_proj, partial_sq, alpha, bias, pre, post, comb,
-                               tokens, splits, cube_cores, cube_id, vector_id):
+                               tokens, splits, cube_cores, cube_id, vector_id, flat_layout=False):
     proj = T.alloc_shared((384,), T.float32)
     proj_next = T.alloc_shared((384,), T.float32)
     sq = T.alloc_shared((16,), T.float32)
@@ -594,11 +613,21 @@ def _reduce_split_coefficients(partial_proj, partial_sq, alpha, bias, pre, post,
     comb_in = T.alloc_shared((16, 16), T.float32)
     comb_out = T.alloc_shared((16, 16), T.float32)
 
-    with T.SimtVF(threads=32):
-        for i in T.Parallel(3):
-            scale_ub[i, 0] = alpha[i]
-        for i in T.Parallel(24):
-            base_ub[i, 0] = bias[i]
+    if flat_layout:
+        with T.PerCoreTask():
+            T.ascend_sync_inter_wait('PIPE_MTE2', 8)
+            with T.Task():
+                with T.SimtVF(threads=32):
+                    for i in T.Parallel(3):
+                        scale_ub[i, 0] = alpha[i]
+                    for i in T.Parallel(24):
+                        base_ub[i, 0] = bias[i]
+    else:
+        with T.SimtVF(threads=32):
+            for i in T.Parallel(3):
+                scale_ub[i, 0] = alpha[i]
+            for i in T.Parallel(24):
+                base_ub[i, 0] = bias[i]
 
     # Keep AIV0 and AIV1 on disjoint workspace planes. Within a plane
     # consecutive 64-row blocks correspond to alternate halves of each tile.
@@ -607,14 +636,22 @@ def _reduce_split_coefficients(partial_proj, partial_sq, alpha, bias, pre, post,
         start = (cube_id + job * cube_cores) * 16
         output_start = start // 64 * 128 + vector_id * 64 + start % 64
         with T.PerCoreTask():
-            for _ in T.Serial(T.max(1 - job, 0)):
+            for _ in T.Serial(0 if flat_layout else T.max(1 - job, 0)):
                 T.ascend_sync_inter_wait('PIPE_MTE2', 8)
             with T.Task():
-                T.copy(partial_proj[0, vector_id, start : start + 16, 0:24], T.view(proj, (16, 24)))
-                T.copy(partial_sq[0, vector_id, start : start + 16], sq)
+                if flat_layout:
+                    T.copy(partial_proj[0, output_start : output_start + 16, 0:24], T.view(proj, (16, 24)))
+                    T.copy(partial_sq[0, output_start : output_start + 16], sq)
+                else:
+                    T.copy(partial_proj[0, vector_id, start : start + 16, 0:24], T.view(proj, (16, 24)))
+                    T.copy(partial_sq[0, vector_id, start : start + 16], sq)
         for k in T.Serial(1, splits):
-            T.copy(partial_proj[k, vector_id, start : start + 16, 0:24], T.view(proj_next, (16, 24)))
-            T.copy(partial_sq[k, vector_id, start : start + 16], sq_next)
+            if flat_layout:
+                T.copy(partial_proj[k, output_start : output_start + 16, 0:24], T.view(proj_next, (16, 24)))
+                T.copy(partial_sq[k, output_start : output_start + 16], sq_next)
+            else:
+                T.copy(partial_proj[k, vector_id, start : start + 16, 0:24], T.view(proj_next, (16, 24)))
+                T.copy(partial_sq[k, vector_id, start : start + 16], sq_next)
             with T.SimdVF():
                 mask = S.pset(32)
                 for v in T.unroll(6, explicit=True):

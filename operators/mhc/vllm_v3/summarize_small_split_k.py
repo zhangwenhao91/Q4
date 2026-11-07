@@ -88,11 +88,14 @@ def allocation_report(root, mode='alloc'):
     return '\n'.join([*lines, '', *timeline, *errors]) + '\n'
 
 
-def projection_coeff_report(root):
+def projection_coeff_report(root, k8=False):
     base = 'tilelang_deferred_k8_batch_prealloc'
     variants = ((base, 'mhc_projection_split_partials'),
                 ('tilelang_projection_coeff_prealloc', 'mhc_projection_coeff_kernel'),
                 ('tilelang_projection_coeff_m32_prealloc', 'mhc_projection_coeff_kernel'))
+    if k8:
+        variants = ((base, 'mhc_projection_split_partials'),
+                    ('tilelang_projection_coeff_k8_prealloc', 'mhc_projection_coeff_k8_kernel'))
     lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
              'H=5120 shifted Pre; CPU and pairwise checks passed. Both variants preallocate outputs.',
              'N | implementation | Cube cores | K splits | Pre event us (3 processes) | median us | paired K8/TL']
@@ -146,8 +149,8 @@ if __name__ == '__main__':
         summary = fused_report(root)
     elif mode in ('fused-apply', 'fused-pack128'):
         summary = fused_apply_report(root, pack128=mode == 'fused-pack128')
-    elif mode == 'fused-projection-coeff':
-        summary = projection_coeff_report(root)
+    elif mode in ('fused-projection-coeff', 'fused-projection-coeff-k8'):
+        summary = projection_coeff_report(root, k8=mode.endswith('-k8'))
     elif mode in ('alloc', 'workspace', 'refactor'):
         summary = allocation_report(root, mode=mode)
     else:

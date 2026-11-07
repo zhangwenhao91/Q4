@@ -4,7 +4,7 @@ import hashlib
 from mhc_fusion import SOURCE, allocate_outputs
 
 
-def make_projection_coeff_candidate(x, prev, phi, alpha, bias, *, block_num_tokens=128):
+def make_projection_coeff_candidate(x, prev, phi, alpha, bias, *, block_num_tokens=128, k_splits=1):
     import sys
     import torch
     from deep_gemm import _C
@@ -14,26 +14,38 @@ def make_projection_coeff_candidate(x, prev, phi, alpha, bias, *, block_num_toke
     if (streams, hidden) != (4, 5120) or not n or n % 128:
         raise ValueError('Projection+Coefficients requires H=5120 and positive N divisible by 128')
     sys.path.insert(0, str(SOURCE))
-    from projection_token_pipeline import get_config, mhc_projection_coeff_kernel
+    from projection_token_pipeline import get_config, mhc_projection_coeff_kernel, mhc_projection_coeff_k8_kernel
     from shifted_pre_k8_preallocated import mhc_pre_apply_flat_pipeline_asc
 
     flat, prev2d = x.flatten(1), prev.view(n, 4)
     hi, pre, post, comb = allocate_outputs(torch, n, x)
     outputs = hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(n, 4, 4)
-    config = get_config(streams * hidden, 24, n, token_owned=True)
+    if k_splits not in (1, 8):
+        raise ValueError('Supported projection fusion K splits are 1 and 8')
+    config = get_config(streams * hidden, 24, n, token_owned=k_splits == 1,
+                        split_override=8 if k_splits == 8 else None)
     # Each active Cube processes complete token tiles and the full K dimension.
-    active_cores = min(_C.get_num_sms(), n // block_num_tokens)
-    config['num_aic_cores'] = config['cores_per_split'] = active_cores
-    config['block_num_tokens'] = block_num_tokens
+    if k_splits == 1:
+        active_cores = min(_C.get_num_sms(), n // block_num_tokens)
+        config['num_aic_cores'] = config['cores_per_split'] = active_cores
+        config['block_num_tokens'] = block_num_tokens
+    elif n != config['cores_per_split'] * 128:
+        raise ValueError('K8 fusion currently requires one token tile per Cube')
     config['num_l0c_stages'] = 1
     config['num_token_blocks_per_chunk'] = config['cores_per_split']
-    fused = mhc_projection_coeff_kernel.compile(flat, phi, alpha, bias, pre, post, comb, **config)
+    workspace = ()
+    kernel_fn = mhc_projection_coeff_kernel
+    if k_splits == 8:
+        kernel_fn = mhc_projection_coeff_k8_kernel
+        workspace = (torch.empty(8, n, 24, dtype=torch.float32, device=x.device),
+                     torch.empty(8, n, dtype=torch.float32, device=x.device))
+    fused = kernel_fn.compile(flat, phi, alpha, bias, pre, post, comb, *workspace, **config)
     apply = mhc_pre_apply_flat_pipeline_asc.compile(
         x, prev2d, hi, h_blk=hidden, num_vec_cores=get_num_vec_cores(), pipeline_stages=3)
 
     def run():
         apply(x, prev2d, hi)
-        fused(flat, phi, alpha, bias, pre, post, comb)
+        fused(flat, phi, alpha, bias, pre, post, comb, *workspace)
         return outputs
 
     return run, dict(expected_kernels_per_call=2, projection_config=config,
