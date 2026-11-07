@@ -7,9 +7,10 @@ from shifted_pre_three_kernels import compute_coefficients
 
 @T.macro
 def shifted_coeff_epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
-                           accum, sums, token_begin, token_stage, aiv_id, hidden, l0c_stages):
-    # Each AIV owns 64 full tokens. Fixpipe splits the 128-row tile along M.
-    proj_ub = T.alloc_shared((64 * 24,), T.float32)
+                           accum, sums, token_begin, token_stage, aiv_id, hidden, l0c_stages,
+                           aiv_tokens):
+    # Fixpipe splits the tile along M between the two local AIVs.
+    proj_ub = T.alloc_shared((aiv_tokens * 24,), T.float32)
     scale_ub = T.alloc_shared((3, 8), T.float32)
     base_ub = T.alloc_shared((24, 8), T.float32)
     mixes_ub = T.alloc_shared((16 * 24,), T.float32)
@@ -18,15 +19,16 @@ def shifted_coeff_epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
     comb_in_ub = T.alloc_shared((16, 16), T.float32)
     comb_out_ub = T.alloc_shared((16, 16), T.float32)
 
-    T.dual_copy(accum[token_stage, 0:128, 0:24], T.view(proj_ub, (64, 24)), unit_flag_ctrl=3)
+    T.dual_copy(accum[token_stage, 0:2 * aiv_tokens, 0:24],
+                T.view(proj_ub, (aiv_tokens, 24)), unit_flag_ctrl=3)
     with T.SimtVF(threads=32):
         for i in T.Parallel(3):
             scale_ub[i, 0] = alpha[i]
         for i in T.Parallel(24):
             base_ub[i, 0] = bias[i]
 
-    aiv_begin = token_begin + aiv_id * 64
-    for tile in T.Serial(4):
+    aiv_begin = token_begin + aiv_id * aiv_tokens
+    for tile in T.Serial(aiv_tokens // 16):
         start = aiv_begin + tile * 16
         compute_coefficients(
             proj_ub, T.view(sums, (l0c_stages * 64,)), scale_ub, base_ub, mixes_ub,
@@ -40,9 +42,11 @@ def shifted_coeff_epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
 
 @T.macro
 def shifted_epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
-                     accum, sums, token_begin, token_stage, aiv_id, hidden, l0c_stages):
+                     accum, sums, token_begin, token_stage, aiv_id, hidden, l0c_stages,
+                     aiv_tokens):
     shifted_coeff_epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
-                           accum, sums, token_begin, token_stage, aiv_id, hidden, l0c_stages)
+                           accum, sums, token_begin, token_stage, aiv_id, hidden, l0c_stages,
+                           aiv_tokens)
     residual_ub = T.alloc_shared((4, 256), T.bfloat16)
     old_mix_ub = T.alloc_shared((8,), T.float32)
     hi_ub = T.alloc_shared((256,), T.bfloat16)

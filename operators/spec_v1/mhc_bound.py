@@ -4,9 +4,10 @@ import hashlib
 from mhc_fusion import SOURCE, allocate_outputs
 
 
-def make_projection_coeff_candidate(x, prev, phi, alpha, bias):
+def make_projection_coeff_candidate(x, prev, phi, alpha, bias, *, block_num_tokens=128):
     import sys
     import torch
+    from deep_gemm import _C
     from tile_kernels.config import get_num_vec_cores
 
     n, streams, hidden = x.shape
@@ -20,7 +21,10 @@ def make_projection_coeff_candidate(x, prev, phi, alpha, bias):
     hi, pre, post, comb = allocate_outputs(torch, n, x)
     outputs = hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(n, 4, 4)
     config = get_config(streams * hidden, 24, n, token_owned=True)
-    # Each active Cube owns exactly one complete 128-token tile for this A/B.
+    # Each active Cube processes complete token tiles and the full K dimension.
+    active_cores = min(_C.get_num_sms(), n // block_num_tokens)
+    config['num_aic_cores'] = config['cores_per_split'] = active_cores
+    config['block_num_tokens'] = block_num_tokens
     config['num_l0c_stages'] = 1
     config['num_token_blocks_per_chunk'] = config['cores_per_split']
     fused = mhc_projection_coeff_kernel.compile(flat, phi, alpha, bias, pre, post, comb, **config)

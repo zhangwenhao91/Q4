@@ -77,7 +77,8 @@ if [[ "$mode" == scan || "$mode" == batch ]]; then
 fi
 for n in "${shapes[@]}"; do
   if [[ "$mode" == fused-projection-coeff ]]; then
-    labels=(tilelang_deferred_k8_batch_prealloc tilelang_projection_coeff_prealloc)
+    labels=(tilelang_deferred_k8_batch_prealloc tilelang_projection_coeff_prealloc
+            tilelang_projection_coeff_m32_prealloc)
   elif [[ "$mode" == fused-pack128 ]]; then
     labels=(tilelang_fused_small_prealloc tilelang_fused_small_prealloc_pack128)
   elif [[ "$mode" == fused-apply ]]; then

@@ -90,7 +90,9 @@ def allocation_report(root, mode='alloc'):
 
 def projection_coeff_report(root):
     base = 'tilelang_deferred_k8_batch_prealloc'
-    candidate = 'tilelang_projection_coeff_prealloc'
+    variants = ((base, 'mhc_projection_split_partials'),
+                ('tilelang_projection_coeff_prealloc', 'mhc_projection_coeff_kernel'),
+                ('tilelang_projection_coeff_m32_prealloc', 'mhc_projection_coeff_kernel'))
     lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
              'H=5120 shifted Pre; CPU and pairwise checks passed. Both variants preallocate outputs.',
              'N | implementation | Cube cores | K splits | Pre event us (3 processes) | median us | paired K8/TL']
@@ -98,8 +100,7 @@ def projection_coeff_report(root):
         cases = [root / f'N{n}-rep{rep}' for rep in (1, 2, 3)]
         timings = [json.loads((case / 'summary.json').read_text()) for case in cases]
         metadata = json.loads((cases[0] / 'metadata.json').read_text())['variants']
-        for label, kernel in ((base, 'mhc_projection_split_partials'),
-                              (candidate, 'mhc_projection_coeff_kernel')):
+        for label, kernel in variants:
             times = [run[label]['event_us'] for run in timings]
             speedup = median(run[base]['event_us'] / value for run, value in zip(timings, times))
             config = metadata[label]['projection_config']

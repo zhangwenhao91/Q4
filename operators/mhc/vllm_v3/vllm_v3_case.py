@@ -171,9 +171,13 @@ def make_case(a):
             for name, source in meta.pop('generated_sources').items():
                 (a.output / f'{label}_{name}.cpp').write_text(source, encoding='utf-8')
             metadata[label] = meta
-        projection_coeff = 'tilelang_projection_coeff_prealloc'
-        if projection_coeff in (a.implementations or ()):
-            functions[projection_coeff], meta = make_projection_coeff_candidate(x, prev, phi, alpha, bias)
+        for projection_coeff, block_num_tokens in (
+                ('tilelang_projection_coeff_prealloc', 128),
+                ('tilelang_projection_coeff_m32_prealloc', 32)):
+            if projection_coeff not in (a.implementations or ()):
+                continue
+            functions[projection_coeff], meta = make_projection_coeff_candidate(
+                x, prev, phi, alpha, bias, block_num_tokens=block_num_tokens)
             for name, source in meta.pop('generated_sources').items():
                 (a.output / f'{projection_coeff}_{name}.cpp').write_text(source, encoding='utf-8')
             metadata[projection_coeff] = meta

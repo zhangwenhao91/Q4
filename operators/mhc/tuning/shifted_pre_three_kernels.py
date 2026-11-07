@@ -22,9 +22,8 @@ def _projection_body(
     block_mhc_mult3, num_aic_cores, num_k_splits, cores_per_split,
     num_hidden_blocks_per_split, num_l0b_stages, num_l0c_stages,
     num_token_blocks_per_chunk, deterministic, residual_l2_cache_ctrl, fused_shifted, epilogue,
-    reuse_apply=False, defer_reduce=False,
+    reuse_apply=False, defer_reduce=False, block_num_tokens=128,
 ):
-    block_num_tokens = 128
     reuse_pipeline = reuse_apply and num_l0c_stages > 1
     block_hidden = 128 if reuse_pipeline else 256
     mad_hidden = 64
@@ -57,7 +56,8 @@ def _projection_body(
         x_ub = T.alloc_shared((half_block_num_tokens, block_hidden), T.bfloat16)
         x_nz_ub = T.alloc_shared((nz_stage_rows, block_hidden), T.float32)
         T.annotate_layout({x_nz_ub: make_ascend_compact_nz_layout(x_nz_ub)})
-        sqrsum_ub = T.alloc_shared((num_l0c_stages, half_block_num_tokens), T.float32)
+        # The SIMD row-sum accumulator always writes a full 64-lane register.
+        sqrsum_ub = T.alloc_shared((num_l0c_stages, 64), T.float32)
         if reuse_apply:
             # Explicit slots keep each token tile's four-stream sum separate.
             old_mix_ub = T.alloc_shared((num_l0c_stages, 64, 4), T.float32)
@@ -308,7 +308,8 @@ def _projection_body(
                     epilogue_begin = (token_block_base + epilogue_stage * cores_per_split) * block_num_tokens
                     epilogue(x, prev_pre, alpha, bias, hi, pre, post, comb,
                                      out_mul_l0, sqrsum_ub, epilogue_begin, epilogue_stage,
-                                     aiv_id, mhc_hidden_size // 4, num_l0c_stages)
+                                     aiv_id, mhc_hidden_size // 4, num_l0c_stages,
+                                     half_block_num_tokens)
             else:
                 with T.PerCoreTask():
                     for store_phase in T.Serial(num_store_phases):
