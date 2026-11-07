@@ -128,6 +128,37 @@ def v3_fused_k8_report(root, hidden=5120, combined=False, large=False, automatic
     return '\n'.join(lines) + '\n'
 
 
+def kblock_report(root):
+    ac = 'ascendc_vllm_v3'
+    prefix = 'tilelang_projection_coeff_k8_batch_prealloc'
+    base = prefix + '_i2c1'
+    lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
+             'H=5120 shifted Pre; CPU and pairwise checks passed. TL outputs/workspace are preallocated.',
+             'K block width changes; K split remains 8. Each token tile has 40 K64 GEMM steps per split.',
+             'N | variant | K block | input slots | cast slots | blocks per split | event us (3 processes) | median us | paired AC/TL | paired K256-I2C1/TL']
+    for n in (512, 1024):
+        labels = [('K256-I2C1', base)]
+        if n == 512:
+            labels.append(('K256-I2C2', prefix + '_i2c2'))
+        labels.append(('K128-I2C2', prefix + '_k128_i2c2'))
+        cases = [root / f'N{n}-rep{rep}' for rep in (1, 2, 3)]
+        timings = [json.loads((case / 'summary.json').read_text()) for case in cases]
+        metadata = json.loads((cases[0] / 'metadata.json').read_text())['variants']
+        times = [run[ac]['event_us'] for run in timings]
+        lines.append(f'{n} | AC | - | - | - | - | {", ".join(f"{v:.3f}" for v in times)} | {median(times):.3f} | 1.0000 | -')
+        for variant, label in labels:
+            config = metadata[label]['projection_config']
+            times = [run[label]['event_us'] for run in timings]
+            ratios = [median(run[reference]['event_us'] / run[label]['event_us'] for run in timings)
+                      for reference in (ac, base)]
+            lines.append(f'{n} | {variant} | {config["block_hidden"]} | {config["input_stages"]} | '
+                         f'{config["cast_stages"]} | {config["num_hidden_blocks_per_split"]} | '
+                         f'{", ".join(f"{v:.3f}" for v in times)} | {median(times):.3f} | '
+                         f'{ratios[0]:.4f} | {ratios[1]:.4f}')
+            lines.extend(profile_lines(root / f'N{n}-profile-{label}', 'mhc_projection_coeff_k8_kernel'))
+    return '\n'.join(lines) + '\n'
+
+
 def i2c2_report(root):
     ac = 'ascendc_vllm_v3'
     tl = 'tilelang_projection_coeff_k8_batch_prealloc_i2c2'
@@ -408,6 +439,8 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
+    elif mode == 'v3-fused-k8-k128':
+        summary = kblock_report(root)
     elif mode == 'v3-fused-k8-i2c2':
         summary = i2c2_report(root)
     elif mode == 'v3-stages':

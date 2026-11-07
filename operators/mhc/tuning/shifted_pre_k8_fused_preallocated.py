@@ -500,8 +500,8 @@ def _projection_body(
     cast_stages,
     reuse_tail,
     balance_tail,
+    block_hidden,
 ):
-    block_hidden = 256
     mad_hidden = 64
     num_aivs = 2
     half_block_num_tokens = 128 // num_aivs
@@ -737,6 +737,7 @@ def mhc_projection_coeff_k8_kernel(
     cast_stages: int = 2,
     reuse_tail: bool = False,
     balance_tail: bool = False,
+    block_hidden: int = 256,
 ):
     tokens = T.const('tokens')
     flat_hidden = T.const('flat_hidden')
@@ -753,7 +754,7 @@ def mhc_projection_coeff_k8_kernel(
     assert tokens >= cores_per_split * 128
     if not balance_tail:
         assert tokens % (cores_per_split * 128) == 0
-    assert flat_hidden == num_hidden_blocks_per_split * num_k_splits * 256
+    assert flat_hidden == num_hidden_blocks_per_split * num_k_splits * block_hidden
     _projection_body(
         x,
         fn,
@@ -779,6 +780,7 @@ def mhc_projection_coeff_k8_kernel(
         cast_stages,
         reuse_tail,
         balance_tail,
+        block_hidden,
     )
 
 
@@ -805,6 +807,7 @@ def mhc_projection_coeff_k8_kernel_planes(
     cast_stages: int = 2,
     reuse_tail: bool = False,
     balance_tail: bool = True,
+    block_hidden: int = 256,
 ):
     assert balance_tail and not reuse_tail
     tokens = T.const('tokens')
@@ -822,7 +825,7 @@ def mhc_projection_coeff_k8_kernel_planes(
     assert tokens >= cores_per_split * 128
     if not balance_tail:
         assert tokens % (cores_per_split * 128) == 0
-    assert flat_hidden == num_hidden_blocks_per_split * num_k_splits * 256
+    assert flat_hidden == num_hidden_blocks_per_split * num_k_splits * block_hidden
     _projection_body(
         x,
         fn,
@@ -848,6 +851,7 @@ def mhc_projection_coeff_k8_kernel_planes(
         cast_stages,
         reuse_tail,
         balance_tail,
+        block_hidden,
     )
 
 
@@ -905,7 +909,7 @@ def mhc_pre_apply_flat_pipeline_asc(x, mix, o, h_blk, num_vec_cores: int, pipeli
 
 def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
                      input_stages=None, cast_stages=2, reuse_tail=False, balance_tail=False,
-                     k_splits=8):
+                     k_splits=8, block_hidden=256):
     """Return (launcher, metadata) with all allocations outside the launcher."""
     import torch
     from deep_gemm import _C
@@ -916,6 +920,8 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
         raise ValueError('Expected BF16 residual[N,4,H], H=4096/5120, positive N divisible by 128')
     if k_splits not in (4, 8) or (k_splits == 4 and not balance_tail):
         raise ValueError('K4 requires balanced AIV-plane scheduling; the default path uses K8')
+    if block_hidden not in (128, 256) or (reuse_tail and block_hidden != 256):
+        raise ValueError('K blocks must be 128 or 256; input-storage reuse requires K256')
     groups = min(_C.get_num_sms() // k_splits, n // 128)
     if groups == 0:
         raise ValueError('Not enough Cube cores for the requested K split count')
@@ -950,7 +956,7 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
         num_aic_cores=k_splits * groups,
         num_k_splits=k_splits,
         cores_per_split=groups,
-        num_hidden_blocks_per_split=4 * hidden // (k_splits * 256),
+        num_hidden_blocks_per_split=4 * hidden // (k_splits * block_hidden),
         num_l0b_stages=2,
         num_l0c_stages=1,
         num_token_blocks_per_chunk=groups,
@@ -958,6 +964,7 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
         cast_stages=cast_stages,
         reuse_tail=reuse_tail,
         balance_tail=balance_tail,
+        block_hidden=block_hidden,
     )
     flat = x.flatten(1)
     hi = torch.empty(n, hidden, dtype=x.dtype, device=x.device)
