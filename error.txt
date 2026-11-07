@@ -1,55 +1,91 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-stages
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-182347-3234276
-N=8192 N8192-rep1
-N=8192 N8192-rep2
-N=8192 N8192-rep3
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-182347-3234276
-Q4 revision: e2be1dae5e64e725b7a083e0dcf2aa5e1916aecf
-H=5120 N=8192; CPU and same-stage pairwise checks passed.
-Each process times all six callbacks on shared inputs, then profiles both combined callbacks.
-Standalone Post uses shared reference coefficients; combined Post consumes its own Pre coefficients.
-TL Pre preallocates; Post and upstream AscendC use their allocating APIs.
-run | stage | AC event us | TL event us | AC/TL | AC wall us | TL wall us
-rep1 | Pre | 472.578 | 525.981 | 0.8985 | 473.142 | 526.439
-rep1 | Post | 528.129 | 500.472 | 1.0553 | 528.538 | 500.988
-rep1 | Pre+Post | 985.474 | 1021.170 | 0.9650 | 986.068 | 1021.680
-rep1 | AC isolated sum 1000.708 us | combined 985.474 us | reduction 15.234 us
-ascendc_vllm_combined: kernel | calls | median us
-HcPost | 30 | 502.9695
-HcPre | 30 | 481.5475
-rep1 | TL isolated sum 1026.453 us | combined 1021.170 us | reduction 5.283 us
-tilelang_auto_combined: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 37.2010
-mhc_post_fwd_asc_kernel | 30 | 494.7930
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 276.5655
-mhc_projection_split_partials_kernel | 30 | 210.7445
-rep2 | Pre | 476.694 | 526.261 | 0.9058 | 478.497 | 526.731
-rep2 | Post | 527.811 | 501.269 | 1.0529 | 528.343 | 501.922
-rep2 | Pre+Post | 985.161 | 1021.721 | 0.9642 | 985.746 | 1022.366
-rep2 | AC isolated sum 1004.505 us | combined 985.161 us | reduction 19.344 us
-ascendc_vllm_combined: kernel | calls | median us
-HcPost | 30 | 502.0635
-HcPre | 30 | 479.8715
-rep2 | TL isolated sum 1027.530 us | combined 1021.721 us | reduction 5.809 us
-tilelang_auto_combined: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 37.4535
-mhc_post_fwd_asc_kernel | 30 | 496.2430
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 277.2775
-mhc_projection_split_partials_kernel | 30 | 209.9675
-rep3 | Pre | 481.089 | 525.539 | 0.9154 | 481.640 | 525.996
-rep3 | Post | 527.616 | 500.552 | 1.0541 | 528.059 | 500.885
-rep3 | Pre+Post | 989.970 | 1021.697 | 0.9689 | 990.456 | 1022.235
-rep3 | AC isolated sum 1008.706 us | combined 989.970 us | reduction 18.736 us
-ascendc_vllm_combined: kernel | calls | median us
-HcPost | 30 | 502.7035
-HcPre | 30 | 480.3425
-rep3 | TL isolated sum 1026.091 us | combined 1021.697 us | reduction 4.394 us
-tilelang_auto_combined: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 37.2500
-mhc_post_fwd_asc_kernel | 30 | 494.9445
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 277.1925
-mhc_projection_split_partials_kernel | 30 | 210.4490
-median | Pre | 476.694 | 525.981 | 0.9058 | 478.497 | 526.439
-median | Post | 527.811 | 500.552 | 1.0541 | 528.343 | 500.988
-median | Pre+Post | 985.474 | 1021.697 | 0.9650 | 986.068 | 1022.235
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8-i2c2
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-183858-3281660
+N=512 N512-rep1
+N=512 N512-rep2
+N=512 N512-rep3
+N=1024 N1024-rep1
+Failed stage: N1024-rep1
+Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-183858-3281660/N1024-rep1.log
+=== Exception headlines (up to 8) ===
+27: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_projection_coeff_k8_kernel_kernel with ACL error 107000, grid=16, dyn_ubuf_bytes=225952: [PID: 3283169] 2026-11-07-18:39:31.592.870 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
+=== First error contexts (up to 4) ===
+1: ninja: no work to do.
+2: {'implementation': 'ascendc_vllm_v3', 'output': 'layer_input', 'shape': [1024, 5120], 'dtype': 'torch.bfloat16', 'finite': True, 'max_abs': 0.0, 'rmse': 0.0, 'relative_l2': 0.0, 'gate': {'rtol': 0.02, 'atol': 0.02}, 'passed': True}
+3: {'implementation': 'ascendc_vllm_v3', 'output': 'next_pre_mix', 'shape': [1024, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 1.1324882507324219e-05, 'rmse': 2.877235934047669e-06, 'relative_l2': 5.668102923996137e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+4: {'implementation': 'ascendc_vllm_v3', 'output': 'post_mix', 'shape': [1024, 4, 1], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 2.002716064453125e-05, 'rmse': 5.582860073494336e-06, 'relative_l2': 5.148691961872959e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+5: {'implementation': 'ascendc_vllm_v3', 'output': 'comb_mix', 'shape': [1024, 4, 4], 'dtype': 'torch.float32', 'finite': True, 'max_abs': 8.344650268554688e-06, 'rmse': 2.1162278068293956e-06, 'relative_l2': 8.429528919535165e-06, 'gate': {'rtol': 0.001, 'atol': 0.0001}, 'passed': True}
+6: Traceback (most recent call last):
+7:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 306, in <module>
+8:     if __name__=='__main__': main()
+9:                              ^^^^^^
+10:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 191, in main
+11:     outputs=tuple(fn());torch.npu.synchronize()
+12:                   ^^^^
+13:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_k8_fused_preallocated.py", line 992, in run
+14:     fused(flat, phi, alpha, bias, pre, post, comb, partial_proj, partial_sq)
+15:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 228, in __call__
+16:     return self.torch_function(*args, **kwds)
+17:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+18:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/adapter/tvm_ffi.py", line 348, in func
+19:     executable(*tensor_list)
+20:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tvm_ffi/module.py", line 299, in __call__
+21:     return self.main(*args)
+22:            ^^^^^^^^^^^^^^^^
+23:   File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
+24:   File "<unknown>", line 0, in __tvm_ffi_main
+25:   File "<unknown>", line 0, in __tvm_ffi_mhc_projection_coeff_k8_kernel
+26:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/runtime/ascend_module.cc", line 697, in void tvm::ascend::AscendWrappedFunc<LaunchPolicy>::operator()(tvm::ffi::PackedArgs, tvm::ffi::Any*, void*, size_t) const [with LaunchPolicy = tvm::ascend::DirectLaunchPolicy; size_t = long unsigned int]
+27: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_projection_coeff_k8_kernel_kernel with ACL error 107000, grid=16, dyn_ubuf_bytes=225952: [PID: 3283169] 2026-11-07-18:39:31.592.870 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
+28: TraceBack (most recent call last):
+29:         The argument is invalid. Reason: rtsLaunchKernelWithHostArgs execution failed.
+30: 
+31: [ERROR] 2026-11-07-18:39:33 (PID:3283169, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+=== Final non-progress lines ===
+12:                   ^^^^
+13:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_k8_fused_preallocated.py", line 992, in run
+14:     fused(flat, phi, alpha, bias, pre, post, comb, partial_proj, partial_sq)
+15:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/kernel.py", line 228, in __call__
+16:     return self.torch_function(*args, **kwds)
+17:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+18:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/adapter/tvm_ffi.py", line 348, in func
+19:     executable(*tensor_list)
+20:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tvm_ffi/module.py", line 299, in __call__
+21:     return self.main(*args)
+22:            ^^^^^^^^^^^^^^^^
+23:   File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
+24:   File "<unknown>", line 0, in __tvm_ffi_main
+25:   File "<unknown>", line 0, in __tvm_ffi_mhc_projection_coeff_k8_kernel
+26:   File "/home/z30086261/Q4/third_party/tilelang-950/src/ascend/runtime/ascend_module.cc", line 697, in void tvm::ascend::AscendWrappedFunc<LaunchPolicy>::operator()(tvm::ffi::PackedArgs, tvm::ffi::Any*, void*, size_t) const [with LaunchPolicy = tvm::ascend::DirectLaunchPolicy; size_t = long unsigned int]
+27: RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_projection_coeff_k8_kernel_kernel with ACL error 107000, grid=16, dyn_ubuf_bytes=225952: [PID: 3283169] 2026-11-07-18:39:31.592.870 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
+28: TraceBack (most recent call last):
+29:         The argument is invalid. Reason: rtsLaunchKernelWithHostArgs execution failed.
+30: 
+31: [ERROR] 2026-11-07-18:39:33 (PID:3283169, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+Generated synchronization: /home/z30086261/Q4/results/mhc-small-split-k/20261107-183858-3281660/N1024-rep1/tilelang_projection_coeff_k8_batch_prealloc_i2c2_projection_coeff.cpp
+412: }
+413: 
+414: extern "C" __global__ __mix__(1, 2) void mhc_projection_coeff_k8_kernel_kernel(__gm__ float* alpha, __gm__ float* bias, __gm__ float* comb, __gm__ float* fn, __gm__ float* partial_sq, __gm__ float* post, __gm__ float* pre, __gm__ float* raw_rows, __gm__ bfloat16_t* x) {
+415:   asc_init();
+416:   __cbuf__ uint8_t *buf_dyn_l1 = (__cbuf__ uint8_t *)0;
+532:       }
+533:       for (int32_t __1 = 0; __1 < condval; ++__1) {
+534:         asc_sync_inter_arrive(PIPE_MTE3, 8);
+535:       }
+536:     }
+537:     asc_sync_inter_wait(PIPE_MTE2, 8);
+538:     asc_sync_wait(PIPE_MTE3, PIPE_MTE2, static_cast<event_t>(0));
+539:     asc_copy_gm2ub_align((__ubuf__ uint8_t*)((&(((__ubuf__ float*)buf_dyn_shmem)[49664]))), (__gm__ uint8_t*)((&(raw_rows[((((((int32_t)block_idx) >> 2) * 3072) + (vector_id * 1536)) + ((((int32_t)block_idx) & 3) * 384))]))), 8, 1536, 0, 0, 0, static_cast<asc_load_l2_cache_mode>(0), 98304, 1536);
+Saved: /home/z30086261/Q4/error.txt
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-183858-3281660
+Q4 revision: f0f28ea5d8aab10bd79a672236cef039e5cc240e
+H=5120 shifted Pre; forced K8, two input buffers, two cast buffers, separate tail storage.
+TL outputs/workspace are preallocated; AscendC uses the original vLLM v3 API allocations.
+Successful timings have passed CPU and pairwise checks. Failed cases have no speedup.
+N | run | AC event us | TL event us | AC/TL speedup
+512 | rep1 | 33.298 | 28.360 | 1.1741
+512 | rep2 | 33.217 | 28.276 | 1.1747
+512 | rep3 | 33.210 | 28.313 | 1.1730
+512 | median (3 processes) | 33.217 | 28.313 | 1.1741
+1024 | rep1 | FAILED | RuntimeError: aclrtLaunchKernelWithHostArgs failed for mhc_projection_coeff_k8_kernel_kernel with ACL error 107000, grid=16, dyn_ubuf_bytes=225952: [PID: 3283169] 2026-11-07-18:39:31.592.870 Invalid_Argument(EE1017): Checking whether the size of the dynamic shared memory exceeds the limit failed. Parameter dynamicShareMemSize is invalid. Reason: the sum of dynamic shared memory and kernel shared memory exceeds the maximum limit.
+1024 | no valid speedup
 (zwh) root@ubuntu162:/home/z30086261/Q4#
