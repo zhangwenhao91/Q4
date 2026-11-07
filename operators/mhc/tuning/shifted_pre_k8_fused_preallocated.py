@@ -371,6 +371,7 @@ def _reduce_split_coefficients(
     flat_hidden,
     input_buffer,
     reuse_tail,
+    plane_layout,
 ):
     proj = T.alloc_shared((384,), T.float32)
     sq = T.alloc_shared((16,), T.float32)
@@ -398,11 +399,19 @@ def _reduce_split_coefficients(
     with T.PerCoreTask():
         T.ascend_sync_inter_wait('PIPE_MTE2', 8)
         with T.Task():
-            raw_rows = T.view(partial_proj, (splits, tokens * 24))
-            first_raw = first_output * 24
-            T.copy(raw_rows[:, first_raw : first_raw + 384], batch_proj[:, 0:384])
-            T.copy(partial_sq[:, first_output : first_output + 16],
-                   batch_sq[:, sq_offset : sq_offset + 16])
+            if plane_layout:
+                raw_rows = T.view(partial_proj, (splits, 2, tokens // 2 * 24))
+                sq_planes = T.view(partial_sq, (splits, 2, tokens // 2))
+                first_raw = first_start * 24
+                T.copy(raw_rows[:, vector_id, first_raw : first_raw + 384], batch_proj[:, 0:384])
+                T.copy(sq_planes[:, vector_id, first_start : first_start + 16],
+                       batch_sq[:, sq_offset : sq_offset + 16])
+            else:
+                raw_rows = T.view(partial_proj, (splits, tokens * 24))
+                first_raw = first_output * 24
+                T.copy(raw_rows[:, first_raw : first_raw + 384], batch_proj[:, 0:384])
+                T.copy(partial_sq[:, first_output : first_output + 16],
+                       batch_sq[:, sq_offset : sq_offset + 16])
     with T.SimtVF(threads=32):
         for i in T.Parallel(3):
             scale_ub[i, 0] = alpha[i]
@@ -413,10 +422,16 @@ def _reduce_split_coefficients(
         start = (cube_id + job * cube_cores) * 16
         output_start = start // 64 * 128 + vector_id * 64 + start % 64
         if job != 0:
-            raw_begin = output_start * 24
-            T.copy(raw_rows[:, raw_begin : raw_begin + 384], batch_proj[:, 0:384])
-            T.copy(partial_sq[:, output_start : output_start + 16],
-                   batch_sq[:, sq_offset : sq_offset + 16])
+            if plane_layout:
+                raw_begin = start * 24
+                T.copy(raw_rows[:, vector_id, raw_begin : raw_begin + 384], batch_proj[:, 0:384])
+                T.copy(sq_planes[:, vector_id, start : start + 16],
+                       batch_sq[:, sq_offset : sq_offset + 16])
+            else:
+                raw_begin = output_start * 24
+                T.copy(raw_rows[:, raw_begin : raw_begin + 384], batch_proj[:, 0:384])
+                T.copy(partial_sq[:, output_start : output_start + 16],
+                       batch_sq[:, sq_offset : sq_offset + 16])
         with T.SimdVF():
             mask = S.pset(32)
             sq_mask = S.vcmps(S.vci(T.int32(0), T.int32), T.int32(16), mask, 'lt')
@@ -503,6 +518,9 @@ def _projection_body(
         core_in_split = core_id % cores_per_split
         num_token_blocks = T.ceildiv(num_tokens, 128)
         num_token_chunks = T.ceildiv(num_token_blocks, num_token_blocks_per_chunk)
+        if balance_tail:
+            out_planes = T.view(out_mul, (num_k_splits, 2, num_tokens // 2, 24))
+            sq_planes = T.view(sqrsum, (num_k_splits, 2, num_tokens // 2))
         x_ub = T.alloc_shared((half_block_num_tokens, block_hidden), T.bfloat16)
         x_nz_ub = T.alloc_shared((nz_stage_rows, block_hidden), T.float32)
         T.annotate_layout({x_nz_ub: make_ascend_compact_nz_layout(x_nz_ub)})
@@ -657,16 +675,26 @@ def _projection_body(
             with T.PerCoreTask():
                 with T.Task():
                     for partial_slot in T.Serial(num_valid_token_stages):
-                        partial_token = aiv_token_begin_base + partial_slot * cores_per_split * 128
-                        T.copy(
-                            partial_ub[partial_slot, 0:64, 0:24],
-                            out_mul[split_id, partial_token : partial_token + 64, 0:24],
-                        )
+                        if balance_tail:
+                            plane_begin = (token_block_base + partial_slot * cores_per_split) * 64
+                            T.copy(partial_ub[partial_slot, 0:64, 0:24],
+                                   out_planes[split_id, aiv_id, plane_begin : plane_begin + 64, 0:24])
+                        else:
+                            partial_token = aiv_token_begin_base + partial_slot * cores_per_split * 128
+                            T.copy(
+                                partial_ub[partial_slot, 0:64, 0:24],
+                                out_mul[split_id, partial_token : partial_token + 64, 0:24],
+                            )
                     for sum_slot in T.Serial(num_valid_sqrsum_stages):
-                        sum_token = aiv_token_begin_base + sum_slot * cores_per_split * 128
-                        T.copy(
-                            sqrsum_ub[sum_slot, 0:64], sqrsum[split_id, sum_token : sum_token + 64]
-                        )
+                        if balance_tail:
+                            plane_sum = (token_block_base + sum_slot * cores_per_split) * 64
+                            T.copy(sqrsum_ub[sum_slot, 0:64],
+                                   sq_planes[split_id, aiv_id, plane_sum : plane_sum + 64])
+                        else:
+                            sum_token = aiv_token_begin_base + sum_slot * cores_per_split * 128
+                            T.copy(
+                                sqrsum_ub[sum_slot, 0:64], sqrsum[split_id, sum_token : sum_token + 64]
+                            )
                 # Every producer publishes once, after its final workspace writes.
                 for _ in T.Serial(T.if_then_else(chunk_idx + 1 == num_token_chunks, 1, 0)):
                     T.ascend_sync_inter_arrive('PIPE_MTE3', 8)
@@ -686,6 +714,7 @@ def _projection_body(
             flat_hidden,
             x_ub,
             reuse_tail,
+            balance_tail,
         )
 
 
