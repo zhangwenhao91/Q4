@@ -107,8 +107,9 @@ def v3_fused_k8_report(root, hidden=5120, combined=False, large=False, automatic
                    for rep in (1, 2, 3)]
         if automatic:
             meta = json.loads((root / f'N{n}-rep1' / 'metadata.json').read_text())['variants'][tl]
+            kernel_scope = 'Pre kernels + Post' if combined else 'kernels'
             lines.append(f'{n} | TL dispatch | {meta["dispatch"]["implementation"]} | '
-                         f'{meta["expected_kernels_per_call"]} kernels')
+                         f'{meta["expected_kernels_per_call"]} {kernel_scope}')
         for rep, run in enumerate(timings, 1):
             lines.append(f'{n} | rep{rep} | {run[ac]["event_us"]:.3f} | {run[tl]["event_us"]:.3f} | '
                          f'{run[ac]["event_us"] / run[tl]["event_us"]:.4f} | '
@@ -333,8 +334,8 @@ if __name__ == '__main__':
         summary = fused_report(root)
     elif mode == 'auto-dispatch':
         summary = auto_dispatch_report(root)
-    elif mode == 'v3-auto-pre':
-        summary = v3_fused_k8_report(root, automatic=True)
+    elif mode in ('v3-auto-pre', 'v3-auto-combined'):
+        summary = v3_fused_k8_report(root, automatic=True, combined=mode.endswith('-combined'))
     elif mode in ('three-vs-two-large', 'three-vs-two-small'):
         summary = three_vs_two_report(root, small=mode.endswith('-small'))
     elif mode in ('v3-fused-k8-combined-buffers', 'v3-fused-k8-cast-reuse'):
