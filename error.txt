@@ -1,51 +1,52 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# python operators/mhc/tuning/summarize_fused_tail_instructions.py 
-Run: /home/z30086261/Q4/results/mhc-all-token-simulator/20261107-093730-2247240-fused-N128
-Times are raw simulator units. Families classify instructions, not complete source phases.
-Families can overlap in time; their shares need not add to 100%.
-
-core0.veccore0
-Vector span=6.39454, busy union=2.20848, busy/span=34.54%
-family | instruction records | busy union | % of Vector busy
-fused multiply-add | 1010 | 1.60848 | 72.83
-other vector | 394 | 1.51514 | 68.61
-vector loads / stores | 1533 | 1.13576 | 51.43
-conversion / packing | 779 | 1.06182 | 48.08
-group reduction / lane rearrange | 80 | 0.298787 | 13.53
-divide / reciprocal / sqrt / exp | 10 | 0.0775767 | 3.51
-top mnemonic | instruction records | busy union
-RV_VMULA | 1010 | 1.60848
-RV_VLDI | 1232 | 1.11636
-RV_VCVT_F2F | 779 | 1.06182
-RV_VMUL | 307 | 1.05211
-RV_VSTI | 301 | 1.04726
-RV_SEND | 4 | 0.284848
-RV_VSEL | 66 | 0.226666
-RV_POR | 22 | 0.0933333
-RV_VSELR | 10 | 0.0690957
-RV_VEXPDIF | 5 | 0.0375758
-RV_VADDS | 7 | 0.02909
-RV_VADD | 7 | 0.0254541
-
-core0.veccore1
-Vector span=6.31091, busy union=2.20848, busy/span=34.99%
-family | instruction records | busy union | % of Vector busy
-fused multiply-add | 1023 | 1.60847 | 72.83
-other vector | 394 | 1.51515 | 68.61
-vector loads / stores | 1523 | 1.13577 | 51.43
-conversion / packing | 776 | 1.06182 | 48.08
-group reduction / lane rearrange | 80 | 0.298795 | 13.53
-divide / reciprocal / sqrt / exp | 10 | 0.0775767 | 3.51
-top mnemonic | instruction records | busy union
-RV_VMULA | 1023 | 1.60847
-RV_VLDI | 1229 | 1.11637
-RV_VCVT_F2F | 776 | 1.06182
-RV_VMUL | 307 | 1.05212
-RV_VSTI | 294 | 1.04727
-RV_SEND | 4 | 0.284848
-RV_VSEL | 66 | 0.22667
-RV_POR | 22 | 0.0933333
-RV_VSELR | 10 | 0.0690957
-RV_VEXPDIF | 5 | 0.0375719
-RV_VADDS | 7 | 0.02909
-RV_VADD | 7 | 0.0254579
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh fused-pack128
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-101438-2308562
+N=128 N128-rep1
+Failed stage: N128-rep1
+Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-101438-2308562/N128-rep1.log
+=== Exception headlines (up to 8) ===
+109: tvm.error.InternalError: Unresolved call ir.Op(span=None, struct_info_=None, name="tl.simd.pset", op_type=None, description="", arguments=(), attrs_type_key="", num_inputs=-1, support_level=10)
+=== First error contexts (up to 4) ===
+1: 2026-11-07 10:14:43  [TileLang:tilelang.cache.kernel_cache:WARNING] (kernel_cache.py:379): Found kernel 'mhc_projection_token_pipeline' in memory cache. For better performance, consider using `@tilelang.jit` instead of direct kernel caching.
+2: 2026-11-07 10:14:43  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang begins to compile kernel `mhc_coeff_apply_small_pipeline` with `out_idx=None`
+3: Traceback (most recent call last):
+4:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
+5:     if __name__=='__main__': main()
+6:                              ^^^^^^
+7:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 96, in main
+8:     functions,refs,names,meta=make_case(a)
+9:                               ^^^^^^^^^^^^
+10:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 195, in make_case
+11:     functions[label], metadata[label] = bind_shifted_pre(
+12:                                         ^^^^^^^^^^^^^^^^^
+13:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_fused.py", line 609, in bind_shifted_pre
+14:     fused_tail = mhc_coeff_apply_small_pipeline.compile(
+15:                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+16:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 470, in compile
+17:     kernel_result = compile(
+18:                     ^^^^^^^^
+19:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 166, in compile
+20:     return cached(
+21:            ^^^^^^^
+22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/cache/__init__.py", line 91, in cached
+=== Final non-progress lines ===
+91:   File "<unknown>", line 0, in tvm::codegen::CodeGenC::VisitStmt_(tvm::tirx::SeqStmtNode const*)
+92:   File "<unknown>", line 0, in tvm::codegen::CodeGenTileLangCBase::VisitStmt(tvm::tirx::Stmt const&)
+93:   File "<unknown>", line 0, in tvm::codegen::CodeGenTileLangAscend::VisitStmt_(tvm::tirx::AttrStmtNode const*)
+94:   File "<unknown>", line 0, in tvm::codegen::CodeGenTileLangCBase::VisitStmt(tvm::tirx::Stmt const&)
+95:   File "<unknown>", line 0, in tvm::codegen::CodeGenTileLangAscend::VisitStmt_(tvm::tirx::ForNode const*)
+96:   File "<unknown>", line 0, in tvm::codegen::CodeGenC::VisitStmt_(tvm::tirx::ForNode const*)
+97:   File "<unknown>", line 0, in tvm::codegen::CodeGenTileLangCBase::VisitStmt(tvm::tirx::Stmt const&)
+98:   File "<unknown>", line 0, in tvm::codegen::CodeGenC::VisitStmt_(tvm::tirx::SeqStmtNode const*)
+99:   File "<unknown>", line 0, in tvm::codegen::CodeGenTileLangCBase::VisitStmt(tvm::tirx::Stmt const&)
+100:   File "<unknown>", line 0, in tvm::codegen::CodeGenTileLangAscend::VisitStmt_(tvm::tirx::BindNode const*)
+101:   File "<unknown>", line 0, in tvm::codegen::CodeGenC::PrintExpr[abi:cxx11](tvm::PrimExpr const&)
+102:   File "<unknown>", line 0, in tvm::codegen::CodeGenC::PrintExpr(tvm::PrimExpr const&, std::ostream&)
+103:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::ExprFunctor<void (tvm::PrimExpr const&, std::ostream&)>*, std::ostream&)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::ExprFunctor<void (tvm::PrimExpr const&, std::ostream&)>*, std::ostream&) const
+104:   File "<unknown>", line 0, in tvm::codegen::CodeGenTileLangAscend::VisitExpr_(tvm::tirx::CallNode const*, std::ostream&)
+105:   File "<unknown>", line 0, in tvm::codegen::CodeGenC::PrintExpr(tvm::PrimExpr const&, std::ostream&)
+106:   File "<unknown>", line 0, in tvm::NodeFunctor<void (tvm::ffi::ObjectRef const&, tvm::tirx::ExprFunctor<void (tvm::PrimExpr const&, std::ostream&)>*, std::ostream&)>::operator()(tvm::ffi::ObjectRef const&, tvm::tirx::ExprFunctor<void (tvm::PrimExpr const&, std::ostream&)>*, std::ostream&) const
+107:   File "<unknown>", line 0, in tvm::codegen::CodeGenTileLangAscend::VisitExpr_(tvm::tirx::CallNode const*, std::ostream&)
+108:   File "/home/z30086261/Q4/third_party/tilelang-950/3rdparty/tvm/src/target/source/codegen_c.cc", line 771, in virtual void tvm::codegen::CodeGenC::VisitExpr_(const tvm::tirx::CallNode*, std::ostream&)
+109: tvm.error.InternalError: Unresolved call ir.Op(span=None, struct_info_=None, name="tl.simd.pset", op_type=None, description="", arguments=(), attrs_type_key="", num_inputs=-1, support_level=10)
+110: [ERROR] 2026-11-07-10:14:46 (PID:2308568, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+Saved: /home/z30086261/Q4/error.txt
