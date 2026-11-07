@@ -1,22 +1,37 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-150229-2702172
-N=128 N128-rep1
-N=128 N128-rep2
-N=128 N128-rep3
-N=256 N256-rep1
-N=256 N256-rep2
-N=256 N256-rep3
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-150229-2702172
-Q4 revision: ad317b12cfe3f3bfa9736b86d18fd358dafaa753
-H=5120 shifted Pre; CPU and pairwise checks passed.
-AscendC uses the upstream vLLM v3 API with per-call allocation; TL reuses outputs and workspace.
-N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us
-128 | rep1 | 17.233 | 16.956 | 1.0163 | 17.614 | 17.400
-128 | rep2 | 21.960 | 16.903 | 1.2992 | 22.343 | 17.288
-128 | rep3 | 17.416 | 16.937 | 1.0282 | 17.748 | 17.436
-128 | median | 17.416 | 16.937 | 1.0282 | 17.748 | 17.400
-256 | rep1 | 21.710 | 18.492 | 1.1740 | 22.058 | 18.890
-256 | rep2 | 22.166 | 18.551 | 1.1949 | 22.531 | 19.050
-256 | rep3 | 21.725 | 18.515 | 1.1734 | 22.074 | 18.909
-256 | median | 21.725 | 18.515 | 1.1740 | 22.074 | 18.909
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8-combined-large
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-151757-2733293
+N=512 N512-rep1
+Failed stage: N512-rep1
+Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-151757-2733293/N512-rep1.log
+=== Exception headlines (up to 8) ===
+=== First error contexts (up to 4) ===
+10:                 [--mha-seqlen {3584,4096}]
+11:                 [--implementations IMPLEMENTATIONS [IMPLEMENTATIONS ...]]
+12:                 [--seed SEED]
+13:                 [--mhc-pattern {random,zero,prev_zero,prev_basis}]
+14:                 [--mhc-weights MHC_WEIGHTS] [--ac-metadata {cached,per_call}]
+15:                 [--warmup WARMUP] [--iters ITERS] [--rounds ROUNDS]
+16:                 [--check-only] [--profile PROFILE] [--profile-pipe-metrics]
+17:                 [--profile-aic-metric {Memory,L2Cache}] --output OUTPUT
+18: bench.py: error: --mhc-projection-l2-ab requires mhc_vllm_v3 Pre
+=== Final non-progress lines ===
+1: usage: bench.py [-h] --suite
+2:                 {mha,mha_scenarios,mha_bf16,mha_nostore,mha_stages,mha_finalize,mha_buffers,mha_stats_split,mhc_post,mhc_shifted,mhc_shifted_native,mhc_shifted_split,mhc_original,mhc_original_fused,mhc_original_big5120,mhc_vllm_v3}
+3:                 [--mhc-pipeline-flat] [--mhc-all-token-pipeline]
+4:                 [--mhc-vllm-stage {pre,post,combined}]
+5:                 [--mhc-vllm-hidden {4096,5120}] [--mhc-projection-l2-ab]
+6:                 [--mhc-apply-pipeline {256:1,256:3,1024:1,1024:3,1280:1,1280:3,5120:1,5120:3}]
+7:                 [--mhc-tail-config {14:1,14:2,28:1,28:2,56:1,56:2}]
+8:                 [--mhc-apply-block {256,512,1024,1280,2560,5120}]
+9:                 [--mhc-projection-splits {1,2,4,8}] [--tokens TOKENS]
+10:                 [--mha-seqlen {3584,4096}]
+11:                 [--implementations IMPLEMENTATIONS [IMPLEMENTATIONS ...]]
+12:                 [--seed SEED]
+13:                 [--mhc-pattern {random,zero,prev_zero,prev_basis}]
+14:                 [--mhc-weights MHC_WEIGHTS] [--ac-metadata {cached,per_call}]
+15:                 [--warmup WARMUP] [--iters ITERS] [--rounds ROUNDS]
+16:                 [--check-only] [--profile PROFILE] [--profile-pipe-metrics]
+17:                 [--profile-aic-metric {Memory,L2Cache}] --output OUTPUT
+18: bench.py: error: --mhc-projection-l2-ab requires mhc_vllm_v3 Pre
+Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
