@@ -5,6 +5,8 @@
 bind_shifted_pre compiles two kernels and allocates outputs/workspace once.
 Use its launcher on one stream. Returned outputs alias across calls.
 Apply consumes prev_pre. The generated next_pre is for the next layer.
+For a current-pre comparison, pass prev_pre=None and current_pre=True to run
+the fused projection/coefficients first, then Apply with its newly generated pre.
 
 Usage from the repository root:
     from operators.mhc.tuning.shifted_pre_k8_fused_preallocated import bind_shifted_pre
@@ -761,7 +763,7 @@ def mhc_pre_apply_flat_pipeline_asc(x, mix, o, h_blk, num_vec_cores: int, pipeli
             T.copy(o_ub, o[pid_n, pid_h * h_blk])
 
 
-def bind_shifted_pre(x, prev_pre, phi, alpha, bias):
+def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False):
     """Return (launcher, metadata) with all allocations outside the launcher."""
     import torch
     from deep_gemm import _C
@@ -773,15 +775,16 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias):
     groups = min(_C.get_num_sms() // 8, n // 128)
     if groups != n // 128:
         raise ValueError('K8 fusion requires one 128-token tile per Cube in each split')
-    if tuple(prev_pre.shape) not in ((n, 4), (n, 4, 1)):
+    if not current_pre and tuple(prev_pre.shape) not in ((n, 4), (n, 4, 1)):
         raise ValueError('Expected prev_pre[N,4] or prev_pre[N,4,1]')
     inputs = (
         (x, (n, 4, 5120), torch.bfloat16),
-        (prev_pre, tuple(prev_pre.shape), torch.float32),
         (phi, (24, 20480), torch.float32),
         (alpha, (3,), torch.float32),
         (bias, (24,), torch.float32),
     )
+    if not current_pre:
+        inputs += ((prev_pre, tuple(prev_pre.shape), torch.float32),)
     for tensor, shape, dtype in inputs:
         if tuple(tensor.shape) != shape or tensor.dtype != dtype or tensor.device != x.device:
             raise ValueError('Input shape, dtype or device mismatch')
@@ -798,11 +801,12 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias):
         num_l0c_stages=1,
         num_token_blocks_per_chunk=groups,
     )
-    flat, prev = x.flatten(1), prev_pre.view(n, 4)
+    flat = x.flatten(1)
     hi = torch.empty(n, hidden, dtype=x.dtype, device=x.device)
     packed = torch.empty(n * 24, dtype=torch.float32, device=x.device)
     pre, post, comb = packed.split((n * 4, n * 4, n * 16))
     pre, post, comb = pre.view(n, 4), post.view(n, 4), comb.view(n, 16)
+    mix = pre if current_pre else prev_pre.view(n, 4)
     partial_proj = torch.empty(8, n, 24, dtype=torch.float32, device=x.device)
     partial_sq = torch.empty(8, n, dtype=torch.float32, device=x.device)
     outputs = hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(n, 4, 4)
@@ -810,19 +814,26 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias):
         flat, phi, alpha, bias, pre, post, comb, partial_proj, partial_sq, **config
     )
     apply = mhc_pre_apply_flat_pipeline_asc.compile(
-        x, prev, hi, h_blk=hidden, num_vec_cores=get_num_vec_cores(), pipeline_stages=3
+        x, mix, hi, h_blk=hidden, num_vec_cores=get_num_vec_cores(), pipeline_stages=3
     )
 
-    def run():
-        apply(x, prev, hi)
-        fused(flat, phi, alpha, bias, pre, post, comb, partial_proj, partial_sq)
-        return outputs
+    if current_pre:
+        def run():
+            fused(flat, phi, alpha, bias, pre, post, comb, partial_proj, partial_sq)
+            apply(x, mix, hi)
+            return outputs
+    else:
+        def run():
+            apply(x, mix, hi)
+            fused(flat, phi, alpha, bias, pre, post, comb, partial_proj, partial_sq)
+            return outputs
 
     return run, dict(
         expected_kernels_per_call=2,
         projection_config=config,
         output_preallocation=True,
         workspace_reuse=True,
+        current_pre=current_pre,
         per_call_allocations=0,
         generated_sources={
             'apply': apply.get_kernel_source(),

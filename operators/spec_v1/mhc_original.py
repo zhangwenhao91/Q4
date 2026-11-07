@@ -65,7 +65,21 @@ def make_case(a):
     functions = {label: original_fused if fused else original}
     tl_meta = None
     upstream_meta = None
+    standalone_label = 'tilelang_current_pre_k8_fused_prealloc_h5120'
     if fused:
+        if standalone_label in (a.implementations or ()):
+            if hidden != 5120:
+                raise ValueError('Standalone fused K8 comparison requires H=5120')
+            import sys
+            sys.path.insert(0, str(ROOT / 'operators/mhc/tuning'))
+            from shifted_pre_k8_fused_preallocated import bind_shifted_pre
+            launcher, tl_meta = bind_shifted_pre(x, None, phi, alpha, bias, current_pre=True)
+            for name, generated in tl_meta.pop('generated_sources').items():
+                (a.output / f'{standalone_label}_{name}.cpp').write_text(generated, encoding='utf-8')
+            def standalone_current_pre():
+                hi, _, post, comb = launcher()
+                return hi, post, comb
+            functions[standalone_label] = standalone_current_pre
         from mhc_current_pre import make_candidate
         selected = a.implementations
         pipeline_label = f'tilelang_current_pre_all_token_l2_default_h{hidden}'
@@ -110,6 +124,8 @@ def make_case(a):
                               if big5120 else None),
         timing_boundary=('Fused PreSinkhorn, needBackward=False; three main outputs, no next_pre output' if fused else
                          'PreV2 + Sinkhorn, four outputs plus PreV2 caches') +
-                        '; all allocation/workspace included; no PyTorch apply; extension bound before timing',
+                        ('; AC includes allocation/workspace; standalone TL preallocates outputs/workspace; extension bound before timing'
+                         if standalone_label in functions else
+                         '; all allocation/workspace included; no PyTorch apply; extension bound before timing'),
         weights='synthetic, same seed and random draw order as shifted_case',
         provenance_note='Pinned clean source plus installed library hash; build provenance is not a binary equivalence proof')
