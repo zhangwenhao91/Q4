@@ -1,34 +1,45 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh fused-projection-coeff-k8
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-111639-2409250
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-112643-2429336
 N=128 N128-rep1
 N=128 N128-rep2
 N=128 N128-rep3
 N=128 N128-profile-tilelang_deferred_k8_batch_prealloc
 N=128 N128-profile-tilelang_projection_coeff_k8_prealloc
+N=128 N128-profile-tilelang_projection_coeff_k8_batch_prealloc
 N=256 N256-rep1
 N=256 N256-rep2
 N=256 N256-rep3
 N=256 N256-profile-tilelang_deferred_k8_batch_prealloc
 N=256 N256-profile-tilelang_projection_coeff_k8_prealloc
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-111639-2409250
-Q4 revision: a5d797bb4a1c0e598d3f57af0ce74f10b34aca8c
+N=256 N256-profile-tilelang_projection_coeff_k8_batch_prealloc
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-112643-2429336
+Q4 revision: cef21a10ff30033aa2ae5855dceb0e61a1732d25
 H=5120 shifted Pre; CPU and pairwise checks passed. Both variants preallocate outputs.
 N | implementation | Cube cores | K splits | Pre event us (3 processes) | median us | paired K8/TL
-128 | tilelang_deferred_k8_batch_prealloc | 8 | 8 | 18.483, 18.642, 18.460 | 18.483 | 1.0000
+128 | tilelang_deferred_k8_batch_prealloc | 8 | 8 | 18.519, 18.554, 18.577 | 18.554 | 1.0000
 N128-profile-tilelang_deferred_k8_batch_prealloc: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 5.5160
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.0920
-mhc_projection_split_partials_kernel | 30 | 9.8330
-128 | tilelang_projection_coeff_k8_prealloc | 8 | 8 | 19.055, 19.076, 19.045 | 19.055 | 0.9700
+mhc_coeff_token_pipeline_kernel | 30 | 5.4370
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.1170
+mhc_projection_split_partials_kernel | 30 | 9.8705
+128 | tilelang_projection_coeff_k8_prealloc | 8 | 8 | 19.043, 19.076, 19.152 | 19.076 | 0.9725
 N128-profile-tilelang_projection_coeff_k8_prealloc: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.0610
-mhc_projection_coeff_k8_kernel_kernel | 30 | 15.6985
-256 | tilelang_deferred_k8_batch_prealloc | 16 | 8 | 20.058, 20.078, 20.035 | 20.058 | 1.0000
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.0890
+mhc_projection_coeff_k8_kernel_kernel | 30 | 15.7535
+128 | tilelang_projection_coeff_k8_batch_prealloc | 8 | 8 | 16.873, 16.925, 16.978 | 16.925 | 1.0963
+N128-profile-tilelang_projection_coeff_k8_batch_prealloc: kernel | calls | median us
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 3.0800
+mhc_projection_coeff_k8_kernel_kernel | 30 | 13.5895
+256 | tilelang_deferred_k8_batch_prealloc | 16 | 8 | 20.032, 20.024, 20.078 | 20.032 | 1.0000
 N256-profile-tilelang_deferred_k8_batch_prealloc: kernel | calls | median us
-mhc_coeff_token_pipeline_kernel | 30 | 5.5540
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.1365
-mhc_projection_split_partials_kernel | 30 | 10.1445
-256 | tilelang_projection_coeff_k8_prealloc | 16 | 8 | 20.605, 20.589, 20.600 | 20.600 | 0.9735
+mhc_coeff_token_pipeline_kernel | 30 | 5.4550
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.1425
+mhc_projection_split_partials_kernel | 30 | 10.1495
+256 | tilelang_projection_coeff_k8_prealloc | 16 | 8 | 20.571, 20.548, 20.531 | 20.548 | 0.9745
 N256-profile-tilelang_projection_coeff_k8_prealloc: kernel | calls | median us
-mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.3350
-mhc_projection_coeff_k8_kernel_kernel | 30 | 16.2170
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.2765
+mhc_projection_coeff_k8_kernel_kernel | 30 | 16.2145
+256 | tilelang_projection_coeff_k8_batch_prealloc | 16 | 8 | 18.492, 18.495, 18.508 | 18.495 | 1.0833
+N256-profile-tilelang_projection_coeff_k8_batch_prealloc: kernel | calls | median us
+mhc_pre_apply_flat_pipeline_asc_kernel | 30 | 4.2995
+mhc_projection_coeff_k8_kernel_kernel | 30 | 14.1220
+(zwh) root@ubuntu162:/home/z30086261/Q4#
