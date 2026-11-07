@@ -175,12 +175,18 @@ def make_case(a):
                 ('tilelang_projection_coeff_prealloc', 128, 1, False),
                 ('tilelang_projection_coeff_m32_prealloc', 32, 1, False),
                 ('tilelang_projection_coeff_k8_prealloc', 128, 8, False),
+                ('tilelang_projection_coeff_k8_batch_prealloc_reference', 128, 8, True),
                 ('tilelang_projection_coeff_k8_batch_prealloc', 128, 8, True)):
             if projection_coeff not in (a.implementations or ()):
                 continue
-            functions[projection_coeff], meta = make_projection_coeff_candidate(
-                x, prev, phi, alpha, bias, block_num_tokens=block_num_tokens, k_splits=k_splits,
-                batch_partials=batch_partials)
+            if projection_coeff == 'tilelang_projection_coeff_k8_batch_prealloc':
+                sys.path.insert(0, str(ROOT / 'operators/mhc/tuning'))
+                from shifted_pre_k8_fused_preallocated import bind_shifted_pre
+                functions[projection_coeff], meta = bind_shifted_pre(x, prev, phi, alpha, bias)
+            else:
+                functions[projection_coeff], meta = make_projection_coeff_candidate(
+                    x, prev, phi, alpha, bias, block_num_tokens=block_num_tokens, k_splits=k_splits,
+                    batch_partials=batch_partials)
             for name, source in meta.pop('generated_sources').items():
                 (a.output / f'{projection_coeff}_{name}.cpp').write_text(source, encoding='utf-8')
             metadata[projection_coeff] = meta

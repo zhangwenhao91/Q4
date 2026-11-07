@@ -1,5 +1,6 @@
 """Summarize the small-N split-K A/B and device profiles."""
 import json
+import hashlib
 from pathlib import Path
 from statistics import median
 import sys
@@ -111,6 +112,31 @@ def v3_fused_k8_report(root):
     return '\n'.join(lines) + '\n'
 
 
+def fused_k8_refactor_report(root):
+    candidate = 'tilelang_projection_coeff_k8_batch_prealloc'
+    reference = candidate + '_reference'
+    lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
+             'H=5120 shifted Pre; CPU and pairwise checks passed. Both variants preallocate outputs and workspace.',
+             'N | run | original us | standalone us | original/standalone | device source match (apply, fused)']
+    for n in (128, 256):
+        ratios = []
+        for rep in (1, 2, 3):
+            case = root / f'N{n}-rep{rep}'
+            timings = json.loads((case / 'summary.json').read_text())
+            original = timings[reference]['event_us']
+            standalone = timings[candidate]['event_us']
+            ratio = original / standalone
+            ratios.append(ratio)
+            matches = []
+            for kernel in ('apply', 'projection_coeff'):
+                hashes = [hashlib.sha256((case / f'{label}_{kernel}.cpp').read_bytes()).hexdigest()
+                          for label in (reference, candidate)]
+                matches.append(hashes[0] == hashes[1])
+            lines.append(f'{n} | rep{rep} | {original:.3f} | {standalone:.3f} | {ratio:.4f} | {matches}')
+        lines.append(f'{n} | median paired speedup | {median(ratios):.4f}')
+    return '\n'.join(lines) + '\n'
+
+
 def projection_coeff_report(root, k8=False):
     base = 'tilelang_deferred_k8_batch_prealloc'
     variants = ((base, 'mhc_projection_split_partials'),
@@ -173,6 +199,8 @@ if __name__ == '__main__':
         summary = fused_report(root)
     elif mode == 'v3-fused-k8':
         summary = v3_fused_k8_report(root)
+    elif mode == 'fused-k8-refactor':
+        summary = fused_k8_refactor_report(root)
     elif mode in ('fused-apply', 'fused-pack128'):
         summary = fused_apply_report(root, pack128=mode == 'fused-pack128')
     elif mode in ('fused-projection-coeff', 'fused-projection-coeff-k8'):
