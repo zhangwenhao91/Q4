@@ -1,53 +1,30 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_original.sh h4096-fused-k8-ab
-Results: /home/z30086261/Q4/results/mhc-original/20261107-144616-h4096-fused-k8-ab-2676464
+Results: /home/z30086261/Q4/results/mhc-original/20261107-145053-h4096-fused-k8-ab-2682941
 Timing H=4096 N128-rep1
-Failed stage: N128-rep1
-Log: /home/z30086261/Q4/results/mhc-original/20261107-144616-h4096-fused-k8-ab-2676464/N128-rep1.log
-=== Exception headlines (up to 8) ===
-35: AssertionError: Assertion failed
-=== First error contexts (up to 4) ===
-1: Failed to load op 'kv_quant_sparse_flash_attention_v2': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-2: Failed to register legacy module 'kv_quant_sparse_flash_attention': cannot import name 'convert_kv_quant_sparse_flash_attention' from 'cann_ops_transformer.ops.attention.kv_quant_sparse_flash_attention_v2.graph_convert_kv_quant_sparse_flash_attention' (/root/miniconda3/envs/zwh/lib/python3.12/site-packages/cann_ops_transformer/ops/attention/kv_quant_sparse_flash_attention_v2/graph_convert_kv_quant_sparse_flash_attention.py)
-3: Traceback (most recent call last):
-4:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
-5:     if __name__=='__main__': main()
-6:                              ^^^^^^
-7:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 91, in main
-8:     functions,refs,names,meta=make_case(a)
-9:                               ^^^^^^^^^^^^
-10:   File "/home/z30086261/Q4/operators/spec_v1/mhc_original.py", line 74, in make_case
-11:     launcher, tl_meta = bind_shifted_pre(x, None, phi, alpha, bias, current_pre=True)
-12:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-13:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_k8_fused_preallocated.py", line 819, in bind_shifted_pre
-14:     fused = mhc_projection_coeff_k8_kernel.compile(
-15:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-16:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 469, in compile
-17:     prim_func = self.get_tir(*args, **kwargs)
-18:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-19:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 390, in get_tir
-20:     tir = self.func(*args, **kwargs)
-21:           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1709, in __call__
-=== Final non-progress lines ===
-17:     prim_func = self.get_tir(*args, **kwargs)
-18:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-19:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/jit/__init__.py", line 390, in get_tir
-20:     tir = self.func(*args, **kwargs)
-21:           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-22:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1709, in __call__
-23:     return self.get_tir(*args, **kwargs)
-24:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-25:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1700, in get_tir
-26:     template = self._build_tir_template(**bound.compile_kwargs)
-27:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-28:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 1671, in _build_tir_template
-29:     self.ir_gen.gen(builder)(**self.tensor_args, **kwargs)
-30:   File "/home/z30086261/Q4/operators/mhc/tuning/shifted_pre_k8_fused_preallocated.py", line 695, in mhc_projection_coeff_k8_kernel
-31:     assert flat_hidden in (16384, 20480)
-32: 
-33:   File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/tilelang/language/eager/builder.py", line 906, in assert_expr
-34:     raise AssertionError(msg)
-35: AssertionError: Assertion failed
-36: [ERROR] 2026-11-07-14:46:22 (PID:2676470, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+Timing H=4096 N128-rep2
+Timing H=4096 N128-rep3
+Timing H=4096 N256-rep1
+Timing H=4096 N256-rep2
+Timing H=4096 N256-rep3
+Run: /home/z30086261/Q4/results/mhc-original/20261107-145053-h4096-fused-k8-ab-2682941
+AC reference: ascendc_original_fused_h4096
+Event time: median across rounds (us); ratios > 1 mean TL is faster.
+case | AC us | TL us | AC/TL
+N128-rep1 | 24.987 | 15.271 | 1.6363
+N128-rep2 | 21.837 | 15.251 | 1.4318
+N128-rep3 | 19.914 | 15.237 | 1.3070
+N256-rep1 | 21.132 | 16.587 | 1.2740
+N256-rep2 | 20.931 | 16.644 | 1.2576
+N256-rep3 | 25.791 | 16.595 | 1.5541
+Cases with timing: 6
+Runner log tail (last 20 lines):
+H=4096 current-pre semantics; AscendC uses its original allocations; standalone TL fully preallocates.
+Q4 revision: f65706e7e47c84714de00d5265e06fd34281b2e1
+CPU and pairwise correctness passed for N128-rep1
+CPU and pairwise correctness passed for N128-rep2
+CPU and pairwise correctness passed for N128-rep3
+CPU and pairwise correctness passed for N256-rep1
+CPU and pairwise correctness passed for N256-rep2
+CPU and pairwise correctness passed for N256-rep3
 Saved: /home/z30086261/Q4/error.txt
 (zwh) root@ubuntu162:/home/z30086261/Q4#
