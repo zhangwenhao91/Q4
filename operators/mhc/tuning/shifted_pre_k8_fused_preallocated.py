@@ -373,6 +373,7 @@ def _reduce_split_coefficients(
     reuse_tail,
     plane_layout,
 ):
+    assert not plane_layout or not reuse_tail
     proj = T.alloc_shared((384,), T.float32)
     sq = T.alloc_shared((16,), T.float32)
     if reuse_tail:
@@ -400,11 +401,9 @@ def _reduce_split_coefficients(
         T.ascend_sync_inter_wait('PIPE_MTE2', 8)
         with T.Task():
             if plane_layout:
-                raw_rows = T.view(partial_proj, (splits, 2, tokens // 2 * 24))
-                sq_planes = T.view(partial_sq, (splits, 2, tokens // 2))
-                first_raw = first_start * 24
-                T.copy(raw_rows[:, vector_id, first_raw : first_raw + 384], batch_proj[:, 0:384])
-                T.copy(sq_planes[:, vector_id, first_start : first_start + 16],
+                batch_rows = T.view(batch_proj, (splits, 16, 24))
+                T.copy(partial_proj[:, vector_id, first_start : first_start + 16, 0:24], batch_rows)
+                T.copy(partial_sq[:, vector_id, first_start : first_start + 16],
                        batch_sq[:, sq_offset : sq_offset + 16])
             else:
                 raw_rows = T.view(partial_proj, (splits, tokens * 24))
@@ -423,9 +422,8 @@ def _reduce_split_coefficients(
         output_start = start // 64 * 128 + vector_id * 64 + start % 64
         if job != 0:
             if plane_layout:
-                raw_begin = start * 24
-                T.copy(raw_rows[:, vector_id, raw_begin : raw_begin + 384], batch_proj[:, 0:384])
-                T.copy(sq_planes[:, vector_id, start : start + 16],
+                T.copy(partial_proj[:, vector_id, start : start + 16, 0:24], batch_rows)
+                T.copy(partial_sq[:, vector_id, start : start + 16],
                        batch_sq[:, sq_offset : sq_offset + 16])
             else:
                 raw_begin = output_start * 24
@@ -518,9 +516,6 @@ def _projection_body(
         core_in_split = core_id % cores_per_split
         num_token_blocks = T.ceildiv(num_tokens, 128)
         num_token_chunks = T.ceildiv(num_token_blocks, num_token_blocks_per_chunk)
-        if balance_tail:
-            out_planes = T.view(out_mul, (num_k_splits, 2, num_tokens // 2, 24))
-            sq_planes = T.view(sqrsum, (num_k_splits, 2, num_tokens // 2))
         x_ub = T.alloc_shared((half_block_num_tokens, block_hidden), T.bfloat16)
         x_nz_ub = T.alloc_shared((nz_stage_rows, block_hidden), T.float32)
         T.annotate_layout({x_nz_ub: make_ascend_compact_nz_layout(x_nz_ub)})
@@ -678,7 +673,7 @@ def _projection_body(
                         if balance_tail:
                             plane_begin = (token_block_base + partial_slot * cores_per_split) * 64
                             T.copy(partial_ub[partial_slot, 0:64, 0:24],
-                                   out_planes[split_id, aiv_id, plane_begin : plane_begin + 64, 0:24])
+                                   out_mul[split_id, aiv_id, plane_begin : plane_begin + 64, 0:24])
                         else:
                             partial_token = aiv_token_begin_base + partial_slot * cores_per_split * 128
                             T.copy(
@@ -689,7 +684,7 @@ def _projection_body(
                         if balance_tail:
                             plane_sum = (token_block_base + sum_slot * cores_per_split) * 64
                             T.copy(sqrsum_ub[sum_slot, 0:64],
-                                   sq_planes[split_id, aiv_id, plane_sum : plane_sum + 64])
+                                   sqrsum[split_id, aiv_id, plane_sum : plane_sum + 64])
                         else:
                             sum_token = aiv_token_begin_base + sum_slot * cores_per_split * 128
                             T.copy(
@@ -753,6 +748,75 @@ def mhc_projection_coeff_k8_kernel(
     comb: T.Tensor[(tokens, 16), T.float32]
     partial_proj: T.Tensor[(8, tokens, 24), T.float32]
     partial_sq: T.Tensor[(8, tokens), T.float32]
+    assert num_k_splits == 8 and num_l0c_stages == 1
+    assert tokens >= cores_per_split * 128
+    if not balance_tail:
+        assert tokens % (cores_per_split * 128) == 0
+    assert flat_hidden == num_hidden_blocks_per_split * num_k_splits * 256
+    _projection_body(
+        x,
+        fn,
+        partial_proj,
+        partial_sq,
+        alpha,
+        bias,
+        pre,
+        post,
+        comb,
+        tokens,
+        24,
+        flat_hidden,
+        block_mhc_mult3,
+        num_aic_cores,
+        num_k_splits,
+        cores_per_split,
+        num_hidden_blocks_per_split,
+        num_l0b_stages,
+        num_l0c_stages,
+        num_token_blocks_per_chunk,
+        input_stages,
+        cast_stages,
+        reuse_tail,
+        balance_tail,
+    )
+
+
+@tilelang.jit
+def mhc_projection_coeff_k8_kernel_planes(
+    x,
+    fn,
+    alpha,
+    bias,
+    pre,
+    post,
+    comb,
+    partial_proj,
+    partial_sq,
+    block_mhc_mult3: int,
+    num_aic_cores: int,
+    num_k_splits: int,
+    cores_per_split: int,
+    num_hidden_blocks_per_split: int,
+    num_l0b_stages: int,
+    num_l0c_stages: int,
+    num_token_blocks_per_chunk: int,
+    input_stages: int = 2,
+    cast_stages: int = 2,
+    reuse_tail: bool = False,
+    balance_tail: bool = True,
+):
+    assert balance_tail and not reuse_tail
+    tokens = T.const('tokens')
+    flat_hidden = T.const('flat_hidden')
+    x: T.Tensor[(tokens, flat_hidden), T.bfloat16]
+    fn: T.Tensor[(24, flat_hidden), T.float32]
+    alpha: T.Tensor[(3,), T.float32]
+    bias: T.Tensor[(24,), T.float32]
+    pre: T.Tensor[(tokens, 4), T.float32]
+    post: T.Tensor[(tokens, 4), T.float32]
+    comb: T.Tensor[(tokens, 16), T.float32]
+    partial_proj: T.Tensor[(8, 2, tokens // 2, 24), T.float32]
+    partial_sq: T.Tensor[(8, 2, tokens // 2), T.float32]
     assert num_k_splits == 8 and num_l0c_stages == 1
     assert tokens >= cores_per_split * 128
     if not balance_tail:
@@ -857,6 +921,8 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
             groups -= 1
     if input_stages not in (None, 1, 2) or cast_stages not in (1, 2):
         raise ValueError('Input and cast buffering must use one or two stages')
+    if balance_tail and reuse_tail:
+        raise ValueError('Balanced Cube scheduling uses its own explicit AIV workspace planes')
     if input_stages is None:
         input_stages = 1 if n > 8 * groups * 32 else 2
     if not current_pre and tuple(prev_pre.shape) not in ((n, 4), (n, 4, 1)):
@@ -895,10 +961,16 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
     pre, post, comb = packed.split((n * 4, n * 4, n * 16))
     pre, post, comb = pre.view(n, 4), post.view(n, 4), comb.view(n, 16)
     mix = pre if current_pre else prev_pre.view(n, 4)
-    partial_proj = torch.empty(8, n, 24, dtype=torch.float32, device=x.device)
-    partial_sq = torch.empty(8, n, dtype=torch.float32, device=x.device)
+    kernel_fn = mhc_projection_coeff_k8_kernel
+    if balance_tail:
+        kernel_fn = mhc_projection_coeff_k8_kernel_planes
+        partial_proj = torch.empty(8, 2, n // 2, 24, dtype=torch.float32, device=x.device)
+        partial_sq = torch.empty(8, 2, n // 2, dtype=torch.float32, device=x.device)
+    else:
+        partial_proj = torch.empty(8, n, 24, dtype=torch.float32, device=x.device)
+        partial_sq = torch.empty(8, n, dtype=torch.float32, device=x.device)
     outputs = hi, pre.unsqueeze(-1), post.unsqueeze(-1), comb.view(n, 4, 4)
-    fused = mhc_projection_coeff_k8_kernel.compile(
+    fused = kernel_fn.compile(
         flat, phi, alpha, bias, pre, post, comb, partial_proj, partial_sq, **config
     )
     apply = mhc_pre_apply_flat_pipeline_asc.compile(
