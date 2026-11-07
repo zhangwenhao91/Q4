@@ -1,39 +1,21 @@
 (zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-113339-2452499
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-113703-2462153
 N=128 N128-rep1
-Failed stage: N128-rep1
-Log: /home/z30086261/Q4/results/mhc-small-split-k/20261107-113339-2452499/N128-rep1.log
-=== Exception headlines (up to 8) ===
-13: RuntimeError: Select only the isolated q4vllmv3 vendor in a fresh process
-=== First error contexts (up to 4) ===
-1: Traceback (most recent call last):
-2:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
-3:     if __name__=='__main__': main()
-4:                              ^^^^^^
-5:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 96, in main
-6:     functions,refs,names,meta=make_case(a)
-7:                               ^^^^^^^^^^^^
-8:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 111, in make_case
-9:     op, provenance = load_v3()
-10:                      ^^^^^^^^^
-11:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 16, in load_v3
-12:     raise RuntimeError('Select only the isolated q4vllmv3 vendor in a fresh process')
-13: RuntimeError: Select only the isolated q4vllmv3 vendor in a fresh process
-14: [ERROR] 2026-11-07-11:33:59 (PID:2452505, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
-=== Final non-progress lines ===
-1: Traceback (most recent call last):
-2:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 287, in <module>
-3:     if __name__=='__main__': main()
-4:                              ^^^^^^
-5:   File "/home/z30086261/Q4/operators/spec_v1/bench.py", line 96, in main
-6:     functions,refs,names,meta=make_case(a)
-7:                               ^^^^^^^^^^^^
-8:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 111, in make_case
-9:     op, provenance = load_v3()
-10:                      ^^^^^^^^^
-11:   File "/home/z30086261/Q4/operators/mhc/vllm_v3/vllm_v3_case.py", line 16, in load_v3
-12:     raise RuntimeError('Select only the isolated q4vllmv3 vendor in a fresh process')
-13: RuntimeError: Select only the isolated q4vllmv3 vendor in a fresh process
-14: [ERROR] 2026-11-07-11:33:59 (PID:2452505, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
-Saved: /home/z30086261/Q4/error.txt
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+N=128 N128-rep2
+N=128 N128-rep3
+N=256 N256-rep1
+N=256 N256-rep2
+N=256 N256-rep3
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-113703-2462153
+Q4 revision: 5061de4eb10523623c8af4046ca5f27ca220e118
+H=5120 shifted Pre; CPU and pairwise checks passed.
+AscendC uses the upstream vLLM v3 API with per-call allocation; TL reuses outputs and workspace.
+N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us
+128 | rep1 | 17.873 | 16.803 | 1.0637 | 18.273 | 17.233
+128 | rep2 | 15.323 | 16.795 | 0.9123 | 15.692 | 17.288
+128 | rep3 | 16.944 | 16.777 | 1.0100 | 17.261 | 17.128
+128 | median | 16.944 | 16.795 | 1.0100 | 17.261 | 17.233
+256 | rep1 | 21.756 | 18.519 | 1.1748 | 22.170 | 18.972
+256 | rep2 | 21.611 | 18.430 | 1.1726 | 21.860 | 18.732
+256 | rep3 | 21.725 | 18.459 | 1.1769 | 22.047 | 18.769
+256 | median | 21.725 | 18.459 | 1.1748 | 22.047 | 18.769
