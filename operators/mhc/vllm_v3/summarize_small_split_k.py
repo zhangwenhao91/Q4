@@ -191,15 +191,20 @@ def cube_report(root, full28=False):
     return '\n'.join(lines) + '\n'
 
 
-def three_vs_two_report(root):
+def three_vs_two_report(root, small=False):
     base = 'tilelang_deferred_k8_batch_prealloc'
     variants = [('three-kernel K8', base),
                 ('two-kernel K8/24', 'tilelang_projection_coeff_k8_batch_prealloc_i2c1_c24'),
                 ('two-kernel K4/28', 'tilelang_projection_coeff_k4_batch_prealloc_i2c1_c28')]
+    if small:
+        variants = [('three-kernel K8', base),
+                    ('two-kernel K8 small', 'tilelang_projection_coeff_k8_batch_prealloc'),
+                    ('two-kernel K8 balanced', 'tilelang_projection_coeff_k8_batch_prealloc_i2c1_c24'),
+                    ('two-kernel K4 balanced', 'tilelang_projection_coeff_k4_batch_prealloc_i2c1_c28')]
     lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
              'H=5120 shifted Pre; CPU and pairwise checks passed. All variants preallocate outputs/workspace.',
              'N | variant | Cube cores | K splits | event us (3 processes) | median us | paired three-kernel/TL']
-    for n in (1024, 2048, 4096, 8192):
+    for n in ((128, 256, 384, 512) if small else (1024, 2048, 4096, 8192)):
         cases = [root / f'N{n}-rep{rep}' for rep in (1, 2, 3)]
         timings = [json.loads((case / 'summary.json').read_text()) for case in cases]
         metadata = json.loads((cases[0] / 'metadata.json').read_text())['variants']
@@ -298,8 +303,8 @@ if __name__ == '__main__':
     mode = sys.argv[2] if len(sys.argv) > 2 else 'scan'
     if mode == 'fused':
         summary = fused_report(root)
-    elif mode == 'three-vs-two-large':
-        summary = three_vs_two_report(root)
+    elif mode in ('three-vs-two-large', 'three-vs-two-small'):
+        summary = three_vs_two_report(root, small=mode.endswith('-small'))
     elif mode in ('v3-fused-k8-combined-buffers', 'v3-fused-k8-cast-reuse'):
         summary = buffer_report(root, cast_reuse=mode.endswith('-cast-reuse'))
     elif mode in ('v3-fused-k8-cube24', 'v3-fused-k4-cube28'):
