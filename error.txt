@@ -1,30 +1,22 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_original.sh h4096-fused-k8-ab
-Results: /home/z30086261/Q4/results/mhc-original/20261107-145053-h4096-fused-k8-ab-2682941
-Timing H=4096 N128-rep1
-Timing H=4096 N128-rep2
-Timing H=4096 N128-rep3
-Timing H=4096 N256-rep1
-Timing H=4096 N256-rep2
-Timing H=4096 N256-rep3
-Run: /home/z30086261/Q4/results/mhc-original/20261107-145053-h4096-fused-k8-ab-2682941
-AC reference: ascendc_original_fused_h4096
-Event time: median across rounds (us); ratios > 1 mean TL is faster.
-case | AC us | TL us | AC/TL
-N128-rep1 | 24.987 | 15.271 | 1.6363
-N128-rep2 | 21.837 | 15.251 | 1.4318
-N128-rep3 | 19.914 | 15.237 | 1.3070
-N256-rep1 | 21.132 | 16.587 | 1.2740
-N256-rep2 | 20.931 | 16.644 | 1.2576
-N256-rep3 | 25.791 | 16.595 | 1.5541
-Cases with timing: 6
-Runner log tail (last 20 lines):
-H=4096 current-pre semantics; AscendC uses its original allocations; standalone TL fully preallocates.
-Q4 revision: f65706e7e47c84714de00d5265e06fd34281b2e1
-CPU and pairwise correctness passed for N128-rep1
-CPU and pairwise correctness passed for N128-rep2
-CPU and pairwise correctness passed for N128-rep3
-CPU and pairwise correctness passed for N256-rep1
-CPU and pairwise correctness passed for N256-rep2
-CPU and pairwise correctness passed for N256-rep3
-Saved: /home/z30086261/Q4/error.txt
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-150229-2702172
+N=128 N128-rep1
+N=128 N128-rep2
+N=128 N128-rep3
+N=256 N256-rep1
+N=256 N256-rep2
+N=256 N256-rep3
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-150229-2702172
+Q4 revision: ad317b12cfe3f3bfa9736b86d18fd358dafaa753
+H=5120 shifted Pre; CPU and pairwise checks passed.
+AscendC uses the upstream vLLM v3 API with per-call allocation; TL reuses outputs and workspace.
+N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us
+128 | rep1 | 17.233 | 16.956 | 1.0163 | 17.614 | 17.400
+128 | rep2 | 21.960 | 16.903 | 1.2992 | 22.343 | 17.288
+128 | rep3 | 17.416 | 16.937 | 1.0282 | 17.748 | 17.436
+128 | median | 17.416 | 16.937 | 1.0282 | 17.748 | 17.400
+256 | rep1 | 21.710 | 18.492 | 1.1740 | 22.058 | 18.890
+256 | rep2 | 22.166 | 18.551 | 1.1949 | 22.531 | 19.050
+256 | rep3 | 21.725 | 18.515 | 1.1734 | 22.074 | 18.909
+256 | median | 21.725 | 18.515 | 1.1740 | 22.074 | 18.909
 (zwh) root@ubuntu162:/home/z30086261/Q4#
