@@ -89,9 +89,9 @@ def allocation_report(root, mode='alloc'):
     return '\n'.join([*lines, '', *timeline, *errors]) + '\n'
 
 
-def v3_fused_k8_report(root, hidden=5120, combined=False, large=False):
+def v3_fused_k8_report(root, hidden=5120, combined=False, large=False, automatic=False):
     ac = 'ascendc_vllm_v3'
-    tl = 'tilelang_projection_coeff_k8_batch_prealloc'
+    tl = 'tilelang_shifted_pre_auto' if automatic else 'tilelang_projection_coeff_k8_batch_prealloc'
     scope = 'shifted Pre + Post' if combined else 'shifted Pre'
     lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
              f'H={hidden} {scope}; CPU and pairwise checks passed.',
@@ -100,9 +100,15 @@ def v3_fused_k8_report(root, hidden=5120, combined=False, large=False):
              'AscendC uses the upstream vLLM v3 API with per-call allocation; TL reuses outputs and workspace.',
              'N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us']
     shapes = (512, 1024, 2048, 4096, 8192) if large else ((128, 256, 384) if combined else (128, 256))
+    if automatic:
+        shapes = (128, 256, 384, 512, 1024, 2048, 4096, 8192)
     for n in shapes:
         timings = [json.loads((root / f'N{n}-rep{rep}' / 'summary.json').read_text())
                    for rep in (1, 2, 3)]
+        if automatic:
+            meta = json.loads((root / f'N{n}-rep1' / 'metadata.json').read_text())['variants'][tl]
+            lines.append(f'{n} | TL dispatch | {meta["dispatch"]["implementation"]} | '
+                         f'{meta["expected_kernels_per_call"]} kernels')
         for rep, run in enumerate(timings, 1):
             lines.append(f'{n} | rep{rep} | {run[ac]["event_us"]:.3f} | {run[tl]["event_us"]:.3f} | '
                          f'{run[ac]["event_us"] / run[tl]["event_us"]:.4f} | '
@@ -327,6 +333,8 @@ if __name__ == '__main__':
         summary = fused_report(root)
     elif mode == 'auto-dispatch':
         summary = auto_dispatch_report(root)
+    elif mode == 'v3-auto-pre':
+        summary = v3_fused_k8_report(root, automatic=True)
     elif mode in ('three-vs-two-large', 'three-vs-two-small'):
         summary = three_vs_two_report(root, small=mode.endswith('-small'))
     elif mode in ('v3-fused-k8-combined-buffers', 'v3-fused-k8-cast-reuse'):
