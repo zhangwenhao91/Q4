@@ -153,21 +153,28 @@ def buffer_report(root, cast_reuse=False):
     return '\n'.join(lines) + '\n'
 
 
-def cube_report(root):
+def cube_report(root, full28=False):
     ac = 'ascendc_vllm_v3'
     base = 'tilelang_projection_coeff_k8_batch_prealloc_i2c1'
     labels = (base, base + '_c24')
+    shapes = (512, 1024, 2048, 4096, 8192)
+    if full28:
+        base += '_c24'
+        labels = (base, 'tilelang_projection_coeff_k4_batch_prealloc_i2c1_c28')
+        shapes = (1024, 2048, 4096, 8192)
     lines = [f'Run: {root}', f'Q4 revision: {(root / "revision.txt").read_text().strip()}',
              'H=5120 shifted Pre; CPU and pairwise checks passed.',
              'Both TL variants use two input slots, one cast slot and preallocated outputs/workspace.',
              'The extra tile count is per K split. Tail groups repeat only their own last tile before the barrier.',
-             'N | variant | Cube cores | rounds | extra tiles per split | event us (3 processes) | median us | paired AC/TL | paired baseline/TL']
-    for n in (512, 1024, 2048, 4096, 8192):
+             'K4 changes the K reduction grouping; the original CPU and pairwise precision gates apply.' if full28 else
+             'Both variants use K8.',
+             'N | variant | K splits | Cube cores | rounds | extra tiles per split | event us (3 processes) | median us | paired AC/TL | paired baseline/TL']
+    for n in shapes:
         cases = [root / f'N{n}-rep{rep}' for rep in (1, 2, 3)]
         timings = [json.loads((case / 'summary.json').read_text()) for case in cases]
         metadata = json.loads((cases[0] / 'metadata.json').read_text())['variants']
         ac_times = [run[ac]['event_us'] for run in timings]
-        lines.append(f'{n} | AC | - | - | - | {", ".join(f"{v:.3f}" for v in ac_times)} | {median(ac_times):.3f} | 1.0000 | -')
+        lines.append(f'{n} | AC | - | - | - | - | {", ".join(f"{v:.3f}" for v in ac_times)} | {median(ac_times):.3f} | 1.0000 | -')
         for label in labels:
             config = metadata[label]['projection_config']
             groups = config['cores_per_split']
@@ -176,8 +183,8 @@ def cube_report(root):
             times = [run[label]['event_us'] for run in timings]
             ratios = [median(run[reference]['event_us'] / run[label]['event_us'] for run in timings)
                       for reference in (ac, base)]
-            variant = 'more-Cube' if label.endswith('_c24') else 'baseline'
-            lines.append(f'{n} | {variant} | {config["num_aic_cores"]} | {rounds} | {extra} | '
+            variant = 'baseline' if label == base else 'more-Cube'
+            lines.append(f'{n} | {variant} | {config["num_k_splits"]} | {config["num_aic_cores"]} | {rounds} | {extra} | '
                          f'{", ".join(f"{v:.3f}" for v in times)} | {median(times):.3f} | '
                          f'{ratios[0]:.4f} | {ratios[1]:.4f}')
             lines.extend(profile_lines(root / f'N{n}-profile-{label}', 'mhc_projection_coeff_k8_kernel'))
@@ -271,8 +278,8 @@ if __name__ == '__main__':
         summary = fused_report(root)
     elif mode in ('v3-fused-k8-combined-buffers', 'v3-fused-k8-cast-reuse'):
         summary = buffer_report(root, cast_reuse=mode.endswith('-cast-reuse'))
-    elif mode == 'v3-fused-k8-cube24':
-        summary = cube_report(root)
+    elif mode in ('v3-fused-k8-cube24', 'v3-fused-k4-cube28'):
+        summary = cube_report(root, full28=mode == 'v3-fused-k4-cube28')
     elif mode in ('v3-fused-k8', 'v3-fused-k8-h4096', 'v3-fused-k8-combined', 'v3-fused-k8-combined-large'):
         summary = v3_fused_k8_report(root, hidden=4096 if mode.endswith('-h4096') else 5120,
                                    combined='-combined' in mode, large=mode.endswith('-large'))

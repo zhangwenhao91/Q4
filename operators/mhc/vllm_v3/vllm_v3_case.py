@@ -205,6 +205,7 @@ def make_case(a):
                 ('tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse', 128, 8, True),
                 ('tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse', 128, 8, True),
                 ('tilelang_projection_coeff_k8_batch_prealloc_i2c1_c24', 128, 8, True),
+                ('tilelang_projection_coeff_k4_batch_prealloc_i2c1_c28', 128, 4, True),
                 ('tilelang_projection_coeff_k8_batch_prealloc', 128, 8, True)):
             if projection_coeff not in (a.implementations or ()):
                 continue
@@ -214,7 +215,8 @@ def make_case(a):
                     'tilelang_projection_coeff_k8_batch_prealloc_i2c1',
                     'tilelang_projection_coeff_k8_batch_prealloc_i2c1_reuse',
                     'tilelang_projection_coeff_k8_batch_prealloc_i2c2_reuse',
-                    'tilelang_projection_coeff_k8_batch_prealloc_i2c1_c24'):
+                    'tilelang_projection_coeff_k8_batch_prealloc_i2c1_c24',
+                    'tilelang_projection_coeff_k4_batch_prealloc_i2c1_c28'):
                 sys.path.insert(0, str(ROOT / 'operators/mhc/tuning'))
                 from shifted_pre_k8_fused_preallocated import bind_shifted_pre
                 options = {}
@@ -228,6 +230,8 @@ def make_case(a):
                     options = dict(input_stages=2, cast_stages=2, reuse_tail=True)
                 elif projection_coeff.endswith('_i2c1_c24'):
                     options = dict(input_stages=2, cast_stages=1, balance_tail=True)
+                elif projection_coeff.endswith('_i2c1_c28'):
+                    options = dict(input_stages=2, cast_stages=1, balance_tail=True, k_splits=4)
                 functions[projection_coeff], meta = bind_shifted_pre(x, prev, phi, alpha, bias, **options)
             else:
                 functions[projection_coeff], meta = make_projection_coeff_candidate(

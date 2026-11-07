@@ -9,6 +9,7 @@ For a current-pre comparison, pass prev_pre=None and current_pre=True to run
 the fused projection/coefficients first, then Apply with its newly generated pre.
 The experimental reuse_tail option stages partials in a dead input slot after
 the producer barrier, to leave UB space for two input and two cast slots.
+Balanced AIV-plane scheduling also supports four K splits to use 28 Cube cores.
 
 Usage from the repository root:
     from operators.mhc.tuning.shifted_pre_k8_fused_preallocated import bind_shifted_pre
@@ -815,9 +816,9 @@ def mhc_projection_coeff_k8_kernel_planes(
     pre: T.Tensor[(tokens, 4), T.float32]
     post: T.Tensor[(tokens, 4), T.float32]
     comb: T.Tensor[(tokens, 16), T.float32]
-    partial_proj: T.Tensor[(8, 2, tokens // 2, 24), T.float32]
-    partial_sq: T.Tensor[(8, 2, tokens // 2), T.float32]
-    assert num_k_splits == 8 and num_l0c_stages == 1
+    partial_proj: T.Tensor[(num_k_splits, 2, tokens // 2, 24), T.float32]
+    partial_sq: T.Tensor[(num_k_splits, 2, tokens // 2), T.float32]
+    assert (num_k_splits == 4 or num_k_splits == 8) and num_l0c_stages == 1
     assert tokens >= cores_per_split * 128
     if not balance_tail:
         assert tokens % (cores_per_split * 128) == 0
@@ -903,7 +904,8 @@ def mhc_pre_apply_flat_pipeline_asc(x, mix, o, h_blk, num_vec_cores: int, pipeli
 
 
 def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
-                     input_stages=None, cast_stages=2, reuse_tail=False, balance_tail=False):
+                     input_stages=None, cast_stages=2, reuse_tail=False, balance_tail=False,
+                     k_splits=8):
     """Return (launcher, metadata) with all allocations outside the launcher."""
     import torch
     from deep_gemm import _C
@@ -912,9 +914,11 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
     n, streams, hidden = x.shape
     if streams != 4 or hidden not in (4096, 5120) or not n or n % 128:
         raise ValueError('Expected BF16 residual[N,4,H], H=4096/5120, positive N divisible by 128')
-    groups = min(_C.get_num_sms() // 8, n // 128)
+    if k_splits not in (4, 8) or (k_splits == 4 and not balance_tail):
+        raise ValueError('K4 requires balanced AIV-plane scheduling; the default path uses K8')
+    groups = min(_C.get_num_sms() // k_splits, n // 128)
     if groups == 0:
-        raise ValueError('K8 fusion requires at least eight Cube cores')
+        raise ValueError('Not enough Cube cores for the requested K split count')
     # Uniform chunk counts keep all barrier participants active through the last drain.
     if not balance_tail:
         while (n // 128) % groups:
@@ -924,7 +928,7 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
     if balance_tail and reuse_tail:
         raise ValueError('Balanced Cube scheduling uses its own explicit AIV workspace planes')
     if input_stages is None:
-        input_stages = 1 if n > 8 * groups * 32 else 2
+        input_stages = 1 if n > k_splits * groups * 32 else 2
     if not current_pre and tuple(prev_pre.shape) not in ((n, 4), (n, 4, 1)):
         raise ValueError('Expected prev_pre[N,4] or prev_pre[N,4,1]')
     inputs = (
@@ -943,10 +947,10 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
 
     config = dict(
         block_mhc_mult3=32,
-        num_aic_cores=8 * groups,
-        num_k_splits=8,
+        num_aic_cores=k_splits * groups,
+        num_k_splits=k_splits,
         cores_per_split=groups,
-        num_hidden_blocks_per_split=4 * hidden // (8 * 256),
+        num_hidden_blocks_per_split=4 * hidden // (k_splits * 256),
         num_l0b_stages=2,
         num_l0c_stages=1,
         num_token_blocks_per_chunk=groups,
@@ -964,8 +968,8 @@ def bind_shifted_pre(x, prev_pre, phi, alpha, bias, *, current_pre=False,
     kernel_fn = mhc_projection_coeff_k8_kernel
     if balance_tail:
         kernel_fn = mhc_projection_coeff_k8_kernel_planes
-        partial_proj = torch.empty(8, 2, n // 2, 24, dtype=torch.float32, device=x.device)
-        partial_sq = torch.empty(8, 2, n // 2, dtype=torch.float32, device=x.device)
+        partial_proj = torch.empty(k_splits, 2, n // 2, 24, dtype=torch.float32, device=x.device)
+        partial_sq = torch.empty(k_splits, 2, n // 2, dtype=torch.float32, device=x.device)
     else:
         partial_proj = torch.empty(8, n, 24, dtype=torch.float32, device=x.device)
         partial_sq = torch.empty(8, n, dtype=torch.float32, device=x.device)
