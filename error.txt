@@ -1,22 +1,43 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/vllm_v3/run.sh fused-v3
-Results: /home/z30086261/Q4/results/mhc-vllm-v3/20261106-173408-fused-v3-1545927
-Timing Pre N128-rep1
-Timing Pre N128-rep2
-Timing Pre N128-rep3
-Timing Pre N256-rep1
-Timing Pre N256-rep2
-Timing Pre N256-rep3
-Run: /home/z30086261/Q4/results/mhc-vllm-v3/20261106-173408-fused-v3-1545927
-Q4 revision: 31e2ebb97feb49864307ef2987e1d26e33f3287a
-H=5120 shifted Pre; CPU and pairwise checks passed. Preallocated outputs alias across calls.
-N | implementation | event us (3 processes) | median us | paired v3/TL | paired preallocated K8/TL
-128 | ascendc_vllm_v3 | 17.172, 22.101, 15.302 | 17.172 | 1.0000 | 1.0766
-128 | tilelang_deferred_k8_batch_prealloc | 18.488, 18.556, 18.437 | 18.488 | 0.9288 | 1.0000
-128 | tilelang_fused_small | 22.319, 22.449, 22.387 | 22.387 | 0.7694 | 0.8266
-128 | tilelang_fused_small_prealloc | 22.225, 22.179, 22.167 | 22.179 | 0.7727 | 0.8319
-N=128 fused tiling: {'block_num_tokens': 64, 'num_k_splits': 4, 'num_aic_cores': 8, 'num_l0c_stages': 32}; tail: {'num_vec_cores': 56, 'num_stages': 2}
-256 | ascendc_vllm_v3 | 21.757, 21.707, 21.764 | 21.757 | 1.0000 | 0.9218
-256 | tilelang_deferred_k8_batch_prealloc | 20.055, 20.044, 20.043 | 20.044 | 1.0849 | 1.0000
-256 | tilelang_fused_small | 29.456, 29.411, 29.331 | 29.411 | 0.7386 | 0.6815
-256 | tilelang_fused_small_prealloc | 29.414, 29.401, 29.337 | 29.401 | 0.7397 | 0.6818
-N=256 fused tiling: {'block_num_tokens': 128, 'num_k_splits': 4, 'num_aic_cores': 8, 'num_l0c_stages': 16}; tail: {'num_vec_cores': 56, 'num_stages': 2}
+(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh fused-apply
+Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-100011-2284974
+N=128 N128-rep1
+N=128 N128-rep2
+N=128 N128-rep3
+N=128 N128-profile-tilelang_fused_small_prealloc
+N=128 N128-profile-tilelang_fused_small_prealloc_u2
+N=128 N128-profile-tilelang_fused_small_prealloc_u4
+N=256 N256-rep1
+N=256 N256-rep2
+N=256 N256-rep3
+N=256 N256-profile-tilelang_fused_small_prealloc
+N=256 N256-profile-tilelang_fused_small_prealloc_u2
+N=256 N256-profile-tilelang_fused_small_prealloc_u4
+Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-100011-2284974
+Q4 revision: 8ec8fb4f760d2e4c81ee02f6cec68ff6210f12ec
+H=5120 shifted Pre; CPU and pairwise checks passed. All variants preallocate outputs and workspace.
+N | Apply unroll | Pre event us (3 processes) | median us | paired U1/candidate
+128 | 1 | 22.301, 22.327, 22.379 | 22.327 | 1.0000
+N128-profile-tilelang_fused_small_prealloc: kernel | calls | median us
+mhc_coeff_apply_small_pipeline_kernel | 30 | 9.2415
+mhc_projection_token_pipeline_kernel | 30 | 12.9440
+128 | 2 | 22.207, 22.377, 22.251 | 22.251 | 1.0042
+N128-profile-tilelang_fused_small_prealloc_u2: kernel | calls | median us
+mhc_coeff_apply_small_pipeline_kernel | 30 | 9.1515
+mhc_projection_token_pipeline_kernel | 30 | 12.9800
+128 | 4 | 23.015, 23.086, 23.088 | 23.086 | 0.9690
+N128-profile-tilelang_fused_small_prealloc_u4: kernel | calls | median us
+mhc_coeff_apply_small_pipeline_kernel | 30 | 10.0180
+mhc_projection_token_pipeline_kernel | 30 | 12.9700
+256 | 1 | 29.374, 29.369, 29.331 | 29.369 | 1.0000
+N256-profile-tilelang_fused_small_prealloc: kernel | calls | median us
+mhc_coeff_apply_small_pipeline_kernel | 30 | 12.8645
+mhc_projection_token_pipeline_kernel | 30 | 16.3015
+256 | 2 | 29.325, 29.315, 29.265 | 29.315 | 1.0018
+N256-profile-tilelang_fused_small_prealloc_u2: kernel | calls | median us
+mhc_coeff_apply_small_pipeline_kernel | 30 | 12.8135
+mhc_projection_token_pipeline_kernel | 30 | 16.3390
+256 | 4 | 30.529, 30.558, 30.455 | 30.529 | 0.9622
+N256-profile-tilelang_fused_small_prealloc_u4: kernel | calls | median us
+mhc_coeff_apply_small_pipeline_kernel | 30 | 14.0700
+mhc_projection_token_pipeline_kernel | 30 | 16.3150
+(zwh) root@ubuntu162:/home/z30086261/Q4#
