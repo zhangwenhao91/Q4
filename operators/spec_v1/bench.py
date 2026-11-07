@@ -54,8 +54,8 @@ def main():
     a=p.parse_args()
     if a.mha_seqlen!=4096 and a.suite not in ('mha_bf16','mha_stats_split','mha_scenarios'):
         p.error('--mha-seqlen 3584 requires mha_bf16, mha_stats_split or mha_scenarios')
-    if a.mhc_projection_l2_ab and (a.suite != 'mhc_vllm_v3' or a.mhc_vllm_stage != 'pre'):
-        p.error('--mhc-projection-l2-ab requires mhc_vllm_v3 Pre')
+    if a.mhc_projection_l2_ab and (a.suite != 'mhc_vllm_v3' or a.mhc_vllm_stage not in ('pre', 'combined')):
+        p.error('--mhc-projection-l2-ab requires mhc_vllm_v3 Pre or combined')
     if a.profile_pipe_metrics and (not a.profile or a.check_only):
         p.error('--profile-pipe-metrics requires --profile and cannot be combined with --check-only')
     if a.profile_aic_metric and (not a.profile or a.check_only or a.profile_pipe_metrics):
