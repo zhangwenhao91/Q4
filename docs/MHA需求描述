@@ -1,0 +1,53 @@
+【需求来源】版本能力校验
+【需求场景】使用 TileLang 实现头部大模型的关键 attention 类算子，验证 TileLang 版本能力，排查版本功能缺陷与 Pass 性能问题。
+【主成功场景】
+计算属性：
+1. num_heads：静态，取值为 1。
+2. head_dim：静态，取值为 128。
+3. scaling：静态，取值为 0.0884。
+4. causal：静态，无因果掩码，采用全量双向注意力。
+5. dropout：静态，取值为 0。
+6. sq（Q 序列长度）：动态。
+7. T（KV 序列长度）：动态，需满足 T % 128 == 0。
+输入：
+1. Q：shape 为 [sq, 128]，dtype 为 BF16。
+2. K：shape 为 [T, 128]，dtype 为 BF16。
+3. V：shape 为 [T, 128]，dtype 为 BF16。
+输出：
+1. O：shape 为 [sq, 128]，dtype 为 FP32。
+【技术需求点】
+1. 基于 TileLang 实现符合上述计算属性、输入输出规格及动态长度约束的 MHA 算子。
+2. 支持 TileLang 手动 VF 融合，优化算子计算流程及执行性能。
+3. 支持算子计算过程中的 Mask 处理，保证动态序列长度及相关边界场景下的计算正确性。
+4. 面向 A5 硬件进行性能优化，并与 ops-transformer 中的 AscendC 实现进行性能对标。
+【硬件产品形态】A5 所有产品
+【验收准则】
+1. 算子满足指定的计算属性、输入输出规格及动态序列长度约束。
+2. 在约定的测试场景下，算子输出结果精度正确。
+3. TileLang 实现的 MHA 算子性能优于 ops-transformer 中对应的 AscendC 实现。
+【新增外部接口或命令】原则上不涉及新增外部接口；具体算子调用方式及测试入口待确认。
+【方案约束】
+1. num_heads、head_dim、scaling、causal、dropout 为静态属性，取值按需求规定。
+2. sq、T 为动态长度，其中 T 必须满足 T % 128 == 0。
+3. 输入 Q、K、V 均为 BF16，输出 O 为 FP32。
+4. 需满足 A5 所有产品形态的适配要求。
+5. 性能对标需使用相同输入规格、测试环境及可比的测试口径。
+
+
+使用 TileLang 实现头部大模型的关键 attention 类算子，验证 TileLang 版本能力，排查版本功能缺陷与 Pass 性能问题。
+【输入】
+1. Q：shape 为 [sq, 128]，dtype 为 BF16。
+2. K：shape 为 [T, 128]，dtype 为 BF16。
+3. V：shape 为 [T, 128]，dtype 为 BF16。
+4. 算子属性：num_heads=1、head_dim=128、scaling=0.0884、causal=False、dropout=0。
+5. 动态长度约束：sq 为动态值，T 为动态值且满足 T % 128 == 0。
+
+【处理】
+1. 按照 MHA 计算语义实现注意力计算：计算 Q 与 K 的矩阵乘积，乘以 scaling 系数，经 Softmax 归一化后与 V 相乘，得到最终输出。
+2. 根据需求支持无因果掩码的全量双向注意力计算，处理计算过程中涉及的 Mask 及边界场景，保证结果正确。
+3. 基于 TileLang 实现手动 VF 融合，优化计算过程中的算子执行与数据处理流程。
+4. 针对 A5 硬件进行性能优化，结合动态序列长度及 T 的对齐约束，优化计算调度与执行效率。
+5. 对算子进行正确性验证，检查输出 shape、dtype 及数值精度。
+6. 在统一测试环境及测试口径下，与 ops-transformer 对应的 AscendC MHA 实现进行性能对比，验证性能优化效果。
+
+【输出】shape 为 [sq, 128]、dtype 为 FP32 的 MHA 计算结果；在满足指定输入约束的情况下，输出精度正确，且算子性能优于 ops-transformer 对应的 AscendC 实现。
