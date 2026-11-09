@@ -49,6 +49,58 @@ def _row_max(mat, mask_lo, mask_hi, bcast_idx2):
 
 
 @T.macro
+def sinkhorn_packs(matrices, result, pack_count, mask, mask_lo, mask_hi, bcast_idx, transpose_idx, epsilon, repeat):
+    """Normalize packed 4x4 matrices with statically indexed vector registers.
+
+    Expand each operation across packs before advancing to the next operation.
+    Division uses the same default precision as the original K8 implementation.
+    """
+    row_max = S.alloc_local((pack_count,), T.float32)
+    exponent = S.alloc_local((pack_count,), T.float32)
+    row_sum = S.alloc_local((pack_count,), T.float32)
+    normalized = S.alloc_local((pack_count,), T.float32)
+    seeded = S.alloc_local((pack_count,), T.float32)
+    transposed = S.alloc_local((pack_count,), T.float32)
+    column_sum = S.alloc_local((pack_count,), T.float32)
+    column_normalized = S.alloc_local((pack_count,), T.float32)
+    for pack in T.unroll(pack_count, explicit=True):
+        row_max[pack] = _row_max(matrices[pack], mask_lo, mask_hi, bcast_idx)
+    for pack in T.unroll(pack_count, explicit=True):
+        exponent[pack] = S.vexpdif(matrices[pack], row_max[pack], mask)
+    for pack in T.unroll(pack_count, explicit=True):
+        row_sum[pack] = _row_reduce(exponent[pack], mask_lo, mask_hi, bcast_idx)
+    for pack in T.unroll(pack_count, explicit=True):
+        normalized[pack] = S.vdiv(exponent[pack], row_sum[pack], mask)
+    for pack in T.unroll(pack_count, explicit=True):
+        seeded[pack] = S.vadds(normalized[pack], T.float32(epsilon), mask)
+    for pack in T.unroll(pack_count, explicit=True):
+        transposed[pack] = S.vselr(seeded[pack], transpose_idx)
+    for pack in T.unroll(pack_count, explicit=True):
+        column_sum[pack] = _row_reduce(transposed[pack], mask_lo, mask_hi, bcast_idx)
+    for pack in T.unroll(pack_count, explicit=True):
+        column_normalized[pack] = S.vdiv(
+            transposed[pack], S.vadds(column_sum[pack], T.float32(epsilon), mask), mask)
+    for pack in T.unroll(pack_count, explicit=True):
+        result[pack] = S.vselr(column_normalized[pack], transpose_idx)
+    for _ in T.serial(repeat - 1):
+        for pack in T.unroll(pack_count, explicit=True):
+            row_sum[pack] = _row_reduce(result[pack], mask_lo, mask_hi, bcast_idx)
+        for pack in T.unroll(pack_count, explicit=True):
+            result[pack] = S.vdiv(
+                result[pack], S.vadds(row_sum[pack], T.float32(epsilon), mask), mask)
+        for pack in T.unroll(pack_count, explicit=True):
+            transposed[pack] = S.vselr(result[pack], transpose_idx)
+        for pack in T.unroll(pack_count, explicit=True):
+            column_sum[pack] = _row_reduce(transposed[pack], mask_lo, mask_hi, bcast_idx)
+        for pack in T.unroll(pack_count, explicit=True):
+            column_normalized[pack] = S.vdiv(
+                transposed[pack], S.vadds(column_sum[pack], T.float32(epsilon), mask), mask)
+        for pack in T.unroll(pack_count, explicit=True):
+            result[pack] = S.vselr(column_normalized[pack], transpose_idx)
+
+
+
+@T.macro
 def compute_coefficients(
     mul_flat_ub,
     sq_ub,
@@ -225,134 +277,18 @@ def compute_coefficients(
         col4 = S.vshls(col, two, mask2)
         t_idx = S.vadd(S.vadd(token_base_tidx, col4, mask2), S.vshrs(local, two, mask2), mask2)
 
-        cur_a = S.alloc_var(T.float32)
-        cur_b = S.alloc_var(T.float32)
-        cur_c = S.alloc_var(T.float32)
-        cur_d = S.alloc_var(T.float32)
-        for g in range(tb // 16):
-            g0 = 4 * g
-            mat_a_0 = S.vld(comb_in_ub[g0 * 4, 0])
-            mat_b_0 = S.vld(comb_in_ub[(g0 + 1) * 4, 0])
-            mat_c_0 = S.vld(comb_in_ub[(g0 + 2) * 4, 0])
-            mat_d_0 = S.vld(comb_in_ub[(g0 + 3) * 4, 0])
-
-            rmax_a = _row_max(mat_a_0, mask_lo, mask_hi, bcast_idx2)
-            rmax_b = _row_max(mat_b_0, mask_lo, mask_hi, bcast_idx2)
-            rmax_c = _row_max(mat_c_0, mask_lo, mask_hi, bcast_idx2)
-            rmax_d = _row_max(mat_d_0, mask_lo, mask_hi, bcast_idx2)
-            mat_a_1 = S.vexpdif(mat_a_0, rmax_a, mask2)
-            mat_b_1 = S.vexpdif(mat_b_0, rmax_b, mask2)
-            mat_c_1 = S.vexpdif(mat_c_0, rmax_c, mask2)
-            mat_d_1 = S.vexpdif(mat_d_0, rmax_d, mask2)
-            rsum_a = _row_reduce(mat_a_1, mask_lo, mask_hi, bcast_idx2)
-            rsum_b = _row_reduce(mat_b_1, mask_lo, mask_hi, bcast_idx2)
-            rsum_c = _row_reduce(mat_c_1, mask_lo, mask_hi, bcast_idx2)
-            rsum_d = _row_reduce(mat_d_1, mask_lo, mask_hi, bcast_idx2)
-            mat_a_2 = S.vdiv(mat_a_1, rsum_a, mask2)
-            mat_b_2 = S.vdiv(mat_b_1, rsum_b, mask2)
-            mat_c_2 = S.vdiv(mat_c_1, rsum_c, mask2)
-            mat_d_2 = S.vdiv(mat_d_1, rsum_d, mask2)
-            mat_a_3 = S.vadds(mat_a_2, T.float32(mhc_sinkhorn_eps), mask2)
-            mat_b_3 = S.vadds(mat_b_2, T.float32(mhc_sinkhorn_eps), mask2)
-            mat_c_3 = S.vadds(mat_c_2, T.float32(mhc_sinkhorn_eps), mask2)
-            mat_d_3 = S.vadds(mat_d_2, T.float32(mhc_sinkhorn_eps), mask2)
-
-            tr_a = S.vselr(mat_a_3, t_idx)
-            tr_b = S.vselr(mat_b_3, t_idx)
-            tr_c = S.vselr(mat_c_3, t_idx)
-            tr_d = S.vselr(mat_d_3, t_idx)
-            csum_a = S.vsel(
-                S.vselr(S.vcgadd(tr_a, mask_lo), bcast_idx2),
-                S.vselr(S.vcgadd(tr_a, mask_hi), bcast_idx2),
-                mask_lo,
+        matrices = S.alloc_local((4,), T.float32)
+        result = S.alloc_local((4,), T.float32)
+        for group in range(tb // 16):
+            for pack in T.unroll(4, explicit=True):
+                matrices[pack] = S.vld(comb_in_ub[(group * 4 + pack) * 4, 0])
+            sinkhorn_packs(
+                matrices, result, 4, mask2, mask_lo, mask_hi,
+                bcast_idx2, t_idx, mhc_sinkhorn_eps, sinkhorn_repeat,
             )
-            csum_b = S.vsel(
-                S.vselr(S.vcgadd(tr_b, mask_lo), bcast_idx2),
-                S.vselr(S.vcgadd(tr_b, mask_hi), bcast_idx2),
-                mask_lo,
-            )
-            csum_c = S.vsel(
-                S.vselr(S.vcgadd(tr_c, mask_lo), bcast_idx2),
-                S.vselr(S.vcgadd(tr_c, mask_hi), bcast_idx2),
-                mask_lo,
-            )
-            csum_d = S.vsel(
-                S.vselr(S.vcgadd(tr_d, mask_lo), bcast_idx2),
-                S.vselr(S.vcgadd(tr_d, mask_hi), bcast_idx2),
-                mask_lo,
-            )
-            tr_a = S.vdiv(tr_a, S.vadds(csum_a, T.float32(mhc_sinkhorn_eps), mask2), mask2)
-            tr_b = S.vdiv(tr_b, S.vadds(csum_b, T.float32(mhc_sinkhorn_eps), mask2), mask2)
-            tr_c = S.vdiv(tr_c, S.vadds(csum_c, T.float32(mhc_sinkhorn_eps), mask2), mask2)
-            tr_d = S.vdiv(tr_d, S.vadds(csum_d, T.float32(mhc_sinkhorn_eps), mask2), mask2)
-            cur_a = S.vselr(tr_a, t_idx)
-            cur_b = S.vselr(tr_b, t_idx)
-            cur_c = S.vselr(tr_c, t_idx)
-            cur_d = S.vselr(tr_d, t_idx)
+            for pack in T.unroll(4, explicit=True):
+                S.vsts(comb_out_ub[(group * 4 + pack) * 4, 0], result[pack], mask2)
 
-            for _step in range(sinkhorn_repeat - 1):
-                rsum_a = S.vsel(
-                    S.vselr(S.vcgadd(cur_a, mask_lo), bcast_idx2),
-                    S.vselr(S.vcgadd(cur_a, mask_hi), bcast_idx2),
-                    mask_lo,
-                )
-                rsum_b = S.vsel(
-                    S.vselr(S.vcgadd(cur_b, mask_lo), bcast_idx2),
-                    S.vselr(S.vcgadd(cur_b, mask_hi), bcast_idx2),
-                    mask_lo,
-                )
-                rsum_c = S.vsel(
-                    S.vselr(S.vcgadd(cur_c, mask_lo), bcast_idx2),
-                    S.vselr(S.vcgadd(cur_c, mask_hi), bcast_idx2),
-                    mask_lo,
-                )
-                rsum_d = S.vsel(
-                    S.vselr(S.vcgadd(cur_d, mask_lo), bcast_idx2),
-                    S.vselr(S.vcgadd(cur_d, mask_hi), bcast_idx2),
-                    mask_lo,
-                )
-                cur_a = S.vdiv(cur_a, S.vadds(rsum_a, T.float32(mhc_sinkhorn_eps), mask2), mask2)
-                cur_b = S.vdiv(cur_b, S.vadds(rsum_b, T.float32(mhc_sinkhorn_eps), mask2), mask2)
-                cur_c = S.vdiv(cur_c, S.vadds(rsum_c, T.float32(mhc_sinkhorn_eps), mask2), mask2)
-                cur_d = S.vdiv(cur_d, S.vadds(rsum_d, T.float32(mhc_sinkhorn_eps), mask2), mask2)
-
-                tr_a = S.vselr(cur_a, t_idx)
-                tr_b = S.vselr(cur_b, t_idx)
-                tr_c = S.vselr(cur_c, t_idx)
-                tr_d = S.vselr(cur_d, t_idx)
-                csum_a = S.vsel(
-                    S.vselr(S.vcgadd(tr_a, mask_lo), bcast_idx2),
-                    S.vselr(S.vcgadd(tr_a, mask_hi), bcast_idx2),
-                    mask_lo,
-                )
-                csum_b = S.vsel(
-                    S.vselr(S.vcgadd(tr_b, mask_lo), bcast_idx2),
-                    S.vselr(S.vcgadd(tr_b, mask_hi), bcast_idx2),
-                    mask_lo,
-                )
-                csum_c = S.vsel(
-                    S.vselr(S.vcgadd(tr_c, mask_lo), bcast_idx2),
-                    S.vselr(S.vcgadd(tr_c, mask_hi), bcast_idx2),
-                    mask_lo,
-                )
-                csum_d = S.vsel(
-                    S.vselr(S.vcgadd(tr_d, mask_lo), bcast_idx2),
-                    S.vselr(S.vcgadd(tr_d, mask_hi), bcast_idx2),
-                    mask_lo,
-                )
-                tr_a = S.vdiv(tr_a, S.vadds(csum_a, T.float32(mhc_sinkhorn_eps), mask2), mask2)
-                tr_b = S.vdiv(tr_b, S.vadds(csum_b, T.float32(mhc_sinkhorn_eps), mask2), mask2)
-                tr_c = S.vdiv(tr_c, S.vadds(csum_c, T.float32(mhc_sinkhorn_eps), mask2), mask2)
-                tr_d = S.vdiv(tr_d, S.vadds(csum_d, T.float32(mhc_sinkhorn_eps), mask2), mask2)
-                cur_a = S.vselr(tr_a, t_idx)
-                cur_b = S.vselr(tr_b, t_idx)
-                cur_c = S.vselr(tr_c, t_idx)
-                cur_d = S.vselr(tr_d, t_idx)
-
-            S.vsts(comb_out_ub[g0 * 4, 0], cur_a, mask2)
-            S.vsts(comb_out_ub[(g0 + 1) * 4, 0], cur_b, mask2)
-            S.vsts(comb_out_ub[(g0 + 2) * 4, 0], cur_c, mask2)
-            S.vsts(comb_out_ub[(g0 + 3) * 4, 0], cur_d, mask2)
 
 
 @T.macro
