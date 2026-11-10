@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/tile-ai/tilelang",
+  "pr": 3896,
+  "revision": "86dccfce8266818a7f6278de84b5c28b9851fa46",
+  "base_revision": "72d986e1c45ba8e81f7611eb6835c9bece097d60",
+  "sha256": {
+    "core.py": "371eef58d0b9f7632771e2e03f07e049a19286dab868a4254d9c02bd84914f2a",
+    "example_mha.py": "2874161afeed39a85105e385534c58e3b96ad8354e2da5d6cfa027ec90712e62",
+    "LICENSE": "f70e5cdc24c3797af741930440086f9a0ad36930b05a3dfc25b420936dc2cfa1",
+    "test_mha.py": "35b9470757ee7b41b6501f795e53a8252c73f3a715742f9c8e3ed8057485df36"
+  }
+}
