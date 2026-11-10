@@ -44,3 +44,16 @@ python operators/mha/pr3896/summarize.py --input results/mha-pr3896/<实际目�
 ```
 
 本地仅完成源码获取和脚本静态检查，NPU兼容性、正确性与加速比待服务器验证。
+
+## 非整块长度
+
+新增长度：1、63、64、65、127、129、193、255、3583、3585、4095、4097。
+同一进程中单次编译的PR动态内核复用全部12个长度；输入为真实长度，不做Host补齐或输出转换。旧TL和PR静态路径不支持这些长度，不参与本轮。AC按真实长度生成metadata，仍分别测试cached及per_call。
+
+```bash
+bash operators/mha/pr3896/run.sh tails-smoke
+# 上一步全部精度检查通过后：
+bash operators/mha/pr3896/run.sh tails-all
+```
+
+tails-all预期12个长度、每个长度50项输出精度记录，共600项；每个长度6份性能汇总。若某一长度的AC或TL不支持，保留完整异常，不以补齐实现替代。本轮检查返回张量数值、形状及类型，不等同于内存越界检测器验证。
