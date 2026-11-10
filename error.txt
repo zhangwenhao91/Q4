@@ -1,72 +1,18 @@
-(zwh) root@ubuntu162:/home/z30086261/Q4# bash operators/mhc/tuning/run_small_split_k.sh v3-fused-k8-k128-all
-Results: /home/z30086261/Q4/results/mhc-small-split-k/20261107-191429-3322780
-N=128 N128-rep1
-N=128 N128-rep2
-N=128 N128-rep3
-N=256 N256-rep1
-N=256 N256-rep2
-N=256 N256-rep3
-N=384 N384-rep1
-N=384 N384-rep2
-N=384 N384-rep3
-N=512 N512-rep1
-N=512 N512-rep2
-N=512 N512-rep3
-N=1024 N1024-rep1
-N=1024 N1024-rep2
-N=1024 N1024-rep3
-N=2048 N2048-rep1
-N=2048 N2048-rep2
-N=2048 N2048-rep3
-N=4096 N4096-rep1
-N=4096 N4096-rep2
-N=4096 N4096-rep3
-N=8192 N8192-rep1
-N=8192 N8192-rep2
-N=8192 N8192-rep3
-Run: /home/z30086261/Q4/results/mhc-small-split-k/20261107-191429-3322780
-Q4 revision: ef2dc21840e525a6d32f4f98102607850b8595f3
-H=5120 shifted Pre; CPU and pairwise checks passed.
-AscendC uses the upstream vLLM v3 API with per-call allocation; TL reuses outputs and workspace.
-N | run | AC event us | TL event us | AC/TL speedup | AC wall us | TL wall us
-128 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 8
-128 | rep1 | 22.501 | 17.598 | 1.2786 | 22.975 | 18.072
-128 | rep2 | 16.935 | 17.542 | 0.9654 | 17.326 | 18.080
-128 | rep3 | 15.289 | 17.540 | 0.8717 | 15.549 | 17.945
-128 | median | 16.935 | 17.542 | 0.9654 | 17.326 | 18.072
-256 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 16
-256 | rep1 | 21.704 | 19.136 | 1.1342 | 21.985 | 19.402
-256 | rep2 | 21.710 | 19.187 | 1.1315 | 22.148 | 19.695
-256 | rep3 | 21.756 | 19.170 | 1.1349 | 22.094 | 19.624
-256 | median | 21.710 | 19.170 | 1.1342 | 22.094 | 19.624
-384 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 24
-384 | rep1 | 27.605 | 20.964 | 1.3167 | 27.955 | 21.325
-384 | rep2 | 27.604 | 20.983 | 1.3156 | 27.930 | 21.308
-384 | rep3 | 27.613 | 20.976 | 1.3164 | 27.961 | 21.314
-384 | median | 27.605 | 20.976 | 1.3164 | 27.955 | 21.314
-512 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 16
-512 | rep1 | 33.276 | 30.506 | 1.0908 | 33.654 | 30.890
-512 | rep2 | 33.252 | 30.499 | 1.0902 | 33.604 | 30.860
-512 | rep3 | 33.203 | 30.476 | 1.0895 | 33.522 | 30.824
-512 | median | 33.252 | 30.499 | 1.0902 | 33.604 | 30.860
-1024 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 16
-1024 | rep1 | 56.239 | 55.787 | 1.0081 | 56.575 | 56.139
-1024 | rep2 | 56.222 | 55.733 | 1.0088 | 56.551 | 56.086
-1024 | rep3 | 56.064 | 55.704 | 1.0065 | 56.453 | 56.050
-1024 | median | 56.222 | 55.733 | 1.0081 | 56.551 | 56.086
-2048 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 16
-2048 | rep1 | 114.306 | 110.411 | 1.0353 | 114.663 | 110.822
-2048 | rep2 | 113.246 | 112.440 | 1.0072 | 113.597 | 112.789
-2048 | rep3 | 114.295 | 113.777 | 1.0046 | 114.786 | 114.179
-2048 | median | 114.295 | 112.440 | 1.0072 | 114.663 | 112.789
-4096 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 16
-4096 | rep1 | 234.523 | 314.658 | 0.7453 | 235.047 | 315.019
-4096 | rep2 | 235.557 | 313.699 | 0.7509 | 236.004 | 314.072
-4096 | rep3 | 235.425 | 314.335 | 0.7490 | 235.981 | 314.698
-4096 | median | 235.425 | 314.335 | 0.7490 | 235.981 | 314.698
-8192 | TL config | 2 kernels | K block 128 | K splits 8 | input slots 2 | cast slots 2 | Cube cores 16
-8192 | rep1 | 466.652 | 673.039 | 0.6934 | 469.531 | 673.871
-8192 | rep2 | 480.735 | 672.823 | 0.7145 | 481.139 | 673.803
-8192 | rep3 | 469.462 | 672.662 | 0.6979 | 471.224 | 673.187
-8192 | median | 469.462 | 672.823 | 0.6979 | 471.224 | 673.803
-(zwh) root@ubuntu162:/home/z30086261/Q4#
+(zwh) root@ubuntu162:/home/z30086261/Q4/results/mha-pr3896/20261110-095706-all-1965020# cat summary.txt 
+Accuracy: 200 checks passed
+S= 4096 metadata= cached median_event_us= {"tilelang_q128": 52.43796110153198, "pr_static": 52.44569540023804, "pr_dynamic": 68.4595251083374, "ascendc": 40.1036810874939}
+tilelang_q128 AC/TL= 0.7647833791600692 paired_ratios= [0.7647833791600692, 0.7645201014546833, 0.7669745920704663] old_TL/current= 1.0
+pr_static AC/TL= 0.764670594630191 paired_ratios= [0.7646160569570607, 0.7645026196146903, 0.7670155646972072] old_TL/current= 0.9998525274830082
+pr_dynamic AC/TL= 0.5858013333284112 paired_ratios= [0.5858013333284112, 0.5856200519664856, 0.5873236668302787] old_TL/current= 0.7659702724865349
+S= 4096 metadata= per_call median_event_us= {"tilelang_q128": 52.47217655181885, "pr_static": 52.44399547576904, "pr_dynamic": 68.29479932785034, "ascendc": 81.63867950439453}
+tilelang_q128 AC/TL= 1.5558470196823708 paired_ratios= [1.5561582295464806, 1.5546734786712524, 1.5642353524054833] old_TL/current= 1.0
+pr_static AC/TL= 1.5566830628325115 paired_ratios= [1.5565459174324232, 1.5547427978414694, 1.5650759030734105] old_TL/current= 1.0005373556265909
+pr_dynamic AC/TL= 1.195386476098812 paired_ratios= [1.1947838726460944, 1.195386476098812, 1.2023121900042817] old_TL/current= 0.7683187749029802
+S= 3584 metadata= cached median_event_us= {"tilelang_q128": 24.54842448234558, "pr_static": 24.549455642700195, "pr_dynamic": 31.64879560470581, "ascendc": 26.643210649490356}
+tilelang_q128 AC/TL= 1.085332815091709 paired_ratios= [1.0828529909943572, 1.085332815091709, 1.0897984709944248] old_TL/current= 1.0
+pr_static AC/TL= 1.0852872274344194 paired_ratios= [1.0833303290616392, 1.0852872274344194, 1.089758022988059] old_TL/current= 0.999957996610205
+pr_dynamic AC/TL= 0.8418396384578002 paired_ratios= [0.8408761298583911, 0.8418396384578002, 0.8466476016932776] old_TL/current= 0.7756511429046454
+S= 3584 metadata= per_call median_event_us= {"tilelang_q128": 24.559555053710938, "pr_static": 24.568690061569214, "pr_dynamic": 31.611554622650146, "ascendc": 64.1057801246643}
+tilelang_q128 AC/TL= 2.6102174890573986 paired_ratios= [2.610334435619414, 2.608453198439301, 2.6122529359513336] old_TL/current= 1.0
+pr_static AC/TL= 2.6092469710031354 paired_ratios= [2.6117180635011463, 2.60748333637478, 2.609599123574707] old_TL/current= 0.9996281849852238
+pr_dynamic AC/TL= 2.0279224128613897 paired_ratios= [2.028426733389911, 2.025626420878222, 2.0319158973627194] old_TL/current= 0.7769170275514907
