@@ -1,10 +1,4 @@
-(zwh) root@ubuntu162:/home/z30086261/FGW# git add reports/mha/latest/mha_schedule_short_q_paired.*
-(zwh) root@ubuntu162:/home/z30086261/FGW# git commit -m "short q"
-[main b141f0e] short q
- 2 files changed, 13753 insertions(+)
- create mode 100644 reports/mha/latest/mha_schedule_short_q_paired.json
- create mode 100644 reports/mha/latest/mha_schedule_short_q_paired.log
-(zwh) root@ubuntu162:/home/z30086261/FGW# git push
+(zwh) root@ubuntu162:/home/z30086261/FGW# git -c credential.helper= -c http.version=HTTP/1.1 -c http.postBuffer=16777216 push https://github.com/zhangwenhao91/FGW.git main
 Enumerating objects: 11, done.
 Counting objects: 100% (11/11), done.
 Delta compression using up to 256 threads
@@ -15,4 +9,3 @@ error: RPC failed; HTTP 403 curl 22 The requested URL returned error: 403
 fatal: the remote end hung up unexpectedly
 fatal: the remote end hung up unexpectedly
 Everything up-to-date
-(zwh) root@ubuntu162:/home/z30086261/FGW#
