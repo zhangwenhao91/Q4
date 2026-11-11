@@ -1,11 +1,115 @@
-(zwh) root@ubuntu162:/home/z30086261/FGW# git -c credential.helper= -c http.version=HTTP/1.1 -c http.postBuffer=16777216 push https://github.com/zhangwenhao91/FGW.git main
-Enumerating objects: 11, done.
-Counting objects: 100% (11/11), done.
-Delta compression using up to 256 threads
-Compressing objects: 100% (7/7), done.
-Writing objects: 100% (7/7), 111.86 KiB | 11.19 MiB/s, done.
-Total 7 (delta 3), reused 0 (delta 0)
-error: RPC failed; HTTP 403 curl 22 The requested URL returned error: 403
-fatal: the remote end hung up unexpectedly
-fatal: the remote end hung up unexpectedly
-Everything up-to-date
+(zwh) root@ubuntu162:/home/z30086261/FGW# git fetch origin
+(zwh) root@ubuntu162:/home/z30086261/FGW# git status --short
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071.zip
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q129_tail/
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q32768/
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/direct_host.txt
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/direct_input_ir.txt
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/direct_lowered_device_ir.txt
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/000_pass_fn.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/001_pass_fn.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/002_pass_fn.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/003_tirx.BindTarget.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/004_tl.MaterializeKernelLaunch.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/005_tl.AddWrapperForSingleBufStore.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/006_tl.LegalizeNegativeIndex.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/007_tl.InjectAssumes.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/008_tl.RewriteDualCopy.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/009_tl.LegalizeSimdMerging.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/010_tl.Simplify.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/011_tl.CanonicalizeLegacyReducer.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/012_tl.VerifyReducerEpoch.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/013_tl.VerifyBufferInit.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/014_tl.UnrollLoopSkipVF.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/015_tl.Simplify.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/016_tl.AscendLayoutInference.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/017_tl.ReducerPlanAndMaterialize.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/018_tl.NormalizeAscendFractalStorage.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/019_tl.InsertNd2Nz.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/020_pass_fn.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/021_tl.AscendInsertOOBPadding.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/022_tl.NormalizeControlFlowForSchedule.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/023_tl.NormalizeConflictHints.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/024_tl.MaterializeScheduleUnits.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/025_tl.AssignCore.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/026_tl.AnnotateMultiBufferEligible.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/027_tl.EstimateLatency.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/029_tl.PrepareMultiBuffer.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/030_tl.ResolveCore.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/032_tl.MaterializeMultiBuffer.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/033_tl.LowerScheduledTIR.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/034_tl.RestoreWhileLoops.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/035_tl.Simplify.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/036_tl.NormalizeBufferVersion.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/037_tl.AscendSimdVFLowerParallel.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/038_tl.LetInline.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/039_tl.Simplify.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/040_tl.LetInline.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/041_tl.Simplify.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/042_tl.AscendLowerTileOp.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/043_tl.VerifyReducerConsumed.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/044_tl.DecoupleTypeCast.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/045_tl.LegalizeVectorizedLoop.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/046_tl.LegalizeSafeMemoryAccess.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/047_tl.LowerAccessPtr.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/048_tl.Simplify.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/049_tl.HoistNonRestrictParams.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/050_tl.HoistGlobalBufferAllocations.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/051_tl.LowerOpaqueBlock.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/052_tl.Simplify.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/053_tl.RewriteAscendBufferVersionLayout.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/054_tirx.NarrowDataType.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/055_tl.FlattenBuffer.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/056_tl.ConfigIndexBitwidth.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/057_tirx.Simplify.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/058_tl.VectorizeLoop.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/059_tl.RewriteFp4ToFp4x2.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/060_tl.LoopUnswitching.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/061_tl.UnrollLoop.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/062_s_tir.RenormalizeSplitPattern.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/063_tirx.Simplify.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/064_tl.AscendRemoveNoOp.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/065_s_tir.InsertHoistIfThenElse.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/066_tirx.Simplify.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/067_tl.AscendRemoveNoOp.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/068_tirx.VerifyMemory.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/069_tirx.AnnotateEntryFunc.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/070_s_tir.InferFragment.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/071_tl.LowerThreadAllreduce.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/072_tl.AnnotateDeviceRegions.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/073_tl.MarkScalarDcacheBypass.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/074_tirx.ConvertSSA.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/075_tl.SplitHostDevice.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/076_tl.AnnotateReadOnlyParams.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/077_tl.MergeUBAllocations.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/078_tl.RewriteFlagToBuf.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/079_tl.AscendThreadSync.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/080_tl.AscendThreadSync.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/081_tl.MergeIfStmt.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/082_tl.MakePackedAPI.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/083_tl.Simplify.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/084_tl.LowerDeviceKernelLaunch.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/085_tirx.Filter.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/086_tirx.Filter.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/087_tl.LowerIntrin.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/088_tirx.Simplify.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/089_pass_fn.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/090_tirx.BindTarget.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/091_tirx.FP8StorageLegalize.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/092_tirx.BF16StorageLegalize.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/093_tirx.LowerTVMBuiltin.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/094_tirx.LowerCustomDatatypes.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4096/passes/direct/095_tl.LowerIntrin.py
+?? reports/mha/latest/mha_auto_schedule_20261111_162626_650071/q4_split/
+?? reports/mha/latest/mha_schedule_auto-offset_run1_msprof_msprof_source.py
+?? reports/mha/latest/mha_schedule_auto-offset_run2_msprof_msprof_source.py
+?? reports/mha/latest/mha_schedule_auto_run1_msprof_msprof_source.py
+?? reports/mha/latest/mha_schedule_auto_run2_msprof_msprof_source.py
+?? reports/mha/latest/mha_schedule_manual_run1_msprof_msprof_source.py
+?? reports/mha/latest/mha_schedule_manual_run2_msprof_msprof_source.py
+?? reports/mha/latest/mha_schedule_short_q_paired.json
+(zwh) root@ubuntu162:/home/z30086261/FGW# git log --oneline --stat origin/main..HEAD
+5b77b1e (HEAD -> main) Add short Q JSON GZ
+ reports/mha/latest/mha_schedule_short_q_paired.json.gz | Bin 0 -> 109665 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+(zwh) root@ubuntu162:/home/z30086261/FGW#
