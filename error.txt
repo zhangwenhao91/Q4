@@ -1,13 +1,261 @@
-python - <<'PY'
-import json
-from pathlib import Path
-
-p = Path("reports/mha/latest/mha_schedule_short_q_paired.json")
-r = json.loads(p.read_text())
-print(json.dumps({
-    "status": r.get("status"),
-    "correctness": r.get("correctness"),
-    "error": r.get("error"),
-    "summary": r.get("summary"),
-}, ensure_ascii=False, indent=2))
-PY
+(zwh) root@ubuntu162:/home/z30086261/FGW# python - <<'PY'
+> import json
+> from pathlib import Path
+> 
+> p = Path("reports/mha/latest/mha_schedule_short_q_paired.json")
+> r = json.loads(p.read_text())
+> print(json.dumps({
+>     "status": r.get("status"),
+>     "correctness": r.get("correctness"),
+>     "error": r.get("error"),
+>     "summary": r.get("summary"),
+> }, ensure_ascii=False, indent=2))
+> PY
+{
+  "status": "passed",
+  "correctness": "passed",
+  "error": null,
+  "summary": [
+    {
+      "case": "q16",
+      "schedule_mode": "auto",
+      "median_round_us": 64.83500078320503,
+      "median_round_speedup_vs_auto": 1.0,
+      "min_round_speedup_vs_auto": 1.0,
+      "max_round_speedup_vs_auto": 1.0,
+      "faster_than_auto_rounds": 0,
+      "rounds": 8
+    },
+    {
+      "case": "q16",
+      "schedule_mode": "auto-offset",
+      "median_round_us": 60.22950075566769,
+      "median_round_speedup_vs_auto": 1.0740858450649338,
+      "min_round_speedup_vs_auto": 1.0704817198261705,
+      "max_round_speedup_vs_auto": 1.078256832441628,
+      "faster_than_auto_rounds": 8,
+      "rounds": 8
+    },
+    {
+      "case": "q16",
+      "schedule_mode": "manual",
+      "median_round_us": 60.393501073122025,
+      "median_round_speedup_vs_auto": 1.0716372159848442,
+      "min_round_speedup_vs_auto": 1.0676247429475272,
+      "max_round_speedup_vs_auto": 1.075563308840865,
+      "faster_than_auto_rounds": 8,
+      "rounds": 8
+    },
+    {
+      "case": "q32",
+      "schedule_mode": "auto",
+      "median_round_us": 69.95999813079834,
+      "median_round_speedup_vs_auto": 1.0,
+      "min_round_speedup_vs_auto": 1.0,
+      "max_round_speedup_vs_auto": 1.0,
+      "faster_than_auto_rounds": 0,
+      "rounds": 8
+    },
+    {
+      "case": "q32",
+      "schedule_mode": "auto-offset",
+      "median_round_us": 65.27800112962723,
+      "median_round_speedup_vs_auto": 1.0734368905826717,
+      "min_round_speedup_vs_auto": 1.0702211880759196,
+      "max_round_speedup_vs_auto": 1.082790364323403,
+      "faster_than_auto_rounds": 8,
+      "rounds": 8
+    },
+    {
+      "case": "q32",
+      "schedule_mode": "manual",
+      "median_round_us": 65.58150053024292,
+      "median_round_speedup_vs_auto": 1.0668075034782352,
+      "min_round_speedup_vs_auto": 1.063399118684463,
+      "max_round_speedup_vs_auto": 1.07382823376526,
+      "faster_than_auto_rounds": 8,
+      "rounds": 8
+    },
+    {
+      "case": "b1_decode_noncausal",
+      "schedule_mode": "auto",
+      "median_round_us": 30.124499462544918,
+      "median_round_speedup_vs_auto": 1.0,
+      "min_round_speedup_vs_auto": 1.0,
+      "max_round_speedup_vs_auto": 1.0,
+      "faster_than_auto_rounds": 0,
+      "rounds": 8
+    },
+    {
+      "case": "b1_decode_noncausal",
+      "schedule_mode": "auto-offset",
+      "median_round_us": 30.152499675750732,
+      "median_round_speedup_vs_auto": 1.000798675359782,
+      "min_round_speedup_vs_auto": 0.996332740492636,
+      "max_round_speedup_vs_auto": 1.0054698332396477,
+      "faster_than_auto_rounds": 5,
+      "rounds": 8
+    },
+    {
+      "case": "b1_decode_noncausal",
+      "schedule_mode": "manual",
+      "median_round_us": 30.313500203192234,
+      "median_round_speedup_vs_auto": 0.9960030153130991,
+      "min_round_speedup_vs_auto": 0.9919501478944324,
+      "max_round_speedup_vs_auto": 1.00260170105474,
+      "faster_than_auto_rounds": 1,
+      "rounds": 8
+    },
+    {
+      "case": "b1_decode_causal",
+      "schedule_mode": "auto",
+      "median_round_us": 30.119500122964382,
+      "median_round_speedup_vs_auto": 1.0,
+      "min_round_speedup_vs_auto": 1.0,
+      "max_round_speedup_vs_auto": 1.0,
+      "faster_than_auto_rounds": 0,
+      "rounds": 8
+    },
+    {
+      "case": "b1_decode_causal",
+      "schedule_mode": "auto-offset",
+      "median_round_us": 30.123000033199787,
+      "median_round_speedup_vs_auto": 0.9988390814586172,
+      "min_round_speedup_vs_auto": 0.993455777358361,
+      "max_round_speedup_vs_auto": 1.0066079831923418,
+      "faster_than_auto_rounds": 3,
+      "rounds": 8
+    },
+    {
+      "case": "b1_decode_causal",
+      "schedule_mode": "manual",
+      "median_round_us": 30.141999945044518,
+      "median_round_speedup_vs_auto": 0.999367855483301,
+      "min_round_speedup_vs_auto": 0.9861397430879495,
+      "max_round_speedup_vs_auto": 1.0005309128815225,
+      "faster_than_auto_rounds": 1,
+      "rounds": 8
+    },
+    {
+      "case": "q1_long_kv",
+      "schedule_mode": "auto",
+      "median_round_us": 68.35700199007988,
+      "median_round_speedup_vs_auto": 1.0,
+      "min_round_speedup_vs_auto": 1.0,
+      "max_round_speedup_vs_auto": 1.0,
+      "faster_than_auto_rounds": 0,
+      "rounds": 8
+    },
+    {
+      "case": "q1_long_kv",
+      "schedule_mode": "auto-offset",
+      "median_round_us": 57.717498391866684,
+      "median_round_speedup_vs_auto": 1.185159133062308,
+      "min_round_speedup_vs_auto": 1.1822466961632019,
+      "max_round_speedup_vs_auto": 1.1892797597483928,
+      "faster_than_auto_rounds": 8,
+      "rounds": 8
+    },
+    {
+      "case": "q1_long_kv",
+      "schedule_mode": "manual",
+      "median_round_us": 55.6620005518198,
+      "median_round_speedup_vs_auto": 1.228318915602727,
+      "min_round_speedup_vs_auto": 1.2235542645470772,
+      "max_round_speedup_vs_auto": 1.2344251162045017,
+      "faster_than_auto_rounds": 8,
+      "rounds": 8
+    },
+    {
+      "case": "q127",
+      "schedule_mode": "auto",
+      "median_round_us": 86.78100258111954,
+      "median_round_speedup_vs_auto": 1.0,
+      "min_round_speedup_vs_auto": 1.0,
+      "max_round_speedup_vs_auto": 1.0,
+      "faster_than_auto_rounds": 0,
+      "rounds": 8
+    },
+    {
+      "case": "q127",
+      "schedule_mode": "auto-offset",
+      "median_round_us": 82.32050016522408,
+      "median_round_speedup_vs_auto": 1.0581772666411933,
+      "min_round_speedup_vs_auto": 1.0504862532031252,
+      "max_round_speedup_vs_auto": 1.0612000641084307,
+      "faster_than_auto_rounds": 8,
+      "rounds": 8
+    },
+    {
+      "case": "q127",
+      "schedule_mode": "manual",
+      "median_round_us": 82.66900107264519,
+      "median_round_speedup_vs_auto": 1.0518313168543356,
+      "min_round_speedup_vs_auto": 1.0471046684274696,
+      "max_round_speedup_vs_auto": 1.0577634157409315,
+      "faster_than_auto_rounds": 8,
+      "rounds": 8
+    },
+    {
+      "case": "q129",
+      "schedule_mode": "auto",
+      "median_round_us": 91.71950072050095,
+      "median_round_speedup_vs_auto": 1.0,
+      "min_round_speedup_vs_auto": 1.0,
+      "max_round_speedup_vs_auto": 1.0,
+      "faster_than_auto_rounds": 0,
+      "rounds": 8
+    },
+    {
+      "case": "q129",
+      "schedule_mode": "auto-offset",
+      "median_round_us": 80.86900040507317,
+      "median_round_speedup_vs_auto": 1.1329512294511361,
+      "min_round_speedup_vs_auto": 1.1303583018293688,
+      "max_round_speedup_vs_auto": 1.1358041465434927,
+      "faster_than_auto_rounds": 8,
+      "rounds": 8
+    },
+    {
+      "case": "q129",
+      "schedule_mode": "manual",
+      "median_round_us": 78.27350124716759,
+      "median_round_speedup_vs_auto": 1.1705078184053859,
+      "min_round_speedup_vs_auto": 1.1652901287098119,
+      "max_round_speedup_vs_auto": 1.1737640765131432,
+      "faster_than_auto_rounds": 8,
+      "rounds": 8
+    },
+    {
+      "case": "direct_q1",
+      "schedule_mode": "auto",
+      "median_round_us": 157.05199539661407,
+      "median_round_speedup_vs_auto": 1.0,
+      "min_round_speedup_vs_auto": 1.0,
+      "max_round_speedup_vs_auto": 1.0,
+      "faster_than_auto_rounds": 0,
+      "rounds": 8
+    },
+    {
+      "case": "direct_q1",
+      "schedule_mode": "auto-offset",
+      "median_round_us": 109.07850041985512,
+      "median_round_speedup_vs_auto": 1.4407215283379737,
+      "min_round_speedup_vs_auto": 1.4383360015204263,
+      "max_round_speedup_vs_auto": 1.4412920735749715,
+      "faster_than_auto_rounds": 8,
+      "rounds": 8
+    },
+    {
+      "case": "direct_q1",
+      "schedule_mode": "manual",
+      "median_round_us": 94.87450122833252,
+      "median_round_speedup_vs_auto": 1.6554384089450573,
+      "min_round_speedup_vs_auto": 1.654653859174533,
+      "max_round_speedup_vs_auto": 1.6594546861475175,
+      "faster_than_auto_rounds": 8,
+      "rounds": 8
+    }
+  ]
+}
+(zwh) root@ubuntu162:/home/z30086261/FGW#
