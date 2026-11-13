@@ -1,117 +1,101 @@
-(zwh) root@ubuntu162:/home/z30086261/FGW# cat reports/mha/latest/mha_cube_model_status.txt 
-FILE: mha_cube_model_accuracy.json
-started_utc: 2026-11-13T14:26:07.278613+00:00
-status: passed
-passed: 540
-total_checks: 540
-
-FILE: mha_cube_model_boundaries.json
-started_utc: 2026-11-13T14:15:22.055165+00:00
-status: passed
-passed: 360
-total_checks: 360
-
-FILE: mha_cube_model_holdout_summary.json
-started_utc: 2026-11-13T14:47:01.701926+00:00
-status: passed
-phase: complete
-correctness: passed
+(zwh) root@ubuntu162:/home/z30086261/FGW# cat reports/mha/latest/mha_cube_model_holdout_paste.txt 
+status=passed phase=complete correctness=passed
+active_case=None active_split=None active_measurement=None
 GROUPS: {"all": {"cases": 48, "auto_within_2pct_cases": 8, "best_is_split1_cases": 6, "geomean_best_speedup_vs_auto": 1.1559141172403524, "max_auto_regret_percent": 44.99361984167296, "model_within_2pct_cases": 37, "max_model_regret_percent": 24.827295154559682, "geomean_model_speedup_vs_auto": 1.132365696358034}, "float16": {"cases": 24, "auto_within_2pct_cases": 4, "best_is_split1_cases": 3, "geomean_best_speedup_vs_auto": 1.1555874100808028, "max_auto_regret_percent": 44.99361984167296, "model_within_2pct_cases": 19, "max_model_regret_percent": 24.40083286624326, "geomean_model_speedup_vs_auto": 1.13218388018686}, "bfloat16": {"cases": 24, "auto_within_2pct_cases": 4, "best_is_split1_cases": 3, "geomean_best_speedup_vs_auto": 1.1562409167664052, "max_auto_regret_percent": 44.94630036242173, "model_within_2pct_cases": 18, "max_model_regret_percent": 24.827295154559682, "geomean_model_speedup_vs_auto": 1.1325475417268678}}
-hold_b1h1_q2_d32/float16 auto=16 model=8 best=4 near2%=[4, 8, 16] auto_us=35.053 model_us=34.996 best_us=34.929 model_regret=0.19% model_vs_auto=1.0016x
-hold_b1h1_q2_d32/bfloat16 auto=16 model=8 best=8 near2%=[4, 8, 16] auto_us=35.059 model_us=34.679 best_us=34.679 model_regret=0.00% model_vs_auto=1.0110x
-hold_b1h2_q7_d64/float16 auto=16 model=8 best=8 near2%=[8] auto_us=50.503 model_us=45.407 best_us=45.407 model_regret=0.00% model_vs_auto=1.1122x
-hold_b1h2_q7_d64/bfloat16 auto=16 model=8 best=8 near2%=[8] auto_us=50.564 model_us=45.519 best_us=45.519 model_regret=0.00% model_vs_auto=1.1109x
-hold_b1h4_q31_d128/float16 auto=8 model=16 best=16 near2%=[16] auto_us=82.814 model_us=76.260 best_us=76.260 model_regret=0.00% model_vs_auto=1.0860x
-hold_b1h4_q31_d128/bfloat16 auto=8 model=16 best=16 near2%=[16] auto_us=82.551 model_us=75.993 best_us=75.993 model_regret=0.00% model_vs_auto=1.0863x
-hold_b3h2_q1_d64/float16 auto=8 model=4 best=16 near2%=[16, 32] auto_us=157.022 model_us=157.912 best_us=149.037 model_regret=5.95% model_vs_auto=0.9944x
-hold_b3h2_q1_d64/bfloat16 auto=8 model=4 best=16 near2%=[16, 32] auto_us=156.471 model_us=157.822 best_us=149.477 model_regret=5.58% model_vs_auto=0.9914x
-hold_b2h4_q1_d192/float16 auto=4 model=16 best=16 near2%=[16] auto_us=338.412 model_us=236.630 best_us=236.630 model_regret=0.00% model_vs_auto=1.4301x
-hold_b2h4_q1_d192/bfloat16 auto=4 model=16 best=16 near2%=[16] auto_us=338.635 model_us=236.452 best_us=236.452 model_regret=0.00% model_vs_auto=1.4322x
-hold_b1h1_q1_d128/float16 auto=32 model=16 best=16 near2%=[16] auto_us=87.147 model_us=78.860 best_us=78.860 model_regret=0.00% model_vs_auto=1.1051x
-hold_b1h1_q1_d128/bfloat16 auto=32 model=16 best=16 near2%=[16] auto_us=86.900 model_us=79.023 best_us=79.023 model_regret=0.00% model_vs_auto=1.0997x
-hold_b4h1_q16_d48/float16 auto=8 model=4 best=8 near2%=[4, 8] auto_us=42.442 model_us=43.165 best_us=42.442 model_regret=1.70% model_vs_auto=0.9832x
-hold_b4h1_q16_d48/bfloat16 auto=8 model=4 best=8 near2%=[8] auto_us=42.278 model_us=43.259 best_us=42.278 model_regret=2.32% model_vs_auto=0.9773x
-hold_b1h8_q16_d80/float16 auto=4 model=8 best=8 near2%=[8] auto_us=110.763 model_us=95.410 best_us=95.410 model_regret=0.00% model_vs_auto=1.1609x
-hold_b1h8_q16_d80/bfloat16 auto=4 model=8 best=8 near2%=[8] auto_us=110.744 model_us=95.393 best_us=95.393 model_regret=0.00% model_vs_auto=1.1609x
-hold_b3h1_q32_d96/float16 auto=16 model=8 best=8 near2%=[8] auto_us=52.423 model_us=44.344 best_us=44.344 model_regret=0.00% model_vs_auto=1.1822x
-hold_b3h1_q32_d96/bfloat16 auto=16 model=8 best=8 near2%=[8] auto_us=52.394 model_us=44.347 best_us=44.347 model_regret=0.00% model_vs_auto=1.1815x
-hold_b2h3_q33_d128/float16 auto=4 model=2 best=4 near2%=[2, 4, 16] auto_us=202.250 model_us=205.239 best_us=202.250 model_regret=1.48% model_vs_auto=0.9854x
-hold_b2h3_q33_d128/bfloat16 auto=4 model=2 best=4 near2%=[2, 4, 16] auto_us=201.938 model_us=204.985 best_us=201.938 model_regret=1.51% model_vs_auto=0.9851x
-hold_b1h4_q64_d64/float16 auto=4 model=16 best=16 near2%=[16] auto_us=152.055 model_us=115.644 best_us=115.644 model_regret=0.00% model_vs_auto=1.3148x
-hold_b1h4_q64_d64/bfloat16 auto=4 model=16 best=16 near2%=[16] auto_us=151.601 model_us=115.261 best_us=115.261 model_regret=0.00% model_vs_auto=1.3153x
-hold_b3h2_q127_d256/float16 auto=2 model=1 best=4 near2%=[4, 8] auto_us=349.592 model_us=343.838 best_us=313.805 model_regret=9.57% model_vs_auto=1.0167x
-hold_b3h2_q127_d256/bfloat16 auto=2 model=1 best=4 near2%=[4, 8] auto_us=350.643 model_us=343.978 best_us=314.570 model_regret=9.35% model_vs_auto=1.0194x
-hold_b1h2_q255_d128/float16 auto=2 model=8 best=8 near2%=[8] auto_us=383.678 model_us=264.618 best_us=264.618 model_regret=0.00% model_vs_auto=1.4499x
-hold_b1h2_q255_d128/bfloat16 auto=2 model=8 best=8 near2%=[8] auto_us=383.074 model_us=264.287 best_us=264.287 model_regret=0.00% model_vs_auto=1.4495x
-hold_b2h1_q256_d64/float16 auto=2 model=8 best=8 near2%=[8] auto_us=223.613 model_us=159.551 best_us=159.551 model_regret=0.00% model_vs_auto=1.4015x
-hold_b2h1_q256_d64/bfloat16 auto=2 model=8 best=8 near2%=[8] auto_us=224.119 model_us=160.481 best_us=160.481 model_regret=0.00% model_vs_auto=1.3965x
-hold_b1h4_q513_d128/float16 auto=1 model=2 best=2 near2%=[2] auto_us=752.144 model_us=628.189 best_us=628.189 model_regret=0.00% model_vs_auto=1.1973x
-hold_b1h4_q513_d128/bfloat16 auto=1 model=2 best=2 near2%=[2] auto_us=752.932 model_us=631.018 best_us=631.018 model_regret=0.00% model_vs_auto=1.1932x
-hold_b2h2_q1024_d96/float16 auto=1 model=1 best=4 near2%=[4, 8] auto_us=2501.570 model_us=2501.570 best_us=2405.992 model_regret=3.97% model_vs_auto=1.0000x
-hold_b2h2_q1024_d96/bfloat16 auto=1 model=1 best=4 near2%=[4, 8] auto_us=2494.745 model_us=2494.745 best_us=2390.990 model_regret=4.34% model_vs_auto=1.0000x
-hold_page16_q3/float16 auto=4 model=1 best=1 near2%=[1] auto_us=34.734 model_us=28.207 best_us=28.207 model_regret=0.00% model_vs_auto=1.2314x
-hold_page16_q3/bfloat16 auto=4 model=1 best=1 near2%=[1] auto_us=34.937 model_us=28.240 best_us=28.240 model_regret=0.00% model_vs_auto=1.2371x
-hold_page48_q17/float16 auto=8 model=4 best=8 near2%=[4, 8] auto_us=34.916 model_us=34.931 best_us=34.916 model_regret=0.04% model_vs_auto=0.9996x
-hold_page48_q17/bfloat16 auto=8 model=4 best=4 near2%=[4, 8] auto_us=34.860 model_us=34.839 best_us=34.839 model_regret=0.00% model_vs_auto=1.0006x
-hold_causal_q31_d64/float16 auto=8 model=4 best=4 near2%=[4] auto_us=48.450 model_us=44.880 best_us=44.880 model_regret=0.00% model_vs_auto=1.0795x
-hold_causal_q31_d64/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=48.436 model_us=44.683 best_us=44.683 model_regret=0.00% model_vs_auto=1.0840x
-hold_causal_q127_d128/float16 auto=2 model=1 best=1 near2%=[1] auto_us=277.397 model_us=260.566 best_us=260.566 model_regret=0.00% model_vs_auto=1.0646x
-hold_causal_q127_d128/bfloat16 auto=2 model=1 best=1 near2%=[1] auto_us=277.898 model_us=261.115 best_us=261.115 model_regret=0.00% model_vs_auto=1.0643x
-hold_causal_q255_d192/float16 auto=2 model=4 best=8 near2%=[8] auto_us=242.850 model_us=199.079 best_us=189.254 model_regret=5.19% model_vs_auto=1.2199x
-hold_causal_q255_d192/bfloat16 auto=2 model=4 best=8 near2%=[8] auto_us=242.855 model_us=198.911 best_us=189.012 model_regret=5.24% model_vs_auto=1.2209x
-hold_causal_empty_rows/float16 auto=4 model=1 best=2 near2%=[2] auto_us=42.448 model_us=43.990 best_us=35.362 model_regret=24.40% model_vs_auto=0.9649x
-hold_causal_empty_rows/bfloat16 auto=4 model=1 best=2 near2%=[2] auto_us=42.578 model_us=44.180 best_us=35.393 model_regret=24.83% model_vs_auto=0.9638x
-hold_large_capacity_short_live/float16 auto=8 model=4 best=4 near2%=[4] auto_us=43.861 model_us=39.034 best_us=39.034 model_regret=0.00% model_vs_auto=1.1237x
-hold_large_capacity_short_live/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=43.970 model_us=39.070 best_us=39.070 model_regret=0.00% model_vs_auto=1.1254x
-hold_zero_cache/float16 auto=4 model=1 best=1 near2%=[1] auto_us=35.151 model_us=27.484 best_us=27.484 model_regret=0.00% model_vs_auto=1.2790x
-hold_zero_cache/bfloat16 auto=4 model=1 best=1 near2%=[1] auto_us=34.376 model_us=26.705 best_us=26.705 model_regret=0.00% model_vs_auto=1.2873x
-
-FILE: mha_cube_model_replay_summary.json
-started_utc: 2026-11-13T14:46:25.246756+00:00
-status: passed
-phase: complete
-correctness: passed
-GROUPS: {"all": {"cases": 42, "auto_within_2pct_cases": 0, "best_is_split1_cases": 6, "geomean_best_speedup_vs_auto": 1.175063352702748, "max_auto_regret_percent": 48.366575404107756, "model_within_2pct_cases": 42, "max_model_regret_percent": 0.7580696627112804, "geomean_model_speedup_vs_auto": 1.1747686675297724}, "float16": {"cases": 21, "auto_within_2pct_cases": 0, "best_is_split1_cases": 3, "geomean_best_speedup_vs_auto": 1.1754457124474276, "max_auto_regret_percent": 48.26775907159726, "model_within_2pct_cases": 21, "max_model_regret_percent": 0.2986523769624938, "geomean_model_speedup_vs_auto": 1.1752788069229005}, "bfloat16": {"cases": 21, "auto_within_2pct_cases": 0, "best_is_split1_cases": 3, "geomean_best_speedup_vs_auto": 1.1746811173355478, "max_auto_regret_percent": 48.366575404107756, "model_within_2pct_cases": 21, "max_model_regret_percent": 0.7580696627112804, "geomean_model_speedup_vs_auto": 1.1742587495668262}}
-dim16_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=26.427 model_us=24.086 best_us=24.086 model_regret=0.00% model_vs_auto=1.0972x
-dim16_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=26.385 model_us=24.121 best_us=24.121 model_regret=0.00% model_vs_auto=1.0939x
-dim48_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=34.209 model_us=30.815 best_us=30.815 model_regret=0.00% model_vs_auto=1.1101x
-dim48_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=34.280 model_us=30.743 best_us=30.743 model_regret=0.00% model_vs_auto=1.1150x
-dim64_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=33.162 model_us=29.520 best_us=29.520 model_regret=0.00% model_vs_auto=1.1234x
-dim64_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=33.073 model_us=29.419 best_us=29.419 model_regret=0.00% model_vs_auto=1.1242x
-dim80_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=48.870 model_us=43.684 best_us=43.684 model_regret=0.00% model_vs_auto=1.1187x
-dim80_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=48.920 model_us=43.658 best_us=43.658 model_regret=0.00% model_vs_auto=1.1206x
-dim96_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=49.315 model_us=44.483 best_us=44.483 model_regret=0.00% model_vs_auto=1.1086x
-dim96_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=49.365 model_us=44.555 best_us=44.555 model_regret=0.00% model_vs_auto=1.1080x
-dim128_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=48.368 model_us=43.187 best_us=43.187 model_regret=0.00% model_vs_auto=1.1200x
-dim128_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=48.260 model_us=43.032 best_us=43.032 model_regret=0.00% model_vs_auto=1.1215x
-dim192_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=77.601 model_us=70.295 best_us=70.295 model_regret=0.00% model_vs_auto=1.1039x
-dim192_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=77.701 model_us=70.264 best_us=70.264 model_regret=0.00% model_vs_auto=1.1059x
-dim256_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=75.504 model_us=68.749 best_us=68.749 model_regret=0.00% model_vs_auto=1.0983x
-dim256_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=75.454 model_us=68.894 best_us=68.894 model_regret=0.00% model_vs_auto=1.0952x
-d64_q1_kv2048/float16 auto=8 model=16 best=16 near2%=[16] auto_us=84.714 model_us=72.555 best_us=72.555 model_regret=0.00% model_vs_auto=1.1676x
-d64_q1_kv2048/bfloat16 auto=8 model=16 best=16 near2%=[16] auto_us=84.597 model_us=72.806 best_us=72.806 model_regret=0.00% model_vs_auto=1.1620x
-d64_q128_kv2048/float16 auto=2 model=8 best=8 near2%=[8] auto_us=280.882 model_us=194.469 best_us=194.469 model_regret=0.00% model_vs_auto=1.4444x
-d64_q128_kv2048/bfloat16 auto=2 model=8 best=8 near2%=[8] auto_us=280.649 model_us=194.279 best_us=194.279 model_regret=0.00% model_vs_auto=1.4446x
-d64_q512_kv2048/float16 auto=1 model=2 best=2 near2%=[2, 4, 8] auto_us=815.649 model_us=694.620 best_us=694.620 model_regret=0.00% model_vs_auto=1.1742x
-d64_q512_kv2048/bfloat16 auto=1 model=2 best=2 near2%=[2, 4, 8] auto_us=815.746 model_us=694.528 best_us=694.528 model_regret=0.00% model_vs_auto=1.1745x
-d128_q1_kv2048/float16 auto=8 model=32 best=32 near2%=[32] auto_us=130.963 model_us=106.094 best_us=106.094 model_regret=0.00% model_vs_auto=1.2344x
-d128_q1_kv2048/bfloat16 auto=8 model=32 best=32 near2%=[32] auto_us=130.636 model_us=106.372 best_us=106.372 model_regret=0.00% model_vs_auto=1.2281x
-d128_q128_kv2048/float16 auto=2 model=8 best=8 near2%=[8] auto_us=483.172 model_us=325.878 best_us=325.878 model_regret=0.00% model_vs_auto=1.4827x
-d128_q128_kv2048/bfloat16 auto=2 model=8 best=8 near2%=[8] auto_us=482.861 model_us=325.451 best_us=325.451 model_regret=0.00% model_vs_auto=1.4837x
-d128_q512_kv2048/float16 auto=1 model=2 best=8 near2%=[2, 4, 8] auto_us=1414.411 model_us=1208.675 best_us=1205.076 model_regret=0.30% model_vs_auto=1.1702x
-d128_q512_kv2048/bfloat16 auto=1 model=2 best=8 near2%=[2, 4, 8] auto_us=1409.347 model_us=1211.715 best_us=1202.598 model_regret=0.76% model_vs_auto=1.1631x
-single_decode_kv8192/float16 auto=32 model=16 best=16 near2%=[16] auto_us=91.059 model_us=82.270 best_us=82.270 model_regret=0.00% model_vs_auto=1.1068x
-single_decode_kv8192/bfloat16 auto=32 model=16 best=16 near2%=[16] auto_us=91.104 model_us=82.341 best_us=82.341 model_regret=0.00% model_vs_auto=1.1064x
-page16_tail/float16 auto=4 model=1 best=1 near2%=[1] auto_us=24.078 model_us=17.942 best_us=17.942 model_regret=0.00% model_vs_auto=1.3419x
-page16_tail/bfloat16 auto=4 model=1 best=1 near2%=[1] auto_us=24.146 model_us=18.035 best_us=18.035 model_regret=0.00% model_vs_auto=1.3389x
-page48_crossing/float16 auto=4 model=2 best=2 near2%=[2] auto_us=28.353 model_us=27.081 best_us=27.081 model_regret=0.00% model_vs_auto=1.0469x
-page48_crossing/bfloat16 auto=4 model=2 best=2 near2%=[2] auto_us=28.374 model_us=27.080 best_us=27.080 model_regret=0.00% model_vs_auto=1.0478x
-d128_q129_kv_tail/float16 auto=2 model=4 best=4 near2%=[4] auto_us=140.510 model_us=116.958 best_us=116.958 model_regret=0.00% model_vs_auto=1.2014x
-d128_q129_kv_tail/bfloat16 auto=2 model=4 best=4 near2%=[4] auto_us=140.042 model_us=116.895 best_us=116.895 model_regret=0.00% model_vs_auto=1.1980x
-causal_d64_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=33.447 model_us=29.781 best_us=29.781 model_regret=0.00% model_vs_auto=1.1231x
-causal_d64_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=33.332 model_us=29.752 best_us=29.752 model_regret=0.00% model_vs_auto=1.1203x
-causal_d128_q129/float16 auto=2 model=1 best=1 near2%=[1, 4] auto_us=81.054 model_us=70.618 best_us=70.618 model_regret=0.00% model_vs_auto=1.1478x
-causal_d128_q129/bfloat16 auto=2 model=1 best=1 near2%=[1, 4] auto_us=81.005 model_us=70.742 best_us=70.742 model_regret=0.00% model_vs_auto=1.1451x
-causal_empty_rows_d256/float16 auto=4 model=1 best=1 near2%=[1] auto_us=30.020 model_us=23.777 best_us=23.777 model_regret=0.00% model_vs_auto=1.2625x
-causal_empty_rows_d256/bfloat16 auto=4 model=1 best=1 near2%=[1] auto_us=30.182 model_us=23.842 best_us=23.842 model_regret=0.00% model_vs_auto=1.2659x
-(zwh) root@ubuntu162:/home/z30086261/FGW# git add reports/mha/latest/mha_cube_model_status.txt
+hold_b1h1_q2_d32/float16 auto=16 best=4 near2%=[4, 8, 16] regret=0.36% rounds=6 us: S1=73.018, S2=45.755, S4=34.929, S8=34.996, S16=35.053
+  model=8 model_regret=0.19% model_vs_auto=1.0016x
+hold_b1h1_q2_d32/bfloat16 auto=16 best=8 near2%=[4, 8, 16] regret=1.10% rounds=6 us: S1=73.286, S2=45.832, S4=34.967, S8=34.679, S16=35.059
+  model=8 model_regret=0.00% model_vs_auto=1.0110x
+hold_b1h2_q7_d64/float16 auto=16 best=8 near2%=[8] regret=11.22% rounds=6 us: S1=215.605, S2=120.516, S4=68.852, S8=45.407, S16=50.503, S32=51.189
+  model=8 model_regret=0.00% model_vs_auto=1.1122x
+hold_b1h2_q7_d64/bfloat16 auto=16 best=8 near2%=[8] regret=11.09% rounds=6 us: S1=215.706, S2=120.416, S4=68.609, S8=45.519, S16=50.564, S32=51.196
+  model=8 model_regret=0.00% model_vs_auto=1.1109x
+hold_b1h4_q31_d128/float16 auto=8 best=16 near2%=[16] regret=8.60% rounds=6 us: S1=256.734, S2=133.305, S4=77.963, S8=82.814, S16=76.260, S32=84.666
+  model=16 model_regret=0.00% model_vs_auto=1.0860x
+hold_b1h4_q31_d128/bfloat16 auto=8 best=16 near2%=[16] regret=8.63% rounds=6 us: S1=256.583, S2=133.665, S4=78.071, S8=82.551, S16=75.993, S32=84.512
+  model=16 model_regret=0.00% model_vs_auto=1.0863x
+hold_b3h2_q1_d64/float16 auto=8 best=16 near2%=[16, 32] regret=5.36% rounds=6 us: S1=540.956, S2=294.633, S4=157.912, S8=157.022, S16=149.037, S32=151.969
+  model=4 model_regret=5.95% model_vs_auto=0.9944x
+hold_b3h2_q1_d64/bfloat16 auto=8 best=16 near2%=[16, 32] regret=4.68% rounds=6 us: S1=541.066, S2=292.686, S4=157.822, S8=156.471, S16=149.477, S32=151.626
+  model=4 model_regret=5.58% model_vs_auto=0.9914x
+hold_b2h4_q1_d192/float16 auto=4 best=16 near2%=[16] regret=43.01% rounds=6 us: S1=633.074, S2=331.622, S4=338.412, S8=266.140, S16=236.630, S32=247.910
+  model=16 model_regret=0.00% model_vs_auto=1.4301x
+hold_b2h4_q1_d192/bfloat16 auto=4 best=16 near2%=[16] regret=43.22% rounds=6 us: S1=631.774, S2=331.671, S4=338.635, S8=266.239, S16=236.452, S32=248.006
+  model=16 model_regret=0.00% model_vs_auto=1.4322x
+hold_b1h1_q1_d128/float16 auto=32 best=16 near2%=[16] regret=10.51% rounds=6 us: S1=887.500, S2=460.945, S4=240.180, S8=130.626, S16=78.860, S32=87.147
+  model=16 model_regret=0.00% model_vs_auto=1.1051x
+hold_b1h1_q1_d128/bfloat16 auto=32 best=16 near2%=[16] regret=9.97% rounds=6 us: S1=888.283, S2=460.929, S4=239.786, S8=130.498, S16=79.023, S32=86.900
+  model=16 model_regret=0.00% model_vs_auto=1.0997x
+hold_b4h1_q16_d48/float16 auto=8 best=8 near2%=[4, 8] regret=0.00% rounds=6 us: S1=109.102, S2=66.779, S4=43.165, S8=42.442, S16=43.887
+  model=4 model_regret=1.70% model_vs_auto=0.9832x
+hold_b4h1_q16_d48/bfloat16 auto=8 best=8 near2%=[8] regret=0.00% rounds=6 us: S1=109.079, S2=67.588, S4=43.259, S8=42.278, S16=44.050
+  model=4 model_regret=2.32% model_vs_auto=0.9773x
+hold_b1h8_q16_d80/float16 auto=4 best=8 near2%=[8] regret=16.09% rounds=6 us: S1=200.087, S2=107.290, S4=110.763, S8=95.410, S16=99.174
+  model=8 model_regret=0.00% model_vs_auto=1.1609x
+hold_b1h8_q16_d80/bfloat16 auto=4 best=8 near2%=[8] regret=16.09% rounds=6 us: S1=198.833, S2=107.411, S4=110.744, S8=95.393, S16=99.627
+  model=8 model_regret=0.00% model_vs_auto=1.1609x
+hold_b3h1_q32_d96/float16 auto=16 best=8 near2%=[8] regret=18.22% rounds=6 us: S1=183.190, S2=102.808, S4=61.753, S8=44.344, S16=52.423
+  model=8 model_regret=0.00% model_vs_auto=1.1822x
+hold_b3h1_q32_d96/bfloat16 auto=16 best=8 near2%=[8] regret=18.15% rounds=6 us: S1=183.339, S2=104.309, S4=62.108, S8=44.347, S16=52.394
+  model=8 model_regret=0.00% model_vs_auto=1.1815x
+hold_b2h3_q33_d128/float16 auto=4 best=4 near2%=[2, 4, 16] regret=0.00% rounds=6 us: S1=374.587, S2=205.239, S4=202.250, S8=207.908, S16=203.056, S32=229.604
+  model=2 model_regret=1.48% model_vs_auto=0.9854x
+hold_b2h3_q33_d128/bfloat16 auto=4 best=4 near2%=[2, 4, 16] regret=0.00% rounds=6 us: S1=376.149, S2=204.985, S4=201.938, S8=207.367, S16=202.670, S32=229.056
+  model=2 model_regret=1.51% model_vs_auto=0.9851x
+hold_b1h4_q64_d64/float16 auto=4 best=16 near2%=[16] regret=31.48% rounds=6 us: S1=277.967, S2=149.995, S4=152.055, S8=122.906, S16=115.644, S32=134.208
+  model=16 model_regret=0.00% model_vs_auto=1.3148x
+hold_b1h4_q64_d64/bfloat16 auto=4 best=16 near2%=[16] regret=31.53% rounds=6 us: S1=278.259, S2=150.022, S4=151.601, S8=122.473, S16=115.261, S32=133.393
+  model=16 model_regret=0.00% model_vs_auto=1.3153x
+hold_b3h2_q127_d256/float16 auto=2 best=4 near2%=[4, 8] regret=11.40% rounds=6 us: S1=343.838, S2=349.592, S4=313.805, S8=318.642, S16=352.819
+  model=1 model_regret=9.57% model_vs_auto=1.0167x
+hold_b3h2_q127_d256/bfloat16 auto=2 best=4 near2%=[4, 8] regret=11.47% rounds=6 us: S1=343.978, S2=350.643, S4=314.570, S8=318.424, S16=352.785
+  model=1 model_regret=9.35% model_vs_auto=1.0194x
+hold_b1h2_q255_d128/float16 auto=2 best=8 near2%=[8] regret=44.99% rounds=6 us: S1=384.861, S2=383.678, S4=297.654, S8=264.618, S16=285.845, S32=326.230
+  model=8 model_regret=0.00% model_vs_auto=1.4499x
+hold_b1h2_q255_d128/bfloat16 auto=2 best=8 near2%=[8] regret=44.95% rounds=6 us: S1=386.959, S2=383.074, S4=297.810, S8=264.287, S16=285.344, S32=325.792
+  model=8 model_regret=0.00% model_vs_auto=1.4495x
+hold_b2h1_q256_d64/float16 auto=2 best=8 near2%=[8] regret=40.15% rounds=6 us: S1=228.749, S2=223.613, S4=176.761, S8=159.551, S16=175.955, S32=204.563
+  model=8 model_regret=0.00% model_vs_auto=1.4015x
+hold_b2h1_q256_d64/bfloat16 auto=2 best=8 near2%=[8] regret=39.65% rounds=6 us: S1=230.003, S2=224.119, S4=177.766, S8=160.481, S16=176.619, S32=205.361
+  model=8 model_regret=0.00% model_vs_auto=1.3965x
+hold_b1h4_q513_d128/float16 auto=1 best=2 near2%=[2] regret=19.73% rounds=6 us: S1=752.144, S2=628.189, S4=649.455, S8=696.476, S16=758.630, S32=918.340
+  model=2 model_regret=0.00% model_vs_auto=1.1973x
+hold_b1h4_q513_d128/bfloat16 auto=1 best=2 near2%=[2] regret=19.32% rounds=6 us: S1=752.932, S2=631.018, S4=648.602, S8=697.044, S16=758.862, S32=918.926
+  model=2 model_regret=0.00% model_vs_auto=1.1932x
+hold_b2h2_q1024_d96/float16 auto=1 best=4 near2%=[4, 8] regret=3.97% rounds=6 us: S1=2501.570, S2=2476.202, S4=2405.992, S8=2421.381, S16=2586.365, S32=2915.799
+  model=1 model_regret=3.97% model_vs_auto=1.0000x
+hold_b2h2_q1024_d96/bfloat16 auto=1 best=4 near2%=[4, 8] regret=4.34% rounds=6 us: S1=2494.745, S2=2461.508, S4=2390.990, S8=2418.266, S16=2578.666, S32=2910.639
+  model=1 model_regret=4.34% model_vs_auto=1.0000x
+hold_page16_q3/float16 auto=4 best=1 near2%=[1] regret=23.14% rounds=6 us: S1=28.207, S2=34.735, S4=34.734
+  model=1 model_regret=0.00% model_vs_auto=1.2314x
+hold_page16_q3/bfloat16 auto=4 best=1 near2%=[1] regret=23.71% rounds=6 us: S1=28.240, S2=34.874, S4=34.937
+  model=1 model_regret=0.00% model_vs_auto=1.2371x
+hold_page48_q17/float16 auto=8 best=8 near2%=[4, 8] regret=0.00% rounds=6 us: S1=61.603, S2=41.899, S4=34.931, S8=34.916
+  model=4 model_regret=0.04% model_vs_auto=0.9996x
+hold_page48_q17/bfloat16 auto=8 best=4 near2%=[4, 8] regret=0.06% rounds=6 us: S1=61.511, S2=41.760, S4=34.839, S8=34.860
+  model=4 model_regret=0.00% model_vs_auto=1.0006x
+hold_causal_q31_d64/float16 auto=8 best=4 near2%=[4] regret=7.95% rounds=6 us: S1=120.115, S2=70.424, S4=44.880, S8=48.450, S16=46.315
+  model=4 model_regret=0.00% model_vs_auto=1.0795x
+hold_causal_q31_d64/bfloat16 auto=8 best=4 near2%=[4] regret=8.40% rounds=6 us: S1=120.301, S2=69.805, S4=44.683, S8=48.436, S16=45.978
+  model=4 model_regret=0.00% model_vs_auto=1.0840x
+hold_causal_q127_d128/float16 auto=2 best=1 near2%=[1] regret=6.46% rounds=6 us: S1=260.566, S2=277.397, S4=283.629, S8=268.314, S16=297.880, S32=355.449
+  model=1 model_regret=0.00% model_vs_auto=1.0646x
+hold_causal_q127_d128/bfloat16 auto=2 best=1 near2%=[1] regret=6.43% rounds=6 us: S1=261.115, S2=277.898, S4=283.521, S8=268.183, S16=297.841, S32=355.330
+  model=1 model_regret=0.00% model_vs_auto=1.0643x
+hold_causal_q255_d192/float16 auto=2 best=8 near2%=[8] regret=28.32% rounds=6 us: S1=241.471, S2=242.850, S4=199.079, S8=189.254, S16=224.393
+  model=4 model_regret=5.19% model_vs_auto=1.2199x
+hold_causal_q255_d192/bfloat16 auto=2 best=8 near2%=[8] regret=28.49% rounds=6 us: S1=241.513, S2=242.855, S4=198.911, S8=189.012, S16=224.322
+  model=4 model_regret=5.24% model_vs_auto=1.2209x
+hold_causal_empty_rows/float16 auto=4 best=2 near2%=[2] regret=20.04% rounds=6 us: S1=43.990, S2=35.362, S4=42.448, S8=54.333, S16=76.721
+  model=1 model_regret=24.40% model_vs_auto=0.9649x
+hold_causal_empty_rows/bfloat16 auto=4 best=2 near2%=[2] regret=20.30% rounds=6 us: S1=44.180, S2=35.393, S4=42.578, S8=54.363, S16=76.791
+  model=1 model_regret=24.83% model_vs_auto=0.9638x
+hold_large_capacity_short_live/float16 auto=8 best=4 near2%=[4] regret=12.37% rounds=6 us: S1=77.347, S2=52.330, S4=39.034, S8=43.861, S16=44.144, S32=58.629
+  model=4 model_regret=0.00% model_vs_auto=1.1237x
+hold_large_capacity_short_live/bfloat16 auto=8 best=4 near2%=[4] regret=12.54% rounds=6 us: S1=76.717, S2=52.512, S4=39.070, S8=43.970, S16=44.143, S32=58.694
+  model=4 model_regret=0.00% model_vs_auto=1.1254x
+hold_zero_cache/float16 auto=4 best=1 near2%=[1] regret=27.90% rounds=6 us: S1=27.484, S2=35.010, S4=35.151, S8=35.047, S16=35.295, S32=48.511
+  model=1 model_regret=0.00% model_vs_auto=1.2790x
+hold_zero_cache/bfloat16 auto=4 best=1 near2%=[1] regret=28.73% rounds=6 us: S1=26.705, S2=34.558, S4=34.376, S8=34.455, S16=34.449, S32=48.182
+  model=1 model_regret=0.00% model_vs_auto=1.2873x
+(zwh) root@ubuntu162:/home/z30086261/FGW#
