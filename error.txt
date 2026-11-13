@@ -1,28 +1,99 @@
-python - <<'PY'
-import json
-from pathlib import Path
+(zwh) root@ubuntu162:/home/z30086261/FGW# python - <<'PY'
+> import json
+> from pathlib import Path
+> 
+> root = Path("reports/mha/latest")
+> for name in (
+>     "mha_cube_ascendc_mfu_smoke_summary.json",
+>     "mha_cube_ascendc_mfu_summary.json",
+> ):
+>     p = root / name
+>     if not p.exists():
+>         continue
+>     r = json.loads(p.read_text())
+>     print("\nFILE:", name)
+>     for key in ("status", "phase", "correctness", "active_case", "active_variant"):
+>         print(key, ":", r.get(key))
+>     if r.get("error"):
+>         print("ERROR:\n", r["error"][-8000:])
+>     print("GROUPS:", json.dumps(r.get("groups", {}), ensure_ascii=False))
+>     for s in r.get("summary", []):
+>         metrics = s.get("metrics", {})
+>         print(
+>             s["key"],
+>             "Cube:", metrics.get("cube_general"),
+>             "AscendC:", metrics.get("ascendc_fia_v2"),
+>             "speedup:", s.get("speedup_cube_over_ascendc"),
+>         )
+> PY
 
-root = Path("reports/mha/latest")
-for name in (
-    "mha_cube_ascendc_mfu_smoke_summary.json",
-    "mha_cube_ascendc_mfu_summary.json",
-):
-    p = root / name
-    if not p.exists():
-        continue
-    r = json.loads(p.read_text())
-    print("\nFILE:", name)
-    for key in ("status", "phase", "correctness", "active_case", "active_variant"):
-        print(key, ":", r.get(key))
-    if r.get("error"):
-        print("ERROR:\n", r["error"][-8000:])
-    print("GROUPS:", json.dumps(r.get("groups", {}), ensure_ascii=False))
-    for s in r.get("summary", []):
-        metrics = s.get("metrics", {})
-        print(
-            s["key"],
-            "Cube:", metrics.get("cube_general"),
-            "AscendC:", metrics.get("ascendc_fia_v2"),
-            "speedup:", s.get("speedup_cube_over_ascendc"),
-        )
-PY
+FILE: mha_cube_ascendc_mfu_smoke_summary.json
+status : passed
+phase : complete
+correctness : passed
+active_case : None
+active_variant : None
+GROUPS: {"all": {"cube_cases": 4, "paired_cases": 4, "cube_only_cases": 0, "max_cube_mfu_percent": 0.18232711810741184, "max_cube_mfu_case": "causal_d128_q129/bfloat16", "geomean_speedup": 0.5114151000508477, "cube_faster_cases": 0, "min_speedup": 0.4771748496533935, "max_speedup": 0.5263058049829266}, "standard": {"cube_cases": 4, "paired_cases": 4, "cube_only_cases": 0, "max_cube_mfu_percent": 0.18232711810741184, "max_cube_mfu_case": "causal_d128_q129/bfloat16", "geomean_speedup": 0.5114151000508477, "cube_faster_cases": 0, "min_speedup": 0.4771748496533935, "max_speedup": 0.5263058049829266}, "float16": {"cube_cases": 2, "paired_cases": 2, "cube_only_cases": 0, "max_cube_mfu_percent": 0.1819377865217306, "max_cube_mfu_case": "causal_d128_q129/float16", "geomean_speedup": 0.5255827856834101, "cube_faster_cases": 0, "min_speedup": 0.5248607596408605, "max_speedup": 0.5263058049829266}, "bfloat16": {"cube_cases": 2, "paired_cases": 2, "cube_only_cases": 0, "max_cube_mfu_percent": 0.18232711810741184, "max_cube_mfu_case": "causal_d128_q129/bfloat16", "geomean_speedup": 0.4976293206025263, "cube_faster_cases": 0, "min_speedup": 0.4771748496533935, "max_speedup": 0.5189605883529004}}
+dim64_q16/float16 Cube: {'us': 79.4524997472763, 'effective_tflops': 0.1055801645849106, 'mfu_percent': 0.02793126047219857} AscendC: {'us': 41.70149937272072, 'effective_tflops': 0.2011584265837563, 'mfu_percent': 0.0532165149692477} speedup: 0.5248607596408605
+dim64_q16/bfloat16 Cube: {'us': 79.06850054860115, 'effective_tflops': 0.10609291869451555, 'mfu_percent': 0.028066909707543795} AscendC: {'us': 37.729499861598015, 'effective_tflops': 0.22233552076681848, 'mfu_percent': 0.05881892083778266} speedup: 0.4771748496533935
+causal_d128_q129/float16 Cube: {'us': 73.75749945640564, 'effective_tflops': 0.6877248330521417, 'mfu_percent': 0.1819377865217306} AscendC: {'us': 38.819000124931335, 'effective_tflops': 1.3067019716312112, 'mfu_percent': 0.3456883522833892} speedup: 0.5263058049829266
+causal_d128_q129/bfloat16 Cube: {'us': 73.60000163316727, 'effective_tflops': 0.6891965064460167, 'mfu_percent': 0.18232711810741184} AscendC: {'us': 38.195500150322914, 'effective_tflops': 1.328032459330714, 'mfu_percent': 0.3513313384472788} speedup: 0.5189605883529004
+
+FILE: mha_cube_ascendc_mfu_summary.json
+status : passed
+phase : complete
+correctness : passed
+active_case : None
+active_variant : None
+GROUPS: {"all": {"cube_cases": 50, "paired_cases": 46, "cube_only_cases": 4, "max_cube_mfu_percent": 0.53253697827545, "max_cube_mfu_case": "long_d128_q32768_kv2048/float16", "geomean_speedup": 0.12920888214800896, "cube_faster_cases": 2, "min_speedup": 0.00680685082270785, "max_speedup": 1.445805640575657}, "standard": {"cube_cases": 42, "paired_cases": 38, "cube_only_cases": 4, "max_cube_mfu_percent": 0.40209753715215757, "max_cube_mfu_case": "d128_q512_kv2048/float16", "geomean_speedup": 0.22006701788972066, "cube_faster_cases": 2, "min_speedup": 0.034745653407584565, "max_speedup": 1.445805640575657}, "long-q": {"cube_cases": 8, "paired_cases": 8, "cube_only_cases": 0, "max_cube_mfu_percent": 0.53253697827545, "max_cube_mfu_case": "long_d128_q32768_kv2048/float16", "geomean_speedup": 0.0102990002921715, "cube_faster_cases": 0, "min_speedup": 0.00680685082270785, "max_speedup": 0.016328706544770505}, "float16": {"cube_cases": 25, "paired_cases": 23, "cube_only_cases": 2, "max_cube_mfu_percent": 0.53253697827545, "max_cube_mfu_case": "long_d128_q32768_kv2048/float16", "geomean_speedup": 0.12948023430900865, "cube_faster_cases": 1, "min_speedup": 0.006849131294043654, "max_speedup": 1.4308635161427918}, "bfloat16": {"cube_cases": 25, "paired_cases": 23, "cube_only_cases": 2, "max_cube_mfu_percent": 0.532450200755871, "max_cube_mfu_case": "long_d128_q32768_kv2048/bfloat16", "geomean_speedup": 0.12893809866064262, "cube_faster_cases": 1, "min_speedup": 0.00680685082270785, "max_speedup": 1.445805640575657}}
+dim16_q16/float16 Cube: {'us': 55.705999955534935, 'effective_tflops': 0.03764678852680083, 'mfu_percent': 0.009959467864233025} AscendC: {'us': 38.359999656677246, 'effective_tflops': 0.05467028203257435, 'mfu_percent': 0.014463037574755118} speedup: 0.6886152243438152
+dim16_q16/bfloat16 Cube: {'us': 55.87150156497955, 'effective_tflops': 0.037535271851625016, 'mfu_percent': 0.009929966098313496} AscendC: {'us': 38.26550021767616, 'effective_tflops': 0.054805294274743406, 'mfu_percent': 0.014498755099138469} speedup: 0.6848840490383582
+dim48_q16/float16 Cube: {'us': 80.6180015206337, 'effective_tflops': 0.07804033691395512, 'mfu_percent': 0.020645591776178602} AscendC: {'us': 38.3675005286932, 'effective_tflops': 0.16397878186761017, 'mfu_percent': 0.04338063012370639} speedup: 0.4759172865240683
+dim48_q16/bfloat16 Cube: {'us': 80.82699775695801, 'effective_tflops': 0.07783854621098306, 'mfu_percent': 0.02059220799232356} AscendC: {'us': 38.654500618577, 'effective_tflops': 0.16276128004034757, 'mfu_percent': 0.04305853969321364} speedup: 0.47823749107703833
+dim64_q16/float16 Cube: {'us': 80.5560015141964, 'effective_tflops': 0.1041338676488514, 'mfu_percent': 0.02754864223514587} AscendC: {'us': 38.896000012755394, 'effective_tflops': 0.21566762642043077, 'mfu_percent': 0.057054927624452585} speedup: 0.48284422366595176
+dim64_q16/bfloat16 Cube: {'us': 80.53300157189369, 'effective_tflops': 0.10416360791558592, 'mfu_percent': 0.027556510030578286} AscendC: {'us': 39.01300020515919, 'effective_tflops': 0.2150208380767052, 'mfu_percent': 0.056883819597011956} speedup: 0.4844349452234358
+dim80_q16/float16 Cube: {'us': 130.52500039339066, 'effective_tflops': 0.08033526120204451, 'mfu_percent': 0.02125271460371548} AscendC: {'us': 38.95849920809269, 'effective_tflops': 0.2691520518793968, 'mfu_percent': 0.07120424652894095} speedup: 0.29847538089006137
+dim80_q16/bfloat16 Cube: {'us': 130.46950101852417, 'effective_tflops': 0.08036943437463767, 'mfu_percent': 0.021261755125565523} AscendC: {'us': 38.925500586628914, 'effective_tflops': 0.26938022227007424, 'mfu_percent': 0.0712646090661572} speedup: 0.2983494248291962
+dim96_q16/float16 Cube: {'us': 132.88699835538864, 'effective_tflops': 0.09468881196600343, 'mfu_percent': 0.025049950255556463} AscendC: {'us': 38.575999438762665, 'effective_tflops': 0.32618499022882613, 'mfu_percent': 0.08629232545736142} speedup: 0.2902917510078471
+dim96_q16/bfloat16 Cube: {'us': 133.4490031003952, 'effective_tflops': 0.09429004119673891, 'mfu_percent': 0.024944455343052622} AscendC: {'us': 38.70999999344349, 'effective_tflops': 0.3250558512562964, 'mfu_percent': 0.08599361144346465} speedup: 0.29007335457067085
+dim128_q16/float16 Cube: {'us': 125.91099739074707, 'effective_tflops': 0.13324662934671444, 'mfu_percent': 0.03525043104410435} AscendC: {'us': 36.89799830317497, 'effective_tflops': 0.4546917657198864, 'mfu_percent': 0.12028882691002286} speedup: 0.29304825684659797
+dim128_q16/bfloat16 Cube: {'us': 126.44000351428986, 'effective_tflops': 0.13268914531550052, 'mfu_percent': 0.03510294849616416} AscendC: {'us': 36.79100051522255, 'effective_tflops': 0.4560141275054019, 'mfu_percent': 0.12063865807021212} speedup: 0.2909759529630553
+dim192_q16/float16 Cube: {'us': 221.00050002336502, 'effective_tflops': 0.11387224914576832, 'mfu_percent': 0.030124933636446645} AscendC: {'us': 42.144499719142914, 'effective_tflops': 0.5971318717201229, 'mfu_percent': 0.15797139463495316} speedup: 0.19069866228667914
+dim192_q16/bfloat16 Cube: {'us': 220.9175005555153, 'effective_tflops': 0.1139150313430057, 'mfu_percent': 0.030136251678043832} AscendC: {'us': 41.570499539375305, 'effective_tflops': 0.6053769927918018, 'mfu_percent': 0.16015264359571477} speedup: 0.18817205262074238
+dim256_q16/float16 Cube: {'us': 216.90750122070312, 'effective_tflops': 0.15469465929561563, 'mfu_percent': 0.040924513041168155} AscendC: {'us': 43.22650097310543, 'effective_tflops': 0.77624677558049, 'mfu_percent': 0.20535628983610846} speedup: 0.19928541304398006
+dim256_q16/bfloat16 Cube: {'us': 216.70950204133987, 'effective_tflops': 0.15483599788623528, 'mfu_percent': 0.04096190420270775} AscendC: {'us': 42.96400025486946, 'effective_tflops': 0.7809894749313293, 'mfu_percent': 0.20661097220405536} speedup: 0.19825619020006596
+d64_q1_kv2048/float16 Cube: {'us': 276.4424979686737, 'effective_tflops': 0.007586214187073538, 'mfu_percent': 0.0020069349701252745} AscendC: {'us': 43.11550036072731, 'effective_tflops': 0.048640326157741554, 'mfu_percent': 0.01286781115284168} speedup: 0.15596552873579203
+d64_q1_kv2048/bfloat16 Cube: {'us': 276.7239958047867, 'effective_tflops': 0.007578497101058861, 'mfu_percent': 0.002004893412978535} AscendC: {'us': 43.146999552845955, 'effective_tflops': 0.04860481659753495, 'mfu_percent': 0.012858417089294959} speedup: 0.15592070151835966
+d64_q128_kv2048/float16 Cube: {'us': 287.87000477313995, 'effective_tflops': 0.9324884550286661, 'mfu_percent': 0.24669006746790106} AscendC: {'us': 46.617500483989716, 'effective_tflops': 5.758255016100474, 'mfu_percent': 1.5233478878572682} speedup: 0.16193941609417523
+d64_q128_kv2048/bfloat16 Cube: {'us': 287.38150000572205, 'effective_tflops': 0.934073543337533, 'mfu_percent': 0.24710940299934736} AscendC: {'us': 46.231500804424286, 'effective_tflops': 5.806332291386724, 'mfu_percent': 1.5360667437531015} speedup: 0.16087152723297699
+d64_q512_kv2048/float16 Cube: {'us': 820.2680051326752, 'effective_tflops': 1.3090134166897396, 'mfu_percent': 0.34629984568511635} AscendC: {'us': 47.18249849975109, 'effective_tflops': 22.75720570426478, 'mfu_percent': 6.020424789488037} speedup: 0.05752083246513986
+d64_q512_kv2048/bfloat16 Cube: {'us': 819.2729949951172, 'effective_tflops': 1.3106032184136613, 'mfu_percent': 0.3467204281517623} AscendC: {'us': 47.45749942958355, 'effective_tflops': 22.62533502409236, 'mfu_percent': 5.985538366162} speedup: 0.05792635631773313
+d128_q1_kv2048/float16 Cube: {'us': 460.9379917383194, 'effective_tflops': 0.009099497275505903, 'mfu_percent': 0.002407274411509498} AscendC: {'us': 41.48800112307072, 'effective_tflops': 0.1010967963377639, 'mfu_percent': 0.026745184216339656} speedup: 0.09000777082099148
+d128_q1_kv2048/bfloat16 Cube: {'us': 461.2094908952713, 'effective_tflops': 0.009094140694846233, 'mfu_percent': 0.002405857326678898} AscendC: {'us': 41.06299951672554, 'effective_tflops': 0.10214314709989954, 'mfu_percent': 0.02702199658727501} speedup: 0.08903329252183555
+d128_q128_kv2048/float16 Cube: {'us': 467.7080065011978, 'effective_tflops': 1.1478762487223428, 'mfu_percent': 0.30367096527046106} AscendC: {'us': 45.331500470638275, 'effective_tflops': 11.843219536660547, 'mfu_percent': 3.133126861550409} speedup: 0.09692265225423756
+d128_q128_kv2048/bfloat16 Cube: {'us': 468.66899728775024, 'effective_tflops': 1.145522565194078, 'mfu_percent': 0.303048297670391} AscendC: {'us': 44.14050094783306, 'effective_tflops': 12.162773427390293, 'mfu_percent': 3.21766492788103} speedup: 0.0941826773336406
+d128_q512_kv2048/float16 Cube: {'us': 1412.8844738006592, 'effective_tflops': 1.5199286904351557, 'mfu_percent': 0.40209753715215757} AscendC: {'us': 49.34399947524071, 'effective_tflops': 43.520664535462736, 'mfu_percent': 11.513403316259984} speedup: 0.034924298759193916
+d128_q512_kv2048/bfloat16 Cube: {'us': 1417.5154566764832, 'effective_tflops': 1.5149631264233305, 'mfu_percent': 0.400783895879188} AscendC: {'us': 49.252500757575035, 'effective_tflops': 43.60151494784185, 'mfu_percent': 11.534792314243877} speedup: 0.034745653407584565
+single_decode_kv8192/float16 Cube: {'us': 1046.3175177574158, 'effective_tflops': 0.002004317011240383, 'mfu_percent': 0.0005302425955662389} AscendC: {'us': 46.961499378085136, 'effective_tflops': 0.04465683651017856, 'mfu_percent': 0.01181397791274565} speedup: 0.04488264659731422
+single_decode_kv8192/bfloat16 Cube: {'us': 1045.9595322608948, 'effective_tflops': 0.00200500299994102, 'mfu_percent': 0.0005304240740584709} AscendC: {'us': 46.44949920475483, 'effective_tflops': 0.04514907665108527, 'mfu_percent': 0.011944200172244781} speedup: 0.04440850508274624
+page16_tail/float16 Cube: {'us': 22.826500236988068, 'effective_tflops': 0.005383216819233867, 'mfu_percent': 0.0014241314336597532} AscendC: None speedup: None
+page16_tail/bfloat16 Cube: {'us': 22.715000435709953, 'effective_tflops': 0.005409641102485825, 'mfu_percent': 0.0014311219847846098} AscendC: None speedup: None
+page48_crossing/float16 Cube: {'us': 39.30199891328812, 'effective_tflops': 0.10833525310999968, 'mfu_percent': 0.028660119870370288} AscendC: None speedup: None
+page48_crossing/bfloat16 Cube: {'us': 39.59850035607815, 'effective_tflops': 0.10752407191466919, 'mfu_percent': 0.028445521670547404} AscendC: None speedup: None
+d128_q129_kv_tail/float16 Cube: {'us': 135.70600003004074, 'effective_tflops': 0.7475699525263618, 'mfu_percent': 0.19776982871067775} AscendC: {'us': 40.82999937236309, 'effective_tflops': 2.4846860043958032, 'mfu_percent': 0.6573243397872495} speedup: 0.30087099585371835
+d128_q129_kv_tail/bfloat16 Cube: {'us': 135.65599918365479, 'effective_tflops': 0.7478454960377727, 'mfu_percent': 0.19784272381951662} AscendC: {'us': 40.54649919271469, 'effective_tflops': 2.50205887116953, 'mfu_percent': 0.6619203362882355} speedup: 0.2988920463283141
+causal_d64_q16/float16 Cube: {'us': 80.27850091457367, 'effective_tflops': 0.10296315832797832, 'mfu_percent': 0.02723893077459744} AscendC: {'us': 39.760999381542206, 'effective_tflops': 0.20788531798919285, 'mfu_percent': 0.05499611587015684} speedup: 0.4952882643368349
+causal_d64_q16/bfloat16 Cube: {'us': 80.52049949765205, 'effective_tflops': 0.10265370994427357, 'mfu_percent': 0.027157066122823696} AscendC: {'us': 39.528001099824905, 'effective_tflops': 0.20911070051646538, 'mfu_percent': 0.05532029114192205} speedup: 0.4909060592821773
+causal_d128_q129/float16 Cube: {'us': 75.0259980559349, 'effective_tflops': 0.6760971571772038, 'mfu_percent': 0.17886168179291104} AscendC: {'us': 39.17250037193298, 'effective_tflops': 1.2949100393995852, 'mfu_percent': 0.34256879349195374} speedup: 0.5221190172335769
+causal_d128_q129/bfloat16 Cube: {'us': 74.9794989824295, 'effective_tflops': 0.676516443673313, 'mfu_percent': 0.1789726041463791} AscendC: {'us': 38.84600102901459, 'effective_tflops': 1.3057937150882772, 'mfu_percent': 0.34544807277467654} speedup: 0.5180882982175922
+causal_empty_rows_d256/float16 Cube: {'us': 28.07850018143654, 'effective_tflops': 0.011159570417766126, 'mfu_percent': 0.002952267306287335} AscendC: {'us': 40.176501497626305, 'effective_tflops': 0.007799185800647996, 'mfu_percent': 0.0020632766668380945} speedup: 1.4308635161427918
+causal_empty_rows_d256/bfloat16 Cube: {'us': 28.162499889731407, 'effective_tflops': 0.01112628499695978, 'mfu_percent': 0.0029434616394073496} AscendC: {'us': 40.71750119328499, 'effective_tflops': 0.0076955606512433975, 'mfu_percent': 0.002035862606149047} speedup: 1.445805640575657
+long_d64_q4096_kv2048/float16 Cube: {'us': 5083.684921264648, 'effective_tflops': 1.689706330160036, 'mfu_percent': 0.4470122566560942} AscendC: {'us': 83.0099992454052, 'effective_tflops': 103.48072123944122, 'mfu_percent': 27.375852179746357} speedup: 0.016328706544770505
+long_d64_q4096_kv2048/bfloat16 Cube: {'us': 5084.087610244751, 'effective_tflops': 1.6895724957002611, 'mfu_percent': 0.4469768507143548} AscendC: {'us': 82.89799839258194, 'effective_tflops': 103.62053075540439, 'mfu_percent': 27.41283882418106} speedup: 0.01630538353145948
+long_d64_q32768_kv2048/float16 Cube: {'us': 39151.75247192383, 'effective_tflops': 1.7552081936888912, 'mfu_percent': 0.4643407919811882} AscendC: {'us': 364.9975061416626, 'effective_tflops': 188.2738253815045, 'mfu_percent': 49.80789031256733} speedup: 0.009322635210349945
+long_d64_q32768_kv2048/bfloat16 Cube: {'us': 39123.186111450195, 'effective_tflops': 1.7564897843503562, 'mfu_percent': 0.4646798371297238} AscendC: {'us': 365.8575117588043, 'effective_tflops': 187.83125814648872, 'mfu_percent': 49.69080903346263} speedup: 0.009351424260707864
+long_d128_q4096_kv2048/float16 Cube: {'us': 9034.843921661377, 'effective_tflops': 1.9015125588180466, 'mfu_percent': 0.5030456504809647} AscendC: {'us': 97.70799800753593, 'effective_tflops': 175.8286888927452, 'mfu_percent': 46.51552616210191} speedup: 0.010814575088926257
+long_d128_q4096_kv2048/bfloat16 Cube: {'us': 9038.898468017578, 'effective_tflops': 1.900659604130713, 'mfu_percent': 0.5028200010927812} AscendC: {'us': 97.76550158858299, 'effective_tflops': 175.72527021133044, 'mfu_percent': 46.488166722574185} speedup: 0.010816085824451687
+long_d128_q32768_kv2048/float16 Cube: {'us': 68276.03149414062, 'effective_tflops': 2.012989777881201, 'mfu_percent': 0.53253697827545} AscendC: {'us': 467.6315039396286, 'effective_tflops': 293.9043933398966, 'mfu_percent': 77.75248501055466} speedup: 0.006849131294043654
+long_d128_q32768_kv2048/bfloat16 Cube: {'us': 68287.15896606445, 'effective_tflops': 2.0126617588571927, 'mfu_percent': 0.532450200755871} AscendC: {'us': 464.8205041885376, 'effective_tflops': 295.68177873722385, 'mfu_percent': 78.22269278762536} speedup: 0.00680685082270785
+(zwh) root@ubuntu162:/home/z30086261/FGW#
