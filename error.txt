@@ -1,297 +1,39 @@
-(zwh) root@ubuntu162:/home/z30086261/FGW# cat reports/mha/latest/mha_cube_model_v2_status.txt 
-FILE: mha_cube_model_v2_accuracy.json
-started_utc: 2026-11-16T10:07:02.882130+00:00
-status: passed
-passed: 120
-total_checks: 120
+(zwh) root@ubuntu162:/home/z30086261/FGW# python fgw.py mha run run_mha_cube_model_v2_residuals
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/__init__.py", line 3030, in _import_device_backends
+    entrypoint = backend_extension.load()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/importlib/metadata/__init__.py", line 205, in load
+    module = import_module(match.group('module'))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/envs/zwh/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/__init__.py", line 38, in <module>
+    import torch_npu.utils.patch_getenv
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/utils/__init__.py", line 4, in <module>
+    from torch_npu.npu.utils import get_cann_version
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/npu/__init__.py", line 164, in <module>
+    from .utils import (obfuscation_initialize, obfuscation_calculate, obfuscation_finalize,
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch_npu/npu/utils.py", line 8, in <module>
+    import torch_npu._C
+ImportError: libhccl.so: cannot open shared object file: No such file or directory
 
-FILE: mha_cube_model_v2_holdout_summary.json
-started_utc: 2026-11-16T10:08:59.643690+00:00
-status: passed
-phase: complete
-correctness: passed
-GROUPS: {"all": {"cases": 48, "auto_within_2pct_cases": 13, "best_is_split1_cases": 6, "geomean_best_speedup_vs_auto": 1.1454743348408625, "max_auto_regret_percent": 50.685477099227704, "model_within_2pct_cases": 40, "max_model_regret_percent": 16.465777100681443, "geomean_model_speedup_vs_auto": 1.1299915667344733, "geomean_model_speedup_vs_v1": 1.0178165319083932, "model_faster_than_v1_cases": 17, "max_model_slowdown_vs_v1_percent": 4.046132493649579}, "float16": {"cases": 24, "auto_within_2pct_cases": 6, "best_is_split1_cases": 3, "geomean_best_speedup_vs_auto": 1.1458441899365703, "max_auto_regret_percent": 49.61327793299108, "model_within_2pct_cases": 20, "max_model_regret_percent": 16.465777100681443, "geomean_model_speedup_vs_auto": 1.1305458362898442, "geomean_model_speedup_vs_v1": 1.018711259528038, "model_faster_than_v1_cases": 9, "max_model_slowdown_vs_v1_percent": 3.9859328119875803}, "bfloat16": {"cases": 24, "auto_within_2pct_cases": 7, "best_is_split1_cases": 3, "geomean_best_speedup_vs_auto": 1.1451045991268234, "max_auto_regret_percent": 50.685477099227704, "model_within_2pct_cases": 20, "max_model_regret_percent": 16.289703225806452, "geomean_model_speedup_vs_auto": 1.1294375689192924, "geomean_model_speedup_vs_v1": 1.0169225901223256, "model_faster_than_v1_cases": 8, "max_model_slowdown_vs_v1_percent": 4.046132493649579}}
-v2_b4h2_q1_d64/float16 auto=4 model=16 best=16 near2%=[16] auto_us=128.756 model_us=126.160 best_us=126.160 model_regret=0.00% model_vs_auto=1.0206x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b4h2_q1_d64/bfloat16 auto=4 model=16 best=16 near2%=[4, 16] auto_us=128.426 model_us=126.079 best_us=126.079 model_regret=0.00% model_vs_auto=1.0186x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b2h5_q1_d128/float16 auto=4 model=8 best=8 near2%=[8, 16] auto_us=375.082 model_us=294.953 best_us=294.953 model_regret=0.00% model_vs_auto=1.2717x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b2h5_q1_d128/bfloat16 auto=4 model=8 best=8 near2%=[8, 16] auto_us=377.173 model_us=295.927 best_us=295.927 model_regret=0.00% model_vs_auto=1.2745x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b3h3_q3_d192/float16 auto=4 model=8 best=16 near2%=[16] auto_us=343.576 model_us=296.315 best_us=286.493 model_regret=3.43% model_vs_auto=1.1595x
-  v1_model=8 v1_regret=3.43% v2_vs_v1=1.0000x
-v2_b3h3_q3_d192/bfloat16 auto=4 model=8 best=16 near2%=[16] auto_us=343.585 model_us=296.108 best_us=286.332 model_regret=3.41% model_vs_auto=1.1603x
-  v1_model=8 v1_regret=3.41% v2_vs_v1=1.0000x
-v2_b1h3_q1_d64/float16 auto=16 model=8 best=8 near2%=[8] auto_us=79.886 model_us=75.757 best_us=75.757 model_regret=0.00% model_vs_auto=1.0545x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b1h3_q1_d64/bfloat16 auto=16 model=8 best=8 near2%=[8] auto_us=79.755 model_us=76.096 best_us=76.096 model_regret=0.00% model_vs_auto=1.0481x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b2h1_q2_d32/float16 auto=16 model=8 best=8 near2%=[8, 16] auto_us=38.115 model_us=37.992 best_us=37.992 model_regret=0.00% model_vs_auto=1.0032x
-  v1_model=4 v1_regret=4.75% v2_vs_v1=1.0475x
-v2_b2h1_q2_d32/bfloat16 auto=16 model=8 best=16 near2%=[8, 16, 32] auto_us=39.104 model_us=39.192 best_us=39.104 model_regret=0.23% model_vs_auto=0.9978x
-  v1_model=4 v1_regret=2.59% v2_vs_v1=1.0236x
-v2_b1h2_q15_d48/float16 auto=16 model=8 best=8 near2%=[8] auto_us=52.100 model_us=46.285 best_us=46.285 model_regret=0.00% model_vs_auto=1.1257x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b1h2_q15_d48/bfloat16 auto=16 model=8 best=8 near2%=[8] auto_us=52.450 model_us=46.528 best_us=46.528 model_regret=0.00% model_vs_auto=1.1273x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b5h1_q16_d64/float16 auto=8 model=16 best=8 near2%=[8] auto_us=43.183 model_us=50.294 best_us=43.183 model_regret=16.47% model_vs_auto=0.8586x
-  v1_model=4 v1_regret=21.99% v2_vs_v1=1.0474x
-v2_b5h1_q16_d64/bfloat16 auto=8 model=16 best=8 near2%=[8] auto_us=43.306 model_us=50.361 best_us=43.306 model_regret=16.29% model_vs_auto=0.8599x
-  v1_model=4 v1_regret=21.91% v2_vs_v1=1.0484x
-v2_b2h4_q17_d80/float16 auto=4 model=16 best=16 near2%=[16] auto_us=142.879 model_us=116.944 best_us=116.944 model_regret=0.00% model_vs_auto=1.2218x
-  v1_model=8 v1_regret=2.21% v2_vs_v1=1.0221x
-v2_b2h4_q17_d80/bfloat16 auto=4 model=16 best=16 near2%=[16] auto_us=142.687 model_us=117.043 best_us=117.043 model_regret=0.00% model_vs_auto=1.2191x
-  v1_model=8 v1_regret=2.36% v2_vs_v1=1.0236x
-v2_b3h2_q31_d96/float16 auto=8 model=8 best=4 near2%=[4] auto_us=89.444 model_us=89.444 best_us=86.015 model_regret=3.99% model_vs_auto=1.0000x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=0.9617x
-v2_b3h2_q31_d96/bfloat16 auto=8 model=8 best=4 near2%=[4] auto_us=89.411 model_us=89.411 best_us=85.934 model_regret=4.05% model_vs_auto=1.0000x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=0.9611x
-v2_b2h3_q32_d128/float16 auto=8 model=4 best=4 near2%=[4] auto_us=88.069 model_us=82.896 best_us=82.896 model_regret=0.00% model_vs_auto=1.0624x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b2h3_q32_d128/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=87.807 model_us=82.688 best_us=82.688 model_regret=0.00% model_vs_auto=1.0619x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b4h1_q33_d192/float16 auto=4 model=16 best=16 near2%=[16] auto_us=194.878 model_us=172.858 best_us=172.858 model_regret=0.00% model_vs_auto=1.1274x
-  v1_model=8 v1_regret=3.05% v2_vs_v1=1.0305x
-v2_b4h1_q33_d192/bfloat16 auto=4 model=16 best=16 near2%=[16] auto_us=193.939 model_us=172.724 best_us=172.724 model_regret=0.00% model_vs_auto=1.1228x
-  v1_model=8 v1_regret=3.26% v2_vs_v1=1.0326x
-v2_b1h6_q63_d64/float16 auto=4 model=2 best=2 near2%=[2] auto_us=135.245 model_us=131.961 best_us=131.961 model_regret=0.00% model_vs_auto=1.0249x
-  v1_model=2 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b1h6_q63_d64/bfloat16 auto=4 model=2 best=2 near2%=[2] auto_us=135.052 model_us=131.885 best_us=131.885 model_regret=0.00% model_vs_auto=1.0240x
-  v1_model=2 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b3h1_q65_d128/float16 auto=4 model=8 best=8 near2%=[8, 16] auto_us=195.444 model_us=176.799 best_us=176.799 model_regret=0.00% model_vs_auto=1.1055x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b3h1_q65_d128/bfloat16 auto=4 model=8 best=8 near2%=[8, 16] auto_us=195.664 model_us=176.765 best_us=176.765 model_regret=0.00% model_vs_auto=1.1069x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b2h2_q126_d256/float16 auto=2 model=8 best=8 near2%=[8] auto_us=452.574 model_us=320.979 best_us=320.979 model_regret=0.00% model_vs_auto=1.4100x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b2h2_q126_d256/bfloat16 auto=2 model=8 best=8 near2%=[8] auto_us=452.560 model_us=322.036 best_us=322.036 model_regret=0.00% model_vs_auto=1.4053x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b1h3_q129_d96/float16 auto=2 model=16 best=16 near2%=[16] auto_us=477.595 model_us=319.220 best_us=319.220 model_regret=0.00% model_vs_auto=1.4961x
-  v1_model=8 v1_regret=3.35% v2_vs_v1=1.0335x
-v2_b1h3_q129_d96/bfloat16 auto=2 model=16 best=16 near2%=[16] auto_us=479.992 model_us=318.539 best_us=318.539 model_regret=0.00% model_vs_auto=1.5069x
-  v1_model=8 v1_regret=3.52% v2_vs_v1=1.0352x
-v2_b2h2_q257_d128/float16 auto=1 model=8 best=8 near2%=[8, 16] auto_us=995.058 model_us=736.658 best_us=736.658 model_regret=0.00% model_vs_auto=1.3508x
-  v1_model=2 v1_regret=3.57% v2_vs_v1=1.0357x
-v2_b2h2_q257_d128/bfloat16 auto=1 model=8 best=8 near2%=[8, 16] auto_us=993.353 model_us=734.771 best_us=734.771 model_regret=0.00% model_vs_auto=1.3519x
-  v1_model=2 v1_regret=3.84% v2_vs_v1=1.0384x
-v2_b1h2_q511_d64/float16 auto=1 model=4 best=4 near2%=[4, 8] auto_us=881.240 model_us=599.427 best_us=599.427 model_regret=0.00% model_vs_auto=1.4701x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b1h2_q511_d64/bfloat16 auto=1 model=4 best=4 near2%=[4] auto_us=881.362 model_us=597.113 best_us=597.113 model_regret=0.00% model_vs_auto=1.4760x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b2h3_q1023_d128/float16 auto=1 model=1 best=1 near2%=[1, 2, 4] auto_us=3484.947 model_us=3484.947 best_us=3484.947 model_regret=0.00% model_vs_auto=1.0000x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_b2h3_q1023_d128/bfloat16 auto=1 model=1 best=1 near2%=[1, 2, 4] auto_us=3494.589 model_us=3494.589 best_us=3494.589 model_regret=0.00% model_vs_auto=1.0000x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_page16_q5/float16 auto=8 model=4 best=4 near2%=[2, 4, 8] auto_us=39.185 model_us=38.956 best_us=38.956 model_regret=0.00% model_vs_auto=1.0059x
-  v1_model=2 v1_regret=0.76% v2_vs_v1=1.0076x
-v2_page16_q5/bfloat16 auto=8 model=4 best=2 near2%=[2, 4, 8] auto_us=38.755 model_us=38.997 best_us=38.743 model_regret=0.65% model_vs_auto=0.9938x
-  v1_model=2 v1_regret=0.00% v2_vs_v1=0.9935x
-v2_page48_q19/float16 auto=8 model=8 best=8 near2%=[8] auto_us=37.576 model_us=37.576 best_us=37.576 model_regret=0.00% model_vs_auto=1.0000x
-  v1_model=4 v1_regret=6.21% v2_vs_v1=1.0621x
-v2_page48_q19/bfloat16 auto=8 model=8 best=8 near2%=[8] auto_us=38.841 model_us=38.841 best_us=38.841 model_regret=0.00% model_vs_auto=1.0000x
-  v1_model=4 v1_regret=4.87% v2_vs_v1=1.0487x
-v2_causal_mixed_empty/float16 auto=4 model=8 best=4 near2%=[4] auto_us=62.700 model_us=69.113 best_us=62.700 model_regret=10.23% model_vs_auto=0.9072x
-  v1_model=2 v1_regret=35.11% v2_vs_v1=1.2258x
-v2_causal_mixed_empty/bfloat16 auto=4 model=8 best=4 near2%=[4] auto_us=62.909 model_us=69.368 best_us=62.909 model_regret=10.27% model_vs_auto=0.9069x
-  v1_model=2 v1_regret=35.11% v2_vs_v1=1.2253x
-v2_causal_q125_d128/float16 auto=1 model=4 best=4 near2%=[4] auto_us=718.060 model_us=489.336 best_us=489.336 model_regret=0.00% model_vs_auto=1.4674x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_causal_q125_d128/bfloat16 auto=1 model=4 best=4 near2%=[4] auto_us=717.224 model_us=489.257 best_us=489.257 model_regret=0.00% model_vs_auto=1.4659x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_causal_q253_d192/float16 auto=2 model=1 best=1 near2%=[1] auto_us=263.029 model_us=255.090 best_us=255.090 model_regret=0.00% model_vs_auto=1.0311x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_causal_q253_d192/bfloat16 auto=2 model=1 best=1 near2%=[1] auto_us=263.144 model_us=255.255 best_us=255.255 model_regret=0.00% model_vs_auto=1.0309x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_zero_cache/float16 auto=8 model=1 best=1 near2%=[1] auto_us=37.765 model_us=29.318 best_us=29.318 model_regret=0.00% model_vs_auto=1.2881x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-v2_zero_cache/bfloat16 auto=8 model=1 best=1 near2%=[1] auto_us=37.650 model_us=29.368 best_us=29.368 model_regret=0.00% model_vs_auto=1.2820x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
+The above exception was the direct cause of the following exception:
 
-FILE: mha_cube_model_v2_replay_summary.json
-started_utc: 2026-11-16T10:07:26.900913+00:00
-status: passed
-phase: complete
-correctness: passed
-GROUPS: {"all": {"cases": 90, "auto_within_2pct_cases": 12, "best_is_split1_cases": 12, "geomean_best_speedup_vs_auto": 1.1587405639830342, "max_auto_regret_percent": 47.464553226460836, "model_within_2pct_cases": 87, "max_model_regret_percent": 3.033718489792503, "geomean_model_speedup_vs_auto": 1.156721436856979, "geomean_model_speedup_vs_v1": 1.0094867553324156, "model_faster_than_v1_cases": 15, "max_model_slowdown_vs_v1_percent": 3.033718489792503}, "float16": {"cases": 45, "auto_within_2pct_cases": 6, "best_is_split1_cases": 6, "geomean_best_speedup_vs_auto": 1.1586133406361505, "max_auto_regret_percent": 47.464553226460836, "model_within_2pct_cases": 44, "max_model_regret_percent": 2.821145594860197, "geomean_model_speedup_vs_auto": 1.156715110614223, "geomean_model_speedup_vs_v1": 1.009728814132479, "model_faster_than_v1_cases": 8, "max_model_slowdown_vs_v1_percent": 2.821145594860197}, "bfloat16": {"cases": 45, "auto_within_2pct_cases": 6, "best_is_split1_cases": 6, "geomean_best_speedup_vs_auto": 1.158867801299876, "max_auto_regret_percent": 47.3990626795342, "model_within_2pct_cases": 43, "max_model_regret_percent": 3.033718489792503, "geomean_model_speedup_vs_auto": 1.1567277631343338, "geomean_model_speedup_vs_v1": 1.0092447545602723, "model_faster_than_v1_cases": 7, "max_model_slowdown_vs_v1_percent": 3.033718489792503}}
-dim16_q16/float16 auto=8 model=4 best=4 near2%=[4, 8, 16] auto_us=33.763 model_us=33.664 best_us=33.664 model_regret=0.00% model_vs_auto=1.0029x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim16_q16/bfloat16 auto=8 model=4 best=4 near2%=[4, 8] auto_us=32.898 model_us=32.882 best_us=32.882 model_regret=0.00% model_vs_auto=1.0005x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim48_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=38.095 model_us=34.604 best_us=34.604 model_regret=0.00% model_vs_auto=1.1009x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim48_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=38.281 model_us=34.754 best_us=34.754 model_regret=0.00% model_vs_auto=1.1015x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim64_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=37.082 model_us=33.556 best_us=33.556 model_regret=0.00% model_vs_auto=1.1051x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim64_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=37.159 model_us=33.453 best_us=33.453 model_regret=0.00% model_vs_auto=1.1108x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim80_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=52.758 model_us=47.555 best_us=47.555 model_regret=0.00% model_vs_auto=1.1094x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim80_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=53.076 model_us=47.903 best_us=47.903 model_regret=0.00% model_vs_auto=1.1080x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim96_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=54.000 model_us=49.064 best_us=49.064 model_regret=0.00% model_vs_auto=1.1006x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim96_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=53.784 model_us=48.808 best_us=48.808 model_regret=0.00% model_vs_auto=1.1019x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim128_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=52.605 model_us=47.606 best_us=47.606 model_regret=0.00% model_vs_auto=1.1050x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim128_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=52.469 model_us=47.509 best_us=47.509 model_regret=0.00% model_vs_auto=1.1044x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim192_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=82.343 model_us=74.759 best_us=74.759 model_regret=0.00% model_vs_auto=1.1014x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim192_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=82.321 model_us=74.901 best_us=74.901 model_regret=0.00% model_vs_auto=1.0991x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim256_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=79.906 model_us=73.383 best_us=73.383 model_regret=0.00% model_vs_auto=1.0889x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-dim256_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=80.116 model_us=73.301 best_us=73.301 model_regret=0.00% model_vs_auto=1.0930x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-d64_q1_kv2048/float16 auto=8 model=16 best=16 near2%=[16] auto_us=88.905 model_us=77.390 best_us=77.390 model_regret=0.00% model_vs_auto=1.1488x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-d64_q1_kv2048/bfloat16 auto=8 model=16 best=16 near2%=[16] auto_us=89.132 model_us=77.753 best_us=77.753 model_regret=0.00% model_vs_auto=1.1463x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-d64_q128_kv2048/float16 auto=2 model=8 best=8 near2%=[8] auto_us=285.547 model_us=199.103 best_us=199.103 model_regret=0.00% model_vs_auto=1.4342x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-d64_q128_kv2048/bfloat16 auto=2 model=8 best=8 near2%=[8] auto_us=285.445 model_us=199.208 best_us=199.208 model_regret=0.00% model_vs_auto=1.4329x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-d64_q512_kv2048/float16 auto=1 model=2 best=2 near2%=[2, 4, 8] auto_us=819.985 model_us=699.200 best_us=699.200 model_regret=0.00% model_vs_auto=1.1727x
-  v1_model=2 v1_regret=0.00% v2_vs_v1=1.0000x
-d64_q512_kv2048/bfloat16 auto=1 model=2 best=2 near2%=[2, 4, 8] auto_us=818.686 model_us=698.512 best_us=698.512 model_regret=0.00% model_vs_auto=1.1720x
-  v1_model=2 v1_regret=0.00% v2_vs_v1=1.0000x
-d128_q1_kv2048/float16 auto=8 model=32 best=32 near2%=[32] auto_us=135.173 model_us=110.225 best_us=110.225 model_regret=0.00% model_vs_auto=1.2263x
-  v1_model=32 v1_regret=0.00% v2_vs_v1=1.0000x
-d128_q1_kv2048/bfloat16 auto=8 model=32 best=32 near2%=[32] auto_us=135.562 model_us=110.798 best_us=110.798 model_regret=0.00% model_vs_auto=1.2235x
-  v1_model=32 v1_regret=0.00% v2_vs_v1=1.0000x
-d128_q128_kv2048/float16 auto=2 model=8 best=8 near2%=[8] auto_us=486.896 model_us=330.178 best_us=330.178 model_regret=0.00% model_vs_auto=1.4746x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-d128_q128_kv2048/bfloat16 auto=2 model=8 best=8 near2%=[8] auto_us=486.951 model_us=330.362 best_us=330.362 model_regret=0.00% model_vs_auto=1.4740x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-d128_q512_kv2048/float16 auto=1 model=2 best=8 near2%=[2, 4, 8] auto_us=1413.470 model_us=1216.578 best_us=1208.772 model_regret=0.65% model_vs_auto=1.1618x
-  v1_model=2 v1_regret=0.65% v2_vs_v1=1.0000x
-d128_q512_kv2048/bfloat16 auto=1 model=2 best=8 near2%=[2, 4, 8] auto_us=1417.229 model_us=1214.117 best_us=1211.148 model_regret=0.25% model_vs_auto=1.1673x
-  v1_model=2 v1_regret=0.25% v2_vs_v1=1.0000x
-single_decode_kv8192/float16 auto=32 model=16 best=16 near2%=[16] auto_us=95.585 model_us=86.910 best_us=86.910 model_regret=0.00% model_vs_auto=1.0998x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-single_decode_kv8192/bfloat16 auto=32 model=16 best=16 near2%=[16] auto_us=95.604 model_us=86.905 best_us=86.905 model_regret=0.00% model_vs_auto=1.1001x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-page16_tail/float16 auto=4 model=1 best=1 near2%=[1] auto_us=34.493 model_us=26.557 best_us=26.557 model_regret=0.00% model_vs_auto=1.2988x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-page16_tail/bfloat16 auto=4 model=1 best=1 near2%=[1] auto_us=34.109 model_us=26.189 best_us=26.189 model_regret=0.00% model_vs_auto=1.3024x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-page48_crossing/float16 auto=4 model=2 best=2 near2%=[2, 4] auto_us=34.176 model_us=34.033 best_us=34.033 model_regret=0.00% model_vs_auto=1.0042x
-  v1_model=2 v1_regret=0.00% v2_vs_v1=1.0000x
-page48_crossing/bfloat16 auto=4 model=2 best=2 near2%=[2, 4] auto_us=34.864 model_us=34.533 best_us=34.533 model_regret=0.00% model_vs_auto=1.0096x
-  v1_model=2 v1_regret=0.00% v2_vs_v1=1.0000x
-d128_q129_kv_tail/float16 auto=2 model=4 best=4 near2%=[4] auto_us=144.982 model_us=121.330 best_us=121.330 model_regret=0.00% model_vs_auto=1.1949x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-d128_q129_kv_tail/bfloat16 auto=2 model=4 best=4 near2%=[4] auto_us=144.819 model_us=121.477 best_us=121.477 model_regret=0.00% model_vs_auto=1.1922x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-causal_d64_q16/float16 auto=8 model=4 best=4 near2%=[4] auto_us=37.340 model_us=33.720 best_us=33.720 model_regret=0.00% model_vs_auto=1.1073x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-causal_d64_q16/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=37.400 model_us=33.837 best_us=33.837 model_regret=0.00% model_vs_auto=1.1053x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-causal_d128_q129/float16 auto=2 model=1 best=1 near2%=[1] auto_us=84.897 model_us=74.049 best_us=74.049 model_regret=0.00% model_vs_auto=1.1465x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-causal_d128_q129/bfloat16 auto=2 model=1 best=1 near2%=[1] auto_us=85.276 model_us=74.203 best_us=74.203 model_regret=0.00% model_vs_auto=1.1492x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-causal_empty_rows_d256/float16 auto=4 model=1 best=1 near2%=[1] auto_us=34.139 model_us=27.435 best_us=27.435 model_regret=0.00% model_vs_auto=1.2444x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-causal_empty_rows_d256/bfloat16 auto=4 model=1 best=1 near2%=[1] auto_us=33.928 model_us=27.289 best_us=27.289 model_regret=0.00% model_vs_auto=1.2433x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b1h1_q2_d32/float16 auto=16 model=8 best=4 near2%=[4, 8, 16] auto_us=32.185 model_us=31.972 best_us=31.930 model_regret=0.13% model_vs_auto=1.0066x
-  v1_model=8 v1_regret=0.13% v2_vs_v1=1.0000x
-hold_b1h1_q2_d32/bfloat16 auto=16 model=8 best=4 near2%=[4, 8, 16] auto_us=32.125 model_us=32.046 best_us=31.970 model_regret=0.24% model_vs_auto=1.0025x
-  v1_model=8 v1_regret=0.24% v2_vs_v1=1.0000x
-hold_b1h2_q7_d64/float16 auto=16 model=8 best=8 near2%=[8] auto_us=49.183 model_us=44.530 best_us=44.530 model_regret=0.00% model_vs_auto=1.1045x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b1h2_q7_d64/bfloat16 auto=16 model=8 best=8 near2%=[8] auto_us=49.670 model_us=45.164 best_us=45.164 model_regret=0.00% model_vs_auto=1.0998x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b1h4_q31_d128/float16 auto=8 model=16 best=16 near2%=[16] auto_us=82.106 model_us=75.808 best_us=75.808 model_regret=0.00% model_vs_auto=1.0831x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b1h4_q31_d128/bfloat16 auto=8 model=16 best=16 near2%=[16] auto_us=81.814 model_us=75.431 best_us=75.431 model_regret=0.00% model_vs_auto=1.0846x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b3h2_q1_d64/float16 auto=8 model=32 best=16 near2%=[16, 32] auto_us=156.879 model_us=151.944 best_us=149.028 model_regret=1.96% model_vs_auto=1.0325x
-  v1_model=4 v1_regret=5.82% v2_vs_v1=1.0379x
-hold_b3h2_q1_d64/bfloat16 auto=8 model=32 best=16 near2%=[16] auto_us=157.090 model_us=152.004 best_us=148.989 model_regret=2.02% model_vs_auto=1.0335x
-  v1_model=4 v1_regret=5.49% v2_vs_v1=1.0339x
-hold_b2h4_q1_d192/float16 auto=4 model=16 best=16 near2%=[16] auto_us=338.125 model_us=236.337 best_us=236.337 model_regret=0.00% model_vs_auto=1.4307x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b2h4_q1_d192/bfloat16 auto=4 model=16 best=16 near2%=[16] auto_us=338.728 model_us=236.318 best_us=236.318 model_regret=0.00% model_vs_auto=1.4334x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b1h1_q1_d128/float16 auto=32 model=16 best=16 near2%=[16] auto_us=87.233 model_us=78.977 best_us=78.977 model_regret=0.00% model_vs_auto=1.1045x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b1h1_q1_d128/bfloat16 auto=32 model=16 best=16 near2%=[16] auto_us=87.061 model_us=78.753 best_us=78.753 model_regret=0.00% model_vs_auto=1.1055x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b4h1_q16_d48/float16 auto=8 model=8 best=8 near2%=[8] auto_us=41.916 model_us=41.916 best_us=41.916 model_regret=0.00% model_vs_auto=1.0000x
-  v1_model=4 v1_regret=2.31% v2_vs_v1=1.0231x
-hold_b4h1_q16_d48/bfloat16 auto=8 model=8 best=8 near2%=[8] auto_us=42.064 model_us=42.064 best_us=42.064 model_regret=0.00% model_vs_auto=1.0000x
-  v1_model=4 v1_regret=2.35% v2_vs_v1=1.0235x
-hold_b1h8_q16_d80/float16 auto=4 model=8 best=8 near2%=[8] auto_us=110.522 model_us=95.502 best_us=95.502 model_regret=0.00% model_vs_auto=1.1573x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b1h8_q16_d80/bfloat16 auto=4 model=8 best=8 near2%=[8] auto_us=110.808 model_us=95.788 best_us=95.788 model_regret=0.00% model_vs_auto=1.1568x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b3h1_q32_d96/float16 auto=16 model=8 best=8 near2%=[8] auto_us=52.095 model_us=44.212 best_us=44.212 model_regret=0.00% model_vs_auto=1.1783x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b3h1_q32_d96/bfloat16 auto=16 model=8 best=8 near2%=[8] auto_us=52.164 model_us=44.320 best_us=44.320 model_regret=0.00% model_vs_auto=1.1770x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b2h3_q33_d128/float16 auto=4 model=16 best=4 near2%=[2, 4, 16] auto_us=201.278 model_us=202.665 best_us=201.278 model_regret=0.69% model_vs_auto=0.9932x
-  v1_model=2 v1_regret=1.96% v2_vs_v1=1.0127x
-hold_b2h3_q33_d128/bfloat16 auto=4 model=16 best=4 near2%=[2, 4, 16] auto_us=201.093 model_us=203.177 best_us=201.093 model_regret=1.04% model_vs_auto=0.9897x
-  v1_model=2 v1_regret=1.87% v2_vs_v1=1.0082x
-hold_b1h4_q64_d64/float16 auto=4 model=16 best=16 near2%=[16] auto_us=151.605 model_us=114.965 best_us=114.965 model_regret=0.00% model_vs_auto=1.3187x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b1h4_q64_d64/bfloat16 auto=4 model=16 best=16 near2%=[16] auto_us=151.492 model_us=114.975 best_us=114.975 model_regret=0.00% model_vs_auto=1.3176x
-  v1_model=16 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b3h2_q127_d256/float16 auto=2 model=8 best=4 near2%=[4, 8] auto_us=349.850 model_us=317.834 best_us=314.057 model_regret=1.20% model_vs_auto=1.1007x
-  v1_model=1 v1_regret=9.32% v2_vs_v1=1.0802x
-hold_b3h2_q127_d256/bfloat16 auto=2 model=8 best=4 near2%=[4, 8] auto_us=349.935 model_us=318.273 best_us=313.784 model_regret=1.43% model_vs_auto=1.0995x
-  v1_model=1 v1_regret=9.43% v2_vs_v1=1.0789x
-hold_b1h2_q255_d128/float16 auto=2 model=8 best=8 near2%=[8] auto_us=382.272 model_us=264.775 best_us=264.775 model_regret=0.00% model_vs_auto=1.4438x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b1h2_q255_d128/bfloat16 auto=2 model=8 best=8 near2%=[8] auto_us=383.731 model_us=264.217 best_us=264.217 model_regret=0.00% model_vs_auto=1.4523x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b2h1_q256_d64/float16 auto=2 model=8 best=8 near2%=[8] auto_us=223.960 model_us=160.373 best_us=160.373 model_regret=0.00% model_vs_auto=1.3965x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b2h1_q256_d64/bfloat16 auto=2 model=8 best=8 near2%=[8] auto_us=223.963 model_us=160.575 best_us=160.575 model_regret=0.00% model_vs_auto=1.3948x
-  v1_model=8 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b1h4_q513_d128/float16 auto=1 model=2 best=2 near2%=[2] auto_us=751.603 model_us=631.621 best_us=631.621 model_regret=0.00% model_vs_auto=1.1900x
-  v1_model=2 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b1h4_q513_d128/bfloat16 auto=1 model=2 best=2 near2%=[2] auto_us=754.018 model_us=627.812 best_us=627.812 model_regret=0.00% model_vs_auto=1.2010x
-  v1_model=2 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_b2h2_q1024_d96/float16 auto=1 model=4 best=4 near2%=[4, 8] auto_us=2502.530 model_us=2402.294 best_us=2402.294 model_regret=0.00% model_vs_auto=1.0417x
-  v1_model=1 v1_regret=4.17% v2_vs_v1=1.0417x
-hold_b2h2_q1024_d96/bfloat16 auto=1 model=4 best=4 near2%=[4, 8] auto_us=2499.199 model_us=2398.822 best_us=2398.822 model_regret=0.00% model_vs_auto=1.0418x
-  v1_model=1 v1_regret=4.18% v2_vs_v1=1.0418x
-hold_page16_q3/float16 auto=4 model=1 best=1 near2%=[1] auto_us=34.817 model_us=27.508 best_us=27.508 model_regret=0.00% model_vs_auto=1.2657x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_page16_q3/bfloat16 auto=4 model=1 best=1 near2%=[1] auto_us=33.949 model_us=27.212 best_us=27.212 model_regret=0.00% model_vs_auto=1.2476x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_page48_q17/float16 auto=8 model=8 best=8 near2%=[4, 8] auto_us=34.018 model_us=34.018 best_us=34.018 model_regret=0.00% model_vs_auto=1.0000x
-  v1_model=4 v1_regret=0.09% v2_vs_v1=1.0009x
-hold_page48_q17/bfloat16 auto=8 model=8 best=4 near2%=[4, 8] auto_us=33.882 model_us=33.882 best_us=33.750 model_regret=0.39% model_vs_auto=1.0000x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=0.9961x
-hold_causal_q31_d64/float16 auto=8 model=4 best=4 near2%=[4] auto_us=48.254 model_us=44.490 best_us=44.490 model_regret=0.00% model_vs_auto=1.0846x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_causal_q31_d64/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=48.358 model_us=44.460 best_us=44.460 model_regret=0.00% model_vs_auto=1.0877x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_causal_q127_d128/float16 auto=2 model=8 best=1 near2%=[1] auto_us=278.481 model_us=268.010 best_us=260.657 model_regret=2.82% model_vs_auto=1.0391x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=0.9726x
-hold_causal_q127_d128/bfloat16 auto=2 model=8 best=1 near2%=[1] auto_us=278.251 model_us=268.392 best_us=260.489 model_regret=3.03% model_vs_auto=1.0367x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=0.9706x
-hold_causal_q255_d192/float16 auto=2 model=8 best=8 near2%=[8] auto_us=241.591 model_us=187.975 best_us=187.975 model_regret=0.00% model_vs_auto=1.2852x
-  v1_model=4 v1_regret=5.37% v2_vs_v1=1.0537x
-hold_causal_q255_d192/bfloat16 auto=2 model=8 best=8 near2%=[8] auto_us=241.485 model_us=187.864 best_us=187.864 model_regret=0.00% model_vs_auto=1.2854x
-  v1_model=4 v1_regret=5.32% v2_vs_v1=1.0532x
-hold_causal_empty_rows/float16 auto=4 model=2 best=2 near2%=[2] auto_us=41.297 model_us=34.319 best_us=34.319 model_regret=0.00% model_vs_auto=1.2033x
-  v1_model=1 v1_regret=24.57% v2_vs_v1=1.2457x
-hold_causal_empty_rows/bfloat16 auto=4 model=2 best=2 near2%=[2] auto_us=41.558 model_us=34.327 best_us=34.327 model_regret=0.00% model_vs_auto=1.2107x
-  v1_model=1 v1_regret=23.90% v2_vs_v1=1.2390x
-hold_large_capacity_short_live/float16 auto=8 model=4 best=4 near2%=[4] auto_us=42.655 model_us=37.860 best_us=37.860 model_regret=0.00% model_vs_auto=1.1267x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_large_capacity_short_live/bfloat16 auto=8 model=4 best=4 near2%=[4] auto_us=42.599 model_us=37.726 best_us=37.726 model_regret=0.00% model_vs_auto=1.1292x
-  v1_model=4 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_zero_cache/float16 auto=4 model=1 best=1 near2%=[1] auto_us=32.099 model_us=23.874 best_us=23.874 model_regret=0.00% model_vs_auto=1.3445x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
-hold_zero_cache/bfloat16 auto=4 model=1 best=1 near2%=[1] auto_us=31.876 model_us=23.855 best_us=23.855 model_regret=0.00% model_vs_auto=1.3362x
-  v1_model=1 v1_regret=0.00% v2_vs_v1=1.0000x
+Traceback (most recent call last):
+  File "/home/z30086261/FGW/benchmarks/mha/bench_cube_split_scan.py", line 235, in main
+    import torch
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/__init__.py", line 3077, in <module>
+    _import_device_backends()
+  File "/root/miniconda3/envs/zwh/lib/python3.12/site-packages/torch/__init__.py", line 3034, in _import_device_backends
+    raise RuntimeError(
+RuntimeError: Failed to load the backend extension: torch_npu. You can disable extension auto-loading with TORCH_DEVICE_BACKEND_AUTOLOAD=0.
+ERROR: mha_cube_model_v2_residuals_summary.json; paste output: mha_cube_model_v2_residuals_paste.txt
 (zwh) root@ubuntu162:/home/z30086261/FGW#
